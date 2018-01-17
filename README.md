@@ -1,5 +1,4 @@
 # Full simulation of CMOS beta- probe in Geant4
-## DOTA SOURCE TO BE FIXEDDDDDDD
 
 ## HOW TO RUN:
 ```
@@ -76,13 +75,13 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - EDepInPixel[InCmosTrackN]: energy deposited in single pixel [keV]; *** same as InCmosEn
 - PixXPos[InCmosTrackN]: x position of the pixel in which the hit occurred [mm];
 - PixYPos[InCmosTrackN]: y position of the pixel in which the hit occurred [mm];
-- SourceX: X coordinate of primary particle [mm] giving a signal in Cmos;
-- SourceY: Y coordinate of primary particle [mm] giving a signal in Cmos;
-- SourceZ: Z coordinate of primary particle [mm] giving a signal in Cmos;
-- SourceCosX: X directive cosine of primary particle giving a signal in Cmos;
-- SourceCosY: Y directive cosine of primary particle giving a signal in Cmos;
-- SourceCosZ: Z directive cosine of primary particle giving a signal in Cmos;
-- SourceEne: kinetic energy of primary particle giving a signal in Cmos;
+- SourceX: X coordinate of primary particle (isotope) giving a signal in Cmos [mm];
+- SourceY: Y coordinate of primary particle (isotope) giving a signal in Cmos [mm];
+- SourceZ: Z coordinate of primary particle (isotope) giving a signal in Cmos [mm];
+- SourceCosX: X directive cosine of decay electron(s) giving a signal in Cmos;
+- SourceCosY: Y directive cosine of  decay electron(s) giving a signal in Cmos;
+- SourceCosZ: Z directive cosine of decay electron(s) giving a signal in Cmos;
+- SourceEne: kinetic energy of  decay electron(s)  giving a signal in Cmos [keV];
 - SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Cmos;
 - Nev: storing number of events generated
 - OptPhotNo: number of optical photons passing from Cmos to SiPm per event;
@@ -115,6 +114,7 @@ B1->Draw("InCmosEnY","","same")
 2018.01.17 by collamaf
 - Deep reorganization of DetConstr, much clearer now
 - Code extended to both sensors smoothly (new argument to be passed by terminal, default sensor 1).
+- Fixed DOTA source problem
 
 
 

@@ -48,7 +48,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4double TBR, G4int SourceSelect)
+B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4double TBR, G4int SourceSelect, G4int SensorChoice)
 : G4UserRunAction(),
 fEdep("Edep", 0.),
 fEdep2("Edep2", 0.),
@@ -59,31 +59,15 @@ fEdkin("Edkin", 0.)
 , fFilterFlag(FilterFlag)
 , fTBR(TBR)
 , fSourceSelect(SourceSelect)
-//fEdepPhot("EdepPhot", 0.),
-// fEdepEl("EdepEl", 0.)
+, fSensorChoice(SensorChoice)
+
 {
-	// add new units for dose
-	//
-	const G4double milligray = 1.e-3*gray;
-	const G4double microgray = 1.e-6*gray;
-	const G4double nanogray  = 1.e-9*gray;
-	const G4double picogray  = 1.e-12*gray;
-	
-	new G4UnitDefinition("milligray", "milliGy" , "Dose", milligray);
-	new G4UnitDefinition("microgray", "microGy" , "Dose", microgray);
-	new G4UnitDefinition("nanogray" , "nanoGy"  , "Dose", nanogray);
-	new G4UnitDefinition("picogray" , "picoGy"  , "Dose", picogray);
-	
 	// Register accumulable to the accumulable manager
 	G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
 	accumulableManager->RegisterAccumulable(fEdep);
 	accumulableManager->RegisterAccumulable(fEdep2);
 	accumulableManager->RegisterAccumulable(fEdkin);
-	
-	
-	// accumulableManager->RegisterAccumulable(fEdepPhot);
-	// accumulableManager->RegisterAccumulable(fEdepEl);
-	
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -110,9 +94,8 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleDColumn(0,24, nbEventInRun); //CHECK
-	
-	
+	analysisManager->FillNtupleIColumn(0,19, nbEventInRun);
+
 	
 }
 
@@ -122,7 +105,6 @@ void B1RunAction::EndOfRunAction(const G4Run* run)
 {
 	G4int nofEvents = run->GetNumberOfEvent();
 	if (nofEvents == 0) return;
-	
 	
 	// Merge accumulable
 	G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
@@ -208,48 +190,24 @@ void B1RunAction::AddEdkin(G4double edkin)
 {
 	fEdkin  += edkin;
 }
-/*
- void B1RunAction::AddEdepPhot(G4double edepPhot)
- {
- fEdepPhot  += edepPhot;
- }
- 
- void B1RunAction::AddEdepEl(G4double edepEl)
- {
- fEdepEl  += edepEl;
- }
- 
- */
-
 
 
 void B1RunAction::CreateHistogram()
 {
 	// Book histograms, ntuple
-	
-	// Create analysis manager
-	// The choice of analysis technology is done via selection of a namespace
-	// in Analysis.hh
-	
 	//	G4cout << "##### Create analysis manager " << "  " << this << G4endl;
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	G4cout << "Using " << analysisManager->GetType() << " analysis manager" << G4endl;
 	
 	// Create directories
-	
-	//analysisManager->SetHistoDirectoryName("histograms");
-	//analysisManager->SetNtupleDirectoryName("ntuple");
 	analysisManager->SetVerboseLevel(1);
 	
 	// Open an output file
-	
 	G4String fileNameBase = "CMOSmc";
 	G4String fileName;
-	//		G4cout<<"PROVA Run Action "<<fX0Scan<<G4endl;
 	
 	if (fCuDiam>=0){
-		//       	analysisManager->OpenFile(fileName+ "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)fZValue) + "_CuD" + std::to_string((G4int)fCuDiam) + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR)) );
 		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)fZValue) + "_CuD" + std::to_string((G4int)fCuDiam) + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
 	}
 	else {
@@ -259,24 +217,16 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==1) fileName.append("_PSr");
 	if (fSourceSelect==2) fileName.append("_ExtSr");
 	if (fSourceSelect==3) fileName.append("_DOTA");
-	
+	if (fSensorChoice==1) fileName.append("_011");
+	if (fSensorChoice==2) fileName.append("_115");
+
 	analysisManager->OpenFile(fileName);
-	
-	//	"PrimariesX" + std::to_string((G4int)x0Scan) + ".dat", std::ios::out);
-	
-	//	analysisManager->OpenFile(fileName);
-	
+
 	// Creating ntuple
 	
 	analysisManager->CreateNtuple("B1", "physics");
 	analysisManager->CreateNtuple("Source", "SourceNtuple");
-	//	 analysisManager->CreateNtuple("Frames", "Frames Division");
 	
-	//analysisManager->CreateNtupleDColumn("x");
-	//analysisManager->CreateNtupleDColumn("y");
-	//analysisManager->CreateNtupleDColumn("z");
-	//analysisManager->CreateNtupleDColumn("preCmosEnergy");
-	//analysisManager->CreateNtupleDColumn("preCmosPart");
 	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
 	analysisManager->CreateNtupleDColumn(0,"PreCmosTrackN");                           //1
 	analysisManager->CreateNtupleDColumn(0,"PreCmosPart", RunVectorPart);                           //2
@@ -297,12 +247,22 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //16
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //17
 	analysisManager->CreateNtupleDColumn(0,"SourceZ");                           //18
+	analysisManager->CreateNtupleIColumn(0,"Nev");							//19 was 24
+
+	analysisManager->CreateNtupleDColumn(0,"SourceCosX", RunVectorCosX);
+	analysisManager->CreateNtupleDColumn(0,"SourceCosY", RunVectorCosY);
+	analysisManager->CreateNtupleDColumn(0,"SourceCosZ", RunVectorCosZ);
+	
+	analysisManager->CreateNtupleDColumn(0,"SourceEne", RunVectorEnGen);
+	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", RunVectorIsotopeGen);
+	
+	/*
 	analysisManager->CreateNtupleDColumn(0,"SourceCosX");                           //19
 	analysisManager->CreateNtupleDColumn(0,"SourceCosY");                           //20
 	analysisManager->CreateNtupleDColumn(0,"SourceCosZ");                           //21
 	analysisManager->CreateNtupleDColumn(0,"SourceEne");                           //22
 	analysisManager->CreateNtupleDColumn(0,"SourceIsotope");                           //23
-	analysisManager->CreateNtupleDColumn(0,"Nev");							//24
+	*/
 	
 	
 	analysisManager->CreateNtupleDColumn(1,"AllX");                           //0
@@ -333,14 +293,8 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //18
 	//	analysisManager->CreateNtupleDColumn(1,"ExitProcess", RunVectorParentIDExit); //16
 
-	
-	
-	
 	analysisManager->FinishNtuple(0);
 	analysisManager->FinishNtuple(1);
-	
-	
-	
 	
 }
 

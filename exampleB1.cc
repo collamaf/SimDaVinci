@@ -103,7 +103,12 @@ int main(int argc,char** argv)
 		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)ZValue) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
 	}
 	
+	
 	if (SrSourceFlag) FileNamePrim.append("_Sr");
+	
+	if (SensorChoice==1) FileNamePrim.append("_011");
+	if (SensorChoice==2) FileNamePrim.append("_115");
+	
 	FileNamePrim.append(+ ".dat");
 	std::ofstream primFile(FileNamePrim, std::ios::out);
 	
@@ -134,7 +139,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, SensorChoice));
 	
 	// Initialize visualization
 	//

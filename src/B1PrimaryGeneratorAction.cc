@@ -177,36 +177,38 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		
 	
 	fParticleGun->SetParticleEnergy(0*MeV); //SetParticleEnergy uses kinetic energy
-	evtPrimAction->SetSourceEne(fParticleGun->GetParticleEnergy());
 	
 	G4double rho = sqrt(fRadiusMin*fRadiusMin + G4UniformRand()*(fRadiusMax*fRadiusMax-fRadiusMin*fRadiusMin));   //fixed square problem by collamaf with internal radius!
 	G4double alpha = G4UniformRand()*CLHEP::pi*2.;
 
 	const G4ThreeVector position = G4ThreeVector(rho*cos(alpha), rho*sin(alpha), zSource);
-
+/*
 	evtPrimAction->SetSourceCosX(0);
 	evtPrimAction->SetSourceCosY(0);
 	evtPrimAction->SetSourceCosZ(0);
-	
+*/
 	G4ThreeVector momentumDirection = G4ThreeVector(0,0,0);
 	
 	fParticleGun->SetParticleMomentumDirection(momentumDirection);
-	
+	fParticleGun->SetParticlePosition(position);
+
+//	evtPrimAction->SetSourceEne(fParticleGun->GetParticleEnergy());
 	evtPrimAction->SetSourceX((position.x())/mm);
 	evtPrimAction->SetSourceY((position.y())/mm);
 	evtPrimAction->SetSourceZ((position.z())/mm);
 	
-	fParticleGun->SetParticlePosition(position);
 	
 	fParticleGun->GeneratePrimaryVertex(anEvent);
 	
 	if(anEvent->GetEventID()==1) {  //stampo informazioni sorgente
 		G4cout<<"Dimensioni sorgente: Raggio interno = "<<fRadiusInt<<", Raggio esterno = "<<fRadiusExt<<", H = "<<fZ<<G4endl;
-		G4cout<<"TBR richiesto= "<<fTBR<<G4endl;
-		G4cout<<"VolA= "<<VolA<<", ProbA= "<<ProbA<<G4endl;
-		G4cout<<"VolB= "<<VolB<<", ProbB= "<<ProbB<<G4endl;
-		G4cout<<"VolC= "<<VolC<<", ProbC= "<<ProbC<<G4endl;
-		G4cout<<"Volume sorgente tot= "<<VolA+VolB+VolC<<G4endl;
+		if (fSourceSelect==3) { //solo se è la sorgente DOTA..
+			G4cout<<"TBR richiesto= "<<fTBR<<G4endl;
+			G4cout<<"VolA= "<<VolA<<", ProbA= "<<ProbA<<G4endl;
+			G4cout<<"VolB= "<<VolB<<", ProbB= "<<ProbB<<G4endl;
+			G4cout<<"VolC= "<<VolC<<", ProbC= "<<ProbC<<G4endl;
+			G4cout<<"Volume sorgente tot= "<<VolA+VolB+VolC<<G4endl;
+		}
 	}
 }
 

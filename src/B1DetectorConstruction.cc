@@ -118,7 +118,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Element* elN = new G4Element (name="Nitrogen", symbol="N", z=7.,a );
 	
 	
-	density = 4.000*g/cm3;
+	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
+	if (fSensorChoice==2) density=2.43;
 	G4Material* Resin = new G4Material (name="Resin", density, ncomponents=3);
 	Resin->AddElement (elH, natoms=30);
 	Resin->AddElement (elC, natoms=20);
@@ -133,7 +134,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 BuildMaterialWithNewDensity("Water_1.05","G4_WATER",1.05*g/cm3);
 	 */
 	G4bool SrSource=fSrSourceFlag;
-	
 	
 	//###################################################
 	// AGAR AGAR Source - AgarAgar should be C14 H24 O9
@@ -154,8 +154,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	ABS->AddElement (elH, natoms=17);
 	ABS->AddElement (elC, natoms=15);
 	ABS->AddElement (elN, natoms=1);
-	
-	
 	
 	
 	//############ MATERIAL ASSIGNMENT

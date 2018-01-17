@@ -49,7 +49,7 @@ class G4Run;
 class B1RunAction : public G4UserRunAction
 {
 public:
-	B1RunAction(G4double, G4double, G4double, G4int, G4double, G4int);
+	B1RunAction(G4double, G4double, G4double, G4int, G4double, G4int, G4int);
 	virtual ~B1RunAction();
 	
 	// virtual G4Run* GenerateRun();
@@ -122,6 +122,7 @@ private:
 	G4int fSourceSelect;
 	
 	G4int fMotherIsotope=-10;
+	G4int fSensorChoice;
 
 	
 	//G4Accumulable <G4double> fEdepPhot;

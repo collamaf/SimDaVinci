@@ -162,12 +162,13 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleDColumn(0,16, fSourceX/mm);
 	analysisManager->FillNtupleDColumn(0,17, fSourceY/mm);
 	analysisManager->FillNtupleDColumn(0,18, fSourceZ/mm);
+	/*
 	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
 	analysisManager->FillNtupleDColumn(0,20, fSourceCosY/mm);
 	analysisManager->FillNtupleDColumn(0,21, fSourceCosZ/mm);
 	analysisManager->FillNtupleDColumn(0,22, fSourceEne/keV);
 	analysisManager->FillNtupleDColumn(0,23, fSourceIsotope);
-	
+	*/
 	
 	//	G4cout<<"CMOSDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	

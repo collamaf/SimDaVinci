@@ -80,7 +80,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 	G4double fRadiusMax;
 	G4double fRadiusMin;
 	G4double fTBR;
-	G4double fRatio;
+//	G4double fRatio;
 	G4int fSourceSelect;
 
 	//	G4LogicalVolume* sourceLV;

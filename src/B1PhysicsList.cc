@@ -88,7 +88,7 @@ void B1PhysicsList::SetCuts()
 	G4RegionStore::GetInstance()->GetRegion("ABSRegion")->SetProductionCuts(cuts);
 	G4RegionStore::GetInstance()->GetRegion("CMOSReg")->SetProductionCuts(cutsCMOS);
 	G4RegionStore::GetInstance()->GetRegion("SourceReg")->SetProductionCuts(cuts);
-//	G4RegionStore::GetInstance()->GetRegion("ResinReg")->SetProductionCuts(cuts);
+	G4RegionStore::GetInstance()->GetRegion("ResinReg")->SetProductionCuts(cuts);
 	G4RegionStore::GetInstance()->GetRegion("CarrierReg")->SetProductionCuts(cuts);
 	
 /*

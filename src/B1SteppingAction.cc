@@ -80,24 +80,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fEventAction->AddEdkin(edepKin);
 	}
 	
-	//Try to store information about decay products
-	
-//	if (step->GetTrack()->GetCreatorProcess()->GetProcessType()==6) {
-	/*
-	if ((step->GetTrack()->GetParentID()==1 && step->GetTrack()->GetTrackID()==4) ){ // Sr
-		G4cout<<"CMOSDEBUG FUNZIONAAA Stronzio"<< step->GetTrack()->GetCurrentStepNumber()<<", "<<step->GetTrack()->GetCreatorProcess()->GetProcessType() <<G4endl;
-		(runStepAction->GetRunEnGen()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-		(runStepAction->GetRunIsotopeGen()).push_back(0);
-		
-		
-	} else if  (step->GetTrack()->GetParentID()==2 && step->GetTrack()->GetTrackID()==7)  { // Y
-		G4cout<<"CMOSDEBUG FUNZIONAAA Itrrio"<<step->GetTrack()->GetCurrentStepNumber()<<", "<<step->GetTrack()->GetCreatorProcess()->GetProcessType() <<G4endl;
-		(runStepAction->GetRunEnGen()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-		(runStepAction->GetRunIsotopeGen()).push_back(1);
-	}
-	*/
-//	}
-	//#############################################
+
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
 
@@ -177,7 +160,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		G4StepPoint* postPoint = step->GetPostStepPoint();
 		G4double edepStep = step->GetTotalEnergyDeposit();
 		G4ThreeVector post=postPoint->GetPosition();
-//		G4double PartCod = step->GetTrack()->GetDynamicParticle() ->GetPDGcode();
 
 		//Fill vector
 		(runStepAction->GetRunEnCmos()).push_back(step->GetTotalEnergyDeposit()/keV);
@@ -187,21 +169,12 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunPartCmos()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
 		//Collect deposited energy in CMOS  due to Sr electons
-//		if (PartCod == 22 ) {
 		if (runStepAction->GetMotherIsotope() == 0 ) {  //if son of Sr
 			fEventAction->AddEdepSr(step->GetTotalEnergyDeposit());
 		}
-		//Collect deposited energy in CMOS  only e-
-		/*
-		if (runStepAction->GetMotherIsotope() == -10)  {
-			G4double edepStepEl = step->GetTotalEnergyDeposit();
-			fEventAction->AddEdepEl(edepStepEl);
-		}
-		 */
+
 		//Collect deposited energy in CMOS due to Y electons
-//		if (PartCod == -11 ) {
 		if (runStepAction->GetMotherIsotope() == 1 ) {  //if son of Y
-//			if (runStepAction->GetMotherIsotope() != 0 && runStepAction->GetMotherIsotope() !=1) {  //if son of Y
 			fEventAction->AddEdepY(step->GetTotalEnergyDeposit());
 		}
 		
