@@ -77,8 +77,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double world_sizeXY = 0.2*m;
 	G4double world_sizeZ  = 0.2*m;
 	G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
-//	G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");
-
+	//	G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");
+	
 	G4Box* solidWorld =
 	new G4Box("World",                       //its name
 			  0.5*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
@@ -99,11 +99,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 					  checkOverlaps);        //overlaps checking
 	
 	
+	//###################################################################
 	//###################################################
-	
-	
-	
-	//materials definition
+	// Definitions of materials
+	//##########################
 	
 	G4double z, a, density;
 	G4String name, symbol;
@@ -117,7 +116,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Element* elO = new G4Element (name="Oxygen", symbol="O", z=8.,a );
 	a = 14.00*g/mole;
 	G4Element* elN = new G4Element (name="Nitrogen", symbol="N", z=7.,a );
-
+	
 	
 	density = 4.000*g/cm3;
 	G4Material* Resin = new G4Material (name="Resin", density, ncomponents=3);
@@ -126,15 +125,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	Resin->AddElement (elO, natoms=2);
 	
 	G4double densityAlu = 2.600*g/cm3;
-//	G4NistManager* man = G4NistManager::Instance();
+	//	G4NistManager* man = G4NistManager::Instance();
 	G4NistManager::Instance()->BuildMaterialWithNewDensity("MyAlu","G4_Al",densityAlu);
-
+	
 	/* ref from TestEm7
-	G4NistManager::Instance()->
-	BuildMaterialWithNewDensity("Water_1.05","G4_WATER",1.05*g/cm3);
-	*/
-
-	//	G4bool DOTASource=FALSE;
+	 G4NistManager::Instance()->
+	 BuildMaterialWithNewDensity("Water_1.05","G4_WATER",1.05*g/cm3);
+	 */
 	G4bool SrSource=fSrSourceFlag;
 	
 	
@@ -148,15 +145,138 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	AgarAgar->AddElement (elC, natoms=14);
 	AgarAgar->AddElement (elO, natoms=9);
 	
+	
+	//###################################################
+	// ABS material - ABS should be C15 H17 N
+	//##########################
+	G4double ABSdensity = 0.7*g/cm3;
+	G4Material* ABS = new G4Material (name="ABS", ABSdensity, ncomponents=3);
+	ABS->AddElement (elH, natoms=17);
+	ABS->AddElement (elC, natoms=15);
+	ABS->AddElement (elN, natoms=1);
+	
+	
+	
+	
+	//############ MATERIAL ASSIGNMENT
+	G4Material* SourceDOTA_mat = AgarAgar;
+	G4Material* ABSaround_mat = ABS;
+	G4Material* ABSbehind_mat = ABS;
+	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
+	G4Material* Resin_mat = Resin;
+	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
+	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
+	G4Material* pix_mat = nist->FindOrBuildMaterial("G4_Si");
+	G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_Si");
+	G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	
+	
+	//###################################################################
+	//###################################################
+	// Definitions of dimensions and sizes
+	//##########################
+	
+	//### DOTA SOURCE
 	G4double RminSourceDOTA = 0.*mm;
 	G4double RmaxSourceDOTA = 10.5*mm;
 	G4double DzSourceDOTA= 4.5*mm;
 	G4double SPhiSourceDOTA = 0.*deg;
 	G4double DPhiSourceDOTA = 360.*deg;
-	//	G4Material* SourceDOTA_mat = nist->FindOrBuildMaterial("G4_Al");
-	G4Material* SourceDOTA_mat = AgarAgar;
-	G4ThreeVector posSourceDOTA = G4ThreeVector(0, 0, -DzSourceDOTA*0.5);
+	//###
 	
+	//### ABS
+	G4double RminABSaround = RmaxSourceDOTA;
+	G4double RmaxABSaround = 12.5*mm;
+	G4double DzABSaround= DzSourceDOTA;
+	G4double SPhiABSaround = 0.*deg;
+	G4double DPhiABSaround = 360.*deg;
+	
+	G4double RminABSbehind = 0.*mm;
+	G4double RmaxABSbehind = RmaxABSaround;
+	G4double DzABSbehind= 3*mm;
+	G4double SPhiABSbehind = 0.*deg;
+	G4double DPhiABSbehind = 360.*deg;
+	//###
+	
+	//### Sr Source
+	G4double RminSourceSR = 0.*mm;
+	G4double RmaxSourceSR = 12.5*mm; //12.5mm for PG source, 8mm for RM
+	G4double DzSourceSR= 3*mm;
+	G4double SPhiSourceSR = 0.*deg;
+	G4double DPhiSourceSR = 360.*deg;
+	//###
+	
+	//### Filter
+	G4double Resin_sizeX=0*mm;
+	G4double Resin_sizeY=0*mm;
+	G4double Resin_sizeZ=0.*mm;
+	G4double Z_resin= 0*mm;
+	//###
+	
+	//### Copper Collimator
+	G4double RminCo = fabs(fCuDiam)/2.;
+	G4double RmaxCo = 18.*mm;
+	G4double DzCo= 1.*mm;
+	G4double SPhiCo = 0.*deg;
+	G4double DPhiCo = 360.*deg;
+	//###
+	
+	//### Dummy
+	G4double RminDummy = 0;
+	G4double RmaxDummy = 18.*mm;
+	if (fCuDiam>=0) RmaxDummy =RmaxCo;
+	else RmaxDummy=RmaxSourceSR;
+	G4double DzDummy= 1.e-5*mm;
+	G4double SPhiDummy = 0.*deg;
+	G4double DPhiDummy = 360.*deg;
+	G4double zDummy=DzDummy*0.5;
+	//###
+	
+	//### CMOS pixel (defaults geom values are for MTV011 Sensor (1))
+	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
+	G4double PixelSize=5.6*um;
+	G4double PixelThickness=4.5*um;
+	G4double gapX =0.01*um*ScaleFactor;
+	G4double gapY =0.01*um*ScaleFactor;
+	G4int noX = 480;
+	G4int noY = 640;
+	G4double DistFilterCmos2=441*um; //distance between filter surface and cmos in sensor 2
+	if (fSensorChoice==2) {
+		PixelSize=1.75*um;
+		PixelThickness=129*um;
+		noX=488;
+		noY=648;
+	}
+	//in case of ScalFactor...
+	G4double pixX =PixelSize*ScaleFactor;
+	G4double pixY =PixelSize*ScaleFactor;
+	G4double pixZ =PixelThickness;
+	noX/=ScaleFactor;
+	noY/=ScaleFactor;
+	//###
+	
+	//### Carrier behind CMOS
+	G4double carrier_sizeX = 50.*mm;
+	G4double carrier_sizeY = 70.*mm;
+	G4double carrier_sizeZ  = 2.*mm;
+	//###
+	
+	//##########################
+	//###################################################
+	
+	
+	
+	//###################################################################
+	//###################################################
+	// Definitions of volumes
+	//##########################
+	//###################################################################
+	
+	
+	//###################################################
+	// DOTA Source
+	//##########################
+	G4ThreeVector posSourceDOTA = G4ThreeVector(0, 0, -DzSourceDOTA*0.5);
 	
 	G4Tubs* solidSourceDOTA =
 	new G4Tubs("SourceDOTA",                       //its name
@@ -171,13 +291,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						SourceDOTA_mat,           //its material
 						"SourceDOTA");            //its name
 	
-	// G4VPhysicalVolume* physSr=
-	
 	if(!SrSource) { //I place the DOTA source if I am not asking for Sr source
 		G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceDOTA= "<<DzSourceDOTA/mm<<", Z pos= "<<-DzSourceDOTA*0.5<<G4endl;
-
+		
 		G4cout<<"GEOMETRY DEBUG - DOTATOC Source has been placed!!"<<G4endl;
-
+		
 		new G4PVPlacement(0,                     //no rotation
 						  posSourceDOTA,       //at (0,0,0)
 						  logicSourceDOTA,            //its logical volume
@@ -187,34 +305,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						  0,                     //copy number
 						  checkOverlaps);        //overlaps checking
 		
-
-	//G4Region* sorgente = new G4Region("SourceReg");
-	logicSourceDOTA->SetRegion(sorgente);
-	sorgente->AddRootLogicalVolume(logicSourceDOTA);
+		
+		//G4Region* sorgente = new G4Region("SourceReg");
+		logicSourceDOTA->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicSourceDOTA);
 	}
-	//###################################################
+	//################################################### END DOTA SOURCE
 	
 	
 	//###################################################
-	// ABS carrier around DOTA Source - ABS should be C15 H17 N
+	// ABS carrier around DOTA Source
 	//##########################
-	
-	G4double ABSdensity = 0.7*g/cm3;
-	G4Material* ABS = new G4Material (name="ABS", ABSdensity, ncomponents=3);
-	ABS->AddElement (elH, natoms=17);
-	ABS->AddElement (elC, natoms=15);
-	ABS->AddElement (elN, natoms=1);
-	
-	
-	G4double RminABSaround = 10.5*mm;
-	G4double RmaxABSaround = 12.5*mm;
-	G4double DzABSaround= DzSourceDOTA;
-	G4double SPhiABSaround = 0.*deg;
-	G4double DPhiABSaround = 360.*deg;
-	//	G4Material* Source_mat = nist->FindOrBuildMaterial("G4_Al");
-	G4Material* ABSaround_mat = ABS;
 	G4ThreeVector posABSaround = G4ThreeVector(0, 0, -DzABSaround*0.5);
-	
 	
 	G4Tubs* solidABSaround =
 	new G4Tubs("ABSaround",                       //its name
@@ -229,40 +331,31 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						ABSaround_mat,           //its material
 						"ABSaround");            //its name
 	
-	// G4VPhysicalVolume* physSr=
-		if(!SrSource) {  //I place the ABS carrier of the DOTA source if I am not asking for Sr source
-			G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<-DzABSaround*0.5<<G4endl;
-
-			G4cout<<"GEOMETRY DEBUG - DOTATOC Source has been placed!!"<<G4endl;
-
-			new G4PVPlacement(0,                     //no rotation
-					  posABSaround,       //at (0,0,0)
-					  logicABSaround,            //its logical volume
-					  "ABSaround",               //its name
-					  logicWorld,            //its mother  volume
-					  false,                 //no boolean operation
-					  0,                     //copy number
-					  checkOverlaps);        //overlaps checking
-	
-		}
+	if(!SrSource) {  //I place the ABS carrier of the DOTA source if I am not asking for Sr source
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<-DzABSaround*0.5<<G4endl;
+		
+		G4cout<<"GEOMETRY DEBUG - DOTATOC Source has been placed!!"<<G4endl;
+		
+		new G4PVPlacement(0,                     //no rotation
+						  posABSaround,       //at (0,0,0)
+						  logicABSaround,            //its logical volume
+						  "ABSaround",               //its name
+						  logicWorld,            //its mother  volume
+						  false,                 //no boolean operation
+						  0,                     //copy number
+						  checkOverlaps);        //overlaps checking
+		
+	}
 	//G4Region* ABSRegion = new G4Region("ABSRegion");
 	logicABSaround->SetRegion(ABSRegion);
 	ABSRegion->AddRootLogicalVolume(logicABSaround);
 	
-	//###################################################
+	//################################################### END ABS AROUND
 	
 	//###################################################
-	// ABS carrier behind DOTA Source - ABS should be C15 H17 N
+	// ABS carrier behind DOTA Source
 	//##########################
-	
-	G4double RminABSbehind = 0.*mm;
-	G4double RmaxABSbehind = 12.5*mm;
-	G4double DzABSbehind= 3*mm;
-	G4double SPhiABSbehind = 0.*deg;
-	G4double DPhiABSbehind = 360.*deg;
-	G4Material* ABSbehind_mat = ABS;
 	G4ThreeVector posABSbehind = G4ThreeVector(0, 0, -DzABSbehind*0.5- DzABSaround);
-	
 	
 	G4Tubs* solidABSbehind =
 	new G4Tubs("ABSbehind",                       //its name
@@ -277,39 +370,30 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						ABSbehind_mat,           //its material
 						"ABSbehind");            //its name
 	
-	// G4VPhysicalVolume* physSr=
-		if(!SrSource) { //I place the ABS carrier of the DOTA source if I am not asking for Sr source
-			G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<-DzABSbehind*0.5- DzABSaround<<G4endl;
-
-			G4cout<<"GEOMETRY DEBUG - DOTATOC Source has been placed!!"<<G4endl;
-
-			new G4PVPlacement(0,                     //no rotation
-					  posABSbehind,       //at (0,0,0)
-					  logicABSbehind,            //its logical volume
-					  "ABSbehind",               //its name
-					  logicWorld,            //its mother  volume
-					  false,                 //no boolean operation
-					  0,                     //copy number
-					  checkOverlaps);        //overlaps checking
-	
-		}
+	if(!SrSource) { //I place the ABS carrier of the DOTA source if I am not asking for Sr source
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<-DzABSbehind*0.5- DzABSaround<<G4endl;
+		
+		G4cout<<"GEOMETRY DEBUG - DOTATOC Source has been placed!!"<<G4endl;
+		
+		new G4PVPlacement(0,                     //no rotation
+						  posABSbehind,       //at (0,0,0)
+						  logicABSbehind,            //its logical volume
+						  "ABSbehind",               //its name
+						  logicWorld,            //its mother  volume
+						  false,                 //no boolean operation
+						  0,                     //copy number
+						  checkOverlaps);        //overlaps checking
+		
+	}
 	logicABSbehind->SetRegion(ABSRegion);
 	ABSRegion->AddRootLogicalVolume(logicABSbehind);
 	
-	
+	//################################################### END ABS BEHIND
 	
 	
 	//###################################################
-	// Sr90 lab Source -
+	// Sr90 lab Source
 	//##########################
-	
-	
-	G4double RminSourceSR = 0.*mm;
-	G4double RmaxSourceSR = 12.5*mm; //12.5mm for PG source, 8mm for RM
-	G4double DzSourceSR= 3*mm;
-	G4double SPhiSourceSR = 0.*deg;
-	G4double DPhiSourceSR = 360.*deg;
-	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
 	G4ThreeVector posSourceSR = G4ThreeVector(0, 0, -DzSourceSR*0.5);
 	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<-DzSourceSR*0.5<<G4endl;
@@ -327,11 +411,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						SourceSR_mat,           //its material
 						"SourceSR");            //its name
 	
-	// G4VPhysicalVolume* physSr=
-	
 	if(SrSource) { //If i requested the Sr source
 		G4cout<<"GEOMETRY DEBUG - Sr Source has been placed!!"<<G4endl;
-
+		
 		new G4PVPlacement(0,                     //no rotation
 						  posSourceSR,       //at (0,0,0)
 						  logicSourceSR,            //its logical volume
@@ -341,80 +423,21 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						  0,                     //copy number
 						  checkOverlaps);        //overlaps checking
 		
-	
-	//G4Region* sorgente = new G4Region("SourceReg");
-	logicSourceSR->SetRegion(sorgente);
-	sorgente->AddRootLogicalVolume(logicSourceSR);
+		
+		//G4Region* sorgente = new G4Region("SourceReg");
+		logicSourceSR->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicSourceSR);
 	}
-	//###################################################
-
-	
-	//###################################################
-	//Electron Filter Resin
-	//##########################
-
-	G4double Resin_sizeX=0*mm;
-	G4double Resin_sizeY = 0*mm;
-	G4double Resin_sizeZ  = 0.*mm;
-	G4double Z_resin= 0*mm;
-//	cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5; //modified on 2017.11.21 by collamaf - Z distance does not take into account Cu thickness! is always from source top
-
-	if (fSensorChoice==2) fFilterFlag=1; //Sensor 2 is always with filter
-	//	Resin=nist->FindOrBuildMaterial("G4_AIR");
-	if (fFilterFlag==1) {
-		
-		Resin_sizeX = 2.69*mm;
-		Resin_sizeY = 3.58*mm;
-		Resin_sizeZ  = 0.520*mm;
-		if (fCuDiam>0) Z_resin= fZValue + Resin_sizeZ*0.5; //corrected 2017.12.12 by collamaf - no need to add 1mm of copper since distance is always from source top
-		else Z_resin= fZValue + Resin_sizeZ*0.5;
-		G4ThreeVector pos4 = G4ThreeVector(fX0Scan, 0,Z_resin);
-		
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidResin= "<<Resin_sizeZ/mm<<", Z pos= "<<Z_resin/mm<<G4endl;
-
-		G4Box* solidResin =
-		new G4Box("Resin",                       //its name
-				  0.5*Resin_sizeX,0.5*Resin_sizeY,0.5*Resin_sizeZ);     //its size
-
-		G4LogicalVolume* logicResin =
-		new G4LogicalVolume(solidResin,          //its solid
-							Resin,           //its material
-							"Resin");            //its name
-
-		new G4PVPlacement(0,                     //no rotation
-						  pos4,       //at (0,0,0)
-						  logicResin,            //its logical volume
-						  "Resin",               //its name
-						  logicWorld,            //its mother  volume
-						  false,                 //no boolean operation
-						  0,                     //copy number
-						  checkOverlaps);        //overlaps checking
-		//	G4Region* filtro = new G4Region("ResinReg");
-		logicResin->SetRegion(filtro);
-		filtro->AddRootLogicalVolume(logicResin);
-		
-	}
-	
-	//###################################################
+	//################################################### END SR SOURCE
 	
 	
 	
 	//###################################################
 	//Copper Collimator
 	//##########################
+	G4ThreeVector posCo = G4ThreeVector(0, 0, DzCo*0.5);
 	
-	
-	G4double RminCo = fabs(fCuDiam)/2.;
-	G4double RmaxCo = 18.*mm;
-	G4double DzCo= 1.*mm;
-	G4double SPhiCo = 0.*deg;
-	G4double DPhiCo = 360.*deg;
-	G4double zCo=DzCo*0.5;
-	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
-	G4ThreeVector posCo = G4ThreeVector(0, 0, zCo);
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<zCo<<G4endl;
-	
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 	
 	G4Tubs* solidShapeCo =
 	new G4Tubs("CuCollimator",                       //its name
@@ -429,7 +452,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						shapeCo_mat,           //its material
 						"CuCollimator");            //its name
 	
- 
 	if (fCuDiam>=0) {
 		G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
 		
@@ -442,42 +464,28 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						  0,                     //copy number
 						  checkOverlaps);        //overlaps checking
 		
-//		G4Region* sorgente = new G4Region("SourceReg");
+		//		G4Region* sorgente = new G4Region("SourceReg");
 		logicShapeCo->SetRegion(sorgente);
 		sorgente->AddRootLogicalVolume(logicShapeCo);
 		
 	}
-
 	
-	//###################################################
+	//################################################### END OF COPPER COLLIMATOR
 	
-
+	
 	
 	//###################################################
 	//Dummy volume for scoring
 	//##########################
-	
-	
-	G4double RminDummy = 0;
-	G4double RmaxDummy = 18.*mm;
-	if (fCuDiam>=0) RmaxDummy =RmaxCo;
-	else RmaxDummy=RmaxSourceSR;
-	G4double DzDummy= 1.e-5*mm;
-	G4double SPhiDummy = 0.*deg;
-	G4double DPhiDummy = 360.*deg;
-	G4double zDummy=DzDummy*0.5;
 	
 	if (fCuDiam>0) {
 		zDummy=DzDummy*0.5+DzCo;
 	} else {
 		zDummy=DzDummy*0.5;
 	}
-	
-	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4ThreeVector posDummy = G4ThreeVector(0, 0, zDummy);
 	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeDummy= "<<DzDummy/mm<<", Z pos= "<<zDummy<<G4endl;
-	
 	
 	G4Tubs* solidShapeDummy =
 	new G4Tubs("Dummy",                       //its name
@@ -492,8 +500,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						shapeDummy_mat,           //its material
 						"Dummy");            //its name
 	
-	
-	//	if (fCuDiam>=0) {
 	G4cout<<"GEOMETRY DEBUG - Dummy volume has been placed!!"<<G4endl;
 	
 	new G4PVPlacement(0,                     //no rotation
@@ -510,73 +516,88 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	logicShapeDummy->SetRegion(sorgente);
 	sorgente->AddRootLogicalVolume(logicShapeDummy);
 	
-	
-	//	}
-	
-	
-	//###################################################
-	
-	
+	//################################################### END OF DUMMY VOLUME
 	
 	
 	
 	//###################################################
-	// CMOS Si sensoor PIXEL
-	//
-	
-	//pixel dimension
-	
-	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
-	
-	//defaults geom values are for MTV011 Sensor (1)
-	G4double PixelSize=5.6*um;
-	G4double PixelThickness=4.5*um;
-	G4double gapX =0.01*um*ScaleFactor;
-	G4double gapY =0.01*um*ScaleFactor;
-	G4int noX = 480;
-	G4int noY = 640;
-	G4int copyNo=0;
-	G4Material* pix_mat = nist->FindOrBuildMaterial("G4_Si");
-	
-	if (fSensorChoice==2) {
-		PixelSize=1.75*um;
-		PixelThickness=129*um;
-		noX=488;
-		noY=648;
+	//Electron Filter Resin
+	//##########################
+	if (fSensorChoice==2) fFilterFlag=1; //Sensor 2 is always with filter
+	if (fFilterFlag==1) {
+		Resin_sizeX = noX*PixelSize*ScaleFactor;
+		Resin_sizeY = noY*PixelSize*ScaleFactor;
+		
+		if(fSensorChoice==1) {
+			Resin_sizeZ  = 0.520*mm;
+			Z_resin= fZValue + Resin_sizeZ*0.5;
+		} else if (fSensorChoice==2) {
+			Resin_sizeZ  = 0.400*mm;
+			Z_resin= fZValue-DistFilterCmos2 + Resin_sizeZ*0.5;
+		}
+		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_resin);
+		
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidResin= "<<Resin_sizeZ/mm<<", Z pos= "<<Z_resin/mm<<G4endl;
+		
+		G4Box* solidResin =
+		new G4Box("Resin",                       //its name
+				  0.5*Resin_sizeX,0.5*Resin_sizeY,0.5*Resin_sizeZ);     //its size
+		
+		G4LogicalVolume* logicResin =
+		new G4LogicalVolume(solidResin,          //its solid
+							Resin_mat,           //its material
+							"Resin");            //its name
+		
+		new G4PVPlacement(0,                     //no rotation
+						  posFilter,
+						  logicResin,            //its logical volume
+						  "Resin",               //its name
+						  logicWorld,            //its mother  volume
+						  false,                 //no boolean operation
+						  0,                     //copy number
+						  checkOverlaps);        //overlaps checking
+		//	G4Region* filtro = new G4Region("ResinReg");
+		logicResin->SetRegion(filtro);
+		filtro->AddRootLogicalVolume(logicResin);
+		
 	}
 	
-	G4double pixX =PixelSize*ScaleFactor;
-	G4double pixY =PixelSize*ScaleFactor;
-	G4double pixZ =PixelThickness;
-	noX/=ScaleFactor;
-	noY/=ScaleFactor;
+	//################################################### END OF RESIN FILTER
 	
 	
-	//CMOS dimension
+	/*
+	 if(fCuDiam>=0)
+	 cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5 + 1*mm;
+	 else cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5;
+	 */
 	
+	//G4double cmos_Z= Z_resin+ Resin_sizeZ*0.5 + Cmos_sizeZ*0.5;
+	//	G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_AIR");
+	//	G4double cmos_ZScan=DzSr*0.5+DzCo+5.5*mm;
+	
+	//###################################################
+	// CMOS Si sensoor + PIXELS
+	//##########################
+	
+	G4int copyNo=0;
+	
+	//Compute CMOS global dimensions
 	G4double Cmos_sizeX = (pixX+gapX)*noX-gapX;
 	G4double Cmos_sizeY = (pixY+gapY)*noY-gapY;
 	G4double Cmos_sizeZ  = pixZ;
 	
-	
-	//G4double cmos_Z= Z_resin+ Resin_sizeZ*0.5 + Cmos_sizeZ*0.5;
-	//	G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_AIR");
-	G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_Si");
-	//	G4double cmos_ZScan=DzSr*0.5+DzCo+5.5*mm;
-	
-	G4double cmos_ZScan;
-	/*
-	if(fCuDiam>=0)
-	cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5 + 1*mm;
-	else cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5;
-	 */
-	cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5; //modified on 2017.11.21 by collamaf - Z distance does not take into account Cu thickness! is always from source top to possible resin
+	G4double cmos_ZScan=fZValue;
+
+	if(fSensorChoice==1) {
+		cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5; //modified on 2017.11.21 by collamaf - Z distance does not take into account Cu thickness! is always from source top to possible resin
+	} else if (fSensorChoice==2) {
+		cmos_ZScan=fZValue + Cmos_sizeZ*0.5;
+	}
 	G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, cmos_ZScan);
 	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidCmos= "<<Cmos_sizeZ/mm<<", Z pos= "<<cmos_ZScan/mm<<G4endl;
 	
 	//CMOS
-	
 	G4Box* solidCmos =
 	new G4Box("CMOS",                       //its name
 			  0.5*Cmos_sizeX,0.5*Cmos_sizeY,0.5*Cmos_sizeZ);     //its size
@@ -586,9 +607,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						Cmos_mat,           //its material
 						"CMOS");            //its name
 	
-	
 	//pixel
-	
 	G4Box* solidPix =
 	new G4Box("Pix",                       //its name
 			  0.5*pixX,0.5*pixY,0.5*pixZ);     //its size
@@ -598,7 +617,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						pix_mat,           //its material
 						"Pix");            //its name
 	
-	
 	//G4Region* cmosreg = new G4Region("CMOSReg");
 	logicCmos->SetRegion(cmosreg);
 	cmosreg->AddRootLogicalVolume(logicCmos);
@@ -607,12 +625,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	cmosreg->AddRootLogicalVolume(logicPix);
 	
 	//placement of the pixel in CMOS
-	
 	for (G4int ix = 1; ix <= noX ; ix++){
 		for (G4int iy = 1; iy <= noY ; iy++){
 			G4ThreeVector posPixX = G4ThreeVector((-0.5*Cmos_sizeX+ix*(pixX+gapX)-0.5*pixX-gapX),(-0.5*Cmos_sizeY+iy*(pixY+gapY)-0.5*pixY-gapY) ,0);
 			copyNo++;
-			
 			new G4PVPlacement(0,                     //no rotation
 							  posPixX,       //at (0,0,0)
 							  logicPix,            //its logical volume
@@ -635,22 +651,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 					  0,                     //copy number
 					  checkOverlaps);        //overlaps checking
 	
+	//################################################### END OF CMOS+PIXELS
+
 	
-	//
+	//###################################################
 	// CMOS-carrier PVC
-	//
+	//##########################
 	
-	G4double carrier_sizeX = 50.*mm;
-	G4double carrier_sizeY = 70.*mm;
-	G4double carrier_sizeZ  = 2.*mm;
 	//G4double carrier_Z= Z_resin+ Resin_sizeZ*0.5 + Cmos_sizeZ+0.5*carrier_sizeZ;
 	G4double carrier_Z=cmos_ZScan +0.5*carrier_sizeZ + Cmos_sizeZ;
-	G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4ThreeVector posCarrier = G4ThreeVector(fX0Scan, 0, carrier_Z);
 	
-	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidCarrier= "<<carrier_sizeZ/mm<<", Z pos= "<<carrier_Z/mm<<G4endl;
-	
 	
 	G4Box* solidCarrier =
 	new G4Box("Carrier",                       //its name
@@ -661,7 +673,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						carrier_mat,           //its material
 						"Carrier");            //its name
 	
-	
 	new G4PVPlacement(0,                     //no rotation
 					  posCarrier,       //at (0,0,0)
 					  logicCarrier,            //its logical volume
@@ -671,29 +682,19 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 					  0,                     //copy number
 					  checkOverlaps);        //overlaps checking
 	
-	
 	//G4Region* carrierreg = new G4Region("CarrierReg");
 	logicCarrier->SetRegion(carrierreg);
 	carrierreg->AddRootLogicalVolume(logicCarrier);
 	
-	
-	
-	
+	//################################################### END OF CMOS carrier
 	
 	// Set scoring volume
-	//
-	
 	//Pixelated CMOS
-	
 	fScoringVolume = logicPix;
 	
 	//Solid Si CMOS
-	
 	//fScoringVolume = logicCmos;
-	
-	//
-	//always return the physical World
-	//
+
 	return physWorld;
 }
 
