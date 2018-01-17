@@ -1,4 +1,4 @@
-#Full simulation of CMOS beta- probe in Geant4
+# Full simulation of CMOS beta- probe in Geant4
 ## DOTA SOURCE TO BE FIXEDDDDDDD
 
 ## HOW TO RUN:
@@ -36,7 +36,7 @@ CPU TIMES NEEDED FOR 1e5 PRIMARIES:
 
 
 ## OUTPUT:
-### The usual PrimariesX{}_Z{}_CuD{}_Fil{}_TBR{}{_Sr}.dat is created to keep track of the progress
+The usual PrimariesX{}_Z{}_CuD{}_Fil{}_TBR{}{_Sr}.dat is created to keep track of the progress
 A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset value, in which on an event (i.e. a primary particle) by event basis it is stored:
 ### SOURCE vector (one entry per primary particle, only for first 100k primaries if more primaries are requested):
 - XAll: X coordinate of primary particle [mm];
@@ -99,8 +99,7 @@ B1->SetLineColor(kRed)
 B1->Draw("InCmosEnY","","same")
 ````
 
-
-##CHANGELOG
+## CHANGELOG
 2017.12.1 by collamaf
 - Try to fix problem of primary particles double counting by putting a check in Stepping Action. Seems to reduce by about ~9% the number of exiting particles (NoCudZ2 test)
 
