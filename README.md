@@ -7,15 +7,18 @@ cd build
 cmake -DGeant4_DIR=$G4INSTALL ../
 make
 ./exampleB1
-./exampleB1 {CuDiam (<0->no Cu)} {ZOffs} {FilterFlag} {TBR} {SourceChoice} {x0Scan} ../run1.mac
+./exampleB1 {CuDiam (<0->no Cu)} {ZOffs} {FilterFlag} {TBR} {SourceChoice} {x0Scan} {SensorChoice} ../run1.mac
 e.g.:
-./exampleB1 5 2 0 1 2 0 ../run1.mac
+./exampleB1 5 2 0 1 2 0 1 ../run1.mac
 ```
 {all distances/sizes in mm}
 Source Choice:
 1 - Pointlike Sr
 2 - Extended Sr
 3 - DOTA
+Sensor Choice:
+1 - MT9V011
+2 - MT9V115
 
 ## GEOMETRY
 - Extended Sr Source ending at Z=0

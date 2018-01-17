@@ -200,7 +200,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//### Sr Source
 	G4double RminSourceSR = 0.*mm;
-	G4double RmaxSourceSR = 12.5*mm; //12.5mm for PG source, 8mm for RM
+	G4double RmaxSourceSR = 12.5*mm; //physical dimensions same for PG/RM sources, the active one differs
 	G4double DzSourceSR= 3*mm;
 	G4double SPhiSourceSR = 0.*deg;
 	G4double DPhiSourceSR = 360.*deg;
@@ -564,23 +564,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//################################################### END OF RESIN FILTER
 	
-	
-	/*
-	 if(fCuDiam>=0)
-	 cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5 + 1*mm;
-	 else cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5;
-	 */
-	
-	//G4double cmos_Z= Z_resin+ Resin_sizeZ*0.5 + Cmos_sizeZ*0.5;
-	//	G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_AIR");
-	//	G4double cmos_ZScan=DzSr*0.5+DzCo+5.5*mm;
-	
 	//###################################################
 	// CMOS Si sensoor + PIXELS
 	//##########################
 	
 	G4int copyNo=0;
-	
 	//Compute CMOS global dimensions
 	G4double Cmos_sizeX = (pixX+gapX)*noX-gapX;
 	G4double Cmos_sizeY = (pixY+gapY)*noY-gapY;
@@ -641,7 +629,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}
 	
 	// place detector-CMOS in world
-	
 	new G4PVPlacement(0,                     //no rotation
 					  pos2,
 					  logicCmos,            //its logical volume
@@ -657,8 +644,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// CMOS-carrier PVC
 	//##########################
-	
-	//G4double carrier_Z= Z_resin+ Resin_sizeZ*0.5 + Cmos_sizeZ+0.5*carrier_sizeZ;
 	G4double carrier_Z=cmos_ZScan +0.5*carrier_sizeZ + Cmos_sizeZ;
 	G4ThreeVector posCarrier = G4ThreeVector(fX0Scan, 0, carrier_Z);
 	
