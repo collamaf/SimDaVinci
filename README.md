@@ -71,7 +71,7 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
 - InCmosSr[InCmosTrackN]: energy released by sons of Sr [keV];
 - InCmosEnY[]InCmosTrackN: energy released by sons of Y [keV];
-- PixelID[InCmosTrackN]: number of pixel in which the hit occurred;
+- PixelID[InCmosTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
 - EDepInPixel[InCmosTrackN]: energy deposited in single pixel [keV]; *** same as InCmosEn
 - PixXPos[InCmosTrackN]: x position of the pixel in which the hit occurred [mm];
 - PixYPos[InCmosTrackN]: y position of the pixel in which the hit occurred [mm];

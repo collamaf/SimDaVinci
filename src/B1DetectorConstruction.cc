@@ -231,7 +231,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### CMOS pixel (defaults geom values are for MTV011 Sensor (1))
-	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
+	G4int ScaleFactor=1; //set to 1 for full simulation, 10 for quick view
 	G4double PixelSize=5.6*um;
 	G4double PixelThickness=4.5*um;
 	G4double gapX =0.01*um*ScaleFactor;
@@ -241,7 +241,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double DistFilterCmos2=441*um; //distance between filter surface and cmos in sensor 2
 	if (fSensorChoice==2) {
 		PixelSize=1.75*um;
-		PixelThickness=129*um;
+		PixelThickness=2.5*um;
 		noX=488;
 		noY=648;
 	}
@@ -582,7 +582,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, cmos_ZScan);
 	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidCmos= "<<Cmos_sizeZ/mm<<", Z pos= "<<cmos_ZScan/mm<<G4endl;
-	
+	G4cout<<"GEOMETRY DEBUG - CmosSizeX= "<<Cmos_sizeX/mm<<", CmosSizeY= "<<Cmos_sizeY/mm<<", CmosSizeZ= "<<pixZ/mm<<G4endl;
+
 	//CMOS
 	G4Box* solidCmos =
 	new G4Box("CMOS",                       //its name
@@ -610,10 +611,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	logicPix->SetRegion(cmosreg);
 	cmosreg->AddRootLogicalVolume(logicPix);
 	
-	//placement of the pixel in CMOS
-	for (G4int ix = 1; ix <= noX ; ix++){
-		for (G4int iy = 1; iy <= noY ; iy++){
-			G4ThreeVector posPixX = G4ThreeVector((-0.5*Cmos_sizeX+ix*(pixX+gapX)-0.5*pixX-gapX),(-0.5*Cmos_sizeY+iy*(pixY+gapY)-0.5*pixY-gapY) ,0);
+	//placement of the pixel in CMOS - until 2018-01-18 was inverted: was before x and than y, but now is consistent with following analysis
+	for (G4int iy = 1; iy <= noY ; iy++){ //up to 648
+		for (G4int ix = 1; ix <= noX ; ix++){ // up to 488
+			G4ThreeVector posPixX = G4ThreeVector((-0.5*Cmos_sizeX+ix*(pixX+gapX)-0.5*pixX-gapX),
+												  (-0.5*Cmos_sizeY+iy*(pixY+gapY)-0.5*pixY-gapY)
+												  ,0);
 			copyNo++;
 			new G4PVPlacement(0,                     //no rotation
 							  posPixX,       //at (0,0,0)
