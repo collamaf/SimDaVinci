@@ -74,7 +74,6 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
 - PixelID[InCmosTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
-- EDepInPixel[InCmosTrackN]: energy deposited in single pixel [keV]; *** same as InCmosEn
 - PixXPos[InCmosTrackN]: x position of the pixel in which the hit occurred [mm];
 - PixYPos[InCmosTrackN]: y position of the pixel in which the hit occurred [mm];
 - SourceX: X coordinate of primary particle (isotope) giving a signal in Cmos [mm];
@@ -86,7 +85,6 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - SourceEne[2]: kinetic energy of  decay electron(s)  giving a signal in Cmos [keV];
 - SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Cmos;
 - Nev: storing number of events generated
-- OptPhotNo: number of optical photons passing from Cmos to SiPm per event;
 
 
 ```
