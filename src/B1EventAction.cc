@@ -86,7 +86,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	//	if(evento->GetEventID()%7000==0)
 	//	{
 	(fRunAction->GetRunPixNo()).clear();
-	(fRunAction->GetRunPixEneDep()).clear();
+//	(fRunAction->GetRunPixEneDep()).clear();
 	(fRunAction->GetRunPixXpos()).clear();
 	(fRunAction->GetRunPixYpos()).clear();
 	
@@ -111,6 +111,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	
 	(fRunAction->GetRunExitProcess()).clear();
 	
+	(fRunAction->GetRunEAbsComp()).clear();
 	
 	
 	//	}
@@ -142,7 +143,10 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	fRunAction->AddEdep(fEdep);
 	fRunAction->AddEdkin(fEdkin);
-	
+
+	(fRunAction->GetRunEAbsComp()).push_back(fEdepSr/keV);
+	(fRunAction->GetRunEAbsComp()).push_back(fEdepY/keV);
+
 	G4int NevTot=fRunAction->GetEventNumber();
 	
 	if ((100*evento->GetEventID())%NevTot==0) FilePrimaries<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
@@ -154,14 +158,14 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	// fill ntuple
 	
 	if(fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
-	analysisManager->FillNtupleDColumn(0, 1, fPreNo);
-	analysisManager->FillNtupleDColumn(0, 4, fno);
-	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
+	analysisManager->FillNtupleDColumn(0, 2, fPreNo);
+	analysisManager->FillNtupleDColumn(0, 5, fno);
+//	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
-	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
-	analysisManager->FillNtupleDColumn(0,16, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,17, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,18, fSourceZ/mm);
+//	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
+	analysisManager->FillNtupleDColumn(0,14, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,15, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,16, fSourceZ/mm);
 	/*
 	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
 	analysisManager->FillNtupleDColumn(0,20, fSourceCosY/mm);

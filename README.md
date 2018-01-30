@@ -41,9 +41,9 @@ CPU TIMES NEEDED FOR 1e5 PRIMARIES:
 The usual PrimariesX{}_Z{}_CuD{}_Fil{}_TBR{}{_Sr}.dat is created to keep track of the progress
 A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset value, in which on an event (i.e. a primary particle) by event basis it is stored:
 ### SOURCE vector (one entry per primary particle, only for first 100k primaries if more primaries are requested):
-- XAll: X coordinate of primary particle [mm];
-- YAll: Y coordinate of primary particle [mm];
-- ZAll: Z coordinate of primary particle [mm];
+- AllX: X coordinate of primary particle [mm];
+- AllY: Y coordinate of primary particle [mm];
+- AllZ: Z coordinate of primary particle [mm];
 - AllCosX[2]: X directive cosine of produced electron;
 - AllCosY[2]: Y directive cosine of produced electron;
 - AllCosZ[2]: Z directive cosine of produced electron;
@@ -52,14 +52,18 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - ExitX: X coordinate of primary particle exiting the source volume [mm];
 - ExitY: Y coordinate of primary particle exiting the source volume [mm];
 - ExitZ: Z coordinate of primary particle exiting the source volume [mm];
-- CosXExit: X directive cosine of primary particle exiting the source volume;
-- CosYExit: Y directive cosine of primary particle exiting the source volume;
-- CosZExit: Z directive cosine of primary particle exiting the source volume;
-- EneExit: kinetic energy of primary particle exiting the source volume;
-- PartExit: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
+- ExitCosX[2]: X directive cosine of primary particle exiting the source volume;
+- ExitCosY[2]: Y directive cosine of primary particle exiting the source volume;
+- ExitCosZ[2]: Z directive cosine of primary particle exiting the source volume;
+- ExitEne[2]: kinetic energy of primary particle exiting the source volume;
+- ExitPart[2]: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
+- ExitParentID[2]: partent-id of particle exiting the source
+- ExitProcess[2]: process that created the particles that exits the source (see table above)
+- ExitTrackN: number of different tracks exiting the source per event
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
-- Eabs: energy absorbed by Cmos [keV];
+- Eabs: energy absorbed in CMOS [keV];
+- EAbsComp[2]: vector containing energy absorbed in CMOS [keV] due to Sr (comp 1) and to Y (comp 2)
 - PreCmosTrackN: number of tracks entering Cmos per primary (from front shield if present otherwise from world) (it's the length of the following vector);
 - PreCmosPart[PreCmosTrackN]: kind of particle of each track entering Cmos (from front shield if present otherwise from world);
 - PreCmosEn[PreCmosTrackN]: kinetic energy of particle of each tracks entering Cmos (from front shield if present otherwise from world) [keV];
@@ -69,8 +73,6 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - InCmosX[InCmosTrackN]: X position of hit inside Cmos [mm];
 - InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
-- InCmosSr[InCmosTrackN]: energy released by sons of Sr [keV];
-- InCmosEnY[]InCmosTrackN: energy released by sons of Y [keV];
 - PixelID[InCmosTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
 - EDepInPixel[InCmosTrackN]: energy deposited in single pixel [keV]; *** same as InCmosEn
 - PixXPos[InCmosTrackN]: x position of the pixel in which the hit occurred [mm];
@@ -78,10 +80,10 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - SourceX: X coordinate of primary particle (isotope) giving a signal in Cmos [mm];
 - SourceY: Y coordinate of primary particle (isotope) giving a signal in Cmos [mm];
 - SourceZ: Z coordinate of primary particle (isotope) giving a signal in Cmos [mm];
-- SourceCosX: X directive cosine of decay electron(s) giving a signal in Cmos;
-- SourceCosY: Y directive cosine of  decay electron(s) giving a signal in Cmos;
-- SourceCosZ: Z directive cosine of decay electron(s) giving a signal in Cmos;
-- SourceEne: kinetic energy of  decay electron(s)  giving a signal in Cmos [keV];
+- SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Cmos;
+- SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Cmos;
+- SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Cmos;
+- SourceEne[2]: kinetic energy of  decay electron(s)  giving a signal in Cmos [keV];
 - SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Cmos;
 - Nev: storing number of events generated
 - OptPhotNo: number of optical photons passing from Cmos to SiPm per event;
@@ -116,6 +118,9 @@ B1->Draw("InCmosEnY","","same")
 - Code extended to both sensors smoothly (new argument to be passed by terminal, default sensor 1).
 - Fixed DOTA source problem
 
+2018.01.30 by collamaf
+- Quiet deep reorganization of output root file, cleaned a little in ordering and name (and updated readme)
+- Changed "DOTA" to "ExtY" in output file naming
 
 
 

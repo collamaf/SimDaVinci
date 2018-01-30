@@ -86,12 +86,13 @@ public:
 	std::vector<G4double>& GetRunEnGen() {return RunVectorEnGen; }
 	std::vector<G4double>& GetRunIsotopeGen() {return RunVectorIsotopeGen; }
 	
-	
+	std::vector<G4double>& GetRunEAbsComp() {return RunVectorEAbsComp; }
+
 	std::vector<G4double>& GetRunEnPre() {return RunVectorEnPre; }
 	std::vector<G4double>& GetRunPart() {return RunVectorPart; }
 	
 	std::vector<G4double>& GetRunPixNo() {return RunVectorPixNo; }
-	std::vector<G4double>& GetRunPixEneDep() {return RunVectorPixEneDep; }
+//	std::vector<G4double>& GetRunPixEneDep() {return RunVectorPixEneDep; }
 	std::vector<G4double>& GetRunPixXpos() {return RunVectorPixXpos; }
 	std::vector<G4double>& GetRunPixYpos() {return RunVectorPixYpos; }
 	
@@ -144,7 +145,7 @@ private:
 	std::vector<G4double> RunVectorPart;
 	
 	std::vector<G4double> RunVectorPixNo;
-	std::vector<G4double> RunVectorPixEneDep;
+//	std::vector<G4double> RunVectorPixEneDep;
 	std::vector<G4double> RunVectorPixXpos;
 	std::vector<G4double> RunVectorPixYpos;
 	
@@ -168,6 +169,8 @@ private:
 	std::vector<G4double> RunVectorParentIDExit;
 	
 	std::vector<G4int> RunExitProcess;
+	
+	std::vector<G4double> RunVectorEAbsComp;
 	/*
 	 std::vector<G4double> RunVectorSourceX;
 	 std::vector<G4double> RunVectorSourceY;

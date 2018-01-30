@@ -151,9 +151,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		if (CopyNB>0) {
 			//fill vectors
 			(runStepAction->GetRunPixNo()).push_back(CopyNB);
-			(runStepAction->GetRunPixEneDep()).push_back(step->GetTotalEnergyDeposit());
-			(runStepAction->GetRunPixXpos()).push_back(pixCenter.getX());
-			(runStepAction->GetRunPixYpos()).push_back(pixCenter.getY());
+//			(runStepAction->GetRunPixEneDep()).push_back(step->GetTotalEnergyDeposit()/keV);
+			(runStepAction->GetRunPixXpos()).push_back(pixCenter.getX()/mm);
+			(runStepAction->GetRunPixYpos()).push_back(pixCenter.getY()/mm);
 		}
 		
 		// collect energy deposited in this step
