@@ -93,8 +93,8 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 	if (fSTB) {
 	fRadiusInt=3*mm;
 	fDZInt=1*mm;
-	fRadiusExt=10.48*mm;
-	fDZExt=4.4*mm;
+	fRadiusExt=10.48*mm; //10.48 per Rosa, 6.65 per PG
+	fDZExt=4.4*mm;   //4.4 per Rosa, 5.5 per PG
 	} else if (fPointLike) {
 		fRadiusInt=0*mm;
 		fDZInt=0*mm;

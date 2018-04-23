@@ -176,8 +176,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//### DOTA SOURCE
 	G4double RminSourceDOTA = 0.*mm;
-	G4double RmaxSourceDOTA = 10.5*mm;
-	G4double DzSourceDOTA= 4.5*mm;
+	G4double RmaxSourceDOTA = 10.5*mm; //10.48 per Rosa, 6.65 per PG
+	G4double DzSourceDOTA= 4.5*mm; //4.4 per Rosa, 5.5 per PG
 	G4double SPhiSourceDOTA = 0.*deg;
 	G4double DPhiSourceDOTA = 360.*deg;
 	//###
@@ -195,6 +195,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double SPhiABSbehind = 0.*deg;
 	G4double DPhiABSbehind = 360.*deg;
 	//###
+
 	
 	//### Sr Source
 	G4double RminSourceSR = 0.*mm;
@@ -231,7 +232,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### CMOS pixel (defaults geom values are for MTV011 Sensor (1))
-	G4int ScaleFactor=1; //set to 1 for full simulation, 10 for quick view
+	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
 	G4double PixelSize=5.6*um;
 	G4double PixelThickness=4.5*um;
 	G4double gapX =0.01*um*ScaleFactor;
@@ -473,7 +474,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	//###################################################
-	//Dummy volume for scoring
+	//Dummy volume for scoring what exits source
 	//##########################
 	
 	if (fCuDiam>0) {
