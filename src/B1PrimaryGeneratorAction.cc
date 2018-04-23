@@ -84,7 +84,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 		fPointLike=false;
 		fExtended=true;
 		fSTB=false;
-	} else if (fSourceSelect==3) { //DOTA Sr
+	} else if (fSourceSelect==3) { //ExtY Sr
 		fPointLike=false;
 		fExtended=false;
 		fSTB=true;
@@ -101,9 +101,9 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 		fRadiusExt=0*mm;
 		fDZExt=0*mm;
 	} else if (fExtended) {
-		fRadiusInt=10.5*mm;  //8 for RM, 10.5mm PG source
+		fRadiusInt=8*mm;  //8 for RM, 10.5mm PG source
 		fDZInt=0*mm;
-		fRadiusExt=10.5*mm;
+		fRadiusExt=8*mm;
 		fDZExt=0*mm;
 	}
 	
@@ -202,7 +202,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	
 	if(anEvent->GetEventID()==1) {  //stampo informazioni sorgente
 		G4cout<<"Dimensioni sorgente: Raggio interno = "<<fRadiusInt<<", Raggio esterno = "<<fRadiusExt<<", H = "<<fZ<<G4endl;
-		if (fSourceSelect==3) { //solo se è la sorgente DOTA..
+		if (fSourceSelect==3) { //solo se è la sorgente ExtY..
 			G4cout<<"TBR richiesto= "<<fTBR<<G4endl;
 			G4cout<<"VolA= "<<VolA<<", ProbA= "<<ProbA<<G4endl;
 			G4cout<<"VolB= "<<VolB<<", ProbB= "<<ProbB<<G4endl;

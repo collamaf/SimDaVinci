@@ -49,9 +49,11 @@ fPreNo(0),
 fEdepSr(0.),
 //fEdepEl(0.),
 fEdepY(0.),
-fPassCounter(0.),
+fPassCounterSource(0.),
+fPassCounterCmos(0.),
 fNSourceExit(0.),
-fStoreTrackID(0),
+fStoreTrackIDSource(0),
+fStoreTrackIDCmos(0),
 FilePrimaries(file)
 {}
 
@@ -122,8 +124,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 //	fEdepEl=0;
 	fEdepY=0.;
 	fNSourceExit=0;
-	fPassCounter=0;
-	fStoreTrackID=0;
+	fPassCounterSource=0;
+	fPassCounterCmos=0;
+	fStoreTrackIDSource=0;
+	fStoreTrackIDCmos=0;
 	/*
 	 fSourceX=0;
 	 fSourceY=0;
@@ -159,7 +163,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	if(fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
 	analysisManager->FillNtupleDColumn(0, 2, fPreNo);
-	analysisManager->FillNtupleDColumn(0, 5, fno);
+	analysisManager->FillNtupleDColumn(0, 5, fno); //number of hits into the detector
 //	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
 //	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);

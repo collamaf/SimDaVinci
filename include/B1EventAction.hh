@@ -56,14 +56,14 @@ public:
 	void AddNoPre(G4int PreNo) { fPreNo += PreNo; }
 	
 	void AddEdepSr(G4double edepSr) { fEdepSr += edepSr; }
-//	void AddEdepEl(G4double edepEl) { fEdepEl += edepEl; }
+	//	void AddEdepEl(G4double edepEl) { fEdepEl += edepEl; }
 	void AddEdepY(G4double edepY) { fEdepY += edepY; }
 	G4double GetSourceX() {return fSourceX;}
 	void SetSourceX(G4double sx) {fSourceX=sx;}
 	void SetSourceY(G4double sy) {fSourceY=sy;}
 	void SetSourceZ(G4double sz) {fSourceZ=sz;}
-
-//	void SetExitProcess(G4String proc) {fExitProcess=proc;}
+	
+	//	void SetExitProcess(G4String proc) {fExitProcess=proc;}
 	
 	void SetSourceCosX(G4double scx) {fSourceCosX=scx;}
 	void SetSourceCosY(G4double scy) {fSourceCosY=scy;}
@@ -74,13 +74,21 @@ public:
 	void AddNSourceExit(G4double snsexit) {fNSourceExit+=snsexit;}
 	G4double GetNSourceExit(void) {return fNSourceExit;}
 	
-	void SetStoreTrackID(G4int trid) {fStoreTrackID=trid;}
-	G4int GetStoreTrackID(void) {return fStoreTrackID;}
+	void SetStoreTrackIDSource(G4int trid) {fStoreTrackIDSource=trid;}
+	G4int GetStoreTrackIDSource(void) {return fStoreTrackIDSource;}
+	void AddPassCounterSource(G4int num) {fPassCounterSource+=num;}
+	void ResetPassCounterSource() {fPassCounterSource=0;}
+	G4int GetPassCounterSource(void) {return fPassCounterSource;}
 	
-	void AddPassCounter(G4int num) {fPassCounter+=num;}
-    void ResetPassCounter() {fPassCounter=0;}
-    G4int GetPassCounter(void) {return fPassCounter;}
-
+	void SetStoreTrackIDCmos(G4int trid) {fStoreTrackIDCmos=trid;}
+	G4int GetStoreTrackIDCmos(void) {return fStoreTrackIDCmos;}
+	void AddPassCounterCmos(G4int num) {fPassCounterCmos+=num;}
+	void ResetPassCounterCmos() {fPassCounterCmos=0;}
+	G4int GetPassCounterCmos(void) {return fPassCounterCmos;}
+	
+	
+	
+	
 	//  void SetStopPosition (G4double x,G4double y, G4double z){
 	//  xstop=x;
 	//  ystop=y;
@@ -100,9 +108,9 @@ private:
 	G4int fPreNo;
 	
 	G4double     fEdepSr;
-//	G4double     fEdepEl;
+	//	G4double     fEdepEl;
 	G4double     fEdepY;
-
+	
 	
 	G4double fSourceX;
 	G4double fSourceY;
@@ -113,21 +121,23 @@ private:
 	G4double fSourceCosY;
 	G4double fSourceCosZ;
 	
-	G4int fPassCounter;
-	
+	G4int fPassCounterSource;
+	G4int fPassCounterCmos;
+
 	G4double fNSourceExit;
 	
 	/*
-	G4double fSourceXExit;
-	G4double fSourceYExit;
-	G4double fSourceZExit;
-	G4double fSourceEneExit;
-	G4double fSourceCosXExit;
-	G4double fSourceCosYExit;
-	G4double fSourceCosZExit;
-	*/
+	 G4double fSourceXExit;
+	 G4double fSourceYExit;
+	 G4double fSourceZExit;
+	 G4double fSourceEneExit;
+	 G4double fSourceCosXExit;
+	 G4double fSourceCosYExit;
+	 G4double fSourceCosZExit;
+	 */
 	G4String fExitProcess;
-	G4int fStoreTrackID;
+	G4int fStoreTrackIDSource;
+	G4int fStoreTrackIDCmos;
 	std::ofstream &FilePrimaries;
 };
 

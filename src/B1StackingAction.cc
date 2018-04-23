@@ -59,8 +59,9 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 	//	if (track->GetParentID() == 1 && track->GetDynamicParticle() ->GetPDGcode()==11)		  G4cout<<"CMOSDEBUG PROVA STACKING elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
 //	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
     
-    fEventAction->ResetPassCounter(); //collamaf: at each new track we reset the pass counter
-    
+    fEventAction->ResetPassCounterSource(); //collamaf: at each new track we reset the pass counter
+	fEventAction->ResetPassCounterCmos(); //collamaf: at each new track we reset the pass counter
+	
 	if (track->GetDynamicParticle() ->GetPDGcode()==11) { //if I generated an electron
 		if (debug) G4cout<<"CMOSDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
 		if (track->GetParentID() == 1) { //figlio di Sr

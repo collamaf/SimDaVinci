@@ -68,37 +68,54 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
-	//	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="CMOS")) { //what enters CMOS
-	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()!="CMOS" && NextVol->GetName()=="CMOS")) { //what enters CMOS
+	
+	// ########################################
+	// ###################### EXITING SOURCE
+	
+	//	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()!="CMOS" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world)
+	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world) - after mod 23.4.18
 		
-
-		G4double edepKin = step->GetPostStepPoint()->GetKineticEnergy();
-		//Fill vector
-		(runStepAction->GetRunEnPre()).push_back(edepKin/keV);
-		fEventAction->AddNoPre(1);
-		(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-		fEventAction->AddEdkin(edepKin);
+		
+		
+		if (fEventAction->GetStoreTrackIDCmos()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+			fEventAction->AddPassCounterCmos(1);  //increase the counter
+			
+//			G4cout<<"CMOSDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+		}else {
+			fEventAction->SetStoreTrackIDCmos(step->GetTrack()->GetTrackID());
+//			G4cout<<"CMOSDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+			//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
+		}
+		// Salvo le info solo della prima volta che una particella esce dalla sorgente
+		if (fEventAction->GetPassCounterCmos()==0) {
+			
+			
+			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
+			//Fill vector
+			(runStepAction->GetRunEnPre()).push_back(eKinPre/keV);
+			fEventAction->AddNoPre(1); //update the counter of particles entering CMOS in the event
+			(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering CMOS
+																																																			//		fEventAction->AddEdkin(eKinPre); //credo fosse eredità dell'esempio di base che contava l'energia depositata...
+		}
 	}
 	
-
+	
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
-
-	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceDOTA" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
+	
+	// ########################################
+	// ###################### ENTERING CMOS
+	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
 		
-        //collamaf: to avoid double counting same track going back and forth, check if I already counted it
-		if (fEventAction->GetStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-			fEventAction->AddPassCounter(1);  //increase the counter
-            
-//			G4cout<<"CMOSDEBUG CONTROLLA "<<fEventAction->GetStoreTrackID()<<", PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
-        }else {
-            fEventAction->SetStoreTrackID(step->GetTrack()->GetTrackID());
-//            G4cout<<"CMOSDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackID()<<", PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
-//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
-        }
+		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
+		if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+			fEventAction->AddPassCounterSource(1);  //increase the counter
+		}else {
+			fEventAction->SetStoreTrackIDSource(step->GetTrack()->GetTrackID());
+		}
 		
-		//		if (fEventAction->GetNSourceExit()>1) 	G4cout<<"CMOSDEBUG CONTROLLA"<<fEventAction->GetNSourceExit()<<G4endl;
-		if (fEventAction->GetPassCounter()==0) {
+		// Salvo le info solo della prima volta che una particella esce dalla sorgente
+		if (fEventAction->GetPassCounterSource()==0) {
 			fEventAction->AddNSourceExit(1);
 			(runStepAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			(runStepAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
@@ -115,10 +132,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		/*
 		 We have to use PreStepPoint to save the exit cosines, otherwise we already have particles flipped..
 		 */
-		
-//		if (0&&step->GetPostStepPoint()->GetMomentumDirection().z()<0) G4cout<<"CMOSDEBUG COSZ NEGATIVO! pre "<< step->GetPreStepPoint()->GetMomentumDirection().z()<<", post "<< step->GetPostStepPoint()->GetMomentumDirection().z()<<G4endl;
-		//		G4cout<<"debug! Nome: "<<step->GetTrack()->GetCreatorProcess()->GetProcessName()<<
-		//	", Type= "<<  step->GetTrack()->GetCreatorProcess()->GetProcessType() <<", Sub Type= "<<  step->GetTrack()->GetCreatorProcess()->GetProcessSubType() <<G4endl;
 	}
 	
 	if (!fScoringVolume) {
@@ -129,13 +142,16 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	}
 	
 	if (0 && runStepAction->GetMotherIsotope() != 0 && runStepAction->GetMotherIsotope() !=1) G4cout<<"CMOSDEBUG PROVA STEPPING  MotherIsotope Val= "<< runStepAction->GetMotherIsotope()
-	<<G4endl;
+		<<G4endl;
 	
 	// get volume of the current step
 	G4LogicalVolume* volume
 	= step->GetPreStepPoint()->GetTouchableHandle()
 	->GetVolume()->GetLogicalVolume();
 	
+	
+	// ########################################
+	// ###################### INSIDE CMOS - Per each hit into sensitive detector
 	// check if we are in scoring volume
 	if (volume== fScoringVolume) {
 		//pixel information collection
@@ -151,7 +167,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		if (CopyNB>0) {
 			//fill vectors
 			(runStepAction->GetRunPixNo()).push_back(CopyNB);
-//			(runStepAction->GetRunPixEneDep()).push_back(step->GetTotalEnergyDeposit()/keV);
+			//			(runStepAction->GetRunPixEneDep()).push_back(step->GetTotalEnergyDeposit()/keV);
 			(runStepAction->GetRunPixXpos()).push_back(pixCenter.getX()/mm);
 			(runStepAction->GetRunPixYpos()).push_back(pixCenter.getY()/mm);
 		}
@@ -160,7 +176,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		G4StepPoint* postPoint = step->GetPostStepPoint();
 		G4double edepStep = step->GetTotalEnergyDeposit();
 		G4ThreeVector post=postPoint->GetPosition();
-
+		
 		//Fill vector
 		(runStepAction->GetRunEnCmos()).push_back(step->GetTotalEnergyDeposit()/keV);
 		(runStepAction->GetRunXCmos()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
@@ -172,7 +188,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		if (runStepAction->GetMotherIsotope() == 0 ) {  //if son of Sr
 			fEventAction->AddEdepSr(step->GetTotalEnergyDeposit());
 		}
-
+		
 		//Collect deposited energy in CMOS due to Y electons
 		if (runStepAction->GetMotherIsotope() == 1 ) {  //if son of Y
 			fEventAction->AddEdepY(step->GetTotalEnergyDeposit());

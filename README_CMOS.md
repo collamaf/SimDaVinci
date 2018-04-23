@@ -8,13 +8,13 @@ make
 ./exampleB1
 ./exampleB1 {CuDiam (<0->no Cu)} {ZOffs} {FilterFlag} {TBR} {SourceChoice} {x0Scan} {SensorChoice} ../run1.mac
 e.g.:
-./exampleB1 5 2 0 1 2 0 1 ../run1.mac
+./exampleB1 -5 2 0 1 2 0 1 ../run1.mac
 ```
 {all distances/sizes in mm}
 Source Choice:
 1 - Pointlike Sr
 2 - Extended Sr
-3 - DOTA
+3 - ExtY
 Sensor Choice:
 1 - MT9V011
 2 - MT9V115
@@ -47,29 +47,29 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - AllCosX[2]: X directive cosine of produced electron;
 - AllCosY[2]: Y directive cosine of produced electron;
 - AllCosZ[2]: Z directive cosine of produced electron;
-- AllEne[2]: kinetic energy of produced electron;
+- AllEne[2]: kinetic energy of produced electron [keV];
 - AllIsotope[2]: isotope of primary particle (0=Sr, 1=Y);
 - ExitX: X coordinate of primary particle exiting the source volume [mm];
 - ExitY: Y coordinate of primary particle exiting the source volume [mm];
 - ExitZ: Z coordinate of primary particle exiting the source volume [mm];
-- ExitCosX[2]: X directive cosine of primary particle exiting the source volume;
-- ExitCosY[2]: Y directive cosine of primary particle exiting the source volume;
-- ExitCosZ[2]: Z directive cosine of primary particle exiting the source volume;
-- ExitEne[2]: kinetic energy of primary particle exiting the source volume;
-- ExitPart[2]: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
-- ExitParentID[2]: partent-id of particle exiting the source
-- ExitProcess[2]: process that created the particles that exits the source (see table above)
+- ExitCosX[2+]: X directive cosine of primary particle exiting the source volume;
+- ExitCosY[2+]: Y directive cosine of primary particle exiting the source volume;
+- ExitCosZ[2+]: Z directive cosine of primary particle exiting the source volume;
+- ExitEne[2+]: kinetic energy of primary particle exiting the source volume [keV];
+- ExitPart[2+]: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
+- ExitParentID[2+]: partent-id of particle exiting the source
+- ExitProcess[2+]: process that created the particles that exits the source (see table above)
 - ExitTrackN: number of different tracks exiting the source per event
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
 - Eabs: energy absorbed in CMOS [keV];
 - EAbsComp[2]: vector containing energy absorbed in CMOS [keV] due to Sr (comp 1) and to Y (comp 2)
-- PreCmosTrackN: number of tracks entering Cmos per primary (from front shield if present otherwise from world) (it's the length of the following vector);
-- PreCmosPart[PreCmosTrackN]: kind of particle of each track entering Cmos (from front shield if present otherwise from world);
-- PreCmosEn[PreCmosTrackN]: kinetic energy of particle of each tracks entering Cmos (from front shield if present otherwise from world) [keV];
+- PreCmosTrackN: number of tracks entering Cmos per primary (from front resin) (it's the length of the following vector);
+- PreCmosPart[PreCmosTrackN]: kind of particle of each track entering Cmos(from front resin);
+- PreCmosEn[PreCmosTrackN]: kinetic energy of particle of each tracks entering Cmos (from front resin) [keV];
 - InCmosTrackN: number of hits inside Cmos (it's the length of the following vector);
 - InCmosPart[InCmosTrackN]: kind of particle of hit inside Cmos;
-- InCmosEn[InCmosTrackN]: energy deposit of single hit of particle of hit inside Cmos;
+- InCmosEn[InCmosTrackN]: energy deposit of single hit of particle inside Cmos;
 - InCmosX[InCmosTrackN]: X position of hit inside Cmos [mm];
 - InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
@@ -114,13 +114,15 @@ B1->Draw("InCmosEnY","","same")
 2018.01.17 by collamaf
 - Deep reorganization of DetConstr, much clearer now
 - Code extended to both sensors smoothly (new argument to be passed by terminal, default sensor 1).
-- Fixed DOTA source problem
+- Fixed ExtY source problem
 
 2018.01.30 by collamaf
-- Quiet deep reorganization of output root file, cleaned a little in ordering and name (and updated readme)
-- Changed "DOTA" to "ExtY" in output file naming
+- Quite deep reorganization of output root file, cleaned a little in ordering and name (and updated readme)
+- Changed "ExtY" to "ExtY" in output file naming
 
-
+2018.04.23 by collamaf
+- Now resin is always present in front of CMOS, if flag not selected made of air (useful for scoring)
+- Added double crossing check also for particles entering CMOS
 
 
 
