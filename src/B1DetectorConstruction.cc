@@ -237,14 +237,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double PixelThickness=4.5*um;
 	G4double gapX =0.01*um*ScaleFactor;
 	G4double gapY =0.01*um*ScaleFactor;
-	G4int noX = 480;
-	G4int noY = 640;
-	G4double DistFilterCmos2=441*um; //distance between filter surface and cmos in sensor 2
+	G4int noX = 640;
+	G4int noY = 480;
+	G4double DistFilterCmos2=41*um; //distance between filter surface and cmos in sensor 2 (was 441 wtf)
 	if (fSensorChoice==2) {
 		PixelSize=1.75*um;
 		PixelThickness=2.5*um;
-		noX=488;
-		noY=648;
+		noX=648;
+		noY=488;
 	}
 	//in case of ScalFactor...
 	G4double pixX =PixelSize*ScaleFactor;
@@ -532,7 +532,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		Z_resin= fZValue + Resin_sizeZ*0.5;
 	} else if (fSensorChoice==2) {
 		Resin_sizeZ  = 0.400*mm;
-		Z_resin= fZValue-DistFilterCmos2 + Resin_sizeZ*0.5;
+		Z_resin= fZValue-DistFilterCmos2 - Resin_sizeZ*0.5;
 	}
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
 		Resin_mat=world_mat;
@@ -618,8 +618,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	cmosreg->AddRootLogicalVolume(logicPix);
 	
 	//placement of the pixel in CMOS - until 2018-01-18 was inverted: was before x and than y, but now is consistent with following analysis
-	for (G4int iy = 1; iy <= noY ; iy++){ //up to 648
-		for (G4int ix = 1; ix <= noX ; ix++){ // up to 488
+	for (G4int iy = 1; iy <= noY ; iy++){ //up to 488
+		for (G4int ix = 1; ix <= noX ; ix++){ // up to 648
 			G4ThreeVector posPixX = G4ThreeVector((-0.5*Cmos_sizeX+ix*(pixX+gapX)-0.5*pixX-gapX),
 																						(-0.5*Cmos_sizeY+iy*(pixY+gapY)-0.5*pixY-gapY)
 																						,0);

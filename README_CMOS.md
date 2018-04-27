@@ -70,6 +70,7 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - InCmosTrackN: number of hits inside Cmos (it's the length of the following vector);
 - InCmosPart[InCmosTrackN]: kind of particle of hit inside Cmos;
 - InCmosEn[InCmosTrackN]: energy deposit of single hit of particle inside Cmos;
+- InCmosEnPrim[InCmosTrackN]: energy of the primary particle that origined the hit of particle inside Cmos [keV];
 - InCmosX[InCmosTrackN]: X position of hit inside Cmos [mm];
 - InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
@@ -124,5 +125,7 @@ B1->Draw("InCmosEnY","","same")
 - Now resin is always present in front of CMOS, if flag not selected made of air (useful for scoring)
 - Added double crossing check also for particles entering CMOS
 
+2018.04.26 by collamaf
+- Added InCmosEnPrim to bring primary particle info to Riduzione and DataAnalysis
 
 

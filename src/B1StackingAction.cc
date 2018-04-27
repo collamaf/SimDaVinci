@@ -67,6 +67,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		if (track->GetParentID() == 1) { //figlio di Sr
 			if (debug) G4cout<<"CMOSDEBUG Sr Setto il MotherIsotope a 0"<<G4endl;
 			runStackAction->SetMotherIsotope(0);
+			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
 			(runStackAction->GetRunIsotopeGen()).push_back(0);
 			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
@@ -75,6 +76,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		} else if (track->GetParentID() == 2) {  //figlio di Y
 			if (debug) G4cout<<"CMOSDEBUG Y Setto il MotherIsotope a 1"<<G4endl;
 			runStackAction->SetMotherIsotope(1);
+			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
 			(runStackAction->GetRunIsotopeGen()).push_back(1);
 			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());

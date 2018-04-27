@@ -97,10 +97,10 @@ int main(int argc,char** argv)
 	G4String FileNamePrim;
 	
 	if (CuDiam>=0){
-		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)ZValue) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
 	}
 	else	{
-		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)ZValue) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
 	}
 	
 	

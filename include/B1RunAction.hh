@@ -63,6 +63,7 @@ public:
 	// void AddEdepEl (G4double edepEl);
 	
 	std::vector<G4double>& GetRunEnCmos() {return RunVectorEnCmos; }
+	std::vector<G4double>& GetRunEnCmosPrim() {return RunVectorEnCmosPrim; }
 	std::vector<G4double>& GetRunXCmos() {return RunVectorXCmos; }
 	std::vector<G4double>& GetRunYCmos() {return RunVectorYCmos; }
 	std::vector<G4double>& GetRunZCmos() {return RunVectorZCmos; }
@@ -100,7 +101,11 @@ public:
 	
 	void SetMotherIsotope(G4double miso) {fMotherIsotope=miso;}
 	G4int GetMotherIsotope() {return fMotherIsotope;}
-
+	
+	void SetMotherEnergy(G4double mene) {fMotherEnergy=mene;}
+	G4int GetMotherEnergy() {return fMotherEnergy;}
+	
+	
 	/*
 	 std::vector<G4double>& GetSourceX() {return RunVectorSourceX; }
 	 std::vector<G4double>& GetSourceY() {return RunVectorSourceY; }
@@ -125,6 +130,7 @@ private:
 	G4int fMotherIsotope=-10;
 	G4int fSensorChoice;
 
+	G4double fMotherEnergy=-10;
 	
 	//G4Accumulable <G4double> fEdepPhot;
 	//G4Accumulable<G4double> fEdepEl;
@@ -136,6 +142,7 @@ private:
 	void WriteHistogram();
 	
 	std::vector<G4double> RunVectorEnCmos;
+	std::vector<G4double>	RunVectorEnCmosPrim;
 	std::vector<G4double> RunVectorXCmos;
 	std::vector<G4double> RunVectorYCmos;
 	std::vector<G4double> RunVectorZCmos;

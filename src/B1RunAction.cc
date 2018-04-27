@@ -94,7 +94,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,22, nbEventInRun);
+	analysisManager->FillNtupleIColumn(0,23, nbEventInRun);
 
 	
 }
@@ -208,10 +208,10 @@ void B1RunAction::CreateHistogram()
 	G4String fileName;
 	
 	if (fCuDiam>=0){
-		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)fZValue) + "_CuD" + std::to_string((G4int)fCuDiam) + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
+		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_CuD" + std::to_string((G4int)fCuDiam) + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
 	}
 	else {
-		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)fZValue) + "_NOCuD" + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
+		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_NOCuD" + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
 	}
 	
 	if (fSourceSelect==1) fileName.append("_PSr");
@@ -235,6 +235,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
 	analysisManager->CreateNtupleDColumn(0,"InCmosPart", RunVectorPartCmos); //6
 	analysisManager->CreateNtupleDColumn(0,"InCmosEn", RunVectorEnCmos); //7
+	analysisManager->CreateNtupleDColumn(0,"InCmosEnPrim", RunVectorEnCmosPrim); //7b
 	analysisManager->CreateNtupleDColumn(0,"InCmosX", RunVectorXCmos); //8
 	analysisManager->CreateNtupleDColumn(0,"InCmosY", RunVectorYCmos); //9
 	analysisManager->CreateNtupleDColumn(0,"InCmosZ", RunVectorZCmos); //10

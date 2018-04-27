@@ -70,26 +70,20 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	// ########################################
-	// ###################### EXITING SOURCE
+	// ###################### ENTERING CMOS
 	
-	//	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()!="CMOS" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world)
-	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world) - after mod 23.4.18
-		
-		
-		
+	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world)
 		if (fEventAction->GetStoreTrackIDCmos()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
 			fEventAction->AddPassCounterCmos(1);  //increase the counter
 			
-//			G4cout<<"CMOSDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+			//			G4cout<<"CMOSDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
 		}else {
 			fEventAction->SetStoreTrackIDCmos(step->GetTrack()->GetTrackID());
-//			G4cout<<"CMOSDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+			//			G4cout<<"CMOSDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
 			//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
 		}
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 		if (fEventAction->GetPassCounterCmos()==0) {
-			
-			
 			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
 			//Fill vector
 			(runStepAction->GetRunEnPre()).push_back(eKinPre/keV);
@@ -99,12 +93,15 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		}
 	}
 	
+	// ###################### END ENTERING CMOS
+	// ########################################
+
 	
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
 	
 	// ########################################
-	// ###################### ENTERING CMOS
+	// ###################### EXITING SOURCE
 	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
 		
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
@@ -179,6 +176,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		//Fill vector
 		(runStepAction->GetRunEnCmos()).push_back(step->GetTotalEnergyDeposit()/keV);
+		(runStepAction->GetRunEnCmosPrim()).push_back(runStepAction->GetMotherEnergy());
 		(runStepAction->GetRunXCmos()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunYCmos()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunZCmos()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);

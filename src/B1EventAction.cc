@@ -80,6 +80,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunEnPre()).clear();
 	(fRunAction->GetRunPart()).clear();
 	(fRunAction->GetRunEnCmos()).clear();
+	(fRunAction->GetRunEnCmosPrim()).clear();
 	(fRunAction->GetRunXCmos()).clear();
 	(fRunAction->GetRunYCmos()).clear();
 	(fRunAction->GetRunZCmos()).clear();
@@ -167,9 +168,9 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 //	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
 //	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
-	analysisManager->FillNtupleDColumn(0,14, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,15, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,16, fSourceZ/mm);
+	analysisManager->FillNtupleDColumn(0,15, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,16, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,17, fSourceZ/mm);
 	/*
 	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
 	analysisManager->FillNtupleDColumn(0,20, fSourceCosY/mm);
