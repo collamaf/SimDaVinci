@@ -177,6 +177,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		//Fill vector
 		(runStepAction->GetRunEnCmos()).push_back(step->GetTotalEnergyDeposit()/keV);
 		(runStepAction->GetRunEnCmosPrim()).push_back(runStepAction->GetMotherEnergy());
+//		(runStepAction->GetRunEnCmosTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
+		(runStepAction->GetRunEnCmosTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime());
+//		G4cout<<"CMOSDEBUG  MotherTime= "<< runStepAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime() <<G4endl;
 		(runStepAction->GetRunXCmos()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunYCmos()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunZCmos()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);

@@ -18,6 +18,9 @@ Source Choice:
 Sensor Choice:
 1 - MT9V011
 2 - MT9V115
+3 - bare 60035 SiPm
+
+
 
 ## GEOMETRY
 - Extended Sr Source ending at Z=0
@@ -127,5 +130,9 @@ B1->Draw("InCmosEnY","","same")
 
 2018.04.26 by collamaf
 - Added InCmosEnPrim to bring primary particle info to Riduzione and DataAnalysis
+
+2018.05.7 by collamaf
+- first implementation of storage of time of interection. Still not clear which time to save...
+- Introduced possibility to simulate bare SiPm (assumed to be a particular version of CMOS detector): SensorChoice=3
 
 

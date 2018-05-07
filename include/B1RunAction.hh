@@ -62,8 +62,10 @@ public:
 	// void AddEdepPhot (G4double edepPhot);
 	// void AddEdepEl (G4double edepEl);
 	
+	
 	std::vector<G4double>& GetRunEnCmos() {return RunVectorEnCmos; }
 	std::vector<G4double>& GetRunEnCmosPrim() {return RunVectorEnCmosPrim; }
+	std::vector<G4float>& GetRunEnCmosTime() {return RunVectorEnCmosTime; }
 	std::vector<G4double>& GetRunXCmos() {return RunVectorXCmos; }
 	std::vector<G4double>& GetRunYCmos() {return RunVectorYCmos; }
 	std::vector<G4double>& GetRunZCmos() {return RunVectorZCmos; }
@@ -100,10 +102,13 @@ public:
 	G4int GetEventNumber() {return nbEventInRun;}
 	
 	void SetMotherIsotope(G4double miso) {fMotherIsotope=miso;}
-	G4int GetMotherIsotope() {return fMotherIsotope;}
+	G4double GetMotherIsotope() {return fMotherIsotope;}
 	
 	void SetMotherEnergy(G4double mene) {fMotherEnergy=mene;}
-	G4int GetMotherEnergy() {return fMotherEnergy;}
+	G4double GetMotherEnergy() {return fMotherEnergy;}
+	
+	void SetMotherTime(G4double mtime) {fMotherTime=mtime;}
+	G4float GetMotherTime() {return fMotherTime;}
 	
 	
 	/*
@@ -131,6 +136,7 @@ private:
 	G4int fSensorChoice;
 
 	G4double fMotherEnergy=-10;
+	G4float fMotherTime=0;
 	
 	//G4Accumulable <G4double> fEdepPhot;
 	//G4Accumulable<G4double> fEdepEl;
@@ -143,6 +149,7 @@ private:
 	
 	std::vector<G4double> RunVectorEnCmos;
 	std::vector<G4double>	RunVectorEnCmosPrim;
+	std::vector<G4float>	RunVectorEnCmosTime;
 	std::vector<G4double> RunVectorXCmos;
 	std::vector<G4double> RunVectorYCmos;
 	std::vector<G4double> RunVectorZCmos;
