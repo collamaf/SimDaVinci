@@ -219,7 +219,9 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==3) fileName.append("_ExtY");
 	if (fSensorChoice==1) fileName.append("_011");
 	if (fSensorChoice==2) fileName.append("_115");
+	if (fSensorChoice==3) fileName.append("_60035");
 
+	
 	analysisManager->OpenFile(fileName);
 
 	// Creating ntuple

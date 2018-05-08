@@ -232,11 +232,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### CMOS pixel (defaults geom values are for MTV011 Sensor (1))
-	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
+	G4int ScaleFactor=1; //set to 1 for full simulation, 10 for quick view
 	G4double PixelSize=5.6*um;
 	G4double PixelThickness=4.5*um;
-	G4double gapX =0.01*um*ScaleFactor;
-	G4double gapY =0.01*um*ScaleFactor;
+	G4double gapX =0.01*um;
+	G4double gapY =0.01*um;
 	G4int noX = 640;
 	G4int noY = 480;
 	G4double DistFilterCmos2=41*um; //distance between filter surface and cmos in sensor 2 (was 441 wtf)
@@ -246,10 +246,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		noX=648;
 		noY=488;
 	}
+	if (fSensorChoice==3) {
+		PixelSize=35*um;
+		PixelThickness=2.5*um;
+		noX=137;
+		noY=137;
+		gapX=8.75*um;
+		gapY=8.75*um;
+		
+	}
+
+
 	//in case of ScalFactor...
 	G4double pixX =PixelSize*ScaleFactor;
 	G4double pixY =PixelSize*ScaleFactor;
 	G4double pixZ =PixelThickness;
+	gapX*=ScaleFactor;
+	gapY*=ScaleFactor;
 	noX/=ScaleFactor;
 	noY/=ScaleFactor;
 	//###
@@ -523,6 +536,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//Electron Filter Resin
 	//##########################
 	if (fSensorChoice==2) fFilterFlag=1; //Sensor 2 is always with filter
+	if (fSensorChoice==3) fFilterFlag=0; //Sensor 3 is always with filter
 																			 //	if (fFilterFlag==1) {
 	Resin_sizeX = noX*PixelSize*ScaleFactor;
 	Resin_sizeY = noY*PixelSize*ScaleFactor;
@@ -616,6 +630,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	logicPix->SetRegion(cmosreg);
 	cmosreg->AddRootLogicalVolume(logicPix);
+	
+	G4cout<<"GEOMETRY DEBUG - I will place "<<noY* noX<<" pixels"<<G4endl;
+
 	
 	//placement of the pixel in CMOS - until 2018-01-18 was inverted: was before x and than y, but now is consistent with following analysis
 	for (G4int iy = 1; iy <= noY ; iy++){ //up to 488

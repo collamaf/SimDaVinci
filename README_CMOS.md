@@ -74,6 +74,7 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - InCmosPart[InCmosTrackN]: kind of particle of hit inside Cmos;
 - InCmosEn[InCmosTrackN]: energy deposit of single hit of particle inside Cmos;
 - InCmosEnPrim[InCmosTrackN]: energy of the primary particle that origined the hit of particle inside Cmos [keV];
+- InCmosTime[InCmosTrackN]: time of interaction of hit inside Cmos [ns] (To be really undersood);
 - InCmosX[InCmosTrackN]: X position of hit inside Cmos [mm];
 - InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
 - InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
@@ -134,5 +135,11 @@ B1->Draw("InCmosEnY","","same")
 2018.05.7 by collamaf
 - first implementation of storage of time of interection. Still not clear which time to save...
 - Introduced possibility to simulate bare SiPm (assumed to be a particular version of CMOS detector): SensorChoice=3
+
+
+
+## TO DO's
+
+- Manage other sources (gamma)
 
 
