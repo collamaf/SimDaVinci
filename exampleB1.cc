@@ -31,6 +31,7 @@
 #include "B1DetectorConstruction.hh"
 #include "B1ActionInitialization.hh"
 
+/*prova*/
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
