@@ -78,7 +78,7 @@ public :
    TBranch        *b_SourceIsotope;   //!
    TBranch        *b_Nev;   //!
 
-   AnaSiPm(TString filenameMC);
+   AnaSiPm(TString filenameMC, double Soglia=5);
    virtual ~AnaSiPm();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -87,19 +87,21 @@ public :
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+	double fSoglia;
 };
 
 #endif
 
 #ifdef AnaSiPm_cxx
-AnaSiPm::AnaSiPm(TString filenameMC) : fChain(0)
+AnaSiPm::AnaSiPm(TString filenameMC, double Soglia) : fChain(0)
 {
 
 	TFile *fileMC = new TFile(Form("%s.root",filenameMC.Data()));
 	TTree *treeMC = (TTree*)gDirectory->Get("B1");
 	
+	fSoglia=Soglia;
 	
-	OutFile = new TFile(Form("%s_Out.root",filenameMC.Data()),"RECREATE");
+	OutFile = new TFile(Form("%s_Thr%.0lf_Out.root",filenameMC.Data(), fSoglia),"RECREATE");
 	
 	Init(treeMC);
 	
