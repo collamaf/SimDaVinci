@@ -172,13 +172,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* ABSaround_mat = ABS;
 	G4Material* ABSbehind_mat = ABS;
 	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
-	G4Material* Resin_mat = Resin;
+	//G4Material* Resin_mat = Resin;
+	G4Material* Resin_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	//G4Material* pix_mat = nist->FindOrBuildMaterial("G4_Si");
 	//G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_Si");
 	G4Material* Cmos_mat = PTerphenyl;
-	G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	G4Material* Plastic_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	//G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	
 	
 	//###################################################################
@@ -654,11 +656,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 	
-	//CMOS
+	//P-Terphenyl
 	
 	G4Tubs* solidCmos =
 	new G4Tubs("CMOS",                                                                         //its name
-						0.,Cmos_outer_r,Cmos_sizeZ,Cmos_start_angle,Cmos_spanning_angle);                //its size
+						0.,Cmos_inner_r,Cmos_sizeZ,Cmos_start_angle,Cmos_spanning_angle);                //its size
 	
 	G4LogicalVolume* logicCmos =
 	new G4LogicalVolume(solidCmos,          //its solid
@@ -767,6 +769,29 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//Solid Si CMOS
 	//fScoringVolume = logicCmos;
+	
+	//###################################################
+	// Plastic around P-Terphenyl
+	//##########################
+	
+	G4Tubs* solidPlastic =
+	new G4Tubs("Plastic",                                                                         //its name
+						 Cmos_inner_r,Cmos_outer_r,Cmos_sizeZ,Cmos_start_angle,Cmos_spanning_angle);                //its size
+	
+	G4LogicalVolume* logicPlastic =
+	new G4LogicalVolume(solidPlastic,          //its solid
+											Plastic_mat,              //its material
+											"Plastic");            //its name
+	
+	
+	new G4PVPlacement(0,                     //no rotation
+										pos2,
+										logicPlastic,            //its logical volume
+										"Plastic",               //its name
+										logicWorld,            //its mother  volume
+										false,                 //no boolean operation
+										0,                     //copy number
+										checkOverlaps);        //overlaps checking
 	
 	return physWorld;
 }
