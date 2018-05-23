@@ -62,7 +62,7 @@ protected:
 	G4Region* sorgente = new G4Region("SourceReg");
 	G4Region* ABSRegion = new G4Region("ABSRegion");
 	G4Region* filtro = new G4Region("ResinReg");
-G4Region* cmosreg = new G4Region("CMOSReg");
+	G4Region* cmosreg = new G4Region("CMOSReg");
 	G4Region* carrierreg = new G4Region("CarrierReg");
 
 
