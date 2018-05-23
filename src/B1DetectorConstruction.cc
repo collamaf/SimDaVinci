@@ -768,7 +768,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//fScoringVolume = logicPix;
 	
 	//Solid Si CMOS
-	//fScoringVolume = logicCmos;
+	fScoringVolume = logicCmos;
 	
 	//###################################################
 	// Plastic around P-Terphenyl
