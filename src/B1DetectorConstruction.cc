@@ -120,10 +120,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
 	if (fSensorChoice==2) density=2.43;
-	G4Material* Resin = new G4Material (name="Resin", density, ncomponents=3);
-	Resin->AddElement (elH, natoms=30);
-	Resin->AddElement (elC, natoms=20);
-	Resin->AddElement (elO, natoms=2);
+	G4Material* FrontShield = new G4Material (name="FrontShield", density, ncomponents=3);
+	FrontShield->AddElement (elH, natoms=30);
+	FrontShield->AddElement (elC, natoms=20);
+	FrontShield->AddElement (elO, natoms=2);
 	
 	G4double densityAlu = 2.600*g/cm3;
 	//	G4NistManager* man = G4NistManager::Instance();
@@ -172,14 +172,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* ABSaround_mat = ABS;
 	G4Material* ABSbehind_mat = ABS;
 	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
-	//G4Material* Resin_mat = Resin;
-	G4Material* Resin_mat = nist->FindOrBuildMaterial("MyAlu");
+	//G4Material* FrontShield_mat = FrontShield;
+	G4Material* FrontShield_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	//G4Material* pix_mat = nist->FindOrBuildMaterial("G4_Si");
 	//G4Material* Pter_mat = nist->FindOrBuildMaterial("G4_Si");
 	G4Material* Pter_mat = PTerphenyl;
-	G4Material* Plastic_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	G4Material* LateralShield_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	//G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	
 	
@@ -219,15 +219,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double DPhiSourceSR = 360.*deg;
 	//###
 	
-	//### Filter (Resin)
-	//G4double Resin_sizeX=0*mm;
-	//G4double Resin_sizeY=0*mm;
-	//G4double Resin_sizeZ=0.*mm;
-	G4double Z_resin= 0*mm;
-	G4double Resin_outer_r=15.0*mm;
-	G4double Resin_sizeZ=2.5*um;
-	G4double Resin_start_angle=0.*deg;
-	G4double Resin_spanning_angle=360.0*deg;
+	//### Filter (FrontShield)
+	//G4double FrontShield_sizeX=0*mm;
+	//G4double FrontShield_sizeY=0*mm;
+	//G4double FrontShield_sizeZ=0.*mm;
+	G4double Z_FrontShield= 0*mm;
+	G4double FrontShield_outer_r=15.0*mm;
+	G4double FrontShield_sizeZ=2.5*um;
+	G4double FrontShield_start_angle=0.*deg;
+	G4double FrontShield_spanning_angle=360.0*deg;
 	//###
 	
 	//### Copper Collimator
@@ -564,60 +564,60 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	//###################################################
-	//Electron Filter Resin
+	//Electron Filter FrontShield
 	//##########################
 	if (fSensorChoice==2) fFilterFlag=1; //Sensor 2 is always with filter
 	if (fSensorChoice==3) fFilterFlag=0; //Sensor 3 is always with filter
 																			 //	if (fFilterFlag==1) {
-	//Resin_sizeX = noX*PixelSize*ScaleFactor;
-	//Resin_sizeY = noY*PixelSize*ScaleFactor;
+	//FrontShield_sizeX = noX*PixelSize*ScaleFactor;
+	//FrontShield_sizeY = noY*PixelSize*ScaleFactor;
 	
 	
 	
 	
 	if(fSensorChoice==1) {
-		Resin_sizeZ  = 2.5*um;
-		Z_resin = fZValue - Pter_sizeZ -Resin_sizeZ;
+		FrontShield_sizeZ  = 2.5*um;
+		Z_FrontShield = fZValue - Pter_sizeZ -FrontShield_sizeZ;
 	} /*else if (fSensorChoice==2) {
-		Resin_sizeZ  = 0.400*mm;
-		Z_resin= fZValue-DistFilterPter2 - Resin_sizeZ*0.5;
+		FrontShield_sizeZ  = 0.400*mm;
+		Z_FrontShield= fZValue-DistFilterPter2 - FrontShield_sizeZ*0.5;
 	}*/
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
-		Resin_mat=world_mat;
-		//Resin_sizeZ=0.1*mm;
-		Z_resin= fZValue - Pter_sizeZ -Resin_sizeZ;
+		FrontShield_mat=world_mat;
+		//FrontShield_sizeZ=0.1*mm;
+		Z_FrontShield= fZValue - Pter_sizeZ -FrontShield_sizeZ;
 	}
-	G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_resin);
+	G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidResin= "<<Resin_sizeZ/mm<<", Z pos= "<<Z_resin/mm<<G4endl;
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<Z_FrontShield/mm<<G4endl;
 	
-	G4Tubs* solidResin =
-	new G4Tubs("Resin",                       //its name
-						0.,Resin_outer_r,Resin_sizeZ,Resin_start_angle,Resin_spanning_angle);     //its size
+	G4Tubs* solidFrontShield =
+	new G4Tubs("FrontShield",                       //its name
+						0.,FrontShield_outer_r,FrontShield_sizeZ,FrontShield_start_angle,FrontShield_spanning_angle);     //its size
 	
 	
 	
-	G4LogicalVolume* logicResin =
-	new G4LogicalVolume(solidResin,          //its solid
-											Resin_mat,           //its material
-											"Resin");            //its name
+	G4LogicalVolume* logicFrontShield =
+	new G4LogicalVolume(solidFrontShield,          //its solid
+											FrontShield_mat,           //its material
+											"FrontShield");            //its name
 	
 	new G4PVPlacement(0,                     //no rotation
 										posFilter,
-										logicResin,            //its logical volume
-										"Resin",               //its name
+										logicFrontShield,            //its logical volume
+										"FrontShield",               //its name
 										logicWorld,            //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-																					 //	G4Region* filtro = new G4Region("ResinReg");
+																					 //	G4Region* filtro = new G4Region("FrontShieldReg");
 	
-	logicResin->SetRegion(filtro);
-	filtro->AddRootLogicalVolume(logicResin);
+	logicFrontShield->SetRegion(frontshieldreg);
+	frontshieldreg->AddRootLogicalVolume(logicFrontShield);
 	
 	//	}
 	
-	//################################################### END OF RESIN FILTER
+	//################################################### END OF FrontShield FILTER
 	
 	
 	G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_ZScan);
@@ -667,23 +667,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	fScoringVolume = logicPter;
 	
 	//###################################################
-	// Plastic around P-Terphenyl
+	// LateralShield around P-Terphenyl
 	//##########################
 	
-	G4Tubs* solidPlastic =
-	new G4Tubs("Plastic",                                                                         //its name
+	G4Tubs* solidLateralShield =
+	new G4Tubs("LateralShield",                                                                         //its name
 						 Pter_inner_r,Pter_outer_r,Pter_sizeZ,Pter_start_angle,Pter_spanning_angle);                //its size
 	
-	G4LogicalVolume* logicPlastic =
-	new G4LogicalVolume(solidPlastic,          //its solid
-											Plastic_mat,              //its material
-											"Plastic");            //its name
+	G4LogicalVolume* logicLateralShield =
+	new G4LogicalVolume(solidLateralShield,          //its solid
+											LateralShield_mat,              //its material
+											"LateralShield");            //its name
 	
 	
 	new G4PVPlacement(0,                     //no rotation
 										pos2,
-										logicPlastic,            //its logical volume
-										"Plastic",               //its name
+										logicLateralShield,            //its logical volume
+										"LateralShield",               //its name
 										logicWorld,            //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number

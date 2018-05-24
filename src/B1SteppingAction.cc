@@ -72,7 +72,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ########################################
 	// ###################### ENTERING Pter
 	
-	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from Resin or world)
+	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
 		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
 			fEventAction->AddPassCounterPter(1);  //increase the counter
 			

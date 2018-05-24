@@ -204,7 +204,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->SetVerboseLevel(1);
 	
 	// Open an output file
-	G4String fileNameBase = "Ptermc";
+	G4String fileNameBase = "PTERmc";
 	G4String fileName;
 	
 	if (fCuDiam>=0){

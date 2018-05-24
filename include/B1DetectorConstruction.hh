@@ -61,7 +61,7 @@ protected:
 	
 	G4Region* sorgente = new G4Region("SourceReg");
 	G4Region* ABSRegion = new G4Region("ABSRegion");
-	G4Region* filtro = new G4Region("ResinReg");
+	G4Region* frontshieldreg = new G4Region("FrontShieldReg");
 	G4Region* pterreg = new G4Region("PTERReg");
 	G4Region* carrierreg = new G4Region("CarrierReg");
 
