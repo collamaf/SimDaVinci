@@ -70,30 +70,30 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	// ########################################
-	// ###################### ENTERING CMOS
+	// ###################### ENTERING Pter
 	
-	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="CMOS")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="CMOS")) { //what enters CMOS (either from Resin or world)
-		if (fEventAction->GetStoreTrackIDCmos()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-			fEventAction->AddPassCounterCmos(1);  //increase the counter
+	if((NextVol && ThisVol->GetName()=="Resin" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from Resin or world)
+		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+			fEventAction->AddPassCounterPter(1);  //increase the counter
 			
-			//			G4cout<<"CMOSDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+			//			G4cout<<"PterDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
 		}else {
-			fEventAction->SetStoreTrackIDCmos(step->GetTrack()->GetTrackID());
-			//			G4cout<<"CMOSDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDCmos()<<", PassCounter= "<<fEventAction->GetPassCounterCmos()<<G4endl;
+			fEventAction->SetStoreTrackIDPter(step->GetTrack()->GetTrackID());
+			//			G4cout<<"PterDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
 			//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
 		}
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
-		if (fEventAction->GetPassCounterCmos()==0) {
+		if (fEventAction->GetPassCounterPter()==0) {
 			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
 			//Fill vector
 			(runStepAction->GetRunEnPre()).push_back(eKinPre/keV);
-			fEventAction->AddNoPre(1); //update the counter of particles entering CMOS in the event
-			(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering CMOS
+			fEventAction->AddNoPre(1); //update the counter of particles entering Pter in the event
+			(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
 																																																			//		fEventAction->AddEdkin(eKinPre); //credo fosse eredità dell'esempio di base che contava l'energia depositata...
 		}
 	}
 	
-	// ###################### END ENTERING CMOS
+	// ###################### END ENTERING Pter
 	// ########################################
 
 	
@@ -138,7 +138,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fScoringVolume = detectorConstruction->GetScoringVolume();
 	}
 	
-	if (0 && runStepAction->GetMotherIsotope() != 0 && runStepAction->GetMotherIsotope() !=1) G4cout<<"CMOSDEBUG PROVA STEPPING  MotherIsotope Val= "<< runStepAction->GetMotherIsotope()
+	if (0 && runStepAction->GetMotherIsotope() != 0 && runStepAction->GetMotherIsotope() !=1) G4cout<<"PterDEBUG PROVA STEPPING  MotherIsotope Val= "<< runStepAction->GetMotherIsotope()
 		<<G4endl;
 	
 	// get volume of the current step
@@ -148,7 +148,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	// ########################################
-	// ###################### INSIDE CMOS - Per each hit into sensitive detector
+	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
 	if (volume== fScoringVolume) {
 		//pixel information collection
@@ -175,22 +175,22 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		G4ThreeVector post=postPoint->GetPosition();
 		
 		//Fill vector
-		(runStepAction->GetRunEnCmos()).push_back(step->GetTotalEnergyDeposit()/keV);
-		(runStepAction->GetRunEnCmosPrim()).push_back(runStepAction->GetMotherEnergy());
-//		(runStepAction->GetRunEnCmosTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
-		(runStepAction->GetRunEnCmosTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime());
-//		G4cout<<"CMOSDEBUG  MotherTime= "<< runStepAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime() <<G4endl;
-		(runStepAction->GetRunXCmos()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
-		(runStepAction->GetRunYCmos()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
-		(runStepAction->GetRunZCmos()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
-		(runStepAction->GetRunPartCmos()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		(runStepAction->GetRunEnPter()).push_back(step->GetTotalEnergyDeposit()/keV);
+		(runStepAction->GetRunEnPterPrim()).push_back(runStepAction->GetMotherEnergy());
+//		(runStepAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
+		(runStepAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime());
+//		G4cout<<"PterDEBUG  MotherTime= "<< runStepAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime() <<G4endl;
+		(runStepAction->GetRunXPter()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
+		(runStepAction->GetRunYPter()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
+		(runStepAction->GetRunZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
+		(runStepAction->GetRunPartPter()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
-		//Collect deposited energy in CMOS  due to Sr electons
+		//Collect deposited energy in Pter  due to Sr electons
 		if (runStepAction->GetMotherIsotope() == 0 ) {  //if son of Sr
 			fEventAction->AddEdepSr(step->GetTotalEnergyDeposit());
 		}
 		
-		//Collect deposited energy in CMOS due to Y electons
+		//Collect deposited energy in Pter due to Y electons
 		if (runStepAction->GetMotherIsotope() == 1 ) {  //if son of Y
 			fEventAction->AddEdepY(step->GetTotalEnergyDeposit());
 		}

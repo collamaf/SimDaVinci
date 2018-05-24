@@ -50,10 +50,10 @@ fEdepSr(0.),
 //fEdepEl(0.),
 fEdepY(0.),
 fPassCounterSource(0.),
-fPassCounterCmos(0.),
+fPassCounterPter(0.),
 fNSourceExit(0.),
 fStoreTrackIDSource(0),
-fStoreTrackIDCmos(0),
+fStoreTrackIDPter(0),
 FilePrimaries(file)
 {}
 
@@ -65,8 +65,8 @@ B1EventAction::~B1EventAction()
 
 // Outputfiles definition
 
-//std::ofstream fileOut("cmosenergy.dat", std::ios::out);
-//std::ofstream fileOut1("precmosenergy.dat", std::ios::out);
+//std::ofstream fileOut("Pterenergy.dat", std::ios::out);
+//std::ofstream fileOut1("prePterenergy.dat", std::ios::out);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -79,13 +79,13 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	//zstop=-1000;
 	(fRunAction->GetRunEnPre()).clear();
 	(fRunAction->GetRunPart()).clear();
-	(fRunAction->GetRunEnCmos()).clear();
-	(fRunAction->GetRunEnCmosPrim()).clear();
-	(fRunAction->GetRunEnCmosTime()).clear();
-	(fRunAction->GetRunXCmos()).clear();
-	(fRunAction->GetRunYCmos()).clear();
-	(fRunAction->GetRunZCmos()).clear();
-	(fRunAction->GetRunPartCmos()).clear();
+	(fRunAction->GetRunEnPter()).clear();
+	(fRunAction->GetRunEnPterPrim()).clear();
+	(fRunAction->GetRunEnPterTime()).clear();
+	(fRunAction->GetRunXPter()).clear();
+	(fRunAction->GetRunYPter()).clear();
+	(fRunAction->GetRunZPter()).clear();
+	(fRunAction->GetRunPartPter()).clear();
 	
 	//	if(evento->GetEventID()%7000==0)
 	//	{
@@ -129,9 +129,9 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdepY=0.;
 	fNSourceExit=0;
 	fPassCounterSource=0;
-	fPassCounterCmos=0;
+	fPassCounterPter=0;
 	fStoreTrackIDSource=0;
-	fStoreTrackIDCmos=0;
+	fStoreTrackIDPter=0;
 	/*
 	 fSourceX=0;
 	 fSourceY=0;
@@ -182,7 +182,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleDColumn(0,23, fSourceIsotope);
 	*/
 	
-	//	G4cout<<"CMOSDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
+	//	G4cout<<"PterDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	
 	if(fEdep>0) analysisManager->AddNtupleRow(0);
 	

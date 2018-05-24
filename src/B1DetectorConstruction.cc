@@ -177,8 +177,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	//G4Material* pix_mat = nist->FindOrBuildMaterial("G4_Si");
-	//G4Material* Cmos_mat = nist->FindOrBuildMaterial("G4_Si");
-	G4Material* Cmos_mat = PTerphenyl;
+	//G4Material* Pter_mat = nist->FindOrBuildMaterial("G4_Si");
+	G4Material* Pter_mat = PTerphenyl;
 	G4Material* Plastic_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	//G4Material* carrier_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	
@@ -249,7 +249,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double zDummy=DzDummy*0.5;
 	//###
 	
-	//### CMOS pixel (defaults geom values are for MTV011 Sensor (1))
+	//### Pter pixel (defaults geom values are for MTV011 Sensor (1))
 	G4int ScaleFactor=10; //set to 1 for full simulation, 10 for quick view
 	G4double PixelSize=5.6*um;
 	G4double PixelThickness=4.5*um;
@@ -257,7 +257,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double gapY =0.01*um;
 	G4int noX = 640;
 	G4int noY = 480;
-	G4double DistFilterCmos2=41*um; //distance between filter surface and cmos in sensor 2 (was 441 wtf)
+	G4double DistFilterPter2=41*um; //distance between filter surface and Pter in sensor 2 (was 441 wtf)
 	if (fSensorChoice==2) {
 		PixelSize=1.75*um;
 		PixelThickness=2.5*um;
@@ -274,15 +274,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 	}
 	
-	//### CMOS
+	//### Pter
 	
-	G4double Cmos_inner_r=10.0*mm;
-	G4double Cmos_outer_r=15.0*mm;
-	G4double Cmos_sizeZ=2.5*mm;
-	G4double Cmos_start_angle=0.*deg;
-	G4double Cmos_spanning_angle=360.0*deg;
+	G4double Pter_inner_r=10.0*mm;
+	G4double Pter_outer_r=15.0*mm;
+	G4double Pter_sizeZ=2.5*mm;
+	G4double Pter_start_angle=0.*deg;
+	G4double Pter_spanning_angle=360.0*deg;
 	
-	G4double cmos_ZScan=fZValue;
+	G4double Pter_ZScan=fZValue;
 
 /*
  
@@ -298,7 +298,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	*/
 	
-	//### Carrier behind CMOS
+	//### Carrier behind Pter
 	G4double carrier_sizeX = 50.*mm;
 	G4double carrier_sizeY = 70.*mm;
 	G4double carrier_sizeZ  = 2.*mm;
@@ -577,15 +577,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	if(fSensorChoice==1) {
 		Resin_sizeZ  = 2.5*um;
-		Z_resin = fZValue - Cmos_sizeZ -Resin_sizeZ;
+		Z_resin = fZValue - Pter_sizeZ -Resin_sizeZ;
 	} /*else if (fSensorChoice==2) {
 		Resin_sizeZ  = 0.400*mm;
-		Z_resin= fZValue-DistFilterCmos2 - Resin_sizeZ*0.5;
+		Z_resin= fZValue-DistFilterPter2 - Resin_sizeZ*0.5;
 	}*/
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
 		Resin_mat=world_mat;
 		//Resin_sizeZ=0.1*mm;
-		Z_resin= fZValue - Cmos_sizeZ -Resin_sizeZ;
+		Z_resin= fZValue - Pter_sizeZ -Resin_sizeZ;
 	}
 	G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_resin);
 	
@@ -619,160 +619,52 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//################################################### END OF RESIN FILTER
 	
-	//###################################################
-	// CMOS Si sensoor + PIXELS
-	//##########################
 	
-	//G4int copyNo=0;
-	//Compute CMOS global dimensions
-	/*
-	G4double Cmos_sizeX = (pixX+gapX)*noX-gapX;
-	G4double Cmos_sizeY = (pixY+gapY)*noY-gapY;
-	G4double Cmos_sizeZ  = pixZ;
-	*/
+	G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_ZScan);
 	
-	/*
-	G4double Cmos_inner_r=10.0*mm;
-	G4double Cmos_outer_r=15.0*mm;
-	G4double Cmos_sizeZ=2.5*mm;
-	G4double Cmos_start_angle=0.*deg;
-	G4double Cmos_spanning_angle=360.0*deg;
-	
-	G4double cmos_ZScan=fZValue;
-	*/
-	
-	/*
-	if(fSensorChoice==1) {
-		cmos_ZScan=fZValue + Resin_sizeZ + Cmos_sizeZ*0.5; //modified on 2017.11.21 by collamaf - Z distance does not take into account Cu thickness! is always from source top to possible resin
-	} else if (fSensorChoice==2) {
-		cmos_ZScan= cmos_ZScan - Cmos_sizeZ - Resin_sizeZ;
-	}
-	 */
-	
-	G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, cmos_ZScan);
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidCmos= "<<Cmos_sizeZ/mm<<", Z pos= "<<cmos_ZScan/mm<<G4endl;
-  //G4cout<<"GEOMETRY DEBUG - CmosSizeX= "<<Cmos_sizeX/mm<<", CmosSizeY= "<<Cmos_sizeY/mm<<", CmosSizeZ= "<<pixZ/mm<<G4endl;
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidPter= "<<Pter_sizeZ/mm<<", Z pos= "<<Pter_ZScan/mm<<G4endl;
+  //G4cout<<"GEOMETRY DEBUG - PterSizeX= "<<Pter_sizeX/mm<<", PterSizeY= "<<Pter_sizeY/mm<<", PterSizeZ= "<<pixZ/mm<<G4endl;
 	
 
 	
 	//P-Terphenyl
 	
-	G4Tubs* solidCmos =
-	new G4Tubs("CMOS",                                                                         //its name
-						0.,Cmos_inner_r,Cmos_sizeZ,Cmos_start_angle,Cmos_spanning_angle);                //its size
+	G4Tubs* solidPter =
+	new G4Tubs("Pter",                                                                         //its name
+						0.,Pter_inner_r,Pter_sizeZ,Pter_start_angle,Pter_spanning_angle);                //its size
 	
-	G4LogicalVolume* logicCmos =
-	new G4LogicalVolume(solidCmos,          //its solid
-											Cmos_mat,           //its material
-											"CMOS");            //its name
-	
-	/*
-	//pixel
-	G4Box* solidPix =
-	new G4Box("Pix",                       //its name
-						0.5*pixX,0.5*pixY,0.5*pixZ);     //its size
-	
-	G4LogicalVolume* logicPix =
-	new G4LogicalVolume(solidPix,          //its solid
-											pix_mat,           //its material
-											"Pix");            //its name
-	
-	//G4Region* cmosreg = new G4Region("CMOSReg");
-	logicCmos->SetRegion(cmosreg);
-	cmosreg->AddRootLogicalVolume(logicCmos);
-	
-	logicPix->SetRegion(cmosreg);
-	cmosreg->AddRootLogicalVolume(logicPix);
-	
-	G4cout<<"GEOMETRY DEBUG - I will place "<<noY* noX<<" pixels"<<G4endl;
-*/
+	G4LogicalVolume* logicPter =
+	new G4LogicalVolume(solidPter,          //its solid
+											Pter_mat,           //its material
+											"Pter");            //its name
 	
 	
-	/*
-	
-	//placement of the pixel in CMOS - until 2018-01-18 was inverted: was before x and than y, but now is consistent with following analysis
-	for (G4int iy = 1; iy <= noY ; iy++){ //up to 488
-		for (G4int ix = 1; ix <= noX ; ix++){ // up to 648
-			G4ThreeVector posPixX = G4ThreeVector((-0.5*Cmos_sizeX+ix*(pixX+gapX)-0.5*pixX-gapX),
-																						(-0.5*Cmos_sizeY+iy*(pixY+gapY)-0.5*pixY-gapY)
-																						,0);
-			copyNo++;
-			new G4PVPlacement(0,                     //no rotation
-												posPixX,       //at (0,0,0)
-												logicPix,            //its logical volume
-												"CMOS",               //its name
-												logicCmos,            //its mother  volume
-												false,                 //no boolean operation
-												copyNo,                     //copy number
-												0);        //overlaps checking
-		}
-	}
-	
-*/
-	
-	// place detector-CMOS in world
+	// place detector-Pter in world
 	new G4PVPlacement(0,                     //no rotation
 										pos2,
-										logicCmos,            //its logical volume
-										"CMOS",               //its name
+										logicPter,            //its logical volume
+										"Pter",               //its name
 										logicWorld,            //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
 	
-	//################################################### END OF CMOS+PIXELS
+	//################################################### END OF Pter+PIXELS
 	
+
 	
-	//###################################################
-	// CMOS-carrier PVC
-	//##########################
-	
-	/*
-	 
-	G4double carrier_Z=cmos_ZScan +0.5*carrier_sizeZ + Cmos_sizeZ;
-	G4ThreeVector posCarrier = G4ThreeVector(fX0Scan, 0, carrier_Z);
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidCarrier= "<<carrier_sizeZ/mm<<", Z pos= "<<carrier_Z/mm<<G4endl;
-	
-	G4Box* solidCarrier =
-	new G4Box("Carrier",                       //its name
-						0.5*carrier_sizeX,0.5*carrier_sizeY,0.5*carrier_sizeZ);     //its size
-	
-	G4LogicalVolume*  logicCarrier=
-	new G4LogicalVolume(solidCarrier,          //its solid
-											carrier_mat,           //its material
-											"Carrier");            //its name
-	
-	new G4PVPlacement(0,                     //no rotation
-										posCarrier,            //at (0,0,0)
-										logicCarrier,          //its logical volume
-										"Carrier",             //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-	 
-	 
-	
-	//G4Region* carrierreg = new G4Region("CarrierReg");
-	logicCarrier->SetRegion(carrierreg);
-	carrierreg->AddRootLogicalVolume(logicCarrier);
-	 
-	 */
-	
-	//################################################### END OF CMOS carrier
+	//################################################### END OF Pter carrier
 	
 	// Set scoring volume
-	//Pixelated CMOS
+	//Pixelated Pter
 	//fScoringVolume = logicPix;
 	
-	//G4Region* cmosreg = new G4Region("CMOSReg");
-	logicCmos->SetRegion(cmosreg);
-	cmosreg->AddRootLogicalVolume(logicCmos);
+	//G4Region* Pterreg = new G4Region("PterReg");
+	logicPter->SetRegion(pterreg);
+	pterreg->AddRootLogicalVolume(logicPter);
 	
-	//Solid Si CMOS
-	fScoringVolume = logicCmos;
+	//Solid Si Pter
+	fScoringVolume = logicPter;
 	
 	//###################################################
 	// Plastic around P-Terphenyl
@@ -780,7 +672,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4Tubs* solidPlastic =
 	new G4Tubs("Plastic",                                                                         //its name
-						 Cmos_inner_r,Cmos_outer_r,Cmos_sizeZ,Cmos_start_angle,Cmos_spanning_angle);                //its size
+						 Pter_inner_r,Pter_outer_r,Pter_sizeZ,Pter_start_angle,Pter_spanning_angle);                //its size
 	
 	G4LogicalVolume* logicPlastic =
 	new G4LogicalVolume(solidPlastic,          //its solid
@@ -803,7 +695,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 /*
- G4Box* solidCmos =
-new G4Tubs("CMOS",                       //its name
-					 0.5*Cmos_sizeX,0.5*Cmos_sizeY,0.5*Cmos_sizeZ);     //its size
+ G4Box* solidPter =
+new G4Tubs("Pter",                       //its name
+					 0.5*Pter_sizeX,0.5*Pter_sizeY,0.5*Pter_sizeZ);     //its size
  */

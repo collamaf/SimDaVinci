@@ -105,10 +105,11 @@ int main(int argc,char** argv)
 	
 	if (SrSourceFlag) FileNamePrim.append("_Sr");
 	
+	/*
 	if (SensorChoice==1) FileNamePrim.append("_011");
 	if (SensorChoice==2) FileNamePrim.append("_115");
 	if (SensorChoice==3) FileNamePrim.append("_60035");
-
+*/
 	FileNamePrim.append(+ ".dat");
 	std::ofstream primFile(FileNamePrim, std::ios::out);
 	

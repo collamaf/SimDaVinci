@@ -63,13 +63,13 @@ public:
 	// void AddEdepEl (G4double edepEl);
 	
 	
-	std::vector<G4double>& GetRunEnCmos() {return RunVectorEnCmos; }
-	std::vector<G4double>& GetRunEnCmosPrim() {return RunVectorEnCmosPrim; }
-	std::vector<G4float>& GetRunEnCmosTime() {return RunVectorEnCmosTime; }
-	std::vector<G4double>& GetRunXCmos() {return RunVectorXCmos; }
-	std::vector<G4double>& GetRunYCmos() {return RunVectorYCmos; }
-	std::vector<G4double>& GetRunZCmos() {return RunVectorZCmos; }
-	std::vector<G4double>& GetRunPartCmos() {return RunVectorPartCmos; }
+	std::vector<G4double>& GetRunEnPter() {return RunVectorEnPter; }
+	std::vector<G4double>& GetRunEnPterPrim() {return RunVectorEnPterPrim; }
+	std::vector<G4float>& GetRunEnPterTime() {return RunVectorEnPterTime; }
+	std::vector<G4double>& GetRunXPter() {return RunVectorXPter; }
+	std::vector<G4double>& GetRunYPter() {return RunVectorYPter; }
+	std::vector<G4double>& GetRunZPter() {return RunVectorZPter; }
+	std::vector<G4double>& GetRunPartPter() {return RunVectorPartPter; }
 	
 	std::vector<G4double>& GetRunEnExit() {return RunVectorEnExit; }
 	std::vector<G4double>& GetRunXExit() {return RunVectorXExit; }
@@ -147,13 +147,13 @@ private:
 	void CreateHistogram();
 	void WriteHistogram();
 	
-	std::vector<G4double> RunVectorEnCmos;
-	std::vector<G4double>	RunVectorEnCmosPrim;
-	std::vector<G4float>	RunVectorEnCmosTime;
-	std::vector<G4double> RunVectorXCmos;
-	std::vector<G4double> RunVectorYCmos;
-	std::vector<G4double> RunVectorZCmos;
-	std::vector<G4double> RunVectorPartCmos;
+	std::vector<G4double> RunVectorEnPter;
+	std::vector<G4double>	RunVectorEnPterPrim;
+	std::vector<G4float>	RunVectorEnPterTime;
+	std::vector<G4double> RunVectorXPter;
+	std::vector<G4double> RunVectorYPter;
+	std::vector<G4double> RunVectorZPter;
+	std::vector<G4double> RunVectorPartPter;
 	
 	std::vector<G4double> RunVectorEnPre;
 	std::vector<G4double> RunVectorPart;

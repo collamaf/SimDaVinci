@@ -80,11 +80,11 @@ public:
 	void ResetPassCounterSource() {fPassCounterSource=0;}
 	G4int GetPassCounterSource(void) {return fPassCounterSource;}
 	
-	void SetStoreTrackIDCmos(G4int trid) {fStoreTrackIDCmos=trid;}
-	G4int GetStoreTrackIDCmos(void) {return fStoreTrackIDCmos;}
-	void AddPassCounterCmos(G4int num) {fPassCounterCmos+=num;}
-	void ResetPassCounterCmos() {fPassCounterCmos=0;}
-	G4int GetPassCounterCmos(void) {return fPassCounterCmos;}
+	void SetStoreTrackIDPter(G4int trid) {fStoreTrackIDPter=trid;}
+	G4int GetStoreTrackIDPter(void) {return fStoreTrackIDPter;}
+	void AddPassCounterPter(G4int num) {fPassCounterPter+=num;}
+	void ResetPassCounterPter() {fPassCounterPter=0;}
+	G4int GetPassCounterPter(void) {return fPassCounterPter;}
 	
 	
 	
@@ -122,7 +122,7 @@ private:
 	G4double fSourceCosZ;
 	
 	G4int fPassCounterSource;
-	G4int fPassCounterCmos;
+	G4int fPassCounterPter;
 
 	G4double fNSourceExit;
 	
@@ -137,7 +137,7 @@ private:
 	 */
 	G4String fExitProcess;
 	G4int fStoreTrackIDSource;
-	G4int fStoreTrackIDCmos;
+	G4int fStoreTrackIDPter;
 	std::ofstream &FilePrimaries;
 };
 

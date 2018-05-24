@@ -204,7 +204,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->SetVerboseLevel(1);
 	
 	// Open an output file
-	G4String fileNameBase = "CMOSmc";
+	G4String fileNameBase = "Ptermc";
 	G4String fileName;
 	
 	if (fCuDiam>=0){
@@ -217,10 +217,11 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==1) fileName.append("_PSr");
 	if (fSourceSelect==2) fileName.append("_ExtSr");
 	if (fSourceSelect==3) fileName.append("_ExtY");
+	/*
 	if (fSensorChoice==1) fileName.append("_011");
 	if (fSensorChoice==2) fileName.append("_115");
 	if (fSensorChoice==3) fileName.append("_60035");
-
+*/
 	
 	analysisManager->OpenFile(fileName);
 
@@ -231,19 +232,19 @@ void B1RunAction::CreateHistogram()
 	
 	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
 	analysisManager->CreateNtupleDColumn(0,"EabsComp", RunVectorEAbsComp); //1
-	analysisManager->CreateNtupleDColumn(0,"PreCmosTrackN");                  //2
-	analysisManager->CreateNtupleDColumn(0,"PreCmosPart", RunVectorPart); //3
-	analysisManager->CreateNtupleDColumn(0,"PreCmosEn", RunVectorEnPre); //4
-	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
-	analysisManager->CreateNtupleDColumn(0,"InCmosPart", RunVectorPartCmos); //6
-	analysisManager->CreateNtupleDColumn(0,"InCmosEn", RunVectorEnCmos); //7
-	analysisManager->CreateNtupleDColumn(0,"InCmosEnPrim", RunVectorEnCmosPrim); //7b
-	analysisManager->CreateNtupleFColumn(0,"InCmosTime", RunVectorEnCmosTime); //7c
-	analysisManager->CreateNtupleDColumn(0,"InCmosX", RunVectorXCmos); //8
-	analysisManager->CreateNtupleDColumn(0,"InCmosY", RunVectorYCmos); //9
-	analysisManager->CreateNtupleDColumn(0,"InCmosZ", RunVectorZCmos); //10
-//	analysisManager->CreateNtupleDColumn(0,"InCmosEnSr");
-//	analysisManager->CreateNtupleDColumn(0,"InCmosEnY");
+	analysisManager->CreateNtupleDColumn(0,"PrePterTrackN");                  //2
+	analysisManager->CreateNtupleDColumn(0,"PrePterPart", RunVectorPart); //3
+	analysisManager->CreateNtupleDColumn(0,"PrePterEn", RunVectorEnPre); //4
+	analysisManager->CreateNtupleDColumn(0,"InPterTrackN");                   //5
+	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVectorPartPter); //6
+	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVectorEnPter); //7
+	analysisManager->CreateNtupleDColumn(0,"InPterEnPrim", RunVectorEnPterPrim); //7b
+	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVectorEnPterTime); //7c
+	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVectorXPter); //8
+	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVectorYPter); //9
+	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVectorZPter); //10
+//	analysisManager->CreateNtupleDColumn(0,"InPterEnSr");
+//	analysisManager->CreateNtupleDColumn(0,"InPterEnY");
 	analysisManager->CreateNtupleDColumn(0,"PixelID", RunVectorPixNo); //11
 //	analysisManager->CreateNtupleDColumn(0,"EDepInPixel", RunVectorPixEneDep); //12
 	analysisManager->CreateNtupleDColumn(0,"PixXPos", RunVectorPixXpos); //13

@@ -52,20 +52,23 @@ G4ClassificationOfNewTrack
 B1StackingAction::ClassifyNewTrack(const G4Track* track)
 {
 	G4int debug=0;
-	if (debug) G4cout<<"CMOSDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", MotherIsotope Val= "<< runStackAction->GetMotherIsotope()
+	if (debug) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", MotherIsotope Val= "<< runStackAction->GetMotherIsotope()
 	<<G4endl;
 	//keep primary particle
 	//	if (track->GetParentID() == 0) return fUrgent;
-	//	if (track->GetParentID() == 1 && track->GetDynamicParticle() ->GetPDGcode()==11)		  G4cout<<"CMOSDEBUG PROVA STACKING elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
+	//	if (track->GetParentID() == 1 && track->GetDynamicParticle() ->GetPDGcode()==11)		  G4cout<<"PterDEBUG PROVA STACKING elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
 //	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
     
     fEventAction->ResetPassCounterSource(); //collamaf: at each new track we reset the pass counter
-	fEventAction->ResetPassCounterCmos(); //collamaf: at each new track we reset the pass counter
+	fEventAction->ResetPassCounterPter(); //collamaf: at each new track we reset the pass counter
 	
+	if (fabs(track->GetDynamicParticle() ->GetPDGcode())==12) return fKill;
+		
+		
 	if (track->GetDynamicParticle() ->GetPDGcode()==11) { //if I generated an electron
-		if (debug) G4cout<<"CMOSDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
+		if (debug) G4cout<<"PterDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
 		if (track->GetParentID() == 1) { //figlio di Sr
-			if (debug) G4cout<<"CMOSDEBUG Sr Setto il MotherIsotope a 0"<<G4endl;
+			if (debug) G4cout<<"PterDEBUG Sr Setto il MotherIsotope a 0"<<G4endl;
 			runStackAction->SetMotherIsotope(0);
 			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
@@ -75,11 +78,11 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 			(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
 			(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
 		} else if (track->GetParentID() == 2) {  //figlio di Y
-			if (debug) G4cout<<"CMOSDEBUG Y Setto il MotherIsotope a 1"<<G4endl;
+			if (debug) G4cout<<"PterDEBUG Y Setto il MotherIsotope a 1"<<G4endl;
 			runStackAction->SetMotherIsotope(1);
 			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-//			G4cout<<"CMOSDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
+//			G4cout<<"PterDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
 			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
 			(runStackAction->GetRunIsotopeGen()).push_back(1);
 			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());

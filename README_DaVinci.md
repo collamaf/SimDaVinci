@@ -1,4 +1,4 @@
-# Full simulation of CMOS beta- probe in Geant4
+# Full simulation of Pter beta- probe in Geant4
 
 ## HOW TO RUN:
 ```
@@ -26,10 +26,10 @@ Sensor Choice:
 ## GEOMETRY
 - Extended Sr Source ending at Z=0
 - Cu collimator on top of Sr source (toggleble)
-- CMOS Detector starting at Z offset (Z distance is from source surface and possible resin (in case of sensor 1 or up to the sensor in case of sensor 2, even if with filter)
-- Sensor resin filter in contact with CMOS (towards source)
+- Pter Detector starting at Z offset (Z distance is from source surface and possible resin (in case of sensor 1 or up to the sensor in case of sensor 2, even if with filter)
+- Sensor resin filter in contact with Pter (towards source)
 - Dummy volume for scoring purposes between source (or if presente CU Collimator) and World to score what exits the primary generation
-- "infinite" carrier volume behind CMOS to simulate mechanical support
+- "infinite" carrier volume behind Pter to simulate mechanical support
 
 
 ## PHYSICS
@@ -66,30 +66,30 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - ExitTrackN: number of different tracks exiting the source per event
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
-- Eabs: energy absorbed in CMOS [keV];
-- EAbsComp[2]: vector containing energy absorbed in CMOS [keV] due to Sr (comp 1) and to Y (comp 2)
-- PreCmosTrackN: number of tracks entering Cmos per primary (from front resin) (it's the length of the following vector);
-- PreCmosPart[PreCmosTrackN]: kind of particle of each track entering Cmos(from front resin);
-- PreCmosEn[PreCmosTrackN]: kinetic energy of particle of each tracks entering Cmos (from front resin) [keV];
-- InCmosTrackN: number of hits inside Cmos (it's the length of the following vector);
-- InCmosPart[InCmosTrackN]: kind of particle of hit inside Cmos;
-- InCmosEn[InCmosTrackN]: energy deposit of single hit of particle inside Cmos;
-- InCmosEnPrim[InCmosTrackN]: energy of the primary particle that origined the hit of particle inside Cmos [keV];
-- InCmosTime[InCmosTrackN]: time of interaction of hit inside Cmos [ns] (To be really undersood);
-- InCmosX[InCmosTrackN]: X position of hit inside Cmos [mm];
-- InCmosY[InCmosTrackN]: Y position of hit inside Cmos [mm];
-- InCmosZ[InCmosTrackN]: Z position of hit inside Cmos [mm];
-- PixelID[InCmosTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
-- PixXPos[InCmosTrackN]: x position of the pixel in which the hit occurred [mm];
-- PixYPos[InCmosTrackN]: y position of the pixel in which the hit occurred [mm];
-- SourceX: X coordinate of primary particle (isotope) giving a signal in Cmos [mm];
-- SourceY: Y coordinate of primary particle (isotope) giving a signal in Cmos [mm];
-- SourceZ: Z coordinate of primary particle (isotope) giving a signal in Cmos [mm];
-- SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Cmos;
-- SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Cmos;
-- SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Cmos;
-- SourceEne[2]: kinetic energy of  decay electron(s)  giving a signal in Cmos [keV];
-- SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Cmos;
+- Eabs: energy absorbed in Pter [keV];
+- EAbsComp[2]: vector containing energy absorbed in Pter [keV] due to Sr (comp 1) and to Y (comp 2)
+- PrePterTrackN: number of tracks entering Pter per primary (from front Alluminum) (it's the length of the following vector);
+- PrePterPart[PrePterTrackN]: kind of particle of each track entering Pter(from front resin);
+- PrePterEn[PrePterTrackN]: kinetic energy of particle of each tracks entering Pter (from front resin) [keV];
+- InPterTrackN: number of hits inside Pter (it's the length of the following vector);
+- InPterPart[InPterTrackN]: kind of particle of hit inside Pter;
+- InPterEn[InPterTrackN]: energy deposit of single hit of particle inside Pter;
+- InPterEnPrim[InPterTrackN]: energy of the primary particle that origined the hit of particle inside Pter [keV];
+- InPterTime[InPterTrackN]: time of interaction of hit inside Pter [ns] (To be really undersood);
+- InPterX[InPterTrackN]: X position of hit inside Pter [mm];
+- InPterY[InPterTrackN]: Y position of hit inside Pter [mm];
+- InPterZ[InPterTrackN]: Z position of hit inside Pter [mm];
+- PixelID[InPterTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
+- PixXPos[InPterTrackN]: x position of the pixel in which the hit occurred [mm];
+- PixYPos[InPterTrackN]: y position of the pixel in which the hit occurred [mm];
+- SourceX: X coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- SourceY: Y coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- SourceZ: Z coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Pter;
+- SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Pter;
+- SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Pter;
+- SourceEne[2]: kinetic energy of  decay electron(s)  giving a signal in Pter [keV];
+- SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Pter;
 - Nev: storing number of events generated
 
 
@@ -102,9 +102,9 @@ Per disegnare contributi Sr e Y:
 ```
 B1->Draw("Eabs")
 B1->SetLineColor(kBlue)
-B1->Draw("InCmosEnSr","","same")
+B1->Draw("InPterEnSr","","same")
 B1->SetLineColor(kRed)
-B1->Draw("InCmosEnY","","same")
+B1->Draw("InPterEnY","","same")
 ````
 
 ## CHANGELOG
@@ -127,15 +127,15 @@ B1->Draw("InCmosEnY","","same")
 - Changed "ExtY" to "ExtY" in output file naming
 
 2018.04.23 by collamaf
-- Now resin is always present in front of CMOS, if flag not selected made of air (useful for scoring)
-- Added double crossing check also for particles entering CMOS
+- Now resin is always present in front of Pter, if flag not selected made of air (useful for scoring)
+- Added double crossing check also for particles entering Pter
 
 2018.04.26 by collamaf
-- Added InCmosEnPrim to bring primary particle info to Riduzione and DataAnalysis
+- Added InPterEnPrim to bring primary particle info to Riduzione and DataAnalysis
 
 2018.05.7 by collamaf
 - first implementation of storage of time of interection. Still not clear which time to save...
-- Introduced possibility to simulate bare SiPm (assumed to be a particular version of CMOS detector): SensorChoice=3
+- Introduced possibility to simulate bare SiPm (assumed to be a particular version of Pter detector): SensorChoice=3
 
 
 
