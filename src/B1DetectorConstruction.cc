@@ -767,6 +767,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//Pixelated CMOS
 	//fScoringVolume = logicPix;
 	
+	//G4Region* cmosreg = new G4Region("CMOSReg");
+	logicCmos->SetRegion(cmosreg);
+	cmosreg->AddRootLogicalVolume(logicCmos);
+	
 	//Solid Si CMOS
 	fScoringVolume = logicCmos;
 	

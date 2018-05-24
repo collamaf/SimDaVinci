@@ -81,9 +81,9 @@ void B1PhysicsList::SetCuts()
 	region->SetProductionCuts(cuts);
 	*/
 	G4ProductionCuts* cuts = new G4ProductionCuts;
-	cuts->SetProductionCut(0.01*mm);
+	cuts->SetProductionCut(0.1*mm);
 	G4ProductionCuts* cutsCMOS = new G4ProductionCuts;
-	cutsCMOS->SetProductionCut(0.001*mm);
+	cutsCMOS->SetProductionCut(0.1*mm);
 	
 	G4RegionStore::GetInstance()->GetRegion("ABSRegion")->SetProductionCuts(cuts);
 	G4RegionStore::GetInstance()->GetRegion("CMOSReg")->SetProductionCuts(cutsCMOS);
