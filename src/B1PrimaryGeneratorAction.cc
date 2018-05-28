@@ -64,10 +64,10 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect)
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness)
 : G4VUserPrimaryGeneratorAction(),
 fParticleGun(0) ,
-evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
+evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness)
 
 {
 	G4int n_particle = 1;
@@ -75,7 +75,8 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 	G4bool fPointLike=true;
 	G4bool fExtended=false;
 	G4bool fSTB=false; 
-	
+	G4bool fGa=false;
+
 	if (fSourceSelect==1) {  //pointlike Sr
 		fPointLike=true;
 		fExtended=false;
@@ -88,6 +89,11 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 		fPointLike=false;
 		fExtended=false;
 		fSTB=true;
+	} else if (fSourceSelect==4) {
+		fPointLike=false;
+		fExtended=false;
+		fSTB=false;
+		fGa=true;
 	}
 	
 	if (fSTB) {
@@ -105,6 +111,11 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
 		fDZInt=0*mm;
 		fRadiusExt=8*mm;
 		fDZExt=0*mm;
+	} else if (fGa) {
+		fRadiusInt=fSourceDiameter/2.*mm;
+		fDZInt=0*mm;
+		fRadiusExt=fSourceDiameter/2.*mm;
+		fDZExt=fSourceThickness*mm;
 	}
 	
 	
@@ -128,7 +139,7 @@ B1PrimaryGeneratorAction::~B1PrimaryGeneratorAction()
 
 void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 {
-	fSourceSelect=4;
+//	fSourceSelect=4;
 	//Stronzium
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
@@ -155,7 +166,8 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double zSource=0;
 	G4double zSourceOffset=1e-6*mm; //to avoid generating particles at the very boundary of source!
 
-	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
+//	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
+		if (fSourceSelect==1||fSourceSelect==2) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		zSource = -zSourceOffset;
@@ -176,6 +188,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fRadiusMin=0*mm;
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
+		}else if (fSourceSelect==4) {
+			fRadiusMax=fRadiusInt;
+			fRadiusMin=0*mm;
+			fZ=fDZInt;
+			zSource = -G4UniformRand()*fZ-zSourceOffset;
 		}
 	}
 		

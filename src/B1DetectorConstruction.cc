@@ -233,9 +233,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### Ga Source Container
-	G4double rSourceExtGa = fSourceDiameter*0.5;
+	G4double rSourceExtGa = fSourceDiameter*0.5*mm;
 	G4double RContainer = 50*mm;
-	G4double dzSourceExtGa= fSourceThickness;
+	G4double dzSourceExtGa= fSourceThickness*mm;
 	G4double DzContainer= 20*mm;
 	G4double SPhiSourceExtGa = 0.*deg;
 	G4double DPhiSourceExtGa = 360.*deg;
@@ -252,7 +252,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Copper Collimator
 	G4double RminCo = fabs(fCuDiam)/2.;
 	G4double RmaxCo = 18.*mm;
-	G4double DzCo= fAbsorberThickness;
+	G4double DzCo= fAbsorberThickness*mm;
 	G4double SPhiCo = 0.*deg;
 	G4double DPhiCo = 360.*deg;
 	//###
@@ -271,9 +271,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//### Pter
 	
-	G4double Pter_Diam=fPterDiameter;
+	G4double Pter_Diam=fPterDiameter*mm;
 	G4double PVC_outer_r=12.0*mm/2.;
-	G4double Pter_sizeZ=fPterThickness;
+	G4double Pter_sizeZ=fPterThickness*mm;
 	G4double Pter_start_angle=0.*deg;
 	G4double Pter_spanning_angle=360.0*deg;
 	G4double Pter_Posz;

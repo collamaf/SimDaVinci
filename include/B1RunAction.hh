@@ -49,7 +49,7 @@ class G4Run;
 class B1RunAction : public G4UserRunAction
 {
 public:
-	B1RunAction(G4double, G4double, G4double, G4int, G4double, G4int, G4int);
+	B1RunAction(G4double, G4double, G4double, G4int, G4double, G4int, G4int, G4String);
 	virtual ~B1RunAction();
 	
 	// virtual G4Run* GenerateRun();
@@ -195,7 +195,7 @@ private:
 	 std::vector<G4double> RunVectorSourceZ;
 	 std::vector<G4double> RunVectorSourceEne;
 	 */
-	
+	G4String fFileNameALL;
 	
 };
 

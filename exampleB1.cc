@@ -83,7 +83,7 @@ int main(int argc,char** argv)
 		PterThickness=strtod(argv[9],NULL);
 		SourceDiameter=strtod(argv[10],NULL);
 		SourceThickness=strtod(argv[11],NULL);
-		AbsorberThickness=strtod(argv[11],NULL);
+		AbsorberThickness=strtod(argv[12],NULL);
 
 
 		
@@ -107,21 +107,50 @@ int main(int argc,char** argv)
 	G4int SourceSelect=SourceChoice;
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
-	G4String FileNamePrim;
+	G4String FileNamePrim="Primaries";
+	G4String OutFileName="PTERmc";
+	G4String FileNameCommonPart;
 	
+	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));
+	
+	if (CuDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)AbsorberThickness)+"_AbsHole" + std::to_string((G4int)CuDiam) +"_AbsMat" + std::to_string((G4int)AbsorberMaterial));
+	else FileNameCommonPart.append("_NoAbs");
+
+	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
+	FileNameCommonPart.append("_Z"+ std::to_string((G4int)ZValue));
+	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
+	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
+	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
+	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)SourceDiameter) + "_Dz" + std::to_string((G4int)SourceThickness));
+	
+	FileNamePrim.append(FileNameCommonPart);
+	OutFileName.append(FileNameCommonPart);
+
+	/*
 	if (CuDiam>=0){
-		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+		FileNameCommonPart="X"+ std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
 	}
 	else	{
-		FileNamePrim="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+		FileNameCommonPart="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
 	}
+	
+	FileNamePrim.append(FileNameCommonPart);
+
+	
+	if (fCuDiam>=0){
+		FileNameCommonPart= "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_CuD" + std::to_string((G4int)fCuDiam) + "_TBR" + std::to_string((G4int)(10*fTBR))    );
+	}
+	else {
+		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_NOCuD" + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
+	}
+	
 	
 	
 	if (SourceSelect==1) FileNamePrim.append("_PSr");
 	if (SourceSelect==2) FileNamePrim.append("_ExtSr");
 	if (SourceSelect==3) FileNamePrim.append("_ExtY");
 	if (SourceSelect==4) FileNamePrim.append("_ExtGa");
-	
+	*/
 	/*
 	if (SensorChoice==1) FileNamePrim.append("_011");
 	if (SensorChoice==2) FileNamePrim.append("_115");
@@ -157,7 +186,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, AbsorberMaterial));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName));
 	
 	// Initialize visualization
 	//

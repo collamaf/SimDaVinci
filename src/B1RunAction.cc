@@ -48,7 +48,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4double TBR, G4int SourceSelect, G4int SensorChoice)
+B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4String FileNameALL)
 : G4UserRunAction(),
 fEdep("Edep", 0.),
 fEdep2("Edep2", 0.),
@@ -60,6 +60,7 @@ fEdkin("Edkin", 0.)
 , fTBR(TBR)
 , fSourceSelect(SourceSelect)
 , fSensorChoice(SensorChoice)
+, fFileNameALL(FileNameALL)
 
 {
 	// Register accumulable to the accumulable manager
@@ -203,6 +204,7 @@ void B1RunAction::CreateHistogram()
 	// Create directories
 	analysisManager->SetVerboseLevel(1);
 	
+
 	// Open an output file
 	G4String fileNameBase = "PTERmc";
 	G4String fileName;
@@ -219,13 +221,16 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==3) fileName.append("_ExtY");
 	if (fSourceSelect==4) fileName.append("_ExtGa");
 
+	fFileNameALL.append(".root");
+	G4cout<<" Output file name: "<<fFileNameALL<<G4endl;
 	/*
 	if (fSensorChoice==1) fileName.append("_011");
 	if (fSensorChoice==2) fileName.append("_115");
 	if (fSensorChoice==3) fileName.append("_60035");
 */
 	
-	analysisManager->OpenFile(fileName);
+//	analysisManager->OpenFile(fileName);
+	analysisManager->OpenFile(fFileNameALL);
 
 	// Creating ntuple
 	
