@@ -204,11 +204,12 @@ void B1RunAction::CreateHistogram()
 	// Create directories
 	analysisManager->SetVerboseLevel(1);
 	
-
+	/*
 	// Open an output file
 	G4String fileNameBase = "PTERmc";
 	G4String fileName;
 	
+
 	if (fCuDiam>=0){
 		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_CuD" + std::to_string((G4int)fCuDiam) + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
 	}
@@ -220,7 +221,9 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==2) fileName.append("_ExtSr");
 	if (fSourceSelect==3) fileName.append("_ExtY");
 	if (fSourceSelect==4) fileName.append("_ExtGa");
-
+*/
+	
+	
 	fFileNameALL.append(".root");
 	G4cout<<" Output file name: "<<fFileNameALL<<G4endl;
 	/*
