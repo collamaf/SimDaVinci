@@ -89,6 +89,7 @@
 /vis/scene/add/date    # Date stamp
 /vis/scene/add/logo2D  # Simple logo
 /vis/scene/add/logo    # 3D logo
+/vis/scene/add/axes 0 0 0 10 cm
 #
 # Frame
 /vis/set/colour red
@@ -114,6 +115,12 @@
 /vis/geometry/set/colour ABSbehind 0 0 0 1 1
 /vis/geometry/set/colour ABSaround 0 0 0 1 1
 /vis/geometry/set/colour Carrier 0 1 1 1 0.05
+/vis/geometry/set/colour PVC 0 0.988235 0 0.0588235 1
+/vis/geometry/set/colour GaContainer 0 0 0 1 1
+/vis/geometry/set/colour Delrin 0 0.984314 0.992157 0.0392157 1
+/vis/geometry/set/colour Pter 0 0.117647 0.94902 1 1
+/vis/geometry/set/colour SourceExtGa 0 0.117647 0.94902 1 1
+/vis/geometry/set/colour FrontShield 0 0.137255 1 0.0235294 1
 /vis/geometry/set/colour CuCollimator 0 1 0.57 0.3 1
 #/vis/geometry/set/colour [logic name] depth R G B opacity
 #

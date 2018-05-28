@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4int SourceSelect, G4int SensorChoice,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness)
+fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -120,7 +120,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
-	if (fSensorChoice==2) density=2.43;
+	//if (fSensorChoice==2) density=2.43;
 	G4Material* FrontShield = new G4Material (name="FrontShield", density, ncomponents=3);
 	FrontShield->AddElement (elH, natoms=30);
 	FrontShield->AddElement (elC, natoms=20);
@@ -178,7 +178,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	
 	
-	
 	//############ MATERIAL ASSIGNMENT
 	G4Material* SourceExtY_mat = AgarAgar;
 	G4Material* ABSaround_mat = ABS;
@@ -188,11 +187,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* SourceExtGa_mat=nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
 	G4Material* FrontShield_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* Pter_mat = PTerphenyl;
 	G4Material* PVC_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* Delrin_mat=Delrin;
+	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
+
+	
+	
 	
 	//###################################################################
 	//###################################################
@@ -263,7 +265,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double DzDummy= 1.e-5*mm;
 	G4double SPhiDummy = 0.*deg;
 	G4double DPhiDummy = 360.*deg;
-	G4double zDummy=DzDummy*0.5;
+	G4double zDummy;
 	//###
 	
 	
@@ -542,13 +544,17 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}
 	
 	
+	//################################################### END Ga SOURCE
+
+	
 	
 	//###################################################
 	//Copper Collimator
 	//##########################
+	
 	G4ThreeVector posCo = G4ThreeVector(0, 0, DzCo*0.5);
 	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
+	//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 	
 	G4Tubs* solidShapeCo =
 	new G4Tubs("CuCollimator",                       //its name
@@ -557,6 +563,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 0.5*DzCo,
 						 SPhiCo,
 						 DPhiCo);     //its size
+	
+	if(fAbsorberMaterial==1){
+		shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
+	}else if(fAbsorberMaterial==2){
+		shapeCo_mat = nist->FindOrBuildMaterial("G4_Pb");
+	}else if(fAbsorberMaterial==3){
+		shapeCo_mat = nist->FindOrBuildMaterial("MyAlu");
+	}else if(fAbsorberMaterial==4){
+		shapeCo_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	}
+	
+	G4cout<<"GEOMETRY DEBUG - absorber mat="<<shapeCo_mat<<G4endl;
 	
 	G4LogicalVolume* logicShapeCo =
 	new G4LogicalVolume(solidShapeCo,          //its solid
@@ -631,6 +649,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	
+	
+	//###################################################
+	//Probe
+	//##########################
+	
+	
+	
+	
 	//###################################################
 	//Electron Filter FrontShield
 	//##########################
@@ -645,13 +671,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	
-	if(fSensorChoice==1) {
-		if(fCuDiam<0){
-			Z_FrontShield= fZValue + zDummy + FrontShield_sizeZ*0.5;
-		}else{
-			Z_FrontShield= fZValue + zDummy + FrontShield_sizeZ*0.5;
-		}
-	}
+	Z_FrontShield = fZValue + FrontShield_sizeZ*0.5;
+	
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
 		FrontShield_mat=world_mat;
 	}
@@ -695,7 +716,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 	
-	//P-Terphenyl
+	
+	//###################################################
+	// 	P-Terphenyl
+	//##########################
 	
 	//G4cout<<"GEOMETRY DEBUG Pter Diameter "<<fPterDiameter<<G4endl;
 	//G4cout<<"GEOMETRY DEBUG Pter thickness "<<fPterThickness<<G4endl;
@@ -711,8 +735,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	// place detector-Pter in world
-	if(fCuDiam<0){
-		Pter_Posz = Pter_ZScan + zDummy + FrontShield_sizeZ + Pter_sizeZ*0.5;
+
+		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
 		new G4PVPlacement(0,                     //no rotation
 											pos2,
@@ -730,26 +754,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		//Solid Si Pter
 		fScoringVolume = logicPter;
-	}else{
-		Pter_Posz = Pter_ZScan + zDummy + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicPter,            //its logical volume
-											"Pter",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//G4Region* Pterreg = new G4Region("PterReg");
-		logicPter->SetRegion(pterreg);
-		pterreg->AddRootLogicalVolume(logicPter);
-		
-		//Solid Si Pter
-		fScoringVolume = logicPter;
-	}
+	
 	
 	//###################################################
 	// PVC around P-Terphenyl
@@ -764,8 +769,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											PVC_mat,              //its material
 											"PVC");            //its name
 	
-	if(fCuDiam<0){
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+	
 	new G4PVPlacement(0,                     //no rotation
 										pos2,
 										logicPVC,            //its logical volume
@@ -774,17 +778,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	}else{
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicPVC,            //its logical volume
-											"PVC",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-	}
 	
 	
 	//###################################################
@@ -803,8 +796,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											Delrin_mat,           //its material
 											"Delrin");            //its name
 	
-	if(fCuDiam<0){
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+	
 		new G4PVPlacement(0,                     //no rotation
 											pos2,
 											logicDelrin,            //its logical volume
@@ -813,20 +805,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											false,                 //no boolean operation
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
-	}else{
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicDelrin,            //its logical volume
-											"Delrin",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-	}
-
 	
 	
+	
+	//################################################### END OF Probe
 	
 	return physWorld;
 }

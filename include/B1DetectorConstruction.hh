@@ -57,7 +57,7 @@ protected:
 	G4double fCuDiam;
 	G4int fFilterFlag;
 	G4int fSourceSelect;
-	G4int fSensorChoice;
+	G4int fAbsorberMaterial;
 	G4double fPterDiameter;
 	G4double fPterThickness;
 	G4double fSourceDiameter;

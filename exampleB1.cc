@@ -66,7 +66,7 @@ int main(int argc,char** argv)
 	}
 	
 	G4double x0Scan=0, ZValue=2*mm, CuDiam=5*mm, TBRvalue=1,PterDiameter=10*mm,PterThickness=5*mm,SourceDiameter=5.25*mm,SourceThickness=5*mm, AbsorberThickness=1.*mm;
-	G4int FilterFlag=1, SourceChoice=1, SensorChoice=1;
+	G4int FilterFlag=1, SourceChoice=1, AbsorberMaterial=1;
 	
 	//arguments list: CuZ, Zval, Filter, TBR, Source, X0, Sensor
 	
@@ -78,7 +78,7 @@ int main(int argc,char** argv)
 		TBRvalue=strtod (argv[4],NULL);
 		SourceChoice=strtod (argv[5], NULL);
 		x0Scan=strtod (argv[6], NULL);
-		SensorChoice=strtod(argv[7],NULL);
+		AbsorberMaterial=strtod(argv[7],NULL);
 		PterDiameter=strtod(argv[8],NULL);
 		PterThickness=strtod(argv[9],NULL);
 		SourceDiameter=strtod(argv[10],NULL);
@@ -93,7 +93,7 @@ int main(int argc,char** argv)
 		G4cout<<"DEBUG Initial parameter check TBRvalue= "<<TBRvalue<<G4endl;
 		G4cout<<"DEBUG Initial parameter check FilterFlag= "<<FilterFlag<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceChoice= "<<SourceChoice<<G4endl;
-		G4cout<<"DEBUG Initial parameter check SensorChoice= "<<SensorChoice<<G4endl;
+		G4cout<<"DEBUG Initial parameter check AbsorberMaterial= "<<AbsorberMaterial<<G4endl;
 		G4cout<<"DEBUG Initial parameter check PterDiameter= "<<PterDiameter<<G4endl;
 		G4cout<<"DEBUG Initial parameter check PterThickness= "<<PterThickness<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceDiameter= "<<SourceDiameter<<G4endl;
@@ -143,7 +143,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, CuDiam, FilterFlag, SourceSelect, SensorChoice,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, CuDiam, FilterFlag, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -157,7 +157,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, SensorChoice));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, AbsorberMaterial));
 	
 	// Initialize visualization
 	//
