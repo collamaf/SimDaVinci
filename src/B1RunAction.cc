@@ -217,6 +217,8 @@ void B1RunAction::CreateHistogram()
 	if (fSourceSelect==1) fileName.append("_PSr");
 	if (fSourceSelect==2) fileName.append("_ExtSr");
 	if (fSourceSelect==3) fileName.append("_ExtY");
+	if (fSourceSelect==4) fileName.append("_ExtGa");
+
 	/*
 	if (fSensorChoice==1) fileName.append("_011");
 	if (fSensorChoice==2) fileName.append("_115");

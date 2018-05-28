@@ -61,12 +61,12 @@ int main(int argc,char** argv)
 	
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
-	if ( argc == 8 ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
+	if ( argc == 13 /*8*/ ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
 		ui = new G4UIExecutive(argc, argv);
 	}
 	
-	G4double x0Scan=0, ZValue=2*mm, CuDiam=5*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=1, SrSourceFlag=0, SensorChoice=1;
+	G4double x0Scan=0, ZValue=2*mm, CuDiam=5*mm, TBRvalue=1,PterDiameter=10*mm,PterThickness=5*mm,SourceDiameter=5.25*mm,SourceThickness=5*mm, AbsorberThickness=1.*mm;
+	G4int FilterFlag=1, SourceChoice=1, SensorChoice=1;
 	
 	//arguments list: CuZ, Zval, Filter, TBR, Source, X0, Sensor
 	
@@ -79,6 +79,13 @@ int main(int argc,char** argv)
 		SourceChoice=strtod (argv[5], NULL);
 		x0Scan=strtod (argv[6], NULL);
 		SensorChoice=strtod(argv[7],NULL);
+		PterDiameter=strtod(argv[8],NULL);
+		PterThickness=strtod(argv[9],NULL);
+		SourceDiameter=strtod(argv[10],NULL);
+		SourceThickness=strtod(argv[11],NULL);
+		AbsorberThickness=strtod(argv[11],NULL);
+
+
 		
 		G4cout<<"DEBUG Initial parameter check x0= "<<x0Scan<<G4endl;
 		G4cout<<"DEBUG Initial parameter check z= "<<ZValue<<G4endl;
@@ -87,11 +94,18 @@ int main(int argc,char** argv)
 		G4cout<<"DEBUG Initial parameter check FilterFlag= "<<FilterFlag<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceChoice= "<<SourceChoice<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SensorChoice= "<<SensorChoice<<G4endl;
+		G4cout<<"DEBUG Initial parameter check PterDiameter= "<<PterDiameter<<G4endl;
+		G4cout<<"DEBUG Initial parameter check PterThickness= "<<PterThickness<<G4endl;
+		G4cout<<"DEBUG Initial parameter check SourceDiameter= "<<SourceDiameter<<G4endl;
+		G4cout<<"DEBUG Initial parameter check SourceThickness= "<<SourceThickness<<G4endl;
+		G4cout<<"DEBUG Initial parameter check AbsorberThickness= "<<AbsorberThickness<<G4endl;
+
+
 		
 	}
 	
 	G4int SourceSelect=SourceChoice;
-	if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
+	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
 	G4String FileNamePrim;
 	
@@ -103,7 +117,10 @@ int main(int argc,char** argv)
 	}
 	
 	
-	if (SrSourceFlag) FileNamePrim.append("_Sr");
+	if (SourceSelect==1) FileNamePrim.append("_PSr");
+	if (SourceSelect==2) FileNamePrim.append("_ExtSr");
+	if (SourceSelect==3) FileNamePrim.append("_ExtY");
+	if (SourceSelect==4) FileNamePrim.append("_ExtGa");
 	
 	/*
 	if (SensorChoice==1) FileNamePrim.append("_011");
@@ -126,7 +143,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, CuDiam, FilterFlag, SrSourceFlag, SensorChoice)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, CuDiam, FilterFlag, SourceSelect, SensorChoice,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;

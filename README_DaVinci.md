@@ -6,7 +6,7 @@ cd build
 cmake -DGeant4_DIR=$G4INSTALL ../
 make
 ./exampleB1
-./exampleB1 {CuDiam (<0->no Cu)} {ZOffs} {FilterFlag} {TBR} {SourceChoice} {x0Scan} {SensorChoice} ../run1.mac
+./exampleB1 {CuDiam (<0->no Cu)} {ZOffs} {FilterFlag} {TBR} {SourceChoice} {x0Scan} {SensorChoice} {PterDiameter} {PterThickness} {SourceDiameter} {SourceThickness} {AbsorberThickness} ../run1.mac
 e.g.:
 ./exampleB1 -5 2 0 1 2 0 1 ../run1.mac
 ./exampleB1 -5 0.01 0 1 2 0 3 ../run1.mac
