@@ -34,6 +34,7 @@
 
 #include "G4Track.hh"
 #include "G4NeutrinoE.hh"
+#include "G4VProcess.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -52,20 +53,47 @@ G4ClassificationOfNewTrack
 B1StackingAction::ClassifyNewTrack(const G4Track* track)
 {
 	G4int debug=0;
+	G4int ParticleToWatch=-11;
+	if (fabs(track->GetDynamicParticle() ->GetPDGcode())==12) return fKill; //kill neutrinos
+
 	if (debug) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", MotherIsotope Val= "<< runStackAction->GetMotherIsotope()
-	<<G4endl;
+		<<G4endl;
+	
+	const G4VProcess* creator=track->GetCreatorProcess();
+	// << " trk->GetMaterial()=" << trk->GetMaterial()
+	std::string CreatorProcname="undefined";
+	if(creator) CreatorProcname=creator->GetProcessName();
+	
+	
+//	if (track->GetParentID() <= 2 ) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", ParentID= "<< track->GetParentID()<<" Proc= "<<CreatorProcname<<G4endl;
+
 	//keep primary particle
 	//	if (track->GetParentID() == 0) return fUrgent;
 	//	if (track->GetParentID() == 1 && track->GetDynamicParticle() ->GetPDGcode()==11)		  G4cout<<"PterDEBUG PROVA STACKING elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
-//	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
-    
-    fEventAction->ResetPassCounterSource(); //collamaf: at each new track we reset the pass counter
+	//	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
+	
+	fEventAction->ResetPassCounterSource(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPassCounterPter(); //collamaf: at each new track we reset the pass counter
 	
-	if (fabs(track->GetDynamicParticle() ->GetPDGcode())==12) return fKill;
+	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle() ->GetPDGcode()<9e8) {
+		runStackAction->SetMotherIsotope(track->GetParentID()-1);
+		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetRunIsotopeGen()).push_back(track->GetParentID()-1);
+		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
 		
 		
-	if (track->GetDynamicParticle() ->GetPDGcode()==11) { //if I generated an electron
+		
+		
+		
+	}
+	
+#if 0
+	if (track->GetDynamicParticle() ->GetPDGcode()==ParticleToWatch) { //if I generated an electron
 		if (debug) G4cout<<"PterDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
 		if (track->GetParentID() == 1) { //figlio di Sr
 			if (debug) G4cout<<"PterDEBUG Sr Setto il MotherIsotope a 0"<<G4endl;
@@ -82,7 +110,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 			runStackAction->SetMotherIsotope(1);
 			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-//			G4cout<<"PterDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
+			//			G4cout<<"PterDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
 			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
 			(runStackAction->GetRunIsotopeGen()).push_back(1);
 			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
@@ -91,6 +119,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		}
 	}
 	
+#endif
 	
 	
 	return fUrgent;

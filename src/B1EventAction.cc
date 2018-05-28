@@ -81,6 +81,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunPart()).clear();
 	(fRunAction->GetRunEnPter()).clear();
 	(fRunAction->GetRunEnPterPrim()).clear();
+	(fRunAction->GetRunPartPterPrim()).clear();
 	(fRunAction->GetRunEnPterTime()).clear();
 	(fRunAction->GetRunXPter()).clear();
 	(fRunAction->GetRunYPter()).clear();
@@ -99,6 +100,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunCosZ()).clear();
 
 	(fRunAction->GetRunEnGen()).clear();
+	(fRunAction->GetRunEnPart()).clear();
 	(fRunAction->GetRunIsotopeGen()).clear();
 
 	(fRunAction->SetMotherIsotope(-10));
@@ -171,9 +173,9 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 //	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
 //	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
-	analysisManager->FillNtupleDColumn(0,16, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,17, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,18, fSourceZ/mm);
+	analysisManager->FillNtupleDColumn(0,17, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,18, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,19, fSourceZ/mm);
 	/*
 	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
 	analysisManager->FillNtupleDColumn(0,20, fSourceCosY/mm);
@@ -196,7 +198,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 //		analysisManager->FillNtupleDColumn(1,6, fSourceEne/keV);
 //		analysisManager->FillNtupleDColumn(1,7, fSourceIsotope);
 // 		analysisManager->FillNtupleDColumn(1,16, fSourceIsotope);
-		analysisManager->FillNtupleDColumn(1,18, fNSourceExit);
+		analysisManager->FillNtupleDColumn(1,19, fNSourceExit);
 		
 		analysisManager->AddNtupleRow(1);
 	}

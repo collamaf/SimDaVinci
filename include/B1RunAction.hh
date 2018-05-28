@@ -65,6 +65,7 @@ public:
 	
 	std::vector<G4double>& GetRunEnPter() {return RunVectorEnPter; }
 	std::vector<G4double>& GetRunEnPterPrim() {return RunVectorEnPterPrim; }
+	std::vector<G4double>& GetRunPartPterPrim() {return RunVectorPartPterPrim; }
 	std::vector<G4float>& GetRunEnPterTime() {return RunVectorEnPterTime; }
 	std::vector<G4double>& GetRunXPter() {return RunVectorXPter; }
 	std::vector<G4double>& GetRunYPter() {return RunVectorYPter; }
@@ -87,6 +88,7 @@ public:
 	std::vector<G4double>& GetRunCosY() {return RunVectorCosY; }
 	std::vector<G4double>& GetRunCosZ() {return RunVectorCosZ; }
 	std::vector<G4double>& GetRunEnGen() {return RunVectorEnGen; }
+	std::vector<G4double>& GetRunEnPart() {return RunVectorEnPart; }
 	std::vector<G4double>& GetRunIsotopeGen() {return RunVectorIsotopeGen; }
 	
 	std::vector<G4double>& GetRunEAbsComp() {return RunVectorEAbsComp; }
@@ -149,6 +151,7 @@ private:
 	
 	std::vector<G4double> RunVectorEnPter;
 	std::vector<G4double>	RunVectorEnPterPrim;
+	std::vector<G4double> RunVectorPartPterPrim;
 	std::vector<G4float>	RunVectorEnPterTime;
 	std::vector<G4double> RunVectorXPter;
 	std::vector<G4double> RunVectorYPter;
@@ -168,6 +171,7 @@ private:
 	std::vector<G4double> RunVectorCosZ;
 	
 	std::vector<G4double> RunVectorEnGen;
+	std::vector<G4double> RunVectorEnPart;
 	std::vector<G4double> RunVectorIsotopeGen;
 	
 	

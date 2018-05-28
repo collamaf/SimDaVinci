@@ -94,7 +94,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,24, nbEventInRun);
+	analysisManager->FillNtupleIColumn(0,25, nbEventInRun);
 
 	
 }
@@ -238,7 +238,8 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"InPterTrackN");                   //5
 	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVectorPartPter); //6
 	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVectorEnPter); //7
-	analysisManager->CreateNtupleDColumn(0,"InPterEnPrim", RunVectorEnPterPrim); //7b
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVectorEnPterPrim); //7b
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVectorPartPterPrim); //7bb
 	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVectorEnPterTime); //7c
 	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVectorXPter); //8
 	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVectorYPter); //9
@@ -283,6 +284,7 @@ void B1RunAction::CreateHistogram()
 	
 	//	analysisManager->CreateNtupleDColumn(1,"AllEne");                           //6
 	analysisManager->CreateNtupleDColumn(1,"AllEne", RunVectorEnGen);                           //6
+	analysisManager->CreateNtupleDColumn(1,"AllPart", RunVectorEnPart);                           //6XXXXXX
 //	analysisManager->CreateNtupleDColumn(1,"AllIsotope");                           //7
 	analysisManager->CreateNtupleDColumn(1,"AllIsotope", RunVectorIsotopeGen);                           //7
 	analysisManager->CreateNtupleDColumn(1,"ExitX", RunVectorXExit);                           //8
