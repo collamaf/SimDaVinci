@@ -175,7 +175,7 @@ int main(int argc,char** argv)
 	if ( ! ui ) {
 		// batch mode
 		G4String command = "/control/execute ";
-		G4String fileName = argv[8];
+		G4String fileName = argv[13];
 		UImanager->ApplyCommand(command+fileName);
 	}
 	else {
