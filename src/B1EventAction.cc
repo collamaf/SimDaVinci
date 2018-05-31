@@ -188,7 +188,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	if(fEdep>0) analysisManager->AddNtupleRow(0);
 	
-	if(evento->GetEventID()<=1e6){ //to write to proper ntuple all the source particles info
+	//if(evento->GetEventID()<=1e6){ //to write to proper ntuple all the source particles info
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
 		analysisManager->FillNtupleDColumn(1,1, fSourceY/mm);
 		analysisManager->FillNtupleDColumn(1,2, fSourceZ/mm);
@@ -201,7 +201,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 		analysisManager->FillNtupleDColumn(1,19, fNSourceExit);
 		
 		analysisManager->AddNtupleRow(1);
-	}
+	//} 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

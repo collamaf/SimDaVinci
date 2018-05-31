@@ -12,26 +12,24 @@ e.g.:
 ./exampleB1 -5 0.01 0 1 2 0 3 ../run1.mac
 
 ./exampleB1 0 10 1 1 4 0 1 5 4 7 4 1 
+
+ ./exampleB1 -1 1 1 1 4 0 1 6 4 6 2 1 ../run1.mac (Used for source dimensions study)
 ```
 {all distances/sizes in mm}
 Source Choice:
 1 - Pointlike Sr
 2 - Extended Sr
 3 - ExtY
-Sensor Choice:
-1 - MT9V011
-2 - MT9V115
-3 - bare 60035 SiPm
+4 - ExtGa
 
 
 
 ## GEOMETRY
 - Extended Sr Source ending at Z=0
 - Cu collimator on top of Sr source (toggleble)
-- Pter Detector starting at Z offset (Z distance is from source surface and possible resin (in case of sensor 1 or up to the sensor in case of sensor 2, even if with filter)
-- Sensor resin filter in contact with Pter (towards source)
+- Pter Detector starting at Z offset (Z distance is from source surface to Front-Shield )
+- Front-Shield in contact with Pter (towards source)
 - Dummy volume for scoring purposes between source (or if presente CU Collimator) and World to score what exits the primary generation
-- "infinite" carrier volume behind Pter to simulate mechanical support
 
 
 ## PHYSICS
