@@ -43,7 +43,7 @@ class G4LogicalVolume;
 class B1DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-	B1DetectorConstruction(G4double, G4double, G4double, G4int, G4int, G4int ,G4double, G4double, G4double, G4double, G4double);
+	B1DetectorConstruction(G4double, G4double, G4double, G4int, G4int ,G4double, G4double, G4double, G4double, G4double);
 	virtual ~B1DetectorConstruction();
 	
 	virtual G4VPhysicalVolume* Construct();
@@ -55,7 +55,6 @@ protected:
 	G4double fX0Scan;
 	G4double fZValue;
 	G4double fCuDiam;
-	G4int fFilterFlag;
 	G4int fSourceSelect;
 	G4int fAbsorberMaterial;
 	G4double fPterDiameter;

@@ -49,7 +49,7 @@ class G4Run;
 class B1RunAction : public G4UserRunAction
 {
 public:
-	B1RunAction(G4double, G4double, G4double, G4int, G4double, G4int, G4int, G4String);
+	B1RunAction(G4double, G4double, G4double, G4double, G4int, G4int, G4String);
 	virtual ~B1RunAction();
 	
 	// virtual G4Run* GenerateRun();
@@ -129,7 +129,6 @@ private:
 	G4double fX0Scan;
 	G4double fZValue;
 	G4double fCuDiam;
-	G4int fFilterFlag;
 	G4int nbEventInRun;
 	G4double fTBR;
 	G4int fSourceSelect;

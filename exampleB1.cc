@@ -57,19 +57,85 @@
 
 int main(int argc,char** argv)
 {
-	
+	G4bool VisFlag=true;
 	
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
-	if ( argc == 13 /*8*/ ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
+	/*
+	if ( argc == 13 ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
+		ui = new G4UIExecutive(argc, argv);
+	}
+	*/
+	
+	G4double x0Scan=0, ZValue=2*mm, AbsorberDiam=0*mm, TBRvalue=1,PterDiameter=6*mm,PterThickness=5*mm,SourceDiameter=5.25*mm,SourceThickness=5*mm, AbsorberThickness=1.*mm;
+	G4int SourceChoice=1, AbsorberMaterial=1;
+	
+	G4String fileName ="";
+
+	
+	for(int i=1;i<argc;i++)
+		if(argv[i][0] =='-')
+		{
+			G4String option(argv[i]);
+			G4cout<<"option: "<<i<<" "<<option<<G4endl;
+			if(option.compare("-AbsD")==0)
+			{
+				AbsorberDiam=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-AbsT")==0)
+			{
+				AbsorberThickness=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-AbsMat")==0)
+			{
+				AbsorberMaterial=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Z")==0)
+			{
+				ZValue=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-TBR")==0)
+			{
+				TBRvalue=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-Source")==0)
+			{
+				SourceChoice=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-X")==0)
+			{
+				x0Scan=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-PterD")==0)
+			{
+				PterDiameter=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-PterT")==0)
+			{
+				PterThickness=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-SourceD")==0)
+			{
+				SourceDiameter=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-SourceT")==0)
+			{
+				SourceThickness=strtod (argv[++i], NULL);;
+			}
+			
+		}
+		else
+		{
+			fileName = argv[i]; //se ho trovato una macro (senza il "-" davanti) significa che NON voglio l'interattivo
+			VisFlag=false;
+		}
+	
+	if ( VisFlag ) { //Prepare for vis
 		ui = new G4UIExecutive(argc, argv);
 	}
 	
-	G4double x0Scan=0, ZValue=2*mm, CuDiam=5*mm, TBRvalue=1,PterDiameter=10*mm,PterThickness=5*mm,SourceDiameter=5.25*mm,SourceThickness=5*mm, AbsorberThickness=1.*mm;
-	G4int FilterFlag=1, SourceChoice=1, AbsorberMaterial=1;
 	
-	//arguments list: CuZ, Zval, Filter, TBR, Source, X0, Sensor
-	
+#if 0
 	if ( argc >1 ) {
 		//    x0Scan=(*argv[2]-48)*mm;
 		CuDiam=strtod (argv[1], NULL);
@@ -89,7 +155,7 @@ int main(int argc,char** argv)
 		
 		G4cout<<"DEBUG Initial parameter check x0= "<<x0Scan<<G4endl;
 		G4cout<<"DEBUG Initial parameter check z= "<<ZValue<<G4endl;
-		G4cout<<"DEBUG Initial parameter check CuDiam= "<<CuDiam<<G4endl;
+		G4cout<<"DEBUG Initial parameter check AbsorberDiam= "<<AbsorberDiam<<G4endl;
 		G4cout<<"DEBUG Initial parameter check TBRvalue= "<<TBRvalue<<G4endl;
 		G4cout<<"DEBUG Initial parameter check FilterFlag= "<<FilterFlag<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceChoice= "<<SourceChoice<<G4endl;
@@ -99,10 +165,9 @@ int main(int argc,char** argv)
 		G4cout<<"DEBUG Initial parameter check SourceDiameter= "<<SourceDiameter<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceThickness= "<<SourceThickness<<G4endl;
 		G4cout<<"DEBUG Initial parameter check AbsorberThickness= "<<AbsorberThickness<<G4endl;
-
-
-		
 	}
+#endif
+	
 	
 	G4int SourceSelect=SourceChoice;
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
@@ -111,9 +176,11 @@ int main(int argc,char** argv)
 	G4String OutFileName="PTERmc";
 	G4String FileNameCommonPart;
 	
+	G4String MaterialiAssorbitore[4]= {"Cu","Pb","Al","PVC"};
+	
 	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));
 	
-	if (CuDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)AbsorberThickness)+"_AbsHole" + std::to_string((G4int)CuDiam) +"_AbsMat" + std::to_string((G4int)AbsorberMaterial));
+	if (AbsorberDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)AbsorberThickness)+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	else FileNameCommonPart.append("_NoAbs");
 
 	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
@@ -122,6 +189,8 @@ int main(int argc,char** argv)
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)SourceDiameter) + "_Dz" + std::to_string((G4int)SourceThickness));
+	
+	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	
 	FileNamePrim.append(FileNameCommonPart);
 	OutFileName.append(FileNameCommonPart);
@@ -172,7 +241,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, CuDiam, FilterFlag, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -186,7 +255,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberDiam,  primFile, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName));
 	
 	// Initialize visualization
 	//
@@ -204,7 +273,7 @@ int main(int argc,char** argv)
 	if ( ! ui ) {
 		// batch mode
 		G4String command = "/control/execute ";
-		G4String fileName = argv[13];
+//		G4String fileName = argv[13];
 		UImanager->ApplyCommand(command+fileName);
 	}
 	else {

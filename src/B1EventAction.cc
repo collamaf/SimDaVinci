@@ -46,9 +46,10 @@ fEdep(0.),
 fEdkin(0.),
 fno(0),
 fPreNo(0),
-fEdepSr(0.),
-//fEdepEl(0.),
-fEdepY(0.),
+fEdepEle(0.),
+fEdepPos(0.),
+fEdepFot(0.),
+fEnteringParticle(0),
 fPassCounterSource(0.),
 fPassCounterPter(0.),
 fNSourceExit(0.),
@@ -126,9 +127,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fno=0;
 	fPreNo=0;
 	
-	fEdepSr=0.;
-//	fEdepEl=0;
-	fEdepY=0.;
+	fEdepEle=0.;
+	fEdepPos=0;
+	fEdepFot=0.;
+	fEnteringParticle=0;
 	fNSourceExit=0;
 	fPassCounterSource=0;
 	fPassCounterPter=0;
@@ -154,9 +156,10 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	fRunAction->AddEdep(fEdep);
 	fRunAction->AddEdkin(fEdkin);
 
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepSr/keV);
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepY/keV);
-
+	(fRunAction->GetRunEAbsComp()).push_back(fEdepEle/keV);
+	(fRunAction->GetRunEAbsComp()).push_back(fEdepPos/keV);
+	(fRunAction->GetRunEAbsComp()).push_back(fEdepFot/keV);
+	
 	G4int NevTot=fRunAction->GetEventNumber();
 	
 	if ((100*evento->GetEventID())%NevTot==0) FilePrimaries<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;

@@ -138,6 +138,13 @@ B1->Draw("InPterEnY","","same")
 - Introduced possibility to simulate bare SiPm (assumed to be a particular version of Pter detector): SensorChoice=3
 
 
+2018.05.31 by collamaf
+- Now arguments are taken with labels, not necessary to give them all! If a macro is provided no visualization is init.. cool! (removed useless FilterFlag)
+
+2018.06.05 by collamaf
+- Added structure to classify energy release due to e+/e-/gamma
+
+
 
 ## TO DO's
 

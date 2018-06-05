@@ -68,12 +68,24 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
+	G4int debug=0;
 	
 	// ########################################
 	// ###################### ENTERING Pter
 	
 	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
+		
+		
+		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER da FrontShield - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
+		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
+		
+		
+		
+		
+		
 		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+
 			fEventAction->AddPassCounterPter(1);  //increase the counter
 			
 			//			G4cout<<"PterDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
@@ -186,16 +198,18 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
 		(runStepAction->GetRunPartPter()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
-		//Collect deposited energy in Pter  due to Sr electons
-		if (runStepAction->GetMotherIsotope() == 0 ) {  //if son of Sr
-			fEventAction->AddEdepSr(step->GetTotalEnergyDeposit());
-		}
+		if (debug)  G4cout<<"CIAODEBUG Ho un rilascio di energia ("<< step->GetTotalEnergyDeposit()/keV<<" [KeV]) dovuto ad una particella entrata nel CMOS di tipo: "<<fEventAction->GetEnteringParticle()<<G4endl;
 		
-		//Collect deposited energy in Pter due to Y electons
-		if (runStepAction->GetMotherIsotope() == 1 ) {  //if son of Y
-			fEventAction->AddEdepY(step->GetTotalEnergyDeposit());
+		if (fEventAction->GetEnteringParticle()==11) {  //if son of electron
+			fEventAction->AddEdepEle(step->GetTotalEnergyDeposit());
 		}
-		
+		else if (fEventAction->GetEnteringParticle()==-11) {  //if son of positron
+			fEventAction->AddEdepPos(step->GetTotalEnergyDeposit());
+		} else if (fEventAction->GetEnteringParticle()==22) {  //if son of photon
+			fEventAction->AddEdepFot(step->GetTotalEnergyDeposit());
+			if (debug&&step->GetTotalEnergyDeposit()>0) G4cout<<"CONTROLLA"<<G4endl;
+		}
+
 		fEventAction->AddEdep(edepStep);
 	}
 }

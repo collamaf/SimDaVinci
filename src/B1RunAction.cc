@@ -48,7 +48,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4int FilterFlag, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4String FileNameALL)
+B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4String FileNameALL)
 : G4UserRunAction(),
 fEdep("Edep", 0.),
 fEdep2("Edep2", 0.),
@@ -56,7 +56,6 @@ fEdkin("Edkin", 0.)
 , fX0Scan(x0)
 , fZValue(ZValue)
 , fCuDiam(CuDiam)
-, fFilterFlag(FilterFlag)
 , fTBR(TBR)
 , fSourceSelect(SourceSelect)
 , fSensorChoice(SensorChoice)

@@ -85,11 +85,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
 		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
 		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
-		
-		
-		
-		
-		
+			
 	}
 	
 #if 0
