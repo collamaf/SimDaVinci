@@ -67,7 +67,7 @@ int main(int argc,char** argv)
 	}
 	*/
 	
-	G4double x0Scan=0, ZValue=2*mm, AbsorberDiam=0*mm, TBRvalue=1,PterDiameter=6*mm,PterThickness=5*mm,SourceDiameter=5.25*mm,SourceThickness=5*mm, AbsorberThickness=1.*mm;
+	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=30, ProbeCaseLateralThickness=0.1, ProbeCaseBackThickness=0.5 , HSLateralThickness=2, HSBackThickness=3;
 	G4int SourceChoice=1, AbsorberMaterial=1;
 	
 	G4String fileName ="";
@@ -121,6 +121,21 @@ int main(int argc,char** argv)
 			else if(option.compare("-SourceT")==0)
 			{
 				SourceThickness=strtod (argv[++i], NULL);;
+			}else if(option.compare("-CaseDepth")==0)         //Probe Case Z_Lenght
+			{
+				ProbeCaseDepth=strtod (argv[++i], NULL);;
+			}else if(option.compare("-CaseLT")==0)            //Lateral Probe Case Thickness
+			{
+				ProbeCaseLateralThickness=strtod (argv[++i], NULL);;
+			}else if(option.compare("-CaseBT")==0)            //Back Probe Case Thickness
+			{
+				ProbeCaseBackThickness=strtod (argv[++i], NULL);;
+			}else if(option.compare("-HSLT")==0)            //Lateral Probe Case Thickness
+			{
+				HSLateralThickness=strtod (argv[++i], NULL);;
+			}else if(option.compare("-HSBT")==0)            //Back Probe Case Thickness
+			{
+				HSBackThickness=strtod (argv[++i], NULL);;
 			}
 			
 		}
@@ -150,6 +165,10 @@ int main(int argc,char** argv)
 		SourceDiameter=strtod(argv[10],NULL);
 		SourceThickness=strtod(argv[11],NULL);
 		AbsorberThickness=strtod(argv[12],NULL);
+		ProbeCaseDepth=strtod(argv[13],NULL);
+		ProbeCaseLateralThickness=strtod(argv[14],NULL);
+		ProbeCaseBackThickness=strtod(argv[15],NULL);
+
 
 
 		
@@ -165,6 +184,9 @@ int main(int argc,char** argv)
 		G4cout<<"DEBUG Initial parameter check SourceDiameter= "<<SourceDiameter<<G4endl;
 		G4cout<<"DEBUG Initial parameter check SourceThickness= "<<SourceThickness<<G4endl;
 		G4cout<<"DEBUG Initial parameter check AbsorberThickness= "<<AbsorberThickness<<G4endl;
+		G4cout<<"DEBUG Initial parameter check ProbeCaseDepth= "<<ProbeCaseDepth<<G4endl;
+		G4cout<<"DEBUG Initial parameter check ProbeCaseLateralThickness= "<<ProbeCaseLateralThickness<<G4endl;
+		G4cout<<"DEBUG Initial parameter check ProbeCaseBackThickness= "<<ProbeCaseBackThickness<<G4endl;
 	}
 #endif
 	
@@ -241,7 +263,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
