@@ -165,13 +165,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	
 	G4double zSource=0;
 	G4double zSourceOffset=1e-6*mm; //to avoid generating particles at the very boundary of source!
-
-//	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
-		if (fSourceSelect==1||fSourceSelect==2) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
+	
+	//	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
+	if (fSourceSelect==1||fSourceSelect==2) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		zSource = -zSourceOffset;
-	} else {
+	} else if (fSourceSelect==3) { // Extended source with TBR
 		G4double random=G4UniformRand();
 		if (random<=ProbA) {  //faccio il cilindretto cavo esterno al centro (VolA)
 			fRadiusMax=fRadiusExt;
@@ -188,14 +188,14 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fRadiusMin=0*mm;
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
-		}else if (fSourceSelect==4) {
-			fRadiusMax=fRadiusInt;
-			fRadiusMin=0*mm;
-			fZ=fDZInt;
-			zSource = -G4UniformRand()*fZ-zSourceOffset;
 		}
+	} else if (fSourceSelect==4) {
+		fRadiusMax=fRadiusInt;
+		fRadiusMin=0*mm;
+		fZ=fDZExt;
+		zSource = -G4UniformRand()*fZ-zSourceOffset;
 	}
-		
+	
 	
 	fParticleGun->SetParticleEnergy(0*MeV); //SetParticleEnergy uses kinetic energy
 	
