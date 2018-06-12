@@ -143,7 +143,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	//Stronzium
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
-	if (fSourceSelect==4) {
+	if (fSourceSelect==4 || fSourceSelect==5) {
 		Z=31;
 		A=68;
 	}
@@ -197,22 +197,77 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}
 	
 	
+	//Inserisco sorgente 4 (sfera di fotoni)
+	
+	
+	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;
+	G4double Sphere_Phi=acos(2*G4UniformRand()-1);
+	G4double Sphere_U=cos(Sphere_Phi);
+	G4double Sphere_X=sqrt(1-Sphere_U*Sphere_U)*cos(Sphere_Theta);
+	G4double Sphere_Y=sqrt(1-Sphere_U*Sphere_U)*sin(Sphere_Theta);
+	G4double Sphere_Z=Sphere_U;
+	G4double Sphere_Radius=10*cm;
+	
+	
+
+	
+	
 	fParticleGun->SetParticleEnergy(0*MeV); //SetParticleEnergy uses kinetic energy
 	
 	G4double rho = sqrt(fRadiusMin*fRadiusMin + G4UniformRand()*(fRadiusMax*fRadiusMax-fRadiusMin*fRadiusMin));   //fixed square problem by collamaf with internal radius!
 	G4double alpha = G4UniformRand()*CLHEP::pi*2.;
 
-	const G4ThreeVector position = G4ThreeVector(rho*cos(alpha), rho*sin(alpha), zSource);
+	
+	G4double PhotDir_cosTheta = 2*G4UniformRand() - 1., PhotDir_phi = CLHEP::pi*2.*G4UniformRand();
+	G4double PhotDir_sinTheta = std::sqrt(1. - PhotDir_cosTheta*PhotDir_cosTheta);
+	G4double PhotDir_ux = PhotDir_sinTheta*std::cos(PhotDir_phi),
+	PhotDir_uy = PhotDir_sinTheta*std::sin(PhotDir_phi),
+	PhotDir_uz = PhotDir_cosTheta;
+	
+	
+	
+	G4double Source_X=rho*cos(alpha);
+	G4double Source_Y=rho*sin(alpha);
+	G4double Source_Z=zSource;
+
+	
+	
+//	G4ThreeVector position = G4ThreeVector(rho*cos(alpha), rho*sin(alpha), zSource);
+
+//	G4ThreeVector position = G4ThreeVector(Sphere_X, Sphere_Y, Sphere_Z);
 /*
 	evtPrimAction->SetSourceCosX(0);
 	evtPrimAction->SetSourceCosY(0);
 	evtPrimAction->SetSourceCosZ(0);
 */
-	G4ThreeVector momentumDirection = G4ThreeVector(0,0,0);
+//	G4ThreeVector momentumDirection = G4ThreeVector(0,0,0);
+	G4double MomentumDir_X=0;
+	G4double MomentumDir_Y=0;
+	G4double MomentumDir_Z=0;
 	
-	fParticleGun->SetParticleMomentumDirection(momentumDirection);
-	fParticleGun->SetParticlePosition(position);
+	
+	
+	if (fSourceSelect==5) {
+		Source_X=Sphere_Radius*Sphere_X;
+		Source_Y=Sphere_Radius*Sphere_Y;
+		Source_Z=Sphere_Radius*Sphere_Z;
+		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+		fParticleGun->SetParticleDefinition(fotone);
+		fParticleGun->SetParticleEnergy(0.511*MeV);
+		MomentumDir_X=PhotDir_ux;
+		MomentumDir_Y=PhotDir_uy;
+		MomentumDir_Z=PhotDir_uz;
+	}
+	
+	
+	
+	
+	const	G4ThreeVector position = G4ThreeVector(Source_X, Source_Y, Source_Z);
 
+	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(MomentumDir_X,MomentumDir_Y,MomentumDir_Z));
+	fParticleGun->SetParticlePosition(position);
+	
+	
 //	evtPrimAction->SetSourceEne(fParticleGun->GetParticleEnergy());
 	evtPrimAction->SetSourceX((position.x())/mm);
 	evtPrimAction->SetSourceY((position.y())/mm);

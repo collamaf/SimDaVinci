@@ -75,8 +75,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//
 	// World
 	//
-	G4double world_sizeXY = 0.2*m;
-	G4double world_sizeZ  = 0.2*m;
+	G4double world_sizeXY = 0.5*m;
+	G4double world_sizeZ  = 0.5*m;
 	G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
 	//	G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 	
@@ -194,6 +194,24 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	//G4Material* ProbeCase_mat = nist->FindOrBuildMaterial("MyAlu");
 	//G4Material* CylinderB_mat = nist->FindOrBuildMaterial("MyAlu");
+	
+	G4Material* CaseExt_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	G4Material* CaseMetal_mat=nist->FindOrBuildMaterial("G4_Pb");
+	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+
+	G4Material* AroundBackMidleCase_mat=CaseExt_mat;
+	G4Material* AroundTopCase_mat=CaseExt_mat;
+	G4Material* EndCase_mat=CaseExt_mat;
+	G4Material* ExtMidleCase_mat=CaseExt_mat;
+
+	G4Material* MidleCase_mat=CaseInner_mat;
+	G4Material* TopCase_mat=CaseInner_mat;
+	
+	G4Material* BackMidleCase_mat=CaseMetal_mat;
+	G4Material* AroundMidleCase_mat=CaseMetal_mat;
+
+	
+#if 0
 	G4Material* TopCase_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* AroundTopCase_mat = nist->FindOrBuildMaterial("MyAlu");
 	//G4Material* ExternalCase_mat = nist->FindOrBuildMaterial("MyAlu");
@@ -203,6 +221,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* BackMidleCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");  //Understand what type of material
 	G4Material* AroundBackMidleCase_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* EndCase_mat = nist->FindOrBuildMaterial("MyAlu");
+	
+#endif
 	
 	// EndCase, AroundBackMidleCase and ExtMidleCase are made by the same material
 	

@@ -98,6 +98,10 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 
 ```
 Source->Draw("ExitEne","ExitPart==11&&ExitProcess==6")
+
+file=$(ls -t Primaries_*.dat | head -n1); tail -f $file
+
+
 ```
 to see energy spectrum of electrons created by Sr/Y that exit the source
 
@@ -152,10 +156,11 @@ B1->Draw("InPterEnY","","same")
 
 2018.06.11 by collamaf
 - Fixed spotted error in fSourceSelect==4 condition in PrimAct
+- Added fSourceSelect==5 to generate a sphere (now with R=10cm) around origin of isotropic 511keV gammas to simulate the "far bacgkround" in a Ga68 environment
+- Simplification of materials for the probe laparo housing: 3 materials: "Ext" for external housing, "Metal" for metal covering inside and "Inner" for inner part (maybe air)
 
 
 ## TO DO's
 
-- Manage other sources (gamma)
 
 
