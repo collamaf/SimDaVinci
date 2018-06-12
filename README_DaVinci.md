@@ -150,6 +150,9 @@ B1->Draw("InPterEnY","","same")
 2018.06.11 by MorettiR
 - Added Probe's Casing in Geometry with parameters from line comand.
 
+2018.06.11 by collamaf
+- Fixed spotted error in fSourceSelect==4 condition in PrimAct
+
 
 ## TO DO's
 
