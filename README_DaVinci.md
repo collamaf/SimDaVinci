@@ -8,12 +8,15 @@ make
 ./exampleB1
 ./exampleB1 {1-CuDiam (<0->no Cu)} {2-ZOffs} {3-FilterFlag} {4-TBR} {5-SourceChoice} {6-x0Scan} {7-Absorber Material} {8-PterDiameter} {9-PterThickness} {10-SourceDiameter} {11-SourceThickness} {12-AbsorberThickness} ../run1.mac
 e.g.:
-./exampleB1 -5 2 0 1 2 0 1 ../run1.mac
-./exampleB1 -5 0.01 0 1 2 0 3 ../run1.mac
 
-./exampleB1 0 10 1 1 4 0 1 5 4 7 4 1 
+./exampleB1 -AbsD -1 -SourceD 6 -SourceT 3 -X 0 -PterD 6 -PterT 4 -Z 1 -TBR 0 -Source 4 ../run1.mac
 
- ./exampleB1 -1 1 1 1 4 0 1 6 4 6 2 1 ../run1.mac (Used for source dimensions study)
+ 
+ 
+ -AbsD= Absorber Diameter, -AbsT= Absorber Thickness , -AbsMat= Absorber's Material , -Z distance from origin to FrontsShield
+ 
+ 
+ 
 ```
 {all distances/sizes in mm}
 Source Choice:
@@ -144,6 +147,8 @@ B1->Draw("InPterEnY","","same")
 2018.06.05 by collamaf
 - Added structure to classify energy release due to e+/e-/gamma
 
+2018.06.11 by MorettiR
+- Added Probe's Casing in Geometry with parameters from line comand.
 
 
 ## TO DO's

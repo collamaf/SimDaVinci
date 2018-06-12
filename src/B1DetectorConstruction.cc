@@ -192,11 +192,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* PVC_mat= nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* Delrin_mat=Delrin;
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
-	G4Material* ProbeCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* CylinderB_mat = nist->FindOrBuildMaterial("MyAlu");
+	//G4Material* ProbeCase_mat = nist->FindOrBuildMaterial("MyAlu");
+	//G4Material* CylinderB_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* TopCase_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* AroundTopCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* ExternalCase_mat = nist->FindOrBuildMaterial("MyAlu");
+	//G4Material* ExternalCase_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* MidleCase_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* AroundMidleCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");  //Understand what type of material
 	G4Material* ExtMidleCase_mat = nist->FindOrBuildMaterial("MyAlu");
@@ -299,17 +299,17 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Probe Case
 	
 	G4double CaseDepth = fCaseDepth*mm;
-	G4double SPhiCase = 0.*deg;
-	G4double DPhiCase = 360.*deg;
+	//G4double SPhiCase = 0.*deg;
+	//G4double DPhiCase = 360.*deg;
 	G4double LateralCaseThickness = fLateralCaseThickness*mm;
 	G4double BackCaseThickness = fBackCaseThickness*mm;
-	G4double ProbeCase_Posz=0.*mm;
+	//G4double ProbeCase_Posz=0.*mm;
 	G4double TopCaseDepth=2.*mm;
 	G4double SPhiTopCase = 0.*deg;
 	G4double DPhiTopCase = 360.*deg;
 	G4double SPhiAroundTopCase = 0.*deg;
 	G4double DPhiAroundTopCase = 360.*deg;
-	G4double Case_r = PVC_outer_r +0.1*mm;
+	//G4double Case_r = PVC_outer_r +0.1*mm;
 	G4double HorsesShoeLateralThickness = fHorsesShoeLateralThickness * mm;
 	G4double HorsesShoeBackThickness = fHorsesShoeBackThickness * mm;
 
@@ -812,7 +812,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
+	/*
 	G4Tubs* solidExternalCase =
 	new G4Tubs("ExternalCase",                                                                         //its name
 						 PVC_outer_r, Case_r , Pter_sizeZ*0.5,Pter_start_angle,Pter_spanning_angle);                //its size
@@ -832,6 +832,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
 	
+	*/
 	
 	//###################################################
 	// Delrin around P-Terphenyl
@@ -875,7 +876,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Tubs* solidTopCase =
 	new G4Tubs("TopCase",
 						 0.,
-						 Case_r - LateralCaseThickness,
+						 PVC_outer_r - LateralCaseThickness,
 						 TopCaseDepth*0.5,
 						 SPhiTopCase,
 						 DPhiTopCase);
@@ -883,8 +884,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4Tubs* solidAroundTopCase =
 	new G4Tubs("AroundTopCase",
-						 Case_r - LateralCaseThickness,
-						 Case_r,
+						 PVC_outer_r - LateralCaseThickness,
+						 PVC_outer_r,
 						 TopCaseDepth*0.5,
 						 SPhiAroundTopCase,
 						 DPhiAroundTopCase);
@@ -934,7 +935,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Tubs* solidMidleCase =
 	new G4Tubs("MidleCase",
 						 0.,
-						 Case_r - LateralCaseThickness - HorsesShoeLateralThickness,
+						 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
 						 MidleCaseDepth * 0.5,
 						 SPhiTopCase,
 						 DPhiTopCase);
@@ -942,16 +943,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4Tubs* solidAroundMidleCase =
 	new G4Tubs("AroundMidleCase",
-						 Case_r - LateralCaseThickness - HorsesShoeLateralThickness,
-						 Case_r - LateralCaseThickness,
+						 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
+						 PVC_outer_r - LateralCaseThickness,
 						 MidleCaseDepth * 0.5,
 						 SPhiAroundTopCase,
 						 DPhiAroundTopCase);
 	
 	G4Tubs* solidExtMidleCase =
 	new G4Tubs("AroundMidleCase",
-						 Case_r - LateralCaseThickness,
-						 Case_r,
+						 PVC_outer_r - LateralCaseThickness,
+						 PVC_outer_r,
 						 MidleCaseDepth * 0.5,
 						 SPhiAroundTopCase,
 						 DPhiAroundTopCase);
@@ -1017,7 +1018,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Tubs* solidBackMidleCase =
 	new G4Tubs("BackMidleCase",
 						 0.,
-						 Case_r - LateralCaseThickness,
+						 PVC_outer_r - LateralCaseThickness,
 						 HorsesShoeBackThickness * 0.5,
 						 SPhiTopCase,
 						 DPhiTopCase);
@@ -1025,8 +1026,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4Tubs* solidAroundBackMidleCase =
 	new G4Tubs("AroundBackMidleCase",
-						 Case_r - LateralCaseThickness,
-						 Case_r,
+						 PVC_outer_r - LateralCaseThickness,
+						 PVC_outer_r,
 						 HorsesShoeBackThickness * 0.5,
 						 SPhiAroundTopCase,
 						 DPhiAroundTopCase);
@@ -1081,7 +1082,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Tubs* solidEndCase =
 	new G4Tubs("EndCase",
 						 0.,
-						 Case_r,
+						 PVC_outer_r,
 						 BackCaseThickness * 0.5,
 						 SPhiTopCase,
 						 DPhiTopCase);
