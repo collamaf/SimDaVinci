@@ -67,7 +67,7 @@ int main(int argc,char** argv)
 	}
 	*/
 	
-	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=30, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
+	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
 	G4int SourceChoice=1, AbsorberMaterial=1;
 	
 	G4String fileName ="";
@@ -150,47 +150,6 @@ int main(int argc,char** argv)
 	}
 	
 	
-#if 0
-	if ( argc >1 ) {
-		//    x0Scan=(*argv[2]-48)*mm;
-		CuDiam=strtod (argv[1], NULL);
-		ZValue=strtod (argv[2], NULL);
-		FilterFlag=strtod (argv[3], NULL);
-		TBRvalue=strtod (argv[4],NULL);
-		SourceChoice=strtod (argv[5], NULL);
-		x0Scan=strtod (argv[6], NULL);
-		AbsorberMaterial=strtod(argv[7],NULL);
-		PterDiameter=strtod(argv[8],NULL);
-		PterThickness=strtod(argv[9],NULL);
-		SourceDiameter=strtod(argv[10],NULL);
-		SourceThickness=strtod(argv[11],NULL);
-		AbsorberThickness=strtod(argv[12],NULL);
-		ProbeCaseDepth=strtod(argv[13],NULL);
-		ProbeCaseLateralThickness=strtod(argv[14],NULL);
-		ProbeCaseBackThickness=strtod(argv[15],NULL);
-
-
-
-		
-		G4cout<<"DEBUG Initial parameter check x0= "<<x0Scan<<G4endl;
-		G4cout<<"DEBUG Initial parameter check z= "<<ZValue<<G4endl;
-		G4cout<<"DEBUG Initial parameter check AbsorberDiam= "<<AbsorberDiam<<G4endl;
-		G4cout<<"DEBUG Initial parameter check TBRvalue= "<<TBRvalue<<G4endl;
-		G4cout<<"DEBUG Initial parameter check FilterFlag= "<<FilterFlag<<G4endl;
-		G4cout<<"DEBUG Initial parameter check SourceChoice= "<<SourceChoice<<G4endl;
-		G4cout<<"DEBUG Initial parameter check AbsorberMaterial= "<<AbsorberMaterial<<G4endl;
-		G4cout<<"DEBUG Initial parameter check PterDiameter= "<<PterDiameter<<G4endl;
-		G4cout<<"DEBUG Initial parameter check PterThickness= "<<PterThickness<<G4endl;
-		G4cout<<"DEBUG Initial parameter check SourceDiameter= "<<SourceDiameter<<G4endl;
-		G4cout<<"DEBUG Initial parameter check SourceThickness= "<<SourceThickness<<G4endl;
-		G4cout<<"DEBUG Initial parameter check AbsorberThickness= "<<AbsorberThickness<<G4endl;
-		G4cout<<"DEBUG Initial parameter check ProbeCaseDepth= "<<ProbeCaseDepth<<G4endl;
-		G4cout<<"DEBUG Initial parameter check ProbeCaseLateralThickness= "<<ProbeCaseLateralThickness<<G4endl;
-		G4cout<<"DEBUG Initial parameter check ProbeCaseBackThickness= "<<ProbeCaseBackThickness<<G4endl;
-	}
-#endif
-	
-	
 	G4int SourceSelect=SourceChoice;
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
@@ -204,6 +163,11 @@ int main(int argc,char** argv)
 	
 	if (AbsorberDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	else FileNameCommonPart.append("_NoAbs");
+	
+	
+	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness) );
+	
+	
 
 	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
 	FileNameCommonPart.append("_Z"+ std::to_string((G4int)ZValue));
@@ -213,6 +177,7 @@ int main(int argc,char** argv)
 	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)SourceDiameter) + "_Dz" + std::to_string((G4int)SourceThickness));
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 
+	FileNameCommonPart.append("_InnerPlasticH");
 	
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	

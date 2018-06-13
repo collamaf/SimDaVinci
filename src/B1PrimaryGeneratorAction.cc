@@ -118,6 +118,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 		fDZExt=fSourceThickness*mm;
 	}
 	
+
 	
 	ofstream SourceFile;
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
@@ -149,6 +150,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}
 	G4double ionCharge   = 0.*eplus;
 	G4double excitEnergy = 0.*keV;
+	
+	
+//Retrieve position of MidleCase that represents the center of the whole probe to use it as offset for Sphere source
+	G4double Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MidleCase")->GetTranslation().z();
+//	G4cout<<"AAAAA "<<Sphere_ZOffset<<G4endl;
 	
 	G4ParticleDefinition* ion
 	= G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
@@ -206,10 +212,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double Sphere_X=sqrt(1-Sphere_U*Sphere_U)*cos(Sphere_Theta);
 	G4double Sphere_Y=sqrt(1-Sphere_U*Sphere_U)*sin(Sphere_Theta);
 	G4double Sphere_Z=Sphere_U;
-	G4double Sphere_Radius=10*cm;
-	
-	
-
+	G4double Sphere_Radius=15*cm;
 	
 	
 	fParticleGun->SetParticleEnergy(0*MeV); //SetParticleEnergy uses kinetic energy
@@ -250,7 +253,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	if (fSourceSelect==5) {
 		Source_X=Sphere_Radius*Sphere_X;
 		Source_Y=Sphere_Radius*Sphere_Y;
-		Source_Z=Sphere_Radius*Sphere_Z;
+		Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
 		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
 		fParticleGun->SetParticleDefinition(fotone);
 		fParticleGun->SetParticleEnergy(0.511*MeV);

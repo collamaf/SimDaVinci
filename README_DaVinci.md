@@ -103,6 +103,11 @@ file=$(ls -t Primaries_*.dat | head -n1); tail -f $file
 
 
 ```
+ELE
+POS
+FOT
+
+
 to see energy spectrum of electrons created by Sr/Y that exit the source
 
 Per disegnare contributi Sr e Y:
@@ -149,7 +154,7 @@ B1->Draw("InPterEnY","","same")
 - Now arguments are taken with labels, not necessary to give them all! If a macro is provided no visualization is init.. cool! (removed useless FilterFlag)
 
 2018.06.05 by collamaf
-- Added structure to classify energy release due to e+/e-/gamma
+- Added structure to classify energy release due to e-/e+/gamma
 
 2018.06.11 by MorettiR
 - Added Probe's Casing in Geometry with parameters from line comand.
@@ -159,8 +164,13 @@ B1->Draw("InPterEnY","","same")
 - Added fSourceSelect==5 to generate a sphere (now with R=10cm) around origin of isotropic 511keV gammas to simulate the "far bacgkround" in a Ga68 environment
 - Simplification of materials for the probe laparo housing: 3 materials: "Ext" for external housing, "Metal" for metal covering inside and "Inner" for inner part (maybe air)
 
+2018.06.13 by collamaf
+- Now when requesting Sphere Source the sphere is centered on the center of the probe case to gain in isotropy
+- Changed "entering PTER" condition: now is "from Not PTER to PTER" to consider also tracks from behind (before was "from frontshield")
+- Added in output file name also info about the probe case
+
 
 ## TO DO's
 
-
+- flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
 

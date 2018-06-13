@@ -198,6 +198,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* CaseExt_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* CaseMetal_mat=nist->FindOrBuildMaterial("G4_Pb");
 	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+//	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_AIR");
 
 	G4Material* AroundBackMidleCase_mat=CaseExt_mat;
 	G4Material* AroundTopCase_mat=CaseExt_mat;
