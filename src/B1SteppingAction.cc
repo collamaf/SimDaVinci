@@ -73,15 +73,13 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ########################################
 	// ###################### ENTERING Pter
 	
-	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
-		
+//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
+		if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
+
 		
 		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER da FrontShield - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
 		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
-		
-		
-		
 		
 		
 		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...

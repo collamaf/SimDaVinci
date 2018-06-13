@@ -41,7 +41,7 @@
 
 /vis/scene/add/scale 20 cm z 0 1 0 manual 0 0 0  m
 /vis/scene/add/scale 1.2 cm y 0 0 1 manual 0 0 0  m
-
+/vis/scene/add/scale 5 cm z 0 1 1 manual 0 -1 2.5  cm
 #
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:
