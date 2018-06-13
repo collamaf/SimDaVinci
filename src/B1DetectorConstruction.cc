@@ -48,6 +48,7 @@
 #include "G4UserLimits.hh"
 #include "G4Region.hh"
 #include "G4SubtractionSolid.hh"
+#include "G4UnionSolid.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -195,21 +196,30 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//G4Material* ProbeCase_mat = nist->FindOrBuildMaterial("MyAlu");
 	//G4Material* CylinderB_mat = nist->FindOrBuildMaterial("MyAlu");
 	
-	G4Material* CaseExt_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-	G4Material* CaseMetal_mat=nist->FindOrBuildMaterial("G4_Pb");
+	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	G4Material* HorsesShoe_mat= nist->FindOrBuildMaterial("G4_Pb");
 	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-
-	G4Material* AroundBackMidleCase_mat=CaseExt_mat;
-	G4Material* AroundTopCase_mat=CaseExt_mat;
-	G4Material* EndCase_mat=CaseExt_mat;
-	G4Material* ExtMidleCase_mat=CaseExt_mat;
-
 	G4Material* MidleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
-	
-	G4Material* BackMidleCase_mat=CaseMetal_mat;
-	G4Material* AroundMidleCase_mat=CaseMetal_mat;
 
+	
+	
+	//Before Boolean
+	/*
+	 G4Material* CaseExt_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	 G4Material* CaseMetal_mat=nist->FindOrBuildMaterial("G4_Pb");
+	 G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	 
+	 G4Material* AroundBackMidleCase_mat=CaseExt_mat;
+	 G4Material* AroundTopCase_mat=CaseExt_mat;
+	 G4Material* EndCase_mat=CaseExt_mat;
+	 G4Material* ExtMidleCase_mat=CaseExt_mat;
+	 
+	 G4Material* MidleCase_mat=CaseInner_mat;
+	 G4Material* TopCase_mat=CaseInner_mat;
+	 G4Material* BackMidleCase_mat=CaseMetal_mat;
+	 G4Material* AroundMidleCase_mat=CaseMetal_mat;
+	 */
 	
 #if 0
 	G4Material* TopCase_mat = nist->FindOrBuildMaterial("G4_AIR");
@@ -882,7 +892,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	
+	
+	
+	
 	//################################################### END OF Frontal part of the Probe
+	
+	
+	if(CaseDepth>0){
+	
 	
 	//###################################################
 	//Back Part of the Probe (Case)
@@ -915,12 +932,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4LogicalVolume(solidTopCase,               //its solid
 											TopCase_mat,           //its material
 											"TopCase");            //its name
-	
+	/*
 	G4LogicalVolume* logicAroundTopCase =
 	new G4LogicalVolume(solidAroundTopCase,               //its solid
 											AroundTopCase_mat,           //its material
 											"AroundTopCase");            //its name
-	
+	*/
 	
 	
 	G4double ProbeTopCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
@@ -935,7 +952,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
+	/*
 	new G4PVPlacement(0,                     //no rotation
 										posTopCase,       //at (0,0,0)
 										logicAroundTopCase,            //its logical volume
@@ -944,7 +961,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
+	*/
 	
 	//###################################################
 	// Midle Probe case
@@ -982,7 +999,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4LogicalVolume(solidMidleCase,               //its solid
 											MidleCase_mat,           //its material
 											"MidleCase");            //its name
-	
+	/*
 	G4LogicalVolume* logicAroundMidleCase =
 	new G4LogicalVolume(solidAroundMidleCase,               //its solid
 											AroundMidleCase_mat,           //its material
@@ -993,7 +1010,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											ExtMidleCase_mat,           //its material
 											"ExtMidleCase");            //its name
 	
-	
+	*/
 	
 	G4double ProbeMidleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MidleCaseDepth * 0.5;
 	G4ThreeVector posMidleCase = G4ThreeVector(fX0Scan, 0, ProbeMidleCase_Posz);
@@ -1008,7 +1025,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
 	
-	
+	/*
 	new G4PVPlacement(0,                     //no rotation
 										posMidleCase,       //at (0,0,0)
 										logicAroundMidleCase,            //its logical volume
@@ -1027,6 +1044,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
+	
+	*/
 	
 	
 	//###################################################
@@ -1053,7 +1072,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 DPhiAroundTopCase);
 	
 	
-	
+	/*
 	G4LogicalVolume* logicBackMidleCase =
 	new G4LogicalVolume(solidBackMidleCase,               //its solid
 											BackMidleCase_mat,           //its material
@@ -1091,7 +1110,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 	
-	
+	*/
 	
 	//###################################################
 	//  End Probe case
@@ -1108,7 +1127,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 DPhiTopCase);
 	
 	
-	
+	/*
 	
 	G4LogicalVolume* logicEndCase =
 	new G4LogicalVolume(solidEndCase,               //its solid
@@ -1131,15 +1150,92 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
 	
+	*/
+
+
+	//###################################################
+	// G4Union Probe
+	//##########################
 	
-
-
+	
+	
+	//###################################################
+	// G4Union External Case
+	//##########################
+	
+	
+	G4VSolid* Union1
+	= new G4UnionSolid("Union1", solidAroundTopCase , solidExtMidleCase,0 , G4ThreeVector(0.,0.,(MidleCaseDepth+TopCaseDepth)*0.5));
+	//The G4ThreeVector(0.,0.,(MidleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
+	
+	
+	
+	
+	G4VSolid* Union2
+	= new G4UnionSolid("Union2", solidAroundBackMidleCase , solidEndCase, 0 , G4ThreeVector(0.,0.,(BackCaseThickness + HorsesShoeBackThickness)*0.5));
+	
+	
+	G4VSolid* PlasticCase
+	= new G4UnionSolid("PlasticCase", Union1 , Union2 ,0, G4ThreeVector(0.,0.,MidleCaseDepth + TopCaseDepth*0.5 + HorsesShoeBackThickness*0.5));
+	
+	G4LogicalVolume* logicPlasticCase =
+	new G4LogicalVolume(PlasticCase,               //its solid
+											PlasticCase_mat,           //its material
+											"PlasticCase");            //its name
+	
+	
+	
+	G4double PlastiCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+	G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
+	
+	
+	
+	
+	new G4PVPlacement(0,                     //no rotation
+										posPlasticCase,        //at (0,0,0)
+										logicPlasticCase,            //its logical volume
+										"PlasticCase",               //its name
+										logicWorld,            //its mother  volume
+										false,                 //no boolean operation
+										0,                     //copy number
+										checkOverlaps);        //overlaps checking
+	
+	
+	//###################################################
+	// G4Union HorsesShoe Probe
+	//##########################
+	
+	
+	G4VSolid* HorsesShoe
+	= new G4UnionSolid("HorsesShoe", solidAroundMidleCase , solidBackMidleCase  ,0, G4ThreeVector(0.,0.,(MidleCaseDepth +  HorsesShoeBackThickness)*0.5));
+	
+	
+	G4LogicalVolume* logicHorsesShoe =
+	new G4LogicalVolume(HorsesShoe,               //its solid
+											HorsesShoe_mat,           //its material
+											"HorsesShoe");            //its name
+	
+	G4double HorsesShoe_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MidleCaseDepth*0.5;
+	G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
+										 
+	
+	new G4PVPlacement(0,                     //no rotation
+							      posHorsesShoe,        //at (0,0,0)
+							      logicHorsesShoe,            //its logical volume
+							      "HorsesShoe",               //its name
+								    logicWorld,            //its mother  volume
+								    false,                 //no boolean operation
+										0,                     //copy number
+										checkOverlaps);        //overlaps checking
+										 
+	
 	
 	
 	//###################################################
 	// End of Probe
 	//##########################
 	
+	}
 	
 	
 	return physWorld;
@@ -1148,6 +1244,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 }
+
 
 
 

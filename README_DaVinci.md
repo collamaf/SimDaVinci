@@ -159,6 +159,9 @@ B1->Draw("InPterEnY","","same")
 - Added fSourceSelect==5 to generate a sphere (now with R=10cm) around origin of isotropic 511keV gammas to simulate the "far bacgkround" in a Ga68 environment
 - Simplification of materials for the probe laparo housing: 3 materials: "Ext" for external housing, "Metal" for metal covering inside and "Inner" for inner part (maybe air)
 
+2018.06.13 by MorettiR
+- Probe Casing modified with boolean solids and possibility to choose the presence/absence of the casing, from line comand, simply putting respectively the CaseDepth > 0 or <=0. 
+
 
 ## TO DO's
 
