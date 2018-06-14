@@ -108,16 +108,16 @@
 #
 # To get nice view
 /vis/geometry/set/visibility World 0 false
-/vis/geometry/set/visibility Envelope 0 false
+#/vis/geometry/set/visibility Envelope 0 false
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
 #/vis/viewer/set/viewpointThetaPhi 120 150
 /vis/viewer/set/viewpointThetaPhi 90 0
-/vis/geometry/set/colour SourceDOTA 0 1 0 0 1
+#/vis/geometry/set/colour SourceDOTA 0 1 0 0 1
 /vis/geometry/set/colour SourceSR 0 0 1  0 1
 /vis/geometry/set/colour ABSbehind 0 0 0 1 1
 /vis/geometry/set/colour ABSaround 0 0 0 1 1
-/vis/geometry/set/colour Carrier 0 1 1 1 0.05
+#/vis/geometry/set/colour Carrier 0 1 1 1 0.05
 /vis/geometry/set/colour PVC 0 0.988235 0 0.0588235 1
 /vis/geometry/set/colour GaContainer 0 0 0 1 1
 /vis/geometry/set/colour Delrin 0 0.133333 1 0.0509804 1
@@ -125,10 +125,11 @@
 /vis/geometry/set/colour SourceExtGa 0 0.117647 0.94902 1 1
 /vis/geometry/set/colour FrontShield 0 0.137255 1 0.0235294 1
 /vis/geometry/set/colour CuCollimator 0 1 0.57 0.3 1
-/vis/geometry/set/colour AroundMidleCase 0 0.988235 0.984314 0.266667 1
-/vis/geometry/set/colour BackMidleCase 0 0.988235 0.984314 0.266667 1
+#/vis/geometry/set/colour AroundMidleCase 0 0.988235 0.984314 0.266667 1
+#/vis/geometry/set/colour BackMidleCase 0 0.988235 0.984314 0.266667 1
 /vis/geometry/set/colour TopCase 0 0.988235 0.0980392 0.945098 1
 /vis/geometry/set/colour MidleCase 0 0.988235 0.0980392 0.945098 1
+/vis/geometry/set/colour HorsesShoe 0 0.12549 0.996078 1 1
 #/vis/geometry/set/colour [logic name] depth R G B opacity
 #
 # Re-establish auto refreshing and verbosity:
