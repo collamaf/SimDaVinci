@@ -199,16 +199,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* HorsesShoe_mat= nist->FindOrBuildMaterial("G4_Pb");
 	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-<<<<<<< HEAD
-=======
-//	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_AIR");
-
-	G4Material* AroundBackMidleCase_mat=CaseExt_mat;
-	G4Material* AroundTopCase_mat=CaseExt_mat;
-	G4Material* EndCase_mat=CaseExt_mat;
-	G4Material* ExtMidleCase_mat=CaseExt_mat;
-
->>>>>>> b8acc1bfa1ad6637c179e03db07fcc34116dc60a
 	G4Material* MidleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
 
@@ -333,7 +323,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double Pter_Posz=0.*mm;
 	G4double Pter_ZScan=fZValue*mm;
 	
-	G4double PVC_inner_r= PVC_outer_r - 2;
+	G4double PVC_inner_r= PVC_outer_r - 2*mm;
 
 	
 	//### Probe Case
@@ -1246,6 +1236,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//##########################
 	
 	}
+	
 	
 	
 	return physWorld;
