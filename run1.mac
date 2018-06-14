@@ -14,10 +14,10 @@
 /event/verbose 0
 /tracking/verbose 0
 #
-
 /tracking/verbose 0
 #
-/run/beamOn 4512500
+#/run/beamOn 3200000
+/run/beamOn 1887347
 #/run/beamOn 1000000
 #/run/beamOn 10000000
 #000
