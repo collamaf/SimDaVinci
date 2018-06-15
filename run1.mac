@@ -14,10 +14,15 @@
 /event/verbose 0
 /tracking/verbose 0
 #
-
 /tracking/verbose 0
 #
+<<<<<<< HEAD
 #/run/beamOn 4512500
 /run/beamOn 18873470
+=======
+#/run/beamOn 3200000
+/run/beamOn 1887347
+#/run/beamOn 1000000
+>>>>>>> ee6c8af87b18526ef1aac4034fa99d63e5ff9e2d
 #/run/beamOn 10000000
 #000

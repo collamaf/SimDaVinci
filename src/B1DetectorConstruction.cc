@@ -1220,7 +1220,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4double HorsesShoe_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
 	G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
-										 
+		
 	
 	new G4PVPlacement(0,                     //no rotation
 							      posHorsesShoe,        //at (0,0,0)
@@ -1230,7 +1230,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								    false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-										 
+		
 	
 	
 	
