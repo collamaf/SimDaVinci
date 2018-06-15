@@ -152,8 +152,8 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double excitEnergy = 0.*keV;
 	
 	
-//Retrieve position of MidleCase that represents the center of the whole probe to use it as offset for Sphere source
-	//G4double Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MidleCase")->GetTranslation().z();
+//Retrieve position of MiddleCase that represents the center of the whole probe to use it as offset for Sphere source
+	//G4double Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")->GetTranslation().z();
 //	G4cout<<"AAAAA "<<Sphere_ZOffset<<G4endl;
 	
 	G4ParticleDefinition* ion
@@ -249,11 +249,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double MomentumDir_Z=0;
 	
 	
+	G4double Sphere_ZOffset=0;
 	
 	if (fSourceSelect==5) {
 		Source_X=Sphere_Radius*Sphere_X;
 		Source_Y=Sphere_Radius*Sphere_Y;
-		//Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
+		if (G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")!=NULL)	Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")->GetTranslation().z();
+		Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
 		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
 		fParticleGun->SetParticleDefinition(fotone);
 		fParticleGun->SetParticleEnergy(0.511*MeV);

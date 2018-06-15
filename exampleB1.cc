@@ -174,10 +174,10 @@ int main(int argc,char** argv)
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
-	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)SourceDiameter) + "_Dz" + std::to_string((G4int)SourceThickness));
+	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 
-	FileNameCommonPart.append("_InnerPlasticH");
+	FileNameCommonPart.append("");
 	
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	

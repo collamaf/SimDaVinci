@@ -46,11 +46,30 @@
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide:
 /vis/scene/add/trajectories smooth
-/vis/modeling/trajectories/create/drawByCharge
-/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
-/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
+#/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+#/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
 # (if too many tracks cause core dump => /tracking/storeTrajectory 0)
 #
+
+
+/vis/modeling/trajectories/create/drawByAttribute EnCut
+ /vis/modeling/trajectories/EnCut/setAttribute IKE
+
+ /vis/modeling/trajectories/EnCut/addInterval interval1 0 keV 505 keV
+ /vis/modeling/trajectories/EnCut/addInterval interval2 505 keV 520 keV
+#
+ /vis/modeling/trajectories/EnCut/interval1/setDrawLine   0
+ /vis/modeling/trajectories/EnCut/interval2/setDrawLine  1
+  /vis/modeling/trajectories/EnCut/interval2/setLineColour red
+ /vis/modeling/trajectories/EnCut/interval1/setLineColour blue
+#
+# /vis/modeling/trajectories/EnCut/setAttribute PDG
+# /vis/modeling/trajectories/EnCut/addValue fotoni 22
+# /vis/modeling/trajectories/EnCut/fotoni/setLineColour yellow
+
+
+
 # Draw hits at end of event:
 #/vis/scene/add/hits
 #
@@ -128,7 +147,7 @@
 #/vis/geometry/set/colour AroundMidleCase 0 0.988235 0.984314 0.266667 1
 #/vis/geometry/set/colour BackMidleCase 0 0.988235 0.984314 0.266667 1
 /vis/geometry/set/colour TopCase 0 0.988235 0.0980392 0.945098 1
-/vis/geometry/set/colour MidleCase 0 0.988235 0.0980392 0.945098 1
+/vis/geometry/set/colour MiddleCase 0 0.988235 0.0980392 0.945098 1
 /vis/geometry/set/colour HorsesShoe 0 0.12549 0.996078 1 1
 #/vis/geometry/set/colour [logic name] depth R G B opacity
 #
