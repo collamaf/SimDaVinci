@@ -62,15 +62,16 @@ int main(int argc,char** argv)
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
 	/*
-	if ( argc == 13 ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
-		ui = new G4UIExecutive(argc, argv);
-	}
-	*/
+	 if ( argc == 13 ) {  //was argc==1, 7 to see geom using input parameters, 8 once added sensorchoice
+	 ui = new G4UIExecutive(argc, argv);
+	 }
+	 */
 	
 	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
 	G4int SourceChoice=1, AbsorberMaterial=1;
 	
 	G4String fileName ="";
+	G4String FileNameLabel="";
 
 	
 	for(int i=1;i<argc;i++)
@@ -136,6 +137,10 @@ int main(int argc,char** argv)
 			}else if(option.compare("-HSBT")==0)            //Back Probe Case Thickness
 			{
 				HSBackThickness=strtod (argv[++i], NULL);;
+				
+			}else if(option.compare("-Label")==0)
+			{
+				FileNameLabel= argv[++i];;
 			}
 			
 		}
@@ -168,7 +173,7 @@ int main(int argc,char** argv)
 	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness) );
 	
 	
-
+	
 	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
 	FileNameCommonPart.append("_Z"+ std::to_string((G4int)ZValue));
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
@@ -176,44 +181,44 @@ int main(int argc,char** argv)
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
-
-	FileNameCommonPart.append("");
 	
+//	FileNameCommonPart.append("_TotalAirH");
+	FileNameCommonPart.append("_" + FileNameLabel);
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	
 	FileNamePrim.append(FileNameCommonPart);
 	OutFileName.append(FileNameCommonPart);
-
+	
 	/*
-	if (CuDiam>=0){
-		FileNameCommonPart="X"+ std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
-	}
-	else	{
-		FileNameCommonPart="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
-	}
-	
-	FileNamePrim.append(FileNameCommonPart);
-
-	
-	if (fCuDiam>=0){
-		FileNameCommonPart= "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_CuD" + std::to_string((G4int)fCuDiam) + "_TBR" + std::to_string((G4int)(10*fTBR))    );
-	}
-	else {
-		fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_NOCuD" + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
-	}
-	
-	
-	
-	if (SourceSelect==1) FileNamePrim.append("_PSr");
-	if (SourceSelect==2) FileNamePrim.append("_ExtSr");
-	if (SourceSelect==3) FileNamePrim.append("_ExtY");
-	if (SourceSelect==4) FileNamePrim.append("_ExtGa");
-	*/
+	 if (CuDiam>=0){
+	 FileNameCommonPart="X"+ std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_CuD" + std::to_string((G4int)CuDiam) + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+	 }
+	 else	{
+	 FileNameCommonPart="PrimariesX" + std::to_string((G4int)x0Scan) + "_Z" + std::to_string((G4int)(100*ZValue)) + "_NoCuD"  + "_Fil" + std::to_string((G4int)FilterFlag)  + "_TBR" + std::to_string((G4int)(10*TBRvalue))  ;
+	 }
+	 
+	 FileNamePrim.append(FileNameCommonPart);
+	 
+	 
+	 if (fCuDiam>=0){
+	 FileNameCommonPart= "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_CuD" + std::to_string((G4int)fCuDiam) + "_TBR" + std::to_string((G4int)(10*fTBR))    );
+	 }
+	 else {
+	 fileName= fileNameBase + "X"+  std::to_string((G4int)fX0Scan) + "_Z" + std::to_string((G4int)(100*fZValue)) + "_NOCuD" + "_Fil" + std::to_string((G4int)fFilterFlag) + "_TBR" + std::to_string((G4int)(10*fTBR));
+	 }
+	 
+	 
+	 
+	 if (SourceSelect==1) FileNamePrim.append("_PSr");
+	 if (SourceSelect==2) FileNamePrim.append("_ExtSr");
+	 if (SourceSelect==3) FileNamePrim.append("_ExtY");
+	 if (SourceSelect==4) FileNamePrim.append("_ExtGa");
+	 */
 	/*
-	if (SensorChoice==1) FileNamePrim.append("_011");
-	if (SensorChoice==2) FileNamePrim.append("_115");
-	if (SensorChoice==3) FileNamePrim.append("_60035");
-*/
+	 if (SensorChoice==1) FileNamePrim.append("_011");
+	 if (SensorChoice==2) FileNamePrim.append("_115");
+	 if (SensorChoice==3) FileNamePrim.append("_60035");
+	 */
 	FileNamePrim.append(+ ".dat");
 	std::ofstream primFile(FileNamePrim, std::ios::out);
 	
@@ -262,7 +267,7 @@ int main(int argc,char** argv)
 	if ( ! ui ) {
 		// batch mode
 		G4String command = "/control/execute ";
-//		G4String fileName = argv[13];
+		//		G4String fileName = argv[13];
 		UImanager->ApplyCommand(command+fileName);
 	}
 	else {

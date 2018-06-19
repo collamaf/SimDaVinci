@@ -199,11 +199,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* HorsesShoe_mat= nist->FindOrBuildMaterial("G4_Pb");
 	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	HorsesShoe_mat=world_mat;
+	CaseInner_mat=world_mat;
 	G4Material* MiddleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
 	
-	HorsesShoe_mat=world_mat;
-	CaseInner_mat=world_mat;
+
 
 	
 	
