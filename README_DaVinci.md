@@ -108,6 +108,20 @@ POS
 FOT
 
 
+## TO MERGE IN CASE OF MT
+
+TString nomefile="PTERmc_PDiam6_PDz2_NoAbs_CaseDepth40_CaseLT1_CaseBT5_HSLT4_HSBT8_X0_Z2_Sphere511_InnerAirH";
+TChain * chain = new TChain("B1")
+chain->Add(Form("%s_t*.root",nomefile.Data()))
+TChain * chain2 = new TChain("Source")
+chain2->Add(Form("%s_t*.root",nomefile.Data()))
+TFile *file = TFile::Open(Form("%s.root",nomefile.Data()),"RECREATE");
+chain->CloneTree(-1,"fast");
+chain2->CloneTree(-1,"fast");
+file->Write();
+
+
+
 to see energy spectrum of electrons created by Sr/Y that exit the source
 
 Per disegnare contributi Sr e Y:
@@ -175,6 +189,11 @@ B1->Draw("InPterEnY","","same")
 2018.06.14 by collamaf
 - Substituted "Midle" with "Middle"
 - Fix sphere source offset when no case is requested
+
+2018.06.20 by collamaf
+- Added new argument from command line to choose material for inner probe case: "HSMat": 1 (default) is Pb+plastic, 2 is Pb+Air, 3 is Air+Air
+- Added possibility to run in Multi Thread
+
 
 ## TO DO's
 

@@ -68,7 +68,7 @@ int main(int argc,char** argv)
 	 */
 	
 	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
-	G4int SourceChoice=1, AbsorberMaterial=1;
+	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1;
 	
 	G4String fileName ="";
 	G4String FileNameLabel="";
@@ -138,6 +138,10 @@ int main(int argc,char** argv)
 			{
 				HSBackThickness=strtod (argv[++i], NULL);;
 				
+			}else if(option.compare("-HSMat")==0)           
+			{
+				HousingCase=strtod (argv[++i], NULL);;
+				
 			}else if(option.compare("-Label")==0)
 			{
 				FileNameLabel= argv[++i];;
@@ -170,7 +174,7 @@ int main(int argc,char** argv)
 	else FileNameCommonPart.append("_NoAbs");
 	
 	
-	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness) );
+	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness)+"_HSMat" + std::to_string(HousingCase) );
 	
 	
 	
@@ -230,12 +234,19 @@ int main(int argc,char** argv)
 	//#ifdef G4MULTITHREAD
 	//  G4MTRunManager* runManager = new G4MTRunManager;
 	//#else
+	
+#if 0
+	G4MTRunManager* runManager = new G4MTRunManager;
+	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
+#endif
+	
+
 	G4RunManager* runManager = new G4RunManager;
 	//#endif
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
