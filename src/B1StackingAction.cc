@@ -75,7 +75,9 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 	fEventAction->ResetPassCounterSource(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPassCounterPter(); //collamaf: at each new track we reset the pass counter
 	
-	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle() ->GetPDGcode()<9e8) {
+	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle() ->GetPDGcode()<9e8 && track->GetDynamicParticle() ->GetPDGcode()>0 && track->GetCurrentStepNumber()==0) { //to exclude optical photons and to avoid counting several times particles that undergo optical interactions (eg scintillation) - added on 2018.06.21
+//		G4cout<<"Aggiungo al calderone sorgente! ParentID= "<<track->GetParentID()<<" TrackID= "<<track->GetTrackID()<<" StepNb= "<<track->GetCurrentStepNumber()<<G4endl;
+		if (0&&fabs(track->GetKineticEnergy()/CLHEP::keV-130)<10) G4cout<<"Aggiunta sospetta! "<<G4endl;
 		runStackAction->SetMotherIsotope(track->GetParentID()-1);
 		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));

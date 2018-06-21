@@ -136,6 +136,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fPassCounterPter=0;
 	fStoreTrackIDSource=0;
 	fStoreTrackIDPter=0;
+	fNPMT=0;
 	/*
 	 fSourceX=0;
 	 fSourceY=0;
@@ -162,8 +163,10 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	G4int NevTot=fRunAction->GetEventNumber();
 	
-	if ((100*evento->GetEventID())%NevTot==0) FilePrimaries<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
-	
+	if ((10*evento->GetEventID())%NevTot==0) {
+		FilePrimaries<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
+		G4cout<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
+	}
 	// get analysis manager
 	
 	auto analysisManager = G4AnalysisManager::Instance();
@@ -186,7 +189,8 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleDColumn(0,22, fSourceEne/keV);
 	analysisManager->FillNtupleDColumn(0,23, fSourceIsotope);
 	*/
-	
+	analysisManager->FillNtupleIColumn(0,25, fNPMT);
+
 	//	G4cout<<"PterDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	
 	if(fEdep>0) analysisManager->AddNtupleRow(0);

@@ -110,7 +110,7 @@ FOT
 
 ## TO MERGE IN CASE OF MT
 
-TString nomefile="PTERmc_PDiam6_PDz2_NoAbs_CaseDepth40_CaseLT1_CaseBT5_HSLT4_HSBT8_X0_Z2_Sphere511_InnerAirH";
+TString nomefile="PTERmc_PDiam6_PDz2_NoAbs_CaseDepth40_CaseLT1_CaseBT5_HSLT4_HSBT3_HSMat3_X0_Z2_Sphere511";
 TChain * chain = new TChain("B1")
 chain->Add(Form("%s_t*.root",nomefile.Data()))
 TChain * chain2 = new TChain("Source")
@@ -119,6 +119,30 @@ TFile *file = TFile::Open(Form("%s.root",nomefile.Data()),"RECREATE");
 chain->CloneTree(-1,"fast");
 chain2->CloneTree(-1,"fast");
 file->Write();
+
+
+## TO ANALYZE HOUSING BACK MATERIAL
+
+_file2->cd()
+B1->Draw("EabsComp[2]","EabsComp[2]>0")
+B1->Draw("EabsComp[0]","EabsComp[0]>0")
+_file1->cd()
+B1->Draw("EabsComp[2]","EabsComp[2]>0")
+B1->Draw("EabsComp[0]","EabsComp[0]>0")
+_file0->cd()
+B1->Draw("EabsComp[2]","EabsComp[2]>0")
+B1->Draw("EabsComp[0]","EabsComp[0]>0")
+
+_file2->cd()
+B1->Draw("PrePterEn","PrePterPart==22")
+B1->Draw("PrePterEn","PrePterPart==11")
+_file1->cd()
+B1->Draw("PrePterEn","PrePterPart==22")
+B1->Draw("PrePterEn","PrePterPart==11")
+_file0->cd()
+B1->Draw("PrePterEn","PrePterPart==22")
+B1->Draw("PrePterEn","PrePterPart==11")
+
 
 
 
@@ -194,8 +218,19 @@ B1->Draw("InPterEnY","","same")
 - Added new argument from command line to choose material for inner probe case: "HSMat": 1 (default) is Pb+plastic, 2 is Pb+Air, 3 is Air+Air
 - Added possibility to run in Multi Thread
 
+2018.06.21 by collamaf
+- Added scintillation for PTER (with ScintFlag from terminal, default NO). Actually addedd all Optical Physics but disabled for now Cerenkov directly in PhysList
+- Added SiPm volume behind pter to score optical photons entering it
+- Added scoring of "Npmt" in root file and "_Scint" to filename
+- Now the progress status is printed on screen (since on Primaries file sometimes does not work) and every 10% of evts
+- Changed condition to score primary decay product: added requeste StepN==0 to avoid double counting particles interacting via optical processes. Should not have any other undesired effect
+- Excluded OptFot from InPter scoring to avoid huge size of root file
+- Changed X and Z in filename to be in 0.1mm
+
 
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
+- Sistemare l'overlap fra il volume SiPm e il tappo presente dietro il PTER quando c'è il case
+- capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
 

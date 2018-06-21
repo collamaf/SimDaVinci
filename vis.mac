@@ -53,16 +53,16 @@
 #
 
 
-/vis/modeling/trajectories/create/drawByAttribute EnCut
- /vis/modeling/trajectories/EnCut/setAttribute IKE
+#/vis/modeling/trajectories/create/drawByAttribute EnCut
+# /vis/modeling/trajectories/EnCut/setAttribute IKE
 
- /vis/modeling/trajectories/EnCut/addInterval interval1 0 keV 505 keV
- /vis/modeling/trajectories/EnCut/addInterval interval2 505 keV 520 keV
+# /vis/modeling/trajectories/EnCut/addInterval interval1 0 keV 505 keV
+# /vis/modeling/trajectories/EnCut/addInterval interval2 505 keV 520 keV
 #
- /vis/modeling/trajectories/EnCut/interval1/setDrawLine   0
- /vis/modeling/trajectories/EnCut/interval2/setDrawLine  1
-  /vis/modeling/trajectories/EnCut/interval2/setLineColour red
- /vis/modeling/trajectories/EnCut/interval1/setLineColour blue
+# /vis/modeling/trajectories/EnCut/interval1/setDrawLine   0
+# /vis/modeling/trajectories/EnCut/interval2/setDrawLine  1
+#  /vis/modeling/trajectories/EnCut/interval2/setLineColour red
+# /vis/modeling/trajectories/EnCut/interval1/setLineColour blue
 #
 # /vis/modeling/trajectories/EnCut/setAttribute PDG
 # /vis/modeling/trajectories/EnCut/addValue fotoni 22
@@ -74,8 +74,8 @@
 #/vis/scene/add/hits
 #
 # To draw only gammas:
-#/vis/filtering/trajectories/create/particleFilter
-#/vis/filtering/trajectories/particleFilter-0/add e-
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add opticalphoton
 #
 # To invert the above, drawing all particles except gammas,
 # keep the above two lines but also add:
@@ -111,7 +111,7 @@
 /vis/scene/add/date    # Date stamp
 /vis/scene/add/logo2D  # Simple logo
 /vis/scene/add/logo    # 3D logo
-/vis/scene/add/axes 0 0 0 10 cm
+#/vis/scene/add/axes 0 0 0 10 cm
 #
 # Frame
 /vis/set/colour red

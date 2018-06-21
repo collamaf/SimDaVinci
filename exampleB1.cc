@@ -38,7 +38,8 @@
 #endif
 
 #include "G4UImanager.hh"
-//#include "QBBC.hh"
+#include "QBBC.hh"
+#include "FTFP_BERT_HP.hh"
 #include "B1PhysicsList.hh"
 
 #include "G4SystemOfUnits.hh"
@@ -49,6 +50,8 @@
 #include "G4StepLimiter.hh"
 #include "G4UserLimits.hh"
 #include "G4StepLimiterPhysics.hh"
+#include "G4OpticalPhysics.hh"
+
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>
@@ -69,6 +72,7 @@ int main(int argc,char** argv)
 	
 	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1;
+	G4bool ScintFlag=0;
 	
 	G4String fileName ="";
 	G4String FileNameLabel="";
@@ -142,6 +146,9 @@ int main(int argc,char** argv)
 			{
 				HousingCase=strtod (argv[++i], NULL);;
 				
+			}else if(option.compare("-Scint")==0)
+			{
+				ScintFlag= argv[++i];;
 			}else if(option.compare("-Label")==0)
 			{
 				FileNameLabel= argv[++i];;
@@ -178,16 +185,18 @@ int main(int argc,char** argv)
 	
 	
 	
-	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
-	FileNameCommonPart.append("_Z"+ std::to_string((G4int)ZValue));
+	FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
+	FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	
+	if (ScintFlag) FileNameCommonPart.append("_Scint"); 
+
 //	FileNameCommonPart.append("_TotalAirH");
-	FileNameCommonPart.append("_" + FileNameLabel);
+	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	
 	FileNamePrim.append(FileNameCommonPart);
@@ -237,7 +246,8 @@ int main(int argc,char** argv)
 	
 #if 0
 	G4MTRunManager* runManager = new G4MTRunManager;
-	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
+//	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
+	runManager->SetNumberOfThreads( 6 );
 #endif
 	
 
@@ -246,7 +256,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -254,9 +264,16 @@ int main(int argc,char** argv)
 	
 	//  runManager->SetUserInitialization(new B1PhysicsList);
 	
+	
+//	G4VModularPhysicsList* physicsList = new QBBC;
+//	physicsList->RegisterPhysics(new G4OpticalPhysics());
+
+	
+	
 	B1PhysicsList* physicsList=new B1PhysicsList;
 	physicsList->RegisterPhysics(new G4StepLimiterPhysics());
-	runManager->SetUserInitialization(physicsList);
+	
+	 runManager->SetUserInitialization(physicsList);
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));

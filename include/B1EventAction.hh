@@ -92,7 +92,7 @@ public:
 	void SetEnteringParticle(G4int part) {fEnteringParticle=part;}
 	G4int GetEnteringParticle(void) {return fEnteringParticle;}
 
-	
+	void AddNPMT(G4int n) {fNPMT+=n;}
 	
 	//  void SetStopPosition (G4double x,G4double y, G4double z){
 	//  xstop=x;
@@ -133,6 +133,7 @@ private:
 	G4int fPassCounterPter;
 
 	G4double fNSourceExit;
+	G4int fNPMT;
 	
 	/*
 	 G4double fSourceXExit;

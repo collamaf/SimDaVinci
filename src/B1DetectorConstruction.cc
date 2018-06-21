@@ -52,9 +52,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase)
+fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -213,6 +213,79 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 
+	
+	
+	
+	//###################################################
+	//###################################################
+	// Optics characteristics part
+	//##########################
+	//
+	// ------------ Generate & Add Material Properties Table ------------
+	//
+	G4double photonEnergy[] =
+	{ 2.96*eV};
+	
+	const G4int nEntries = sizeof(photonEnergy)/sizeof(G4double);
+	
+	//
+	// Water
+	//
+	G4double refractiveIndex1[] =
+	{ 1.65}; //da misteriosa mail del 30.9.2013
+	
+	assert(sizeof(refractiveIndex1) == sizeof(photonEnergy));
+	
+	G4double absorption[] =
+	{2*cm }; //da elsarticle CMT
+	
+	assert(sizeof(absorption) == sizeof(photonEnergy));
+	
+	G4double scintilFast[] =
+	{ 1.00};
+	
+	assert(sizeof(scintilFast) == sizeof(photonEnergy));
+	
+	G4double scintilSlow[] =
+	{ 0.0 };
+	
+	assert(sizeof(scintilSlow) == sizeof(photonEnergy));
+	
+	
+	
+	G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
+	myMPT1->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
+	->SetSpline(true);
+	myMPT1->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
+	->SetSpline(true);
+	myMPT1->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
+	->SetSpline(true);
+	myMPT1->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
+	->SetSpline(true);
+	
+	myMPT1->AddConstProperty("SCINTILLATIONYIELD",28000/MeV); //33k da nostro papero, 28k da papero recente elsa CMT
+	myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
+	myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+	myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
+	myMPT1->AddConstProperty("YIELDRATIO",1);
+	
+	
+	
+	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
+	myMPT1->DumpTable();
+	
+	if (fScintFlag)
+	PTerphenyl->SetMaterialPropertiesTable(myMPT1); //to toggle scintillation
+	
+	//##########################
+	//###################################################
+
+	
+	
+	
+	
+	
+	
 	
 	
 	//Before Boolean
@@ -829,6 +902,38 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 		//Solid Si Pter
 		fScoringVolume = logicPter;
+	
+	
+	//###################################################
+	// SiPm volume behind PTER
+	//##########################
+	
+	G4double DxSiPm = 3.*mm;
+	G4double DySiPm= 3.*mm;
+	G4double DzSiPm = 1.e-3*mm;
+	G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz+Pter_sizeZ/2.+DzSiPm/2.);
+	
+	G4Box* solidSiPm =
+	new G4Box("SiPm",                       //its name
+						DxSiPm/2.,
+						DySiPm/2.,
+						DzSiPm/2.);     //its size
+	
+	G4LogicalVolume* logicSiPm =
+	new G4LogicalVolume(solidSiPm,          //its solid
+											world_mat,           //its material
+											"SiPm");            //its name
+	
+	new G4PVPlacement(0,                     //no rotation
+										posSiPm,       //at (0,0,0)
+										logicSiPm,            //its logical volume
+										"SiPm",               //its name
+										logicWorld,            //its mother  volume
+										false,                 //no boolean operation
+										0,                     //copy number
+										checkOverlaps);        //overlaps checking
+	
+	
 	
 	
 	//###################################################

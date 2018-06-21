@@ -70,12 +70,23 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	G4int debug=0;
 	
+	
+	/* AddNPMT*/
+	
+	// ########################################
+	// ###################### Optical Photons ENTERING SiPm
+	if(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()== 0 && NextVol && ThisVol->GetName()=="Pter" && NextVol->GetName()=="SiPm") {
+		//		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
+		fEventAction->AddNPMT(1);
+	}
+	
+	
 	// ########################################
 	// ###################### ENTERING Pter
 	
-//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
-		if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
-
+	//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
+	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
+		
 		
 		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER da FrontShield - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
 		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
@@ -83,7 +94,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		
 		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-
+			
 			fEventAction->AddPassCounterPter(1);  //increase the counter
 			
 			//			G4cout<<"PterDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
@@ -105,7 +116,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	// ###################### END ENTERING Pter
 	// ########################################
-
+	
 	
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
@@ -160,11 +171,11 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ########################################
 	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
-	if (volume== fScoringVolume) {
+	if (volume== fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {
 		//pixel information collection
 		G4int CopyNB=step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber();
 		fEventAction->AddNo(1);
-		
+//		G4cout<<"Buccato drendo"<<G4endl;
 		G4ThreeVector pixCenter;
 		G4TouchableHandle touchHandle =step->GetPreStepPoint()->GetTouchableHandle();
 		G4ThreeVector vec_origin(0.,0.,0.);
@@ -188,9 +199,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunEnPter()).push_back(step->GetTotalEnergyDeposit()/keV);
 		(runStepAction->GetRunEnPterPrim()).push_back(runStepAction->GetMotherEnergy());
 		(runStepAction->GetRunPartPterPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-//		(runStepAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
+		//		(runStepAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
 		(runStepAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime());
-//		G4cout<<"PterDEBUG  MotherTime= "<< runStepAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime() <<G4endl;
+		//		G4cout<<"PterDEBUG  MotherTime= "<< runStepAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-runStepAction->GetMotherTime() <<G4endl;
 		(runStepAction->GetRunXPter()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunYPter()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
@@ -207,7 +218,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			fEventAction->AddEdepFot(step->GetTotalEnergyDeposit());
 			if (debug&&step->GetTotalEnergyDeposit()>0) G4cout<<"CONTROLLA"<<G4endl;
 		}
-
+		
 		fEventAction->AddEdep(edepStep);
 	}
 }

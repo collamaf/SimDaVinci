@@ -36,6 +36,15 @@
 #include "G4SystemOfUnits.hh"
 #include "G4RegionStore.hh"
 
+#include "G4Cerenkov.hh"
+#include "G4Scintillation.hh"
+#include "G4OpAbsorption.hh"
+#include "G4OpRayleigh.hh"
+#include "G4OpMieHG.hh"
+#include "G4OpBoundaryProcess.hh"
+#include "G4ShortLivedConstructor.hh"
+#include "G4OpticalPhysics.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -51,6 +60,19 @@ B1PhysicsList::B1PhysicsList()
 
   // EM physics
   RegisterPhysics(new G4EmStandardPhysics());
+
+	// Optical physics
+//	RegisterPhysics(new G4OpticalPhysics());
+//	RemovePhysics("CerenkovA");
+//	ConstructProcess(G4Scintillation );
+	
+	
+	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
+	opticalPhysics->Configure(kCerenkov, false);
+	opticalPhysics->SetCerenkovStackPhotons(false);
+//	opticalPhysics->SetScintillationStackPhotons(false);
+	RegisterPhysics(opticalPhysics);
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
