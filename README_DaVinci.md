@@ -227,6 +227,9 @@ B1->Draw("InPterEnY","","same")
 - Excluded OptFot from InPter scoring to avoid huge size of root file
 - Changed X and Z in filename to be in 0.1mm
 
+2018.06.22 by collamaf
+- Corrected error in FrontShield Thickness: was 5um is now 15
+
 
 ## TO DO's
 

@@ -176,7 +176,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	Delrin->AddElement (elC, natoms=1);
 	Delrin->AddElement (elH, natoms=2);
 	Delrin->AddElement (elO, natoms=1);
-
 	
 	
 	//############ MATERIAL ASSIGNMENT
@@ -237,7 +236,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	assert(sizeof(refractiveIndex1) == sizeof(photonEnergy));
 	
 	G4double absorption[] =
-	{2*cm }; //da elsarticle CMT
+	{20*mm }; //da elsarticle CMT
 	
 	assert(sizeof(absorption) == sizeof(photonEnergy));
 	
@@ -263,12 +262,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	myMPT1->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
 	->SetSpline(true);
 	
-	myMPT1->AddConstProperty("SCINTILLATIONYIELD",28000/MeV); //33k da nostro papero, 28k da papero recente elsa CMT
+	myMPT1->AddConstProperty("SCINTILLATIONYIELD",28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
 	myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
 	myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
 	myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
 	myMPT1->AddConstProperty("YIELDRATIO",1);
-	
+
 	
 	
 	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
@@ -372,7 +371,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Filter (FrontShield)
 	G4double Z_FrontShield= 0*mm;
 	G4double FrontShield_outer_r=(12.0/2.0)*mm;
-	G4double FrontShield_sizeZ=5*um;
+	G4double FrontShield_sizeZ=15*um;
 	G4double FrontShield_start_angle=0.*deg;
 	G4double FrontShield_spanning_angle=360.0*deg;
 	//###
