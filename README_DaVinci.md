@@ -230,6 +230,10 @@ B1->Draw("InPterEnY","","same")
 2018.06.22 by collamaf
 - Corrected error in FrontShield Thickness: was 5um is now 15
 
+2018.06.27 by MorettiR
+- Boolean Geometry Implemented for SiPM + TopCase solids
+
+
 
 ## TO DO's
 

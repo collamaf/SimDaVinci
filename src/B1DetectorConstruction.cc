@@ -71,7 +71,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	// Option to switch on/off checking of volumes overlaps
 	//
-	G4bool checkOverlaps = false;
+	G4bool checkOverlaps = true;
 	
 	//
 	// World
@@ -816,7 +816,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	
-	Z_FrontShield = fZValue + FrontShield_sizeZ*0.5;
+	Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
 	
 	/*
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
@@ -910,7 +910,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double DxSiPm = 3.*mm;
 	G4double DySiPm= 3.*mm;
 	G4double DzSiPm = 1.e-3*mm;
-	G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz+Pter_sizeZ/2.+DzSiPm/2.);
+	G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
 	
 	G4Box* solidSiPm =
 	new G4Box("SiPm",                       //its name
@@ -1026,7 +1026,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	G4Tubs* solidTopCase =
-	new G4Tubs("TopCase",
+	new G4Tubs("solidTopCase",
 						 0.,
 						 PVC_outer_r - LateralCaseThickness,
 						 TopCaseDepth*0.5,
@@ -1042,31 +1042,36 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 SPhiAroundTopCase,
 						 DPhiAroundTopCase);
 	
-	
+	/*
 	G4LogicalVolume* logicTopCase =
 	new G4LogicalVolume(solidTopCase,               //its solid
 											TopCase_mat,           //its material
-											"TopCase");            //its name
-	/*
+											"solidTopCase");            //its name
+	
 	G4LogicalVolume* logicAroundTopCase =
 	new G4LogicalVolume(solidAroundTopCase,               //its solid
 											AroundTopCase_mat,           //its material
 											"AroundTopCase");            //its name
 	*/
 	
-	
-	G4double ProbeTopCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-	G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
 
-	
+		
+/*
+ 
+ 
 	new G4PVPlacement(0,                     //no rotation
 										posTopCase,       //at (0,0,0)
 										logicTopCase,            //its logical volume
-										"TopCase",               //its name
+										"solidTopCase",               //its name
 										logicWorld,            //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
+ 
+ 
+ 
+ 
+ */
 	/*
 	new G4PVPlacement(0,                     //no rotation
 										posTopCase,       //at (0,0,0)
@@ -1344,8 +1349,47 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										checkOverlaps);        //overlaps checking
 		
 	
+	//###################################################
+	// G4Union TopCase Probe
+	//###################################################
 	
+		
 	
+	G4VSolid* TopCase=
+	new G4SubtractionSolid ("TopCase",
+													solidTopCase,
+													solidSiPm,
+													0,
+													G4ThreeVector(0.,0.,TopCaseDepth*0.5-DzSiPm*0.5));
+		
+		
+		
+		G4LogicalVolume* logicTopCase =
+		new G4LogicalVolume(TopCase,          //its solid
+												TopCase_mat,           //its material
+												"TopCase");            //its name
+		
+		
+		
+		G4double ProbeTopCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+		G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
+		
+		G4RotationMatrix *rm = new G4RotationMatrix();
+		rm->rotateY(180*deg);
+		
+		
+		new G4PVPlacement(rm,                    // rotation
+											posTopCase,            //at (0,0,0)
+											logicTopCase,          //its logical volume
+											"TopCase",             //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		
+
 	//###################################################
 	// End of Probe
 	//##########################
