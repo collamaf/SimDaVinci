@@ -30,6 +30,8 @@
 
 #include "B1DetectorConstruction.hh"
 #include "B1ActionInitialization.hh"
+#include "MyExceptionHandler.hh"
+
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -52,6 +54,7 @@
 #include "G4StepLimiterPhysics.hh"
 #include "G4OpticalPhysics.hh"
 
+#include "G4ScoringManager.hh"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>
@@ -70,8 +73,8 @@ int main(int argc,char** argv)
 	 }
 	 */
 	
-	G4double x0Scan=0, ZValue=2, AbsorberDiam=0, TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
-	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1;
+	G4double x0Scan=0, ZValue=2, AbsorberDiam=-1., TBRvalue=1,PterDiameter=6,PterThickness=5,SourceDiameter=5.25,SourceThickness=5, AbsorberThickness=1.,ProbeCaseDepth=40, ProbeCaseLateralThickness=3, ProbeCaseBackThickness=5 , HSLateralThickness=1, HSBackThickness=2;
+	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1, GaSetting=1;
 	G4bool ScintFlag=0;
 	
 	G4String fileName ="";
@@ -152,6 +155,9 @@ int main(int argc,char** argv)
 			}else if(option.compare("-Label")==0)
 			{
 				FileNameLabel= argv[++i];;
+			}else if(option.compare("-GaSet")==0)
+			{
+				GaSetting= strtod (argv[++i], NULL);;
 			}
 			
 		}
@@ -167,6 +173,7 @@ int main(int argc,char** argv)
 	
 	
 	G4int SourceSelect=SourceChoice;
+	G4int GaSet=GaSetting;
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
 	G4String FileNamePrim="Primaries";
@@ -190,7 +197,8 @@ int main(int argc,char** argv)
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
-	if (SourceSelect==4) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+	if (SourceSelect==4 && GaSet== 1) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
+	if (SourceSelect==4 && GaSet== 2) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set2");
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	
 	if (ScintFlag) FileNameCommonPart.append("_Scint"); 
@@ -252,11 +260,12 @@ int main(int argc,char** argv)
 	
 
 	G4RunManager* runManager = new G4RunManager;
+	//G4ScoringManager* scoringManager = G4ScoringManager::GetScoringManager();
 	//#endif
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;

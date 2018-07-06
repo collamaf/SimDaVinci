@@ -15,6 +15,8 @@ e.g.:
  
  -AbsD= Absorber Diameter, -AbsT= Absorber Thickness , -AbsMat= Absorber's Material , -Z distance from origin to FrontsShield
  
+ -GaSet = 1 for Old Configuration, 2 for 3D-Printed Apparatus 
+ 
  
  
 ```
@@ -203,7 +205,7 @@ B1->Draw("InPterEnY","","same")
 - Simplification of materials for the probe laparo housing: 3 materials: "Ext" for external housing, "Metal" for metal covering inside and "Inner" for inner part (maybe air)
 
 2018.06.13 by MorettiR
-- Probe Casing modified with boolean solids and possibility to choose the presence/absence of the casing, from line comand, simply putting respectively the CaseDepth > 0 or <=0. 
+- Probe Casing modified with boolean solids and possibility to choose the presence/absence of the casing, from line comand, simply putting respectively the CaseDepth > 0 or <=0 ( this is true only in the case -GaSet 1 ). 
 
 2018.06.13 by collamaf
 - Now when requesting Sphere Source the sphere is centered on the center of the probe case to gain in isotropy
@@ -232,6 +234,17 @@ B1->Draw("InPterEnY","","same")
 
 2018.06.27 by MorettiR
 - Boolean Geometry Implemented for SiPM + TopCase solids
+
+2018.07.06 by MorettiR
+- Added G4ScoringManager in exampleB1.cc line 263 (Problem to be fixed).
+- Addition of "GaSetting" flag to choiche experimental setup in Ga-Source Case.
+- Addition of the 3D-Printed expreimental setup.
+- In -GaSet 2  -CaseDepth>0 case, every distances are setted and can't be modified by line comand exept the ProbeCase Depth.
+- In -GaSet 2 case exists only 2 configurations: if CaseDepth>0 we have the one with ProbeCase while if CaseDepth<0 we have the classic beta minus probe (that is an aluminum case behind the Pter).
+- In -GaSet 2 case if CaseDepth<0 his absolute value correspondes to the aluminum case's length.
+- In -GaSet 1 case we have the usual simulation (the one before this upgrade).
+- To must be add, 3D-Printed expreimental setup's material.
+
 
 
 

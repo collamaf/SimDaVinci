@@ -157,3 +157,13 @@
 #
 # For file-based drivers, use this to create an empty detector view:
 #/vis/viewer/flush
+
+# define scoring mesh
+#/score/create/boxMesh boxMesh_1
+#/score/mesh/boxSize 30. 30. 30. cm
+#/score/mesh/nBin 10 10 10
+#/score/quantity/energyDeposit eDep
+#/score/close
+#/score/list
+#/run/beamOn 1000
+#/score/drawProjection boxMesh_1 eDep
