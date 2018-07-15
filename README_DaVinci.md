@@ -245,7 +245,11 @@ B1->Draw("InPterEnY","","same")
 - In -GaSet 1 case we have the usual simulation (the one before this upgrade).
 - To must be add, 3D-Printed expreimental setup's material.
 
-
+2018.07.15 by MorettiR
+- Added Absorber in -GaSet 2.
+- Added flag PosAbsorber to choice absorber position in -GaSet2; if PosAbsorber == 1 it will be placed in the hole just near the source, that had 2mm depth, while if PosAbsorber == 2 it will be placed  in the hole that had 6mm depth.
+- The Absorber thickness could be choosen by AbsT flag while the diameter is fixed in both -PosAbsorber cases.
+- The flag AbsD must be >=0.
 
 
 ## TO DO's
