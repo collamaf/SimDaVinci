@@ -432,6 +432,21 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	
+	//### Dummy2
+	G4double RminDummy2 = 0.*mm;
+	G4double RmaxDummy2 = 10.5*mm;
+	if (fCuDiam>=0 && fPosAbsorber==2) {
+		RmaxDummy2= 13. *mm;
+	}else if(fCuDiam>=0 && fPosAbsorber==1) {
+		RmaxDummy2 = 10.5*mm;
+	}else RmaxDummy2=5*mm;
+	G4double DzDummy2= 1.e-5*mm;
+	G4double SPhiDummy2 = 0.*deg;
+	G4double DPhiDummy2 = 360.*deg;
+	G4double zDummy2;
+	//###
+	
+	
 	//### Pter
 	
 	G4double Pter_Diam=fPterDiameter*mm;
@@ -681,6 +696,26 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"Dummy");            //its name
 	
 
+	
+	//###########################
+	//Dummy2
+	//###########################
+	
+	
+	G4Tubs* solidShapeDummy2 =
+	new G4Tubs("Dummy2",                       //its name
+						 RminDummy2,
+						 RmaxDummy2,
+						 0.5*DzDummy2,
+						 SPhiDummy2,
+						 DPhiDummy2);     //its size
+	
+	G4LogicalVolume* logicShapeDummy2 =
+	new G4LogicalVolume(solidShapeDummy2,          //its solid
+											shapeDummy_mat,           //its material
+											"Dummy2");            //its name
+	
+	
 	
 	//################ Front-Shield
 
@@ -1515,7 +1550,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Absrober
 		//##########################
 		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, DzAbs*0.5+Pter_ZScan);
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, Pter_ZScan);
 		
 		/*
 		if(fPosAbsorber==1){
@@ -1581,22 +1616,19 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		if (fCuDiam<0) {
-			zDummy=DzDummy*0.5;
+			zDummy2=DzDummy2*0.5;
 		} else {
-			zDummy=DzDummy*0.5+DzAbs;
+			zDummy2=DzDummy2*0.5+DzAbs*0.5+ Pter_ZScan;
 		}
 		
-		if (fPosAbsorber==2){
-			zDummy=zDummy+Pter_ZScan;
-		}
-		G4ThreeVector posDummy = G4ThreeVector(0, 0, zDummy);
+		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
 		
 		
 		
 		new G4PVPlacement(0,                     //no rotation
-											posDummy,       //at (0,0,0)
-											logicShapeDummy,            //its logical volume
-											"Dummy",               //its name
+											posDummy2,       //at (0,0,0)
+											logicShapeDummy2,            //its logical volume
+											"Dummy2",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number

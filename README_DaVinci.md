@@ -258,6 +258,10 @@ B1->Draw("InPterEnY","","same")
 - Example of a line comad for the optimal choice of the absorber type: ./exampleb1 -GaSet 2 -CaseDepth -40 -Source 4 -AbsD 0 -AbsT 1 -AbsMat 2 -AppMat 1 -Z 7 -PosAbs 2 ../run1.mac
 - Stepping Action fixed when fCudiam>=0.
 
+2018.07.17 by MorettiR
+- Fixed bug in geometry relative to Dummy placement.
+- Addition of another solid Dummy2 for stepping action in -GaSet 2 case.
+- Example of a line comad for the optimal choice of the absorber type: ./exampleb1 -GaSet 2 -CaseDepth -40 -Source 4 -AbsD 0 -AbsT 1 -AbsMat 2 -AppMat 1 -Z 0.5 -PosAbs 1 -PterD 5 -PterT 3 ../run1.mac
 
 
 ## TO DO's
