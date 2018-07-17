@@ -46,12 +46,13 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double CuDiam)
+B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double CuDiam, G4int GaSet)
 : G4UserSteppingAction(),
 fEventAction(eventAction),
 fScoringVolume(0),
 runStepAction(runAction),
-fCuDiam(CuDiam)
+fCuDiam(CuDiam),
+fGaSet(GaSet)
 {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -123,7 +124,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	// ########################################
 	// ###################### EXITING SOURCE
-	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
+ if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) ) { //what actually exits the source
 		
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
@@ -224,3 +225,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+/*
+ 	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
+ */

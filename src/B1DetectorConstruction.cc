@@ -1515,13 +1515,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Absrober
 		//##########################
 		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, DzAbs*0.5);
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, DzAbs*0.5+Pter_ZScan);
 		
+		/*
 		if(fPosAbsorber==1){
 			posAbs = G4ThreeVector(0, 0, DzAbs*0.5);
 		} else if(fPosAbsorber==2){
-			posAbs = G4ThreeVector(0, 0, (DzAbs*0.5 + 2.*mm));
-		};
+			posAbs = G4ThreeVector(0, 0, (DzAbs*0.5 + 7.*mm));
+		};*/
 		
 		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 		
@@ -1586,7 +1587,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		}
 		
 		if (fPosAbsorber==2){
-			zDummy=zDummy+2.*mm;
+			zDummy=zDummy+Pter_ZScan;
 		}
 		G4ThreeVector posDummy = G4ThreeVector(0, 0, zDummy);
 		

@@ -247,9 +247,17 @@ B1->Draw("InPterEnY","","same")
 
 2018.07.15 by MorettiR
 - Added Absorber in -GaSet 2.
-- Added flag PosAbsorber to choice absorber position in -GaSet2; if PosAbsorber == 1 it will be placed in the hole just near the source, that had 2mm depth, while if PosAbsorber == 2 it will be placed  in the hole that had 6mm depth.
-- The Absorber thickness could be choosen by AbsT flag while the diameter is fixed in both -PosAbsorber cases.
+- Added flag PosAbsorber to choice absorber position in -GaSet2; if -PosAbs == 1 it will be placed in the hole just near the source, that had 2mm depth, while if -PosAbs == 2 it will be placed  in the hole that had 6mm depth.
+- The Absorber thickness could be choosen by AbsT flag while the diameter is fixed in both PosAbsorber cases.
 - The flag AbsD must be >=0.
+
+
+2018.07.17 by MorettiR
+- Added opportunity to select placement position of the absorber; the PosAbsorber now is used only to fix absorber diameter, in fact this depends in which hole I'll place the absorber.
+- The -Z flag is used to choice the absorber's placement in -GaSet2 case.
+- Example of a line comad for the optimal choice of the absorber type: ./exampleb1 -GaSet 2 -CaseDepth -40 -Source 4 -AbsD 0 -AbsT 1 -AbsMat 2 -AppMat 1 -Z 7 -PosAbs 2 ../run1.mac
+- Stepping Action fixed when fCudiam>=0.
+
 
 
 ## TO DO's

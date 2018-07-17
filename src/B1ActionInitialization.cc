@@ -37,8 +37,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double CuDiam, std::ofstream& file, G4double TBR/*, G4bool SrSourceFlag*/, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName)
-  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), FilePrimaries(file), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName)
+B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double CuDiam, std::ofstream& file, G4double TBR/*, G4bool SrSourceFlag*/, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName, G4int GaSet)
+  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), FilePrimaries(file), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName), fGaSet(GaSet)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -67,7 +67,7 @@ void B1ActionInitialization::Build() const
   B1EventAction* eventAction = new B1EventAction(runAction, FilePrimaries);
   SetUserAction(eventAction);
 	
-  SetUserAction(new B1SteppingAction(eventAction, runAction, fCuDiam));
+  SetUserAction(new B1SteppingAction(eventAction, runAction, fCuDiam,fGaSet));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
 	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness);

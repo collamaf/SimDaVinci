@@ -208,13 +208,14 @@ int main(int argc,char** argv)
 	
 	if (GaSet==1)FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
 	if (GaSet==1)FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
+	if (GaSet==2 && AbsorberDiam>=0)FileNameCommonPart.append("_ZAbs"+ std::to_string((G4int)(10*ZValue)));
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	
 	if (SourceSelect==4 && GaSet== 1) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
 	
-	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(10*AbsorberThickness)) +"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	
 	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
 	
@@ -309,7 +310,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CuDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberDiam,  primFile, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberDiam,  primFile, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting));
 	
 	// Initialize visualization
 	//
