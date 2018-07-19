@@ -263,6 +263,8 @@ B1->Draw("InPterEnY","","same")
 - Addition of another solid Dummy2 for stepping action in -GaSet 2 case.
 - Example of a line comad for the optimal choice of the absorber type: ./exampleb1 -GaSet 2 -CaseDepth -40 -Source 4 -AbsD 0 -AbsT 1 -AbsMat 2 -AppMat 1 -Z 0.5 -PosAbs 1 -PterD 5 -PterT 3 ../run1.mac
 
+2018.07.19 by MorettiR
+- File name fixed.
 
 ## TO DO's
 
