@@ -71,7 +71,7 @@ B1PhysicsList::B1PhysicsList()
 	opticalPhysics->Configure(kCerenkov, false);
 	opticalPhysics->SetCerenkovStackPhotons(false);
 //	opticalPhysics->SetScintillationStackPhotons(false);
-	RegisterPhysics(opticalPhysics);
+//	RegisterPhysics(opticalPhysics);
 	
 }
 
