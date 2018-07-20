@@ -64,10 +64,10 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness)
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting)
 : G4VUserPrimaryGeneratorAction(),
 fParticleGun(0) ,
-evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness)
+evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting)
 
 {
 	G4int n_particle = 1;
@@ -118,7 +118,6 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 		fDZExt=fSourceThickness*mm;
 	}
 	
-
 	
 	ofstream SourceFile;
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
@@ -195,14 +194,19 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
 		}
-	} else if (fSourceSelect==4) {
+	} else if (fSourceSelect==4 && fGaSet==1) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;
 		zSource = -G4UniformRand()*fZ-zSourceOffset;
+	} else if (fSourceSelect==4 && fGaSet==2) {
+		fRadiusMax=fRadiusInt;
+		fRadiusMin=0*mm;
+		fZ=7*mm;
+		zSource = -G4UniformRand()*fZ-zSourceOffset;
 	}
 	
-	
+
 	//Inserisco sorgente 4 (sfera di fotoni)
 	
 	

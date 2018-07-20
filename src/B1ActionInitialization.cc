@@ -59,7 +59,9 @@ void B1ActionInitialization::BuildForMaster() const
 void B1ActionInitialization::Build() const
 {
 //  SetUserAction(new B1PrimaryGeneratorAction(runAction));
-	G4cout<<"PROVA Action Init "<<fX0Scan<<G4endl;
+	//G4cout<<"PROVA Action Init "<<fX0Scan<<G4endl;
+	//G4cout<<"GaSetting "<<fGaSet<<G4endl;
+
 
   B1RunAction* runAction = new B1RunAction(fX0Scan, fZValue, fCuDiam, fTBR, fSourceSelect, fSensorChoice, fFileName);
   SetUserAction(runAction);
@@ -70,7 +72,7 @@ void B1ActionInitialization::Build() const
   SetUserAction(new B1SteppingAction(eventAction, runAction, fCuDiam,fGaSet));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
-	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness);
+	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness,fGaSet);
 	SetUserAction(primAction);
 	SetUserAction(new B1StackingAction(runAction, eventAction));
 }  
