@@ -1,14 +1,23 @@
 # define scoring mesh
-/score/create/cylinderMesh boxMesh_1
+#/score/create/cylinderMesh boxMesh_1
 #
-/score/mesh/cylinderSize 4. 5.7 cm
-/score/mesh/translate/xyz 0.1 0.1 0.0 cm
-/score/mesh/nBin 30 30 30
+#/score/mesh/cylinderSize 4. 5.7 cm
+#/score/mesh/translate/xyz 0.1 0.1 0.0 cm
+#/score/mesh/nBin 30 30 30
 #
-#/score/create/boxMesh boxMesh_1
-#/score/mesh/boxSize 3.6 3.6 5.7 cm
-#/score/mesh/nBin 50 50 50
-/score/quantity/energyDeposit eDep keV
+/score/create/boxMesh boxMesh_1
+/score/mesh/boxSize 1 2 2 cm
+/score/mesh/nBin 100 100 100
+#/score/quantity/energyDeposit eDep keV
+/score/quantity/cellFlux FluxGamma
+/score/filter/particle gammaFilter gamma
+
+/score/quantity/cellFlux FluxPos
+/score/filter/particle gammaFilter e+
+
+/score/quantity/cellFlux Gamma511
+/score/filter/particleWithKineticEnergy G511 505 520 keV gamma
+
 /score/close
 /score/list
 /vis/disable
@@ -16,13 +25,15 @@
 #/vis/reviewKeptEvents
 #/vis/viewer/flush
 /vis/enable
-/score/drawProjection boxMesh_1 eDep logColorMap
+#/score/drawProjection boxMesh_1 eDep logColorMap
+/score/drawProjection boxMesh_1 Gamma511 logColorMap
+#/score/drawProjection boxMesh_1 Flux
 # drawing slices
 #
-/vis/scene/create
-/vis/sceneHandler/attach scene-0
-/score/drawColumn boxMesh_1 eDep 0 6
-#/score/colorMap/setMinMax ! 0. 200.
-#/control/alias iAxis 1
-#/control/loop drawCylinderSlice.mac iColumn 0 29 7
-#defaultLinearColorMap
+# /vis/scene/create
+# /vis/sceneHandler/attach scene-0
+#/score/drawColumn boxMesh_1 Gamma511 1 50
+# #/score/colorMap/setMinMax ! 0. 200.
+# #/control/alias iAxis 1
+# #/control/loop drawCylinderSlice.mac iColumn 0 29 7
+# #defaultLinearColorMap

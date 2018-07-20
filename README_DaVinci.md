@@ -266,6 +266,12 @@ B1->Draw("InPterEnY","","same")
 2018.07.19 by MorettiR
 - File name fixed.
 
+2018.07.20 by Collamaf + MorettiR
+- Fixed scoring macro
+- Fixed source thickness in PrimGenAct
+- Added keep event for interesting annihilation events
+
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo

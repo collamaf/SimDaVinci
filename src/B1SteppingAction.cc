@@ -73,8 +73,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4int debug=0;
 	
 	
-	if (step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
-//		G4cout<<"CONTROLLA Annichilazione!!!"<<G4endl;
+	if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil" && (NextVol->GetName()=="ProbeContainer" )) {
 		 G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
 
