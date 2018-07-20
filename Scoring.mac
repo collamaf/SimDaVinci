@@ -1,0 +1,28 @@
+# define scoring mesh
+/score/create/cylinderMesh boxMesh_1
+#
+/score/mesh/cylinderSize 4. 5.7 cm
+/score/mesh/translate/xyz 0.1 0.1 0.0 cm
+/score/mesh/nBin 30 30 30
+#
+#/score/create/boxMesh boxMesh_1
+#/score/mesh/boxSize 3.6 3.6 5.7 cm
+#/score/mesh/nBin 50 50 50
+/score/quantity/energyDeposit eDep keV
+/score/close
+/score/list
+/vis/disable
+/run/beamOn 10000
+#/vis/reviewKeptEvents
+#/vis/viewer/flush
+/vis/enable
+/score/drawProjection boxMesh_1 eDep logColorMap
+# drawing slices
+#
+/vis/scene/create
+/vis/sceneHandler/attach scene-0
+/score/drawColumn boxMesh_1 eDep 0 6
+#/score/colorMap/setMinMax ! 0. 200.
+#/control/alias iAxis 1
+#/control/loop drawCylinderSlice.mac iColumn 0 29 7
+#defaultLinearColorMap
