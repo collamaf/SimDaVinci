@@ -36,6 +36,7 @@
 
 #include "G4Step.hh"
 #include "G4Event.hh"
+#include "G4EventManager.hh"
 #include "G4RunManager.hh"
 #include "G4LogicalVolume.hh"
 #include "G4SystemOfUnits.hh"
@@ -71,6 +72,13 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	G4int debug=0;
 	
+	
+	if (step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
+//		G4cout<<"CONTROLLA Annichilazione!!!"<<G4endl;
+		 G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+		evt->KeepTheEvent();
+
+	}
 	
 	/* AddNPMT*/
 	
