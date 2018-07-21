@@ -89,6 +89,12 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunZPter()).clear();
 	(fRunAction->GetRunPartPter()).clear();
 	
+	
+	(fRunAction->GetRunAnnihX()).clear();
+	(fRunAction->GetRunAnnihY()).clear();
+	(fRunAction->GetRunAnnihZ()).clear();
+	
+	
 	//	if(evento->GetEventID()%7000==0)
 	//	{
 	(fRunAction->GetRunPixNo()).clear();

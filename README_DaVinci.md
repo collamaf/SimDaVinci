@@ -271,6 +271,8 @@ B1->Draw("InPterEnY","","same")
 - Fixed source thickness in PrimGenAct
 - Added keep event for interesting annihilation events
 
+2018.07.20 by MorettiR
+- Addition of annihilation coordinates of positrons in the .root file
 
 ## TO DO's
 

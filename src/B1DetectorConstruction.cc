@@ -1521,7 +1521,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		rm->rotateY(180.*deg);
 		
 		G4VSolid* ProbeContainer
-		= new G4UnionSolid("ProBeContainer",
+		= new G4UnionSolid("ProbeContainer",
 											 CylinderG,
 											 UnionEF,
 											 0,
@@ -1530,7 +1530,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4LogicalVolume* logicProbeContainer =
 		new G4LogicalVolume(ProbeContainer,               //its solid
 												ProbeContainer_mat,           //its material
-												"GaContainer");            //its name
+												"ProbeContainer");            //its name
 		
 		
 		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.2*cm);

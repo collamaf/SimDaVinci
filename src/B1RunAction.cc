@@ -273,6 +273,11 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(0,"Nev");							//23
 
 
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVectorAnnihX); //27
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //28
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //29
+	
+	
 	/*
 	analysisManager->CreateNtupleDColumn(0,"SourceCosX");                           //19
 	analysisManager->CreateNtupleDColumn(0,"SourceCosY");                           //20
@@ -311,6 +316,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //18
 	//	analysisManager->CreateNtupleDColumn(1,"ExitProcess", RunVectorParentIDExit); //16
 
+	
 	analysisManager->FinishNtuple(0);
 	analysisManager->FinishNtuple(1);
 	
