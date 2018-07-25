@@ -52,9 +52,11 @@ fEdepFot(0.),
 fEnteringParticle(0),
 fPassCounterSource(0.),
 fPassCounterPter(0.),
+fPassCounterDummy2(0.),
 fNSourceExit(0.),
 fStoreTrackIDSource(0),
 fStoreTrackIDPter(0),
+fStoreTrackIDDummy2(0),
 FilePrimaries(file)
 {}
 
@@ -94,6 +96,8 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunAnnihY()).clear();
 	(fRunAction->GetRunAnnihZ()).clear();
 	
+	(fRunAction->GetRunEnAbs()).clear();
+	(fRunAction->GetRunEnDummy2()).clear();
 	
 	//	if(evento->GetEventID()%7000==0)
 	//	{
@@ -140,8 +144,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fNSourceExit=0;
 	fPassCounterSource=0;
 	fPassCounterPter=0;
+	fPassCounterDummy2=0;
 	fStoreTrackIDSource=0;
 	fStoreTrackIDPter=0;
+	fStoreTrackIDDummy2=0;
 	fNPMT=0;
 	/*
 	 fSourceX=0;

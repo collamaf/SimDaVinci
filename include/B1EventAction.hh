@@ -89,6 +89,12 @@ public:
 	void ResetPassCounterPter() {fPassCounterPter=0;}
 	G4int GetPassCounterPter(void) {return fPassCounterPter;}
 	
+	void SetStoreTrackIDDummy2(G4int trid) {fStoreTrackIDDummy2=trid;}
+	G4int GetStoreTrackIDDummy2(void) {return fStoreTrackIDDummy2;}
+	void AddPassCounterDummy2(G4int num) {fPassCounterDummy2+=num;}
+	void ResetPassCounterDummy2() {fPassCounterDummy2=0;}
+	G4int GetPassCounterDummy2(void) {return fPassCounterDummy2;}
+	
 	void SetEnteringParticle(G4int part) {fEnteringParticle=part;}
 	G4int GetEnteringParticle(void) {return fEnteringParticle;}
 
@@ -131,6 +137,7 @@ private:
 	
 	G4int fPassCounterSource;
 	G4int fPassCounterPter;
+	G4int fPassCounterDummy2;
 
 	G4double fNSourceExit;
 	G4int fNPMT;
@@ -147,6 +154,7 @@ private:
 	G4String fExitProcess;
 	G4int fStoreTrackIDSource;
 	G4int fStoreTrackIDPter;
+	G4int fStoreTrackIDDummy2;
 	std::ofstream &FilePrimaries;
 };
 

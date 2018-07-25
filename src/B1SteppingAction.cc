@@ -73,7 +73,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4int debug=0;
 	
 	
-	if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil" && (NextVol->GetName()=="ProbeContainer" )) {
+	if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
 		(runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
@@ -155,12 +155,33 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 			(runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
 			(runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
+			(runStepAction->GetRunEnDummy2()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 		}
 		
 		/*
 		 We have to use PreStepPoint to save the exit cosines, otherwise we already have particles flipped..
 		 */
 	}
+	
+	
+	if (NextVol && ((fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
+		
+		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
+		if (fEventAction->GetStoreTrackIDDummy2()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+			fEventAction->AddPassCounterDummy2(1);  //increase the counter
+		}else {
+			fEventAction->SetStoreTrackIDDummy2(step->GetTrack()->GetTrackID());
+		}
+		
+		// Salvo le info solo della prima volta che una particella esce dalla sorgente
+		if (fEventAction->GetPassCounterDummy2()==0) {
+			(runStepAction->GetRunEnAbs()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+		}
+	}
+	
+	
+	
+	
 	
 	if (!fScoringVolume) {
 		const B1DetectorConstruction* detectorConstruction
@@ -236,4 +257,14 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 
 /*
  	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
+ */
+
+/*
+ if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil" && (NextVol->GetName()=="ProbeContainer" )) {
+ G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+ evt->KeepTheEvent();
+ (runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+ (runStepAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+ (runStepAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+ }
  */

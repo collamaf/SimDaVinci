@@ -274,6 +274,12 @@ B1->Draw("InPterEnY","","same")
 2018.07.20 by MorettiR
 - Addition of annihilation coordinates of positrons in the .root file
 
+2018.07.25 by MorettiR
+- Addition of a leaf in B1 branch about energy of particles arriving on Absorber from source  called "PreDummy2En"
+- Addition of a leaf in B1 branch about energy of particles arriving on Dummy2 from source  called "InDummy2En"
+- Change in stepping action's condition relative to positrons annihilation region; now I'm looking annihilations in all over the world.
+
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo

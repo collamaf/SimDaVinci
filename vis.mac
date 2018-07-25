@@ -141,6 +141,7 @@
 #/vis/geometry/set/colour Carrier 0 1 1 1 0.05
 /vis/geometry/set/colour PVC 0 0.988235 0 0.0588235 1
 /vis/geometry/set/colour GaContainer 0 0 0 1 1
+/vis/geometry/set/colour ProbeContainer 0 0 0 1 1
 /vis/geometry/set/colour Delrin 0 0.133333 1 0.0509804 1
 /vis/geometry/set/colour Pter 0 0.117647 0.94902 1 1
 /vis/geometry/set/colour SourceExtGa 0 0.117647 0.94902 1 1
