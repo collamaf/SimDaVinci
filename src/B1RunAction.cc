@@ -277,8 +277,8 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //28
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //29
 	
-	analysisManager->CreateNtupleDColumn(0,"PreDummy2En", RunVectorEnAbs); //30
-	analysisManager->CreateNtupleDColumn(0,"InDummy2En", RunVectorEnDummy2); //31
+	analysisManager->CreateNtupleDColumn(0,"PreDummy2En", RunVectorEnAbs); //30   //Energy in Abs from source
+	analysisManager->CreateNtupleDColumn(0,"InDummy2En", RunVectorEnDummy2); //31 //Energy in Dummy2 From Abs
 
 	
 	

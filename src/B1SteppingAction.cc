@@ -79,6 +79,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+		//G4cout<<"STRONZO ANNI"<<G4endl;
 	}
 	
 	/* AddNPMT*/
@@ -152,7 +153,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(runStepAction->GetRunCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
 			(runStepAction->GetRunCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
 			(runStepAction->GetRunCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
-			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+			//(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 			(runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
 			(runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
 			(runStepAction->GetRunEnDummy2()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
@@ -176,6 +177,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 		if (fEventAction->GetPassCounterDummy2()==0) {
 			(runStepAction->GetRunEnAbs()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		}
 	}
 	
