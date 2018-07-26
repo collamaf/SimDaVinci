@@ -96,8 +96,11 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunAnnihY()).clear();
 	(fRunAction->GetRunAnnihZ()).clear();
 	
-	(fRunAction->GetRunEnAbs()).clear();
-	(fRunAction->GetRunEnDummy2()).clear();
+	(fRunAction->GetRunPreAbsEn()).clear();
+	(fRunAction->GetRunPartPreAbs()).clear();
+	(fRunAction->GetRunPartPostAbs()).clear();
+
+
 	
 	//	if(evento->GetEventID()%7000==0)
 	//	{

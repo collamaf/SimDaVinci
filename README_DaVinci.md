@@ -279,6 +279,9 @@ B1->Draw("InPterEnY","","same")
 - Addition of a leaf in B1 branch about energy of particles arriving on Dummy2 from source  called "InDummy2En"
 - Change in stepping action's condition relative to positrons annihilation region; now I'm looking annihilations in all over the world.
 
+2018.07.26 by MorettiR
+- New leafs added in B1 and Source Branches 
+
 
 ## TO DO's
 

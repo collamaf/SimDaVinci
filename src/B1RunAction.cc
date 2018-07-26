@@ -277,8 +277,11 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //28
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //29
 	
-	analysisManager->CreateNtupleDColumn(0,"PreDummy2En", RunVectorEnAbs); //30   //Energy in Abs from source
-	analysisManager->CreateNtupleDColumn(0,"InDummy2En", RunVectorEnDummy2); //31 //Energy in Dummy2 From Abs
+	analysisManager->CreateNtupleDColumn(0,"PreAbsEn", RunVectorPreAbsEn); //30   //Energy arriving on Abs from source
+	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVectorEnExit);
+	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVectorPartPreAbs);
+	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVectorPartPostAbs);
+
 
 	
 	
@@ -319,6 +322,14 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(1,"ExitProcess", RunExitProcess); //17
 	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //18
 	//	analysisManager->CreateNtupleDColumn(1,"ExitProcess", RunVectorParentIDExit); //16
+
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationX", RunVectorAnnihX);
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationY", RunVectorAnnihY);
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationZ", RunVectorAnnihZ);
+	
+	analysisManager->CreateNtupleDColumn(1,"PreAbsEn", RunVectorPreAbsEn);    //Energy arriving on Abs from source
+	analysisManager->CreateNtupleDColumn(1,"PreAbsPart", RunVectorPartPreAbs);
+	analysisManager->CreateNtupleDColumn(1,"PostAbsPart", RunVectorPartPostAbs);
 
 	
 	analysisManager->FinishNtuple(0);

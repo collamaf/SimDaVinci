@@ -79,7 +79,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-		//G4cout<<"STRONZO ANNI"<<G4endl;
 	}
 	
 	/* AddNPMT*/
@@ -134,7 +133,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	// ########################################
 	// ###################### EXITING SOURCE
- if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) ) { //what actually exits the source
+ if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) ) { //what actually exits the source
 		
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
@@ -156,7 +155,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			//(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 			(runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
 			(runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
-			(runStepAction->GetRunEnDummy2()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(runStepAction->GetRunPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		}
 		
 		/*
@@ -176,7 +175,8 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 		if (fEventAction->GetPassCounterDummy2()==0) {
-			(runStepAction->GetRunEnAbs()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(runStepAction->GetRunPreAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(runStepAction->GetRunPartPreAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		}
 	}
