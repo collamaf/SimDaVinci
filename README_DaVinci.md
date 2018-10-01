@@ -72,7 +72,7 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
 - Eabs: energy absorbed in Pter [keV];
-- EAbsComp[2]: vector containing energy absorbed in Pter [keV] due to Sr (comp 1) and to Y (comp 2)
+- EAbsComp[]: vector containing energy absorbed in Pter [keV] due to Electrons (EAbsComp[0]), Positrons (EAbsComp[1]) and photons (EAbsComp[2])
 - PrePterTrackN: number of tracks entering Pter per primary (from front Alluminum) (it's the length of the following vector);
 - PrePterPart[PrePterTrackN]: kind of particle of each track entering Pter(from front resin);
 - PrePterEn[PrePterTrackN]: kinetic energy of particle of each tracks entering Pter (from front resin) [keV];
@@ -281,6 +281,13 @@ B1->Draw("InPterEnY","","same")
 
 2018.07.26 by MorettiR
 - New leafs added in B1 and Source Branches 
+
+2018.09.19 by MorettiR
+- The position of the Probe in GaSet2 has been modified; now the top of the probe is placed at 5.5mm from the source (before at 8mm).
+This because the configuration used at Gemelli's hospital in which the probe was placed on the absrober's surface (We used absorber of 5.5mm thickness). In the configuration without the absorber the probe was placed at the same distance of 5.5mm from the source.
+- Fixed the position of the probe, now is take in consideration the dummy2's thickness.
+- SourceDiameter now fixed at 10.*mm and SourceThickness at 7.*mm
+
 
 
 ## TO DO's

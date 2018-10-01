@@ -73,7 +73,7 @@ int main(int argc,char** argv)
 	 }
 	 */
 	
-	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=5.25,SourceThickness=5., AbsorberThickness=1.,ProbeCaseDepth=40., ProbeCaseLateralThickness=3., ProbeCaseBackThickness=5. , HSLateralThickness=1., HSBackThickness=2.;
+	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=40., ProbeCaseLateralThickness=3., ProbeCaseBackThickness=5. , HSLateralThickness=1., HSBackThickness=2.;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
 	G4bool ScintFlag=0;
 	
