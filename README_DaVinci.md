@@ -288,6 +288,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fixed the position of the probe, now is take in consideration the dummy2's thickness.
 - SourceDiameter now fixed at 10.*mm and SourceThickness at 7.*mm
 
+2018.10.2 by collamaf
+- Fixed error in StackingAction: we were writing info on produced particles only if PDGcode>0, thus cutting all anti particles
+
+
 
 
 ## TO DO's
