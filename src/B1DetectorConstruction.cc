@@ -1611,7 +1611,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		//###################################################
-		//Dummy volume for scoring what exits source
+		//Dummy volume for scoring what enters PTER
 		//##########################
 		
 		
