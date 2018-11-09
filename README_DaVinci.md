@@ -332,6 +332,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.10.2 by collamaf
 - Fixed error in StackingAction: we were writing info on produced particles only if PDGcode>0, thus cutting all anti particles
 
+2018.11.9 by MorettiR
+- README file uploaded with flags specifications.
+- Fixing of line 1639 and 1640 of DetectorConstruction.cc .
 
 
 
