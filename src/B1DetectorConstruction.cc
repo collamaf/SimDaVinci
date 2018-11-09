@@ -1611,13 +1611,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		//###################################################
-		//Dummy volume for scoring what enters PTER
+		//Dummy volume for scoring what exit from the source
 		//##########################
 		
 		
-		if (fCuDiam<0) {
+		if (fCuDiam<0) {           // No Absorber
 			zDummy2=DzDummy2*0.5;
-		} else {
+		} else {                   // With Absorber (if fCuDiam>0 the absorber is drilled in the midle)
 			zDummy2=DzDummy2*0.5+DzAbs*0.5+ Pter_ZScan;
 		}
 		
@@ -1636,8 +1636,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		//		G4Region* sorgente = new G4Region("SourceReg");
-		logicShapeDummy->SetRegion(sorgente);
-		sorgente->AddRootLogicalVolume(logicShapeDummy);
+		logicShapeDummy2->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicShapeDummy2);
 		
 		
 		

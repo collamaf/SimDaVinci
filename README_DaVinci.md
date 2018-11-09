@@ -37,6 +37,47 @@ Source Choice:
 - Dummy volume for scoring purposes between source (or if presente CU Collimator) and World to score what exits the primary generation
 
 
+## FLAGS
+
+- -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one".
+
+- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.               N.B. in detector construction it is fCuDiam.
+
+- -AbsT is used to choose the absorber's thickness.
+
+- -AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
+
+- -PosAbs (PosAbsorber) is used to choose absorber width in -GaSet2; if -PosAbs == 1 it will have the same diameter of the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will have the same diameter of the hole that has 6mm depth, just after the first hole.
+
+- -Z is used in GaSet1 to choose the distance of the frontshield from the source while in GaSet2 is the distance of the absorber's center from the source.
+
+- -Source is used to choose the source type: if Source=1 or Source=2 we have respectively point-like or extended Sr source, else if Source=3 we have Y extended source and if Source=4 we have Ga-68 extended source.
+
+- -X is used to change the position of the probe along the x asse. N.B. must be 0 in GaSet2.
+
+- -SourceD is used to choose the diameter of the source; this is preseted to 10mm, the diameter of the Ga container in GaSet2.
+
+- -SourceT is used tochoose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
+
+- -PterD is used to choose the diameter of the P-Terfenile; this is preseted to 6mm.
+
+- -PterT is used tochoose the thickness of the P-Terfenile; this is preseted to 5mm.
+
+- -CaseLT is used to set the lateral thickness of the probe's case.
+
+- -CaseBT is used to set the back thickness of the probe's case ( the case is a sort of horseshoe and this flag set the thickness of the back part ).
+
+- -HSLT is used to set the lateral thickness of the structure inside the case (this structure looks like an horseshoe too).
+
+- -HBLT is used to set the back thickness of the structure inside the case (this structure looks like an horseshoe too).
+
+- -CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not.
+
+- -HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
+
+- -AppMat is used to choose the "catafalco's" materials.
+
+
 ## PHYSICS
 Process				Type		SubType
 RadioActiveDecay	6			210
@@ -247,7 +288,7 @@ B1->Draw("InPterEnY","","same")
 
 2018.07.15 by MorettiR
 - Added Absorber in -GaSet 2.
-- Added flag PosAbsorber to choice absorber position in -GaSet2; if -PosAbs == 1 it will be placed in the hole just near the source, that had 2mm depth, while if -PosAbs == 2 it will be placed  in the hole that had 6mm depth.
+- Added flag PosAbsorber to choose absorber position in -GaSet2; if -PosAbs == 1 it will be placed in the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will be placed  in the hole that has 6mm depth.
 - The Absorber thickness could be choosen by AbsT flag while the diameter is fixed in both PosAbsorber cases.
 - The flag AbsD must be >=0.
 
@@ -299,4 +340,5 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
 - Sistemare l'overlap fra il volume SiPm e il tappo presente dietro il PTER quando c'è il case
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
+- Sostituire fCuDiam e CuDiam
 

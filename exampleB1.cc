@@ -138,10 +138,10 @@ int main(int argc,char** argv)
 			}else if(option.compare("-CaseBT")==0)            //Back Probe Case Thickness
 			{
 				ProbeCaseBackThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-HSLT")==0)            //Lateral Probe Case Thickness
+			}else if(option.compare("-HSLT")==0)            //Lateral Thickness Horseshoe
 			{
 				HSLateralThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-HSBT")==0)            //Back Probe Case Thickness
+			}else if(option.compare("-HSBT")==0)            //Back Thickness Horseshoe
 			{
 				HSBackThickness=strtod (argv[++i], NULL);;
 				
