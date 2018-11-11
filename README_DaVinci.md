@@ -41,15 +41,15 @@ Source Choice:
 
 - -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one".
 
-- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.               N.B. in detector construction it is fCuDiam.
+- -Z is used in GaSet1 to choose the distance of the frontshield's center from the source while in GaSet2 is the distance of the absorber's center from the source. If the absorber is not placed in GaSet 2 you have by the way give this value ( take a look to AbsT for more details).
 
-- -AbsT is used to choose the absorber's thickness.
+- -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way give this value taking in consideration that the distance of the probe's head ( the frontshield ) from the source is given by Z + AbsT/2.
+
+- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   N.B. in detector construction it is fCuDiam. 
 
 - -AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
 
 - -PosAbs (PosAbsorber) is used to choose absorber width in -GaSet2; if -PosAbs == 1 it will have the same diameter of the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will have the same diameter of the hole that has 6mm depth, just after the first hole.
-
-- -Z is used in GaSet1 to choose the distance of the frontshield from the source while in GaSet2 is the distance of the absorber's center from the source.
 
 - -Source is used to choose the source type: if Source=1 or Source=2 we have respectively point-like or extended Sr source, else if Source=3 we have Y extended source and if Source=4 we have Ga-68 extended source.
 
@@ -57,7 +57,7 @@ Source Choice:
 
 - -SourceD is used to choose the diameter of the source; this is preseted to 10mm, the diameter of the Ga container in GaSet2.
 
-- -SourceT is used tochoose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
+- -SourceT is used to choose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
 
 - -PterD is used to choose the diameter of the P-Terfenile; this is preseted to 6mm.
 
@@ -335,6 +335,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.11.9 by MorettiR
 - README file uploaded with flags specifications.
 - Fixing of line 1639 and 1640 of DetectorConstruction.cc .
+
+2018.11.11 by MorettiR
+- Now the position of the probe's head ( the frontshield ) varies automatically with the placement of the absorber in GaSet 2.                                   N.B. in this way you have always to give AbsT and Z even if you do not want to place the absorber, for more details take a look to the flags section in this ReadMe file. 
 
 
 
