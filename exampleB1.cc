@@ -180,6 +180,8 @@ int main(int argc,char** argv)
 	
 	G4int SourceSelect=SourceChoice;
 	G4int GaSet=GaSetting;
+	G4double FrontShieldDistance= ZValue + AbsorberThickness *0.5;  // Distance of probe's head from the source
+	
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
 	
@@ -218,6 +220,9 @@ int main(int argc,char** argv)
 	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness)) +"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	
 	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
+	
+	
+	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
 	
 	if (SourceSelect==4 && GaSet== 2) FileNameCommonPart.append("_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
 	

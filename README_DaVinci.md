@@ -338,7 +338,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2018.11.11 by MorettiR
 - Now the position of the probe's head ( the frontshield ) varies automatically with the placement of the absorber in GaSet 2.                                   N.B. in this way you have always to give AbsT and Z even if you do not want to place the absorber, for more details take a look to the flags section in this ReadMe file. 
-
+- Name of the file with no abs in GaSet 2 has been modified. Now there is inside the name the distance of the probe from the source.
 
 
 ## TO DO's
