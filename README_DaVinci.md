@@ -341,10 +341,16 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Name of the file with no abs in GaSet 2 has been modified. Now there is inside the name the distance of the probe from the source.
 
 
+2018.11.14 by MorettiR
+- A new leaf called "AnnihilationTime" has been added to B1 vector. This gives you the time elapsed since the positron's creation and his annihilation. 
+- Now we can count the number of hits in the SiPM thanks to the new leaf "EabsSiPM" in B1 Vector.
+
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
 - Sistemare l'overlap fra il volume SiPm e il tappo presente dietro il PTER quando c'è il case
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
 - Sostituire fCuDiam e CuDiam
+- Correggere sovrapposizione tra top case e SiPM in GaSet 2 quando DepthCase > 0
 

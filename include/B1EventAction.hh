@@ -50,6 +50,7 @@ public:
 	virtual void EndOfEventAction(const G4Event* event);
 	
 	void AddEdep(G4double edep) { fEdep += edep; }
+	void AddEdepSiPM(G4double EdepSiPM) { fEdepSiPM += EdepSiPM; }
 	void AddEdkin(G4double edkin) { fEdkin += edkin; }
 	void AddNo(G4int no) { fno += no; }
 	
@@ -61,6 +62,8 @@ public:
 	void AddEdepEle(G4double edepEle) { fEdepEle += edepEle; }
 	void AddEdepPos(G4double edepPos) { fEdepPos += edepPos; }
 	void AddEdepFot(G4double edepFot) { fEdepFot += edepFot; }
+	void AddEdepSiPMPos(G4double EdepSiPMpos) { fEdepSiPMpos += EdepSiPMpos; }
+	void AddEdepSiPMFot(G4double EdepSiPMfot) { fEdepSiPMfot += EdepSiPMfot; }
 	G4double GetSourceX() {return fSourceX;}
 	void SetSourceX(G4double sx) {fSourceX=sx;}
 	void SetSourceY(G4double sy) {fSourceY=sy;}
@@ -111,6 +114,7 @@ public:
 private:
 	B1RunAction* fRunAction;
 	G4double fEdep;
+	G4double fEdepSiPM;
 	G4double fEdkin;
 	// G4double xstop;
 	// G4double ystop;
@@ -121,6 +125,8 @@ private:
 	G4double	fEdepEle;
 	G4double	fEdepPos;
 	G4double	fEdepFot;
+	G4double  fEdepSiPMpos;
+	G4double  fEdepSiPMfot;
 	G4int fEnteringParticle;
 	
 

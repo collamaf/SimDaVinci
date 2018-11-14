@@ -79,6 +79,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 		(runStepAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
 		(runStepAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+		(runStepAction->GetRunAnnihT()).push_back(step->GetPostStepPoint()->GetLocalTime()/ns);
 	}
 	
 	/* AddNPMT*/
@@ -90,6 +91,11 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fEventAction->AddNPMT(1);
 	}
 	
+	
+	if (ThisVol->GetName()=="SiPm") {
+		fEventAction->AddEdepSiPM(step->GetTotalEnergyDeposit());
+//		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
+	}
 	
 	// ########################################
 	// ###################### ENTERING Pter
@@ -152,7 +158,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(runStepAction->GetRunCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
 			(runStepAction->GetRunCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
 			(runStepAction->GetRunCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
-			//(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 			(runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
 			(runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
 			(runStepAction->GetRunPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
@@ -204,7 +210,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ########################################
 	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
-	if (volume== fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {
+	if (volume == fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {
 		//pixel information collection
 		G4int CopyNB=step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber();
 		fEventAction->AddNo(1);

@@ -51,6 +51,7 @@
 B1RunAction::B1RunAction(G4double x0, G4double ZValue, G4double CuDiam, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4String FileNameALL)
 : G4UserRunAction(),
 fEdep("Edep", 0.),
+//fEdepSiPM("EdepSiPM", 0.),
 fEdep2("Edep2", 0.),
 fEdkin("Edkin", 0.)
 , fX0Scan(x0)
@@ -65,6 +66,7 @@ fEdkin("Edkin", 0.)
 	// Register accumulable to the accumulable manager
 	G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
 	accumulableManager->RegisterAccumulable(fEdep);
+//	accumulableManager->RegisterAccumulable(fEdepSiPM);
 	accumulableManager->RegisterAccumulable(fEdep2);
 	accumulableManager->RegisterAccumulable(fEdkin);
 
@@ -114,6 +116,7 @@ void B1RunAction::EndOfRunAction(const G4Run* run)
 	// Compute dose = total energy deposit in a run and its variance
 	//
 	G4double edep  = fEdep.GetValue();
+//	G4double EdepSiPM  = fEdepSiPM.GetValue();
 	G4double edep2 = fEdep2.GetValue();
 	
 	//G4double edkin  = fEdkin.GetValue();
@@ -185,6 +188,12 @@ void B1RunAction::AddEdep(G4double edep)
 	fEdep  += edep;
 	fEdep2 += edep*edep;
 }
+
+//void B1RunAction::AddEdepSiPM(G4double EdepSiPM)
+//{
+//	fEdepSiPM  += EdepSiPM;
+//}
+
 
 void B1RunAction::AddEdkin(G4double edkin)
 {
@@ -281,6 +290,10 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVectorEnExit);
 	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVectorPartPreAbs);
 	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVectorPartPostAbs);
+	analysisManager->CreateNtupleDColumn(0,"EabsSiPM");       //34 
+	analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVectorEAbsSiPMComp);
+	
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVectorAnnihT); //28
 
 
 	

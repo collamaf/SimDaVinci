@@ -57,6 +57,7 @@ public:
 	virtual void   EndOfRunAction(const G4Run*);
 	
 	void AddEdep (G4double edep);
+	void AddEdepSiPM (G4double EdepSiPM);
 	void AddEdkin (G4double edkin);
 	
 	// void AddEdepPhot (G4double edepPhot);
@@ -92,6 +93,8 @@ public:
 	std::vector<G4double>& GetRunIsotopeGen() {return RunVectorIsotopeGen; }
 	
 	std::vector<G4double>& GetRunEAbsComp() {return RunVectorEAbsComp; }
+	std::vector<G4double>& GetRunEAbsSiPMComp() {return RunVectorEAbsSiPMComp; }
+
 
 	std::vector<G4double>& GetRunEnPre() {return RunVectorEnPre; }
 	std::vector<G4double>& GetRunPart() {return RunVectorPart; }
@@ -106,6 +109,9 @@ public:
 	std::vector<G4double>& GetRunPartPostAbs() {return RunVectorPartPostAbs; }
 
 
+	std::vector<G4double>& GetRunAnnihT() {return RunVectorAnnihT; }
+
+	
 
 	
 	
@@ -136,6 +142,7 @@ public:
 	
 private:
 	G4Accumulable<G4double> fEdep;
+//	G4Accumulable<G4double> fEdepSiPM;
 	G4Accumulable<G4double> fEdep2;
 	G4Accumulable <G4double> fEdkin;
 	
@@ -182,6 +189,9 @@ private:
 	std::vector<G4double> RunVectorPartPreAbs;
 	std::vector<G4double> RunVectorPartPostAbs;
 	
+	std::vector<G4double> RunVectorAnnihT;
+
+	
 	std::vector<G4double> RunVectorPixNo;
 //	std::vector<G4double> RunVectorPixEneDep;
 	std::vector<G4double> RunVectorPixXpos;
@@ -210,6 +220,9 @@ private:
 	std::vector<G4int> RunExitProcess;
 	
 	std::vector<G4double> RunVectorEAbsComp;
+	std::vector<G4double> RunVectorEAbsSiPMComp;
+
+	
 	/*
 	 std::vector<G4double> RunVectorSourceX;
 	 std::vector<G4double> RunVectorSourceY;

@@ -207,6 +207,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* Delrin_mat=Delrin;
 	G4Material* shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
+	G4Material* SiPM_mat = nist->FindOrBuildMaterial("G4_Si");
+
 
 	
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
@@ -439,7 +441,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		RmaxDummy2= 13. *mm;
 	}else if(fCuDiam>=0 && fPosAbsorber==1) {
 		RmaxDummy2 = 10.5*mm;
-	}else RmaxDummy2=5*mm;
+	}else RmaxDummy2=10.5*mm;
 	G4double DzDummy2= 1.e-5*mm;
 	G4double SPhiDummy2 = 0.*deg;
 	G4double DPhiDummy2 = 360.*deg;
@@ -751,7 +753,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4double DxSiPm = 3.*mm;
 	G4double DySiPm= 3.*mm;
-	G4double DzSiPm = 1.e-3*mm;
+	G4double DzSiPm = 300.e-6*mm;
 	
 	G4Box* solidSiPm =
 	new G4Box("SiPm",                       //its name
@@ -761,7 +763,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4LogicalVolume* logicSiPm =
 	new G4LogicalVolume(solidSiPm,          //its solid
-											world_mat,           //its material
+											SiPM_mat,           //its material
 											"SiPm");            //its name
 	
 	
