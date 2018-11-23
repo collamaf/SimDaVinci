@@ -204,6 +204,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		fRadiusMin=0*mm;
 		fZ=7*mm;
 		zSource = -G4UniformRand()*fZ-zSourceOffset;
+	}else if (fSourceSelect==4 && fGaSet==3) {
+		fRadiusMax=fRadiusInt;
+		fRadiusMin=0*mm;
+		fZ=7.0*mm;
+		zSource = -G4UniformRand()*fZ-zSourceOffset-0.5*mm;  //source's height less than container height
 	}
 	
 

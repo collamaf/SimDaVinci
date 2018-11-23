@@ -39,7 +39,7 @@ Source Choice:
 
 ## FLAGS
 
-- -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one".
+- -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one". The case -GaSet3 is indeed the configuration in which the "catafalco"'s GaContainer is made by PVC and not by 3D printer such -GaSet2 case.
 
 - -Z is used in GaSet1 to choose the distance of the frontshield's center from the source while in GaSet2 is the distance of the absorber's center from the source. If the absorber is not placed in GaSet 2 you have by the way give this value ( take a look to AbsT for more details).
 
@@ -337,7 +337,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fixing of line 1639 and 1640 of DetectorConstruction.cc .
 
 2018.11.11 by MorettiR
-- Now the position of the probe's head ( the frontshield ) varies automatically with the placement of the absorber in GaSet 2.                                   N.B. in this way you have always to give AbsT and Z even if you do not want to place the absorber, for more details take a look to the flags section in this ReadMe file. 
+- Now the position of the probe's head ( the frontshield ) varies automatically with the placement of the absorber in GaSet 2.  
+  N.B. in this way you have always to give AbsT and Z even if you do not want to place the absorber, for more details take a look to the flags section in this ReadMe file. 
 - Name of the file with no abs in GaSet 2 has been modified. Now there is inside the name the distance of the probe from the source.
 
 
@@ -345,6 +346,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - A new leaf called "AnnihilationTime" has been added to B1 vector. This gives you the time elapsed since the positron's creation and his annihilation. 
 - Now we can count the number of hits in the SiPM thanks to the new leaf "EabsSiPM" in B1 Vector.
 
+2018.11.23 by MorettiR
+- Added new configuration GaSet3; in this one the GaContainer is obtained by PVC and not printed by 3D printer. 
+- File name modified to take into account GaSet3 configuration.
+- New stepping action condition in source's branch (to be cheked). Take a look to line 144 an line 76 in stepping action to see changes. 
 
 ## TO DO's
 

@@ -217,14 +217,14 @@ int main(int argc,char** argv)
 	
 	if (SourceSelect==4 && GaSet== 1) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
 	
-	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness)) +"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness)) +"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	
-	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
 	
 	
-	if (SourceSelect==4 && GaSet== 2 && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
 	
-	if (SourceSelect==4 && GaSet== 2) FileNameCommonPart.append("_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3)) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
 	
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	

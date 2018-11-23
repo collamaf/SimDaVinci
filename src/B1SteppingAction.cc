@@ -73,7 +73,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4int debug=0;
 	
 	
-	if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
+	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
 		(runStepAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
@@ -139,7 +139,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	// ########################################
 	// ###################### EXITING SOURCE
- if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) ) { //what actually exits the source
+	
+	
+	 if( NextVol && ( ((fCuDiam<0 || fCuDiam>=0 ) &&  ( (ThisVol->GetName()=="SourceSR" && (NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) || (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) || (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber"))) ) ) ) { //what actually exits the source
 		
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
@@ -276,3 +278,25 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
  (runStepAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
  }
  */
+
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+//Nuova Condizione
+
+/*
+ if( NextVol && ( ((fCuDiam<0 || fCuDiam>=0 ) &&  ( (ThisVol->GetName()=="SourceSR" && (NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) || (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) || (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber"))) ) ) ) { //what actually exits the source
+ */
+
+//Vecchia condizione
+
+/*
+ if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) )
+ */
+
+//Modifica alla vecchia condizione per dummy3
+
+/*
+ if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam<0 && fGaSet == 3 &&  (ThisVol->GetName()=="Dummy3" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) ) || ( (fCuDiam>=0 && fGaSet == 3 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) )  ) )
+ */
+
