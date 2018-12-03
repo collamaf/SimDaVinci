@@ -453,7 +453,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy3
 	G4double RminDummy3 = 0.*mm;
 	G4double RmaxDummy3 = 5.*mm;
-	G4double DzDummy3= 0.5*mm;
+	G4double DzDummy3= 1.8*mm;
 	G4double SPhiDummy3 = 0.*deg;
 	G4double DPhiDummy3 = 360.*deg;
 	G4double zDummy3;
@@ -527,7 +527,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4double D_CylEF3 = 41.3*mm;
 	G4double d_CylE3 = 26*mm;
-	G4double H_CylE3 = 6*mm;
+	G4double H_CylE3 = 5.45*mm;
 	G4double d_CylF3 = 13*mm;
 	G4double H_CylF3 = 8*mm;
 	G4double D_CylG3 = 51*mm;
@@ -821,9 +821,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//################ Table
 	
 	
-	G4double DxTable = 300*mm;
-	G4double DyTable= 300*mm;
-	G4double DzTable = 10*mm;
+	G4double DxTable = 500*mm;
+	G4double DyTable= 500*mm;
+	G4double DzTable = 50*mm;
 	
 	G4Box* solidTable =
 	new G4Box("Table",                       //its name
@@ -1053,7 +1053,25 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//################################################### END OF DUMMY VOLUME
 	
-	
+		//###################################################
+		// Table
+		//##########################
+		
+		
+		 G4ThreeVector posTable = G4ThreeVector(0, 0, -3.0*mm - DzTable/2.);
+		 
+		 
+		 new G4PVPlacement(0,                     //no rotation
+		 posTable,       //at (0,0,0)
+		 logicTable,            //its logical volume
+		 "Table",               //its name
+		 logicWorld,            //its mother  volume
+		 false,                 //no boolean operation
+		 0,                     //copy number
+		 checkOverlaps);        //overlaps checking
+		 
+		 
+		 
 	
 	
 	//###################################################
@@ -2135,7 +2153,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		G4ThreeVector posContainerExtGa2 = G4ThreeVector(0, 0, -H_CylA3*0.5);
-		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-0.25);
+		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-0.9); //0.55=(7.5 - 6.4)/2
 		
 		
 		G4VSolid* CylinderA =
@@ -2159,7 +2177,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		new G4Tubs("SourceGa-DOTATOC",
 							 0.,
 							 d_CylB3*0.5,
-							 7.0*0.5,
+							 5.7*0.5,
 							 SPhiCyl3,
 							 DPhiCyl3);
 		
@@ -2296,7 +2314,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												"ProbeContainer");            //its name
 		
 		
-		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.33*cm);  //H_C+(H_G/2)+H_F+H_E
+		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.31*cm);  //H_C+(H_G/2)+H_F+H_E
 		
 		new G4PVPlacement(rm,                     //no rotation
 											ProbeContainerPos,       //at (0,0,0)

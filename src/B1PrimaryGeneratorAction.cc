@@ -207,12 +207,12 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}else if (fSourceSelect==4 && fGaSet==3) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
-		fZ=7.0*mm;
-		zSource = -G4UniformRand()*fZ-zSourceOffset-0.5*mm;  //source's height less than container height
+		fZ=6.4*mm;
+		zSource = -G4UniformRand()*fZ-zSourceOffset-1.8*mm;  //source's height is less than container height
 	}
 	
 
-	//Inserisco sorgente 4 (sfera di fotoni)
+	//Inserisco sorgente 5 (sfera di fotoni)
 	
 	
 	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;

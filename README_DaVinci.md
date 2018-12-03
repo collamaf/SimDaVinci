@@ -351,6 +351,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - File name modified to take into account GaSet3 configuration.
 - New stepping action condition in source's branch (to be cheked). Take a look to line 144 an line 76 in stepping action to see changes. 
 
+2018.12.03 by MorettiR
+- Table added in GaSet1 configuration.
+
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
@@ -358,4 +362,4 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
 - Sostituire fCuDiam e CuDiam
 - Correggere sovrapposizione tra top case e SiPM in GaSet 2 quando DepthCase > 0
-
+- Correggere GaSet1; sovrapposizione dell'assorbitore cone la sonda.

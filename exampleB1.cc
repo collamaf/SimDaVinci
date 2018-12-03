@@ -222,7 +222,10 @@ int main(int argc,char** argv)
 	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
 	
 	
-	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
+	if (SourceSelect==4 && (GaSet== 2) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
+	
+	if (SourceSelect==4 && (GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance+0.5*100*mm))); // vaschetta alta 7.5mm anzichè 7.0mm
+
 	
 	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3)) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
 	
