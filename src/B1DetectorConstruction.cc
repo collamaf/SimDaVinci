@@ -52,9 +52,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat,G4int PosAbsorber)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat,G4int PosAbsorber,G4double AbsCenter)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fPosAbsorber (PosAbsorber)
+fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fPosAbsorber (PosAbsorber), fAbsCenter (AbsCenter)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -233,6 +233,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		ProbeContainer_mat = HorsesShoe_mat;
 		GaContainer2_mat = HorsesShoe_mat;
 	}
+	
+	
+	// To make -GaSet 3  expreimental environment of air or of Pb
+	if (fApparatusMat==2 && fGaSet==3){
+		ProbeContainer_mat = world_mat;
+		GaContainer3_mat = world_mat;
+	}else if (fApparatusMat==3 && fGaSet==3){
+		ProbeContainer_mat = HorsesShoe_mat;
+		GaContainer3_mat = HorsesShoe_mat;
+	}
+	
+	
 	
 	G4Material* MiddleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
@@ -422,6 +434,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	};
 	G4double SPhiAbs = 0.*deg;
 	G4double DPhiAbs = 360.*deg;
+	G4double ZCenterAbs=fAbsCenter*mm;
 	//###
 	
 	//### Dummy
@@ -1053,6 +1066,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//################################################### END OF DUMMY VOLUME
 	
+		/*
 		//###################################################
 		// Table
 		//##########################
@@ -1069,8 +1083,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		 false,                 //no boolean operation
 		 0,                     //copy number
 		 checkOverlaps);        //overlaps checking
-		 
-		 
+		 */
 		 
 	
 	
@@ -1094,8 +1107,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	*/
 	
 	
-	
-	Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
+		if (fCuDiam>=0){
+	Z_FrontShield = DzCo + Pter_ZScan + FrontShield_sizeZ*0.5;
+		} else{
+			Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
+		}
 	
 	/*
 	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
@@ -1143,8 +1159,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	
 	// place detector-Pter in world
+		
+		if (fCuDiam>=0){
+			Pter_Posz = DzCo+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		} else{
+			Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		}
 
-		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
 		new G4PVPlacement(0,                     //no rotation
 											pos2,
@@ -1641,7 +1662,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Absrober
 		//##########################
 		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, Pter_ZScan);
+		
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, ZCenterAbs);
 		
 		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 		
@@ -1702,7 +1724,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		if (fCuDiam<0) {           // No Absorber
 			zDummy2=DzDummy2*0.5;
 		} else {                   // With Absorber (if fCuDiam>0 the absorber is drilled in the midle)
-			zDummy2=DzDummy2*0.5+DzAbs*0.5+ Pter_ZScan;   //N.B. Pter_ZScan is the position of the center of the absorber
+			zDummy2=DzDummy2*0.5+DzAbs*0.5+ ZCenterAbs;   //N.B. ZCenterAbs is the position of the center of the absorber
 		}
 		
 		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
@@ -1731,7 +1753,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		
-		Z_FrontShield = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ*0.5;
+		//Z_FrontShield = DzAbs*0.5 + Pter_ZScan + DzDummy2 + FrontShield_sizeZ*0.5;
+		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
 		
 		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		
@@ -1755,8 +1778,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		// 	P-Terphenyl
 		//##########################
 		
-		
-		Pter_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		//Pter_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
 		new G4PVPlacement(0,                     //no rotation
 											pos2,
@@ -1952,8 +1975,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		// Middle Probe case
 		//##########################
 		
-		
-		G4double ProbeMiddleCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+			//G4double ProbeMiddleCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+
+		G4double ProbeMiddleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
 		G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
 		
 		
@@ -1998,7 +2022,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		
-		G4double PlastiCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+		//G4double PlastiCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+		G4double PlastiCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
 		
 		
@@ -2026,7 +2051,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												HorsesShoe_mat,           //its material
 												"HorsesShoe");            //its name
 		
-		G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+		//G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+		G4double HorsesShoe_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
 		G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
 		
 		
@@ -2061,8 +2087,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												"TopCase");            //its name
 		
 		
-		
-		G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+		//G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+		G4double ProbeTopCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
 		
 		G4RotationMatrix *rm1 = new G4RotationMatrix();
@@ -2089,13 +2115,20 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 			
 		G4double AluCaseDepth=fabs(CaseDepth);
-			
+		/*
 		G4double Alu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
 		G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
 		
 		G4double BackAlu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
 		G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
-		
+		*/
+		G4double Alu_Posz = DzDummy2 + Pter_ZScan  + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
+		G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
+			
+		G4double BackAlu_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
+		G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
+			
+			
 		G4Tubs* solidAlu =
 		new G4Tubs("AluCase",
 							 9.7*0.5*mm,
@@ -2331,7 +2364,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Absrober
 		//##########################
 		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, Pter_ZScan);
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, ZCenterAbs);
 		
 		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 		
@@ -2391,7 +2424,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		if (fCuDiam<0) {           // No Absorber
 			zDummy2=DzDummy2*0.5;
 		} else {                   // With Absorber (if fCuDiam>0 the absorber is drilled in the midle)
-			zDummy2=DzDummy2*0.5+DzAbs*0.5+ Pter_ZScan;   //N.B. Pter_ZScan is the position of the center of the absorber
+			zDummy2=DzDummy2*0.5+DzAbs*0.5+ ZCenterAbs;   //N.B. Pter_ZScan is the position of the center of the absorber
 		}
 		
 		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
@@ -2441,7 +2474,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		
-		Z_FrontShield = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ*0.5;
+		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
 		
 		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		
@@ -2466,7 +2499,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		
-		Pter_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
 		new G4PVPlacement(0,                     //no rotation
 											pos2,
@@ -2663,7 +2696,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			//##########################
 			
 			
-			G4double ProbeMiddleCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+			G4double ProbeMiddleCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
 			G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
 			
 			
@@ -2708,7 +2741,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			
 			
 			
-			G4double PlastiCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4double PlastiCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 			G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
 			
 			
@@ -2736,7 +2769,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 													HorsesShoe_mat,           //its material
 													"HorsesShoe");            //its name
 			
-			G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+			G4double HorsesShoe_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
 			G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
 			
 			
@@ -2772,7 +2805,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			
 			
 			
-			G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4double ProbeTopCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 			G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
 			
 			G4RotationMatrix *rm1 = new G4RotationMatrix();
@@ -2800,10 +2833,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			
 			G4double AluCaseDepth=fabs(CaseDepth);
 			
-			G4double Alu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
+			G4double Alu_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;  //1.15 BackCase Thickness
 			G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
 			
-			G4double BackAlu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
+			G4double BackAlu_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
 			G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
 			
 			G4Tubs* solidAlu =

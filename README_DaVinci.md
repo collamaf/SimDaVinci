@@ -41,11 +41,13 @@ Source Choice:
 
 - -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one". The case -GaSet3 is indeed the configuration in which the "catafalco"'s GaContainer is made by PVC and not by 3D printer such -GaSet2 case.
 
-- -Z is used in GaSet1 to choose the distance of the frontshield's center from the source while in GaSet2 is the distance of the absorber's center from the source. If the absorber is not placed in GaSet 2 you have by the way give this value ( take a look to AbsT for more details).
+- -Z is used to choose the distance of the frontshield from the source.
 
 - -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way give this value taking in consideration that the distance of the probe's head ( the frontshield ) from the source is given by Z + AbsT/2.
 
 - -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   N.B. in detector construction it is fCuDiam. 
+
+- -ZAbs is used to choose the position of the center of the absorber  respect the source.
 
 - -AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
 
@@ -76,6 +78,7 @@ Source Choice:
 - -HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
 
 - -AppMat is used to choose the "catafalco's" materials.
+
 
 
 ## PHYSICS
@@ -354,6 +357,12 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.12.03 by MorettiR
 - Table added in GaSet1 configuration.
 
+2018.12.05 by MorettiR
+- Added new flag for absorber placement -ZAbs. This corresponds to the center of the absorber on z axes.
+- Now in GaSet 2 and GaSet3, the flag -Z corresponds to the distance of the frontshield from the source on z axes (-Z must be always >= -AbsT when the absorber is placed to avoid superposition of volumes).
+- Fixed superposistion of absorber in GaSet1
+- Added study of Catafalco's material in GaSet3
+
 
 ## TO DO's
 
@@ -362,4 +371,3 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
 - Sostituire fCuDiam e CuDiam
 - Correggere sovrapposizione tra top case e SiPM in GaSet 2 quando DepthCase > 0
-- Correggere GaSet1; sovrapposizione dell'assorbitore cone la sonda.

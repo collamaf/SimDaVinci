@@ -43,7 +43,7 @@ class G4LogicalVolume;
 class B1DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-	B1DetectorConstruction(G4double, G4double, G4double, G4int, G4int ,G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double , G4double, G4double, G4int, G4bool, G4int, G4int, G4int);
+	B1DetectorConstruction(G4double, G4double, G4double, G4int, G4int ,G4double, G4double, G4double, G4double, G4double, G4double, G4double, G4double , G4double, G4double, G4int, G4bool, G4int, G4int, G4int,G4double);
 	virtual ~B1DetectorConstruction();
 	
 	virtual G4VPhysicalVolume* Construct();
@@ -72,6 +72,7 @@ protected:
 	G4int fGaSet;
 	G4int fApparatusMat;
 	G4int fPosAbsorber;
+	G4double fAbsCenter;
 	
 	G4Region* sorgente = new G4Region("SourceReg");
 	G4Region* ABSRegion = new G4Region("ABSRegion");

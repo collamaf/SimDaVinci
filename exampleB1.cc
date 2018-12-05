@@ -73,7 +73,7 @@ int main(int argc,char** argv)
 	 }
 	 */
 	
-	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=40., ProbeCaseLateralThickness=3., ProbeCaseBackThickness=5. , HSLateralThickness=1., HSBackThickness=2.;
+	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=40., ProbeCaseLateralThickness=3., ProbeCaseBackThickness=5. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
 	G4bool ScintFlag=0;
 	
@@ -164,6 +164,9 @@ int main(int argc,char** argv)
 			}else if(option.compare("-PosAbs")==0)
 			{
 				PosAbsorber= strtod (argv[++i], NULL);;
+			}else if(option.compare("-ZAbs")==0)
+			{
+				AbsCenter= strtod (argv[++i], NULL);;
 			}
 			
 		}
@@ -180,7 +183,9 @@ int main(int argc,char** argv)
 	
 	G4int SourceSelect=SourceChoice;
 	G4int GaSet=GaSetting;
-	G4double FrontShieldDistance= ZValue + AbsorberThickness *0.5;  // Distance of probe's head from the source
+	//G4double FrontShieldDistance= ZValue + AbsorberThickness *0.5;  // Distance of probe's head from the source
+	G4double FrontShieldDistance= ZValue;  // Distance of probe's head from the source
+
 	
 	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
 	
@@ -210,14 +215,14 @@ int main(int argc,char** argv)
 	
 	if (GaSet==1)FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
 	if (GaSet==1)FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
-	if (GaSet==2 && AbsorberDiam>=0)FileNameCommonPart.append("_ZAbs"+ std::to_string((G4int)(100*ZValue)));
+	if (GaSet==2 && AbsorberDiam>=0)FileNameCommonPart.append("_ZAbs"+ std::to_string((G4int)(100*AbsCenter)));
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	
 	if (SourceSelect==4 && GaSet== 1) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
 	
-	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness)) +"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	
 	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
 	
@@ -297,7 +302,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
