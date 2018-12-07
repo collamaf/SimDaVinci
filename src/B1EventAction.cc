@@ -204,23 +204,23 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	// fill ntuple
 	
 	if(1||fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
-	analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
+	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
 	analysisManager->FillNtupleDColumn(0, 2, fPreNo);
 	analysisManager->FillNtupleDColumn(0, 5, fno); //number of hits into the detector
 //	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
 //	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
-	analysisManager->FillNtupleDColumn(0,17, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,18, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,19, fSourceZ/mm);
+	analysisManager->FillNtupleDColumn(0,14, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,15, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,16, fSourceZ/mm);
 	/*
-	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
-	analysisManager->FillNtupleDColumn(0,20, fSourceCosY/mm);
-	analysisManager->FillNtupleDColumn(0,21, fSourceCosZ/mm);
-	analysisManager->FillNtupleDColumn(0,22, fSourceEne/keV);
-	analysisManager->FillNtupleDColumn(0,23, fSourceIsotope);
+	analysisManager->FillNtupleDColumn(0,17, fSourceCosX/mm);
+	analysisManager->FillNtupleDColumn(0,18, fSourceCosY/mm);
+	analysisManager->FillNtupleDColumn(0,19, fSourceCosZ/mm);
+	analysisManager->FillNtupleDColumn(0,20, fSourceEne/keV);
+	analysisManager->FillNtupleDColumn(0,21, fSourceIsotope);
 	*/
-	analysisManager->FillNtupleIColumn(0,25, fNPMT);
+	analysisManager->FillNtupleIColumn(0,22, fNPMT);
 
 	//	G4cout<<"PterDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	

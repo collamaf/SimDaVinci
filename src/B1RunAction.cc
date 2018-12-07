@@ -256,18 +256,18 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"InPterTrackN");                   //5
 	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVectorPartPter); //6
 	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVectorEnPter); //7
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVectorEnPterPrim); //7b
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVectorPartPterPrim); //7bb
-	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVectorEnPterTime); //7c
-	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVectorXPter); //8
-	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVectorYPter); //9
-	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVectorZPter); //10
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVectorEnPterPrim); //8
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVectorPartPterPrim); //9
+	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVectorEnPterTime); //10
+	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVectorXPter); //11
+	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVectorYPter); //12
+	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVectorZPter); //13
 //	analysisManager->CreateNtupleDColumn(0,"InPterEnSr");
 //	analysisManager->CreateNtupleDColumn(0,"InPterEnY");
-	analysisManager->CreateNtupleDColumn(0,"PixelID", RunVectorPixNo); //11
+//	analysisManager->CreateNtupleDColumn(0,"PixelID", RunVectorPixNo); //11
 //	analysisManager->CreateNtupleDColumn(0,"EDepInPixel", RunVectorPixEneDep); //12
-	analysisManager->CreateNtupleDColumn(0,"PixXPos", RunVectorPixXpos); //13
-	analysisManager->CreateNtupleDColumn(0,"PixYPos", RunVectorPixYpos); //14
+//	analysisManager->CreateNtupleDColumn(0,"PixXPos", RunVectorPixXpos); //13
+	//analysisManager->CreateNtupleDColumn(0,"PixYPos", RunVectorPixYpos); //14
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //14
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //15
 	analysisManager->CreateNtupleDColumn(0,"SourceZ");                           //16
@@ -282,18 +282,18 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(0,"Nev");							//23
 
 
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVectorAnnihX); //27
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //28
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //29
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVectorAnnihX); //24
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //25
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //26
 	
-	analysisManager->CreateNtupleDColumn(0,"PreAbsEn", RunVectorPreAbsEn); //30   //Energy arriving on Abs from source
-	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVectorEnExit);
-	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVectorPartPreAbs);
-	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVectorPartPostAbs);
-	analysisManager->CreateNtupleDColumn(0,"EabsSiPM");       //34 
-	analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVectorEAbsSiPMComp);
+	analysisManager->CreateNtupleDColumn(0,"PreAbsEn", RunVectorPreAbsEn); //27   //Energy arriving on Abs from source
+	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVectorEnExit); //28
+	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVectorPartPreAbs); //29
+	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVectorPartPostAbs); //30
+	//analysisManager->CreateNtupleDColumn(0,"EabsSiPM");       //34
+	//analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVectorEAbsSiPMComp);
 	
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVectorAnnihT); //28
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVectorAnnihT); //31
 
 
 	
