@@ -363,6 +363,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fixed superposistion of absorber in GaSet1
 - Added study of Catafalco's material in GaSet3
 
+2018.12.07 by MorettiR
+- Fixed GaSet3 dimension of catafalco's Gacontainer.
+
 
 ## TO DO's
 

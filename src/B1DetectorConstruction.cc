@@ -530,7 +530,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### GaSet 3
 	
 	G4double D_CylABCD3 = 50.8*mm;
-	G4double H_CylA3 = 27.2*mm;
+	G4double H_CylA3 = 34.7*mm;
 	G4double d_CylB3 = 10*mm;
 	G4double H_CylB3 = 7.5*mm;
 	G4double d_CylC3 = 22*mm;
