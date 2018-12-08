@@ -369,6 +369,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.12.07 by MorettiR (afternoon)
 - Fixed enumeration in B1RunAction (take a look also to B1EventAction).
 
+2018.12.08 by MorettiR
+- Fixed line 99 of B1RunAction.
+
 
 ## TO DO's
 

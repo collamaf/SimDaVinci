@@ -96,7 +96,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,26, nbEventInRun);
+	analysisManager->FillNtupleIColumn(0,23, nbEventInRun);
 
 	
 }
