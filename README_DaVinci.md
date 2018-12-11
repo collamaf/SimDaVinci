@@ -372,6 +372,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.12.08 by MorettiR
 - Fixed line 99 of B1RunAction.
 
+2018.12.11 by MorettiR
+- Fixed error in geometry relative to the source.
+- Fixed error in PrimaryGeneratorAction relativo to GaSet 3
+
 
 ## TO DO's
 
