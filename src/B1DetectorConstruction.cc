@@ -479,7 +479,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy3
 	G4double RminDummy3 = 0.*mm;
 	G4double RmaxDummy3 = 5.*mm;
-	G4double DzDummy3= 0.5*mm;
+	G4double DzDummy3= 7.5*mm-fSourceThickness*mm;
 	G4double SPhiDummy3 = 0.*deg;
 	G4double DPhiDummy3 = 360.*deg;
 	G4double zDummy3;
@@ -2199,7 +2199,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		G4ThreeVector posContainerExtGa2 = G4ThreeVector(0, 0, -H_CylA3*0.5);
-		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-0.25); //centro la sorgente in -0.4
+		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-DzDummy3/2); //centro la sorgente in -0.4
 		
 		
 		G4VSolid* CylinderA =
@@ -2223,7 +2223,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		new G4Tubs("SourceGa-DOTATOC",
 							 0.,
 							 d_CylB3*0.5,
-							 7*0.5,
+							 (fSourceThickness*mm)*0.5,
 							 SPhiCyl3,
 							 DPhiCyl3);
 		

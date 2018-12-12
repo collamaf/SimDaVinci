@@ -380,6 +380,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fixed error in geometry relative to the dimension of the dummy2 in GaSet3.
 - Fixed error in geometry relative to the dimension of the absorber in GaSet3.
 
+2018.12.12 by MorettiR (afternoon)
+- Now you can choose di thickness of the source in GaSet3.
+
 
 ## TO DO's
 
