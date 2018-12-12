@@ -374,7 +374,11 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2018.12.11 by MorettiR
 - Fixed error in geometry relative to the source.
-- Fixed error in PrimaryGeneratorAction relativo to GaSet 3
+- Fixed error in PrimaryGeneratorAction relativo to GaSet 3.
+
+2018.12.12 by MorettiR
+- Fixed error in geometry relative to the dimension of the dummy2 in GaSet3.
+- Fixed error in geometry relative to the dimension of the absorber in GaSet3.
 
 
 ## TO DO's

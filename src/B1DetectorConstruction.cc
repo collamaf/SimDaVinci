@@ -427,9 +427,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminAbs = fabs(fCuDiam)/2.*mm;
 	G4double RmaxAbs = 0*mm;
 	G4double DzAbs= fAbsorberThickness*mm;
-	if(fPosAbsorber==1){
+	if(fPosAbsorber==1 && fGaSet==2){
 		RmaxAbs = 21/2.*mm;
-	}else if (fPosAbsorber==2){
+	}else if (fPosAbsorber==1 && fGaSet==3){
+		RmaxAbs = 22/2.*mm;
+	}else if (fPosAbsorber==2 && fGaSet==2){
+		RmaxAbs = 26/2.*mm;
+	}else if (fPosAbsorber==2 && fGaSet==3){
 		RmaxAbs = 26/2.*mm;
 	};
 	G4double SPhiAbs = 0.*deg;
@@ -452,11 +456,20 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy2
 	G4double RminDummy2 = 0.*mm;
 	G4double RmaxDummy2 = 10.5*mm;
-	if (fCuDiam>=0 && fPosAbsorber==2) {
+	 if (fCuDiam>=0 && fPosAbsorber==2) {
 		RmaxDummy2= 13. *mm;
-	}else if(fCuDiam>=0 && fPosAbsorber==1) {
+	}else if(fCuDiam>=0 && fPosAbsorber==1 && fGaSet==2) {
 		RmaxDummy2 = 10.5*mm;
+	}else if(fCuDiam>=0 && fPosAbsorber==1 && fGaSet==3) {
+		RmaxDummy2 = 11.*mm;
+	}else if(fCuDiam<0 && fPosAbsorber==1 && fGaSet==3) {
+		RmaxDummy2 = 11.*mm;
 	}else RmaxDummy2=10.5*mm;
+	/*
+	if (fGaSet==3) {
+		RmaxDummy2= 11.*mm;
+	}else RmaxDummy2 = 10.5*mm;
+	 */
 	G4double DzDummy2= 1.e-5*mm;
 	G4double SPhiDummy2 = 0.*deg;
 	G4double DPhiDummy2 = 360.*deg;
