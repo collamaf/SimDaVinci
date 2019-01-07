@@ -60,7 +60,8 @@ fNSourceExit(0.),
 fStoreTrackIDSource(0),
 fStoreTrackIDPter(0),
 fStoreTrackIDDummy2(0),
-FilePrimaries(file)
+FilePrimaries(file),
+fEnterPterFlag(0)
 {}
 
 
@@ -162,6 +163,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fStoreTrackIDPter=0;
 	fStoreTrackIDDummy2=0;
 	fNPMT=0;
+	fEnterPterFlag=0;
 	/*
 	 fSourceX=0;
 	 fSourceY=0;
@@ -221,6 +223,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleDColumn(0,21, fSourceIsotope);
 	*/
 	analysisManager->FillNtupleIColumn(0,22, fNPMT);
+	analysisManager->FillNtupleIColumn(0,32, fEnterPterFlag);
 
 	//	G4cout<<"PterDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	

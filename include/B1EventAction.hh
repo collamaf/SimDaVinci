@@ -101,6 +101,9 @@ public:
 	void SetEnteringParticle(G4int part) {fEnteringParticle=part;}
 	G4int GetEnteringParticle(void) {return fEnteringParticle;}
 
+	void SetEnterPterFlag(void) {fEnterPterFlag=1;}
+	G4int GetEnterPterFlag(void) {return fEnterPterFlag;}
+
 	void AddNPMT(G4int n) {fNPMT+=n;}
 	
 	//  void SetStopPosition (G4double x,G4double y, G4double z){
@@ -162,6 +165,7 @@ private:
 	G4int fStoreTrackIDPter;
 	G4int fStoreTrackIDDummy2;
 	std::ofstream &FilePrimaries;
+	G4int fEnterPterFlag;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

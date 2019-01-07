@@ -26,6 +26,9 @@ Source Choice:
 2 - Extended Sr
 3 - ExtY
 4 - ExtGa
+5 - 511KeV gamma sphere
+6 - FlatEle
+7 - FlatGamma
 
 
 
@@ -382,6 +385,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2018.12.12 by MorettiR (afternoon)
 - Now you can choose di thickness of the source in GaSet3.
+
+2018.12.12 by collamaf
+- Added flat sources (ele-6, gamma-7) for efficiency studies
+
 
 
 ## TO DO's

@@ -85,6 +85,8 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 	G4double fSourceDiameter;
 	G4double fSourceThickness;
 	G4int fGaSet;
+	G4bool FlatEle=false;
+	G4bool FlatGamma=false;
 	//	G4LogicalVolume* sourceLV;
 //	G4VPhysicalVolume* sourcePV;
 	

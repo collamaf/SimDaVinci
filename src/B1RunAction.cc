@@ -294,6 +294,7 @@ void B1RunAction::CreateHistogram()
 	//analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVectorEAbsSiPMComp);
 	
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVectorAnnihT); //31
+	analysisManager->CreateNtupleIColumn(0,"EnterPterFlag"); //32
 
 
 	

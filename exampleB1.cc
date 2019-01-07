@@ -73,8 +73,8 @@ int main(int argc,char** argv)
 	 }
 	 */
 	
-	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=40., ProbeCaseLateralThickness=3., ProbeCaseBackThickness=5. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
-	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=1, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
+	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=50., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
+	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
 	G4bool ScintFlag=0;
 	
 	G4String fileName ="";
@@ -195,7 +195,8 @@ int main(int argc,char** argv)
 	G4String FileNameCommonPart;
 	G4String NewProbe="TRUE";
 
-	
+
+
 	
 	/*if (GaSet==2 && ProbeCaseDepth<0){
 		NewProbe="FALSE";
@@ -235,6 +236,8 @@ int main(int argc,char** argv)
 	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3)) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
 	
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
+	if (SourceSelect==6) FileNameCommonPart.append("_FlatEle");
+	if (SourceSelect==7) FileNameCommonPart.append("_FlatGamma");
 	
 	if (ScintFlag) FileNameCommonPart.append("_Scint"); 
 
@@ -280,7 +283,9 @@ int main(int argc,char** argv)
 	
 	// Choose the Random engine
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
-	
+	G4long seed = time(NULL);
+	if (VisFlag) seed=12345; //If vis was requested same always the same seed to have reproducibility
+	G4Random::setTheSeed(seed);
 	// Construct the default run manager
 	//
 	//#ifdef G4MULTITHREAD

@@ -92,6 +92,34 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 			
 	}
 	
+	if (track->GetDynamicParticle() ->GetPDGcode()==11 && track->GetTrackID()==1) { //if direct electron source store its properties
+		runStackAction->SetMotherIsotope(0);
+		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+//		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
+		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetRunIsotopeGen()).push_back(0);
+		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+	}
+	
+	if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) { //if direct gamma source store its properties
+		runStackAction->SetMotherIsotope(0);
+		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+//		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
+		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetRunIsotopeGen()).push_back(0);
+		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+	}
+	
+	
+	
 #if 0
 	if (track->GetDynamicParticle() ->GetPDGcode()==ParticleToWatch) { //if I generated an electron
 		if (debug) G4cout<<"PterDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;

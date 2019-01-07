@@ -77,19 +77,30 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 	G4bool fSTB=false; 
 	G4bool fGa=false;
 
+
 	if (fSourceSelect==1) {  //pointlike Sr
 		fPointLike=true;
 		fExtended=false;
 		fSTB=false;
-	} else if (fSourceSelect==2) { //extended Sr
+	} else if (fSourceSelect==2 ) { //extended Sr
 		fPointLike=false;
 		fExtended=true;
 		fSTB=false;
-	} else if (fSourceSelect==3) { //ExtY Sr
+	} else if (fSourceSelect==6 ) { //extended flat Ele
+		fPointLike=false;
+		fExtended=false;
+		fSTB=false;
+		FlatEle=true;
+	} else if (fSourceSelect==7 ) { //extended flat Gamma
+		fPointLike=false;
+		fExtended=false;
+		fSTB=false;
+		FlatGamma=true;
+	} else if (fSourceSelect==3) { //Ext Y
 		fPointLike=false;
 		fExtended=false;
 		fSTB=true;
-	} else if (fSourceSelect==4) {
+	} else if (fSourceSelect==4) {  //Ext Ga
 		fPointLike=false;
 		fExtended=false;
 		fSTB=false;
@@ -110,6 +121,11 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 		fRadiusInt=8*mm;  //8 for RM, 10.5mm PG source
 		fDZInt=0*mm;
 		fRadiusExt=8*mm;
+		fDZExt=0*mm;
+	} else if (FlatEle) {
+		fRadiusInt=6*mm;
+		fDZInt=0*mm;
+		fRadiusExt=6*mm;
 		fDZExt=0*mm;
 	} else if (fGa) {
 		fRadiusInt=fSourceDiameter/2.*mm;
@@ -143,9 +159,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	//Stronzium
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
-	if (fSourceSelect==4 || fSourceSelect==5) {
+	if (fSourceSelect==4 ) {
 		Z=31;
 		A=68;
+	} else if (fSourceSelect==6) { //Flat Ele
+		FlatEle=true;
+	} else if (fSourceSelect==7) { //Flat Gamma
+		FlatGamma=true;
 	}
 	G4double ionCharge   = 0.*eplus;
 	G4double excitEnergy = 0.*keV;
@@ -172,7 +192,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double zSourceOffset=1e-6*mm; //to avoid generating particles at the very boundary of source!
 	
 	//	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
-	if (fSourceSelect==1||fSourceSelect==2) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
+	if (fSourceSelect==1||fSourceSelect==2 || fSourceSelect==6) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		zSource = -zSourceOffset;
@@ -214,15 +234,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 
 	//Inserisco sorgente 5 (sfera di fotoni)
 	
-	
 	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;
 	G4double Sphere_Phi=acos(2*G4UniformRand()-1);
 	G4double Sphere_U=cos(Sphere_Phi);
 	G4double Sphere_X=sqrt(1-Sphere_U*Sphere_U)*cos(Sphere_Theta);
 	G4double Sphere_Y=sqrt(1-Sphere_U*Sphere_U)*sin(Sphere_Theta);
 	G4double Sphere_Z=Sphere_U;
-	G4double Sphere_Radius=15*cm;
-	
+	G4double Sphere_Radius=5*cm;
 	
 	fParticleGun->SetParticleEnergy(0*MeV); //SetParticleEnergy uses kinetic energy
 	
@@ -243,7 +261,6 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double Source_Z=zSource;
 
 	
-	
 //	G4ThreeVector position = G4ThreeVector(rho*cos(alpha), rho*sin(alpha), zSource);
 
 //	G4ThreeVector position = G4ThreeVector(Sphere_X, Sphere_Y, Sphere_Z);
@@ -252,13 +269,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	evtPrimAction->SetSourceCosY(0);
 	evtPrimAction->SetSourceCosZ(0);
 */
-//	G4ThreeVector momentumDirection = G4ThreeVector(0,0,0);
-	G4double MomentumDir_X=0;
-	G4double MomentumDir_Y=0;
-	G4double MomentumDir_Z=0;
-	
+
 	
 	G4double Sphere_ZOffset=0;
+	
+	G4double xDirection=0;
+	G4double yDirection=0;
+	G4double zDirection=0;
 	
 	if (fSourceSelect==5) {
 		Source_X=Sphere_Radius*Sphere_X;
@@ -268,17 +285,56 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
 		fParticleGun->SetParticleDefinition(fotone);
 		fParticleGun->SetParticleEnergy(0.511*MeV);
-		MomentumDir_X=PhotDir_ux;
-		MomentumDir_Y=PhotDir_uy;
-		MomentumDir_Z=PhotDir_uz;
+		xDirection=PhotDir_ux;
+		yDirection=PhotDir_uy;
+		zDirection=PhotDir_uz;
 	}
 	
-	
+	if (FlatEle) {
+		fParticleGun->SetParticleDefinition(	G4ParticleTable::GetParticleTable()->FindParticle("e-"));
+		G4double randomEne=G4UniformRand()*3;
+		fParticleGun->SetParticleEnergy(randomEne*MeV); //SetParticleEnergy uses kinetic energy
+		evtPrimAction->SetSourceEne(randomEne);
+	} else if (FlatGamma) {
+//		fParticleGun->SetParticleDefinition(	G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
+//		fParticleGun->SetParticleCharge(0);
+		G4double randomEne=G4UniformRand()*1;
+		evtPrimAction->SetSourceEne(randomEne);
+		Source_X=Sphere_Radius*Sphere_X;
+		Source_Y=Sphere_Radius*Sphere_Y;
+		if (G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")!=NULL)	Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")->GetTranslation().z();
+		Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
+		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+		fParticleGun->SetParticleDefinition(fotone);
+		fParticleGun->SetParticleEnergy(randomEne);
+		xDirection=PhotDir_ux;
+		yDirection=PhotDir_uy;
+		zDirection=PhotDir_uz;
+	}
 	
 	
 	const	G4ThreeVector position = G4ThreeVector(Source_X, Source_Y, Source_Z);
 
-	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(MomentumDir_X,MomentumDir_Y,MomentumDir_Z));
+	
+	//###################################################
+	// Sampling particle initial direction
+	//##########################
+	if (FlatEle) { //If FlatSource (for Eff) was requested, generate only towards up
+		G4double phi = G4UniformRand()*CLHEP::pi*2.;
+		G4double costheta = G4UniformRand();
+		G4double theta = acos(costheta);
+		 xDirection = sin(theta)*cos(phi);
+		 yDirection = sin(theta)*sin(phi);
+		 zDirection = costheta;
+
+//		const G4ThreeVector momentumDirection = G4ThreeVector(xDirection,yDirection,zDirection);
+//		fParticleGun->SetParticleMomentumDirection(momentumDirection);
+	} else {
+//		G4ThreeVector momentumDirection = G4ThreeVector(0,0,0);
+//		fParticleGun->SetParticleMomentumDirection(momentumDirection);
+	}
+	
+	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xDirection,yDirection,zDirection));
 	fParticleGun->SetParticlePosition(position);
 	
 	

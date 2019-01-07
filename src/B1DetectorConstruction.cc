@@ -224,6 +224,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		CaseInner_mat=world_mat;
 	}
 	//
+	if (fSourceSelect==6 || fSourceSelect==7) SourceSR_mat=world_mat;
+
 	
 	// To make -GaSet 2  expreimental environment of air or of Pb
 	if (fApparatusMat==2 && fGaSet==2){
@@ -714,7 +716,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceSR_mat,           //its material
 											"SourceSR");            //its name
 	
-	if(fSourceSelect==1 || fSourceSelect==2) { //If i requested the Sr source
+	if(fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==5 || fSourceSelect==6) { //If i requested the Sr source
 		G4cout<<"GEOMETRY DEBUG - Sr Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation

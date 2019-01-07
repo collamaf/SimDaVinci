@@ -150,26 +150,31 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			fEventAction->SetStoreTrackIDSource(step->GetTrack()->GetTrackID());
 		}
 		
-		// Salvo le info solo della prima volta che una particella esce dalla sorgente
-		if (fEventAction->GetPassCounterSource()==0) {
-			fEventAction->AddNSourceExit(1);
-			(runStepAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-			(runStepAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
-			(runStepAction->GetRunYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
-			(runStepAction->GetRunZExit()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-			(runStepAction->GetRunCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
-			(runStepAction->GetRunCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
-			(runStepAction->GetRunCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
-			(runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-			(runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
-			(runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
-			(runStepAction->GetRunPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-		}
-		
-		/*
-		 We have to use PreStepPoint to save the exit cosines, otherwise we already have particles flipped..
-		 */
-	}
+		 // Salvo le info solo della prima volta che una particella esce dalla sorgente
+		 if (fEventAction->GetPassCounterSource()==0) {
+			 fEventAction->AddNSourceExit(1);
+			 (runStepAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			 (runStepAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+			 (runStepAction->GetRunYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+			 (runStepAction->GetRunZExit()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+			 (runStepAction->GetRunCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
+			 (runStepAction->GetRunCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
+			 (runStepAction->GetRunCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
+			 (runStepAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+			 (runStepAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
+			 
+			 if (step->GetTrack()->GetCreatorProcess()) {
+				 (runStepAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
+			 } else {
+				 (runStepAction->GetRunExitProcess().push_back(-17));
+			 }
+			 (runStepAction->GetRunPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		 }
+		 
+		 /*
+			We have to use PreStepPoint to save the exit cosines, otherwise we already have particles flipped..
+			*/
+	 }
 	
 	
 	if (NextVol && ((fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
@@ -213,6 +218,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
 	if (volume == fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {
+		fEventAction->SetEnterPterFlag();
 		//pixel information collection
 		G4int CopyNB=step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber();
 		fEventAction->AddNo(1);
