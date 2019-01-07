@@ -5,21 +5,20 @@
 cd build
 cmake -DGeant4_DIR=$G4INSTALL ../
 make
-./exampleB1
-./exampleB1 {1-CuDiam (<0->no Cu)} {2-ZOffs} {3-FilterFlag} {4-TBR} {5-SourceChoice} {6-x0Scan} {7-Absorber Material} {8-PterDiameter} {9-PterThickness} {10-SourceDiameter} {11-SourceThickness} {12-AbsorberThickness} ../run1.mac
-e.g.:
-
-./exampleB1 -AbsD -1 -SourceD 6 -SourceT 3 -X 0 -PterD 6 -PterT 4 -Z 1 -TBR 0 -Source 4 ../run1.mac
-
- 
- 
- -AbsD= Absorber Diameter, -AbsT= Absorber Thickness , -AbsMat= Absorber's Material , -Z distance from origin to FrontsShield
- 
- -GaSet = 1 for Old Configuration, 2 for 3D-Printed Apparatus 
- 
- 
- 
+./exampleB1 {flags (see below)} ../run1.mac
 ```
+Some Use cases:
+- Gallium68 Campaign Gemelli measurements (late 2018) with PVC
+```
+./exampleb1 -GaSet 3 -CaseDepth -155 -Source 4 -AbsD 0 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 6.4  ../run1.mac 
+
+```
+- Gallium68 Campaign Gemelli measurements (late 2018) No PVC
+```
+./exampleb1 -GaSet 3 -CaseDepth -155 -Source 4 -AbsD -10 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 6.4  ../run1.mac 
+
+```
+
 {all distances/sizes in mm}
 Source Choice:
 1 - Pointlike Sr
