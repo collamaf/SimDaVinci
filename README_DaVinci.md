@@ -30,8 +30,26 @@ Some Use cases:
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../quick.mac 
 
 ```
+- To obtain efficiency curve:
+```
+//With Eabs
 
-{all distances/sizes in mm}
+B1->Draw("SourceEne>>num(200)","Eabs>68","")
+B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
+num->Sumw2()
+num->Divide(denom)
+num->Draw("E")
+
+//With NPMT
+
+B1->Draw("SourceEne>>num(200)","Npmt>55","")
+B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
+num->Sumw2()
+num->Divide(denom)
+num->Draw("E")
+
+
+
 Source Choice:
 1 - Pointlike Sr
 2 - Extended Sr
