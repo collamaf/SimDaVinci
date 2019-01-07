@@ -32,7 +32,7 @@ Some Use cases:
 ```
 - To obtain efficiency curve:
 ```
-//With Eabs
+- With Eabs
 
 B1->Draw("SourceEne>>num(200)","Eabs>68","")
 B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
@@ -40,13 +40,15 @@ num->Sumw2()
 num->Divide(denom)
 num->Draw("E")
 
-//With NPMT
+- With NPMT
 
 B1->Draw("SourceEne>>num(200)","Npmt>55","")
 B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
 num->Sumw2()
 num->Divide(denom)
 num->Draw("E")
+
+```
 
 
 
