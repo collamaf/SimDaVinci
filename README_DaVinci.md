@@ -19,6 +19,18 @@ Some Use cases:
 
 ```
 
+- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+```
+./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../quick.mac 
+
+```
+
+- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+```
+./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../quick.mac 
+
+```
+
 {all distances/sizes in mm}
 Source Choice:
 1 - Pointlike Sr
