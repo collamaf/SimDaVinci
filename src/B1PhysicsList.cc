@@ -70,8 +70,8 @@ B1PhysicsList::B1PhysicsList()
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
 	opticalPhysics->Configure(kCerenkov, false);
 	opticalPhysics->SetCerenkovStackPhotons(false);
-//	opticalPhysics->SetScintillationStackPhotons(false);
-//	RegisterPhysics(opticalPhysics);
+	opticalPhysics->SetScintillationStackPhotons(true);
+	RegisterPhysics(opticalPhysics);
 	
 }
 

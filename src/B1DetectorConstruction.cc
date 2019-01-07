@@ -252,9 +252,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* TopCase_mat=CaseInner_mat;
 	
 
-
-	
-	
 	
 	//###################################################
 	//###################################################
@@ -272,12 +269,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// Water
 	//
 	G4double refractiveIndex1[] =
-	{ 1.65}; //da misteriosa mail del 30.9.2013
+	{ 1.65}; //da misteriosa mail del 30.9.2013, confermato da silvio il 07-01-2019
 	
 	assert(sizeof(refractiveIndex1) == sizeof(photonEnergy));
 	
 	G4double absorption[] =
-	{20*mm }; //da elsarticle CMT
+	{20*mm }; //da elsarticle CMT, è lunghezza di attenuazione "fisica" (non "efficace")
 	
 	assert(sizeof(absorption) == sizeof(photonEnergy));
 	
@@ -293,30 +290,37 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	
-	G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
-	myMPT1->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
+	G4MaterialPropertiesTable* materialTablePter = new G4MaterialPropertiesTable();
+	materialTablePter->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
 	->SetSpline(true);
-	myMPT1->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
+	materialTablePter->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
 	->SetSpline(true);
-	myMPT1->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
+	materialTablePter->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
 	->SetSpline(true);
-	myMPT1->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
+	materialTablePter->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
 	->SetSpline(true);
 	
-	myMPT1->AddConstProperty("SCINTILLATIONYIELD",28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
-	myMPT1->AddConstProperty("RESOLUTIONSCALE",1.0);
-	myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
-	myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
-	myMPT1->AddConstProperty("YIELDRATIO",1);
+	materialTablePter->AddConstProperty("SCINTILLATIONYIELD",28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
+	materialTablePter->AddConstProperty("RESOLUTIONSCALE",1.0);
+	materialTablePter->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+	materialTablePter->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
+	materialTablePter->AddConstProperty("YIELDRATIO",1);
 
+	
+	G4double refractiveIndexDelrin = 1.48;
+	G4MaterialPropertiesTable* materialTableDelrin = new G4MaterialPropertiesTable();
+	materialTableDelrin->AddConstProperty("RINDEX", refractiveIndexDelrin);
+	
 	
 	
 	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
-	myMPT1->DumpTable();
+	materialTablePter->DumpTable();
+	materialTableDelrin->DumpTable();
 	
-	if (fScintFlag)
-	PTerphenyl->SetMaterialPropertiesTable(myMPT1); //to toggle scintillation
-	
+	if (fScintFlag) {
+		PTerphenyl->SetMaterialPropertiesTable(materialTablePter); //to toggle scintillation
+		Delrin->SetMaterialPropertiesTable(materialTableDelrin);
+	}
 	//##########################
 	//###################################################
 
