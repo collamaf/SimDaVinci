@@ -54,9 +54,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CuDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat,G4int PosAbsorber,G4double AbsCenter)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double AbsDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat,G4int PosAbsorber,G4double AbsCenter)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCuDiam(CuDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fPosAbsorber (PosAbsorber), fAbsCenter (AbsCenter)
+fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fAbsDiam(AbsDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fPosAbsorber (PosAbsorber), fAbsCenter (AbsCenter)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -122,28 +122,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Element* elN = new G4Element (name="Nitrogen", symbol="N", z=7.,a );
 	
 	
-	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
-	//if (fSensorChoice==2) density=2.43;
+	density = 4.000*g/cm3;
 	G4Material* FrontShield = new G4Material (name="FrontShield", density, ncomponents=3);
 	FrontShield->AddElement (elH, natoms=30);
 	FrontShield->AddElement (elC, natoms=20);
 	FrontShield->AddElement (elO, natoms=2);
 	
 	G4double densityAlu = 2.600*g/cm3;
-	//	G4NistManager* man = G4NistManager::Instance();
 	G4NistManager::Instance()->BuildMaterialWithNewDensity("MyAlu","G4_Al",densityAlu);
-	
-	/* ref from TestEm7
-	 G4NistManager::Instance()->
-	 BuildMaterialWithNewDensity("Water_1.05","G4_WATER",1.05*g/cm3);
-	 */
-	
-	//G4int TypeSourceFlag=fSourceSelect;
 	
 	//###################################################
 	// AGAR AGAR Source - AgarAgar should be C14 H24 O9
 	//##########################
-	
 	G4double Agardensity = 1.030*g/cm3;
 	G4Material* AgarAgar = new G4Material (name="AgarAgar", Agardensity, ncomponents=3);
 	AgarAgar->AddElement (elH, natoms=24);
@@ -163,7 +153,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// P-Terphenyl Material
 	//##########################
-	
 	G4double PTerphenyldensity = 1.23*g/cm3;
 	G4Material* PTerphenyl= new G4Material (name="PTerphenyl", PTerphenyldensity, ncomponents=2);
 	PTerphenyl->AddElement (elC, natoms=18);
@@ -172,7 +161,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// Delrin Material      C H2 O
 	//##########################
-	
 	G4double Delrindensity = 1.41*g/cm3;
 	G4Material* Delrin= new G4Material (name="Delrin", Delrindensity, ncomponents=3);
 	Delrin->AddElement (elC, natoms=1);
@@ -181,16 +169,24 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	//###################################################
-	// GaContainer2 Material
+	// GaContainer2 Material (ABS)
 	//##########################
-	
-	G4double GaContainer2Matdensity = 0.43*g/cm3;
+	G4double GaContainer2Matdensity = 0.43*g/cm3; //mean measured density
 	G4Material* GaContainer2Mat = new G4Material (name="GaContainer2Mat", GaContainer2Matdensity, ncomponents=3);
 	GaContainer2Mat->AddElement (elH, natoms=17);
 	GaContainer2Mat->AddElement (elC, natoms=15);
 	GaContainer2Mat->AddElement (elN, natoms=1);
 	
-	//############ MATERIAL ASSIGNMENT
+	//##########################
+	//###################################################
+	//###################################################################
+	
+	
+	//###################################################################
+	//###################################################
+	// Assignment of materials
+	//##########################
+	
 	G4Material* SourceExtY_mat = AgarAgar;
 	G4Material* ABSaround_mat = ABS;
 	G4Material* ABSbehind_mat = ABS;
@@ -200,7 +196,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* ProbeContainer_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	//G4Material* GaWater_mat=nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* SourceExtGa_mat=nist->FindOrBuildMaterial("G4_WATER");
-	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu"); //G4_Al
+	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* FrontShield_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* Pter_mat = PTerphenyl;
@@ -210,24 +206,21 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
 	G4Material* SiPM_mat = nist->FindOrBuildMaterial("G4_Si");
 	G4Material* Table_mat = nist->FindOrBuildMaterial("MyAlu");
-
-
 	
+	//Materials for NL probe case
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* HorsesShoe_mat= nist->FindOrBuildMaterial("G4_Pb");
 	G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-	// To make them of air
-	if (fHousingCase==2) //1- InnerPlastic (norm): Pb+Pl || 2- InnerAir: Pb+Air || 3- TotalAir: Air+Air
+	if (fHousingCase==2) //1- InnerPlastic: Pb+Pl || 2- InnerAir: Pb+Air || 3- TotalAir: Air+Air (norm)
 		CaseInner_mat=world_mat;
-	else if (fHousingCase==3) {
+	else if (fHousingCase==3) { //main.cc default
 		HorsesShoe_mat=world_mat;
 		CaseInner_mat=world_mat;
 	}
-	//
-	if (fSourceSelect==6 || fSourceSelect==7) SourceSR_mat=world_mat;
-
 	
-	// To make -GaSet 2  expreimental environment of air or of Pb
+	if (fSourceSelect==6 || fSourceSelect==7) SourceSR_mat=world_mat;
+	
+	// To make -GaSet 2  structure of air or of Pb
 	if (fApparatusMat==2 && fGaSet==2){
 		ProbeContainer_mat = world_mat;
 		GaContainer2_mat = world_mat;
@@ -236,8 +229,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		GaContainer2_mat = HorsesShoe_mat;
 	}
 	
-	
-	// To make -GaSet 3  expreimental environment of air or of Pb
+	// To make -GaSet 3  structure of air or of Pb
 	if (fApparatusMat==2 && fGaSet==3){
 		ProbeContainer_mat = world_mat;
 		GaContainer3_mat = world_mat;
@@ -246,14 +238,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		GaContainer3_mat = HorsesShoe_mat;
 	}
 	
-	
-	
 	G4Material* MiddleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
 	
-
 	
-	//###################################################
+	
+	//###################################################################
 	//###################################################
 	// Optics characteristics part
 	//##########################
@@ -305,7 +295,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	materialTablePter->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
 	materialTablePter->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
 	materialTablePter->AddConstProperty("YIELDRATIO",1);
-
+	
 	
 	G4double refractiveIndexDelrin = 1.48;
 	G4MaterialPropertiesTable* materialTableDelrin = new G4MaterialPropertiesTable();
@@ -317,7 +307,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	materialTablePter->DumpTable();
 	materialTableDelrin->DumpTable();
 	
-
+	
 	/*
 	 G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
 	 new G4LogicalBorderSurface("wrapper", slab, expHall_phys, wrapper);
@@ -336,60 +326,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 
 	 */
 	
-	
-	
-	
-	
-	
-	
 	if (fScintFlag) {
 		PTerphenyl->SetMaterialPropertiesTable(materialTablePter); //to toggle scintillation
 		Delrin->SetMaterialPropertiesTable(materialTableDelrin);
 	}
 	//##########################
 	//###################################################
-
-	
-	
-	
-	
-	
-	
-	
-	
-	//Before Boolean
-	/*
-	 G4Material* CaseExt_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-	 G4Material* CaseMetal_mat=nist->FindOrBuildMaterial("G4_Pb");
-	 G4Material* CaseInner_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-	 
-	 G4Material* AroundBackMiddleCase_mat=CaseExt_mat;
-	 G4Material* AroundTopCase_mat=CaseExt_mat;
-	 G4Material* EndCase_mat=CaseExt_mat;
-	 G4Material* ExtMiddleCase_mat=CaseExt_mat;
-	 
-	 G4Material* MiddleCase_mat=CaseInner_mat;
-	 G4Material* TopCase_mat=CaseInner_mat;
-	 G4Material* BackMiddleCase_mat=CaseMetal_mat;
-	 G4Material* AroundMiddleCase_mat=CaseMetal_mat;
-	 */
-	
-#if 0
-	G4Material* TopCase_mat = nist->FindOrBuildMaterial("G4_AIR");
-	G4Material* AroundTopCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	//G4Material* ExternalCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* MiddleCase_mat = nist->FindOrBuildMaterial("G4_AIR");
-	G4Material* AroundMiddleCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");  //Understand what type of material
-	G4Material* ExtMiddleCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* BackMiddleCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");  //Understand what type of material
-	G4Material* AroundBackMiddleCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* EndCase_mat = nist->FindOrBuildMaterial("MyAlu");
-	
-#endif
-	
-	// EndCase, AroundBackMiddleCase and ExtMiddleCase are made by the same material
-	
-  // AroundMiddleCase and BackMiddleCase are made by the same material
+	//###################################################################
 	
 	
 	
@@ -398,35 +341,29 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// Definitions of dimensions and sizes
 	//##########################
 	
+	G4double Ang0 = 0.*deg;
+	G4double Ang2Pi = 360.*deg;
+	
 	//### ExtY SOURCE
 	G4double RminSourceExtY = 0.*mm;
-	G4double RmaxSourceExtY = 10.5*mm; //10.48 per Rosa, 6.65 per PG
-	G4double DzSourceExtY= 4.5*mm; //4.4 per Rosa, 5.5 per PG
-	G4double SPhiSourceExtY = 0.*deg;
-	G4double DPhiSourceExtY = 360.*deg;
+	G4double RmaxSourceExtY = 10.5*mm;
+	G4double DzSourceExtY= 4.5*mm;
 	//###
 	
 	//### ABS
 	G4double RminABSaround = RmaxSourceExtY;
 	G4double RmaxABSaround = 12.5*mm;
 	G4double DzABSaround= DzSourceExtY;
-	G4double SPhiABSaround = 0.*deg;
-	G4double DPhiABSaround = 360.*deg;
 	
 	G4double RminABSbehind = 0.*mm;
 	G4double RmaxABSbehind = RmaxABSaround;
 	G4double DzABSbehind= 3*mm;
-	G4double SPhiABSbehind = 0.*deg;
-	G4double DPhiABSbehind = 360.*deg;
 	//###
-	
 	
 	//### Sr Source
 	G4double RminSourceSR = 0.*mm;
-	G4double RmaxSourceSR = 12.5*mm; //physical dimensions same for PG/RM sources, the active one differs
+	G4double RmaxSourceSR = 12.5*mm;
 	G4double DzSourceSR= 3*mm;
-	G4double SPhiSourceSR = 0.*deg;
-	G4double DPhiSourceSR = 360.*deg;
 	//###
 	
 	//### Ga Source Container
@@ -434,29 +371,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RContainer = 50*mm;
 	G4double dzSourceExtGa= fSourceThickness*mm;
 	G4double DzContainer= 20*mm;
-	G4double SPhiSourceExtGa = 0.*deg;
-	G4double DPhiSourceExtGa = 360.*deg;
+	//###
 	
-	
-	//### Filter (FrontShield)
+	//### FrontShield (Al)
 	G4double Z_FrontShield= 0*mm;
 	G4double FrontShield_outer_r=(12.0/2.0)*mm;
 	G4double FrontShield_sizeZ=15*um;
-	G4double FrontShield_start_angle=0.*deg;
-	G4double FrontShield_spanning_angle=360.0*deg;
 	//###
 	
-	//### Copper Collimator
-	G4double RminCo = fabs(fCuDiam)/2.*mm;
-	G4double RmaxCo = 18.*mm;
-	G4double DzCo= fAbsorberThickness*mm;
-	G4double SPhiCo = 0.*deg;
-	G4double DPhiCo = 360.*deg;
-	//###
-	
+//	//### Copper Collimator
+//	G4double RminCo = fabs(fAbsDiam)/2.*mm;
+//	G4double RmaxCo = 18.*mm;
+//	G4double DzCo= fAbsorberThickness*mm;
+//	//###
+//
 	//### Absorber
-	G4double RminAbs = fabs(fCuDiam)/2.*mm;
-	G4double RmaxAbs = 0*mm;
+	G4double RminAbs = fabs(fAbsDiam)/2.*mm;
+	G4double RmaxAbs = 30*mm;
 	G4double DzAbs= fAbsorberThickness*mm;
 	if(fPosAbsorber==1 && fGaSet==2){
 		RmaxAbs = 21/2.*mm;
@@ -467,19 +398,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}else if (fPosAbsorber==2 && fGaSet==3){
 		RmaxAbs = 26/2.*mm;
 	};
-	G4double SPhiAbs = 0.*deg;
-	G4double DPhiAbs = 360.*deg;
-	G4double ZCenterAbs=fAbsCenter*mm;
+//	G4double ZCenterAbs=fAbsCenter*mm;
 	//###
 	
 	//### Dummy
 	G4double RminDummy = 0.*mm;
 	G4double RmaxDummy = 18.*mm;
-	if (fCuDiam>=0) RmaxDummy =RmaxCo;
+	if (fAbsDiam>=0) RmaxDummy =RmaxAbs;
 	else RmaxDummy=RmaxSourceSR;
 	G4double DzDummy= 1.e-5*mm;
-	G4double SPhiDummy = 0.*deg;
-	G4double DPhiDummy = 360.*deg;
 	G4double zDummy;
 	//###
 	
@@ -487,23 +414,22 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy2
 	G4double RminDummy2 = 0.*mm;
 	G4double RmaxDummy2 = 10.5*mm;
-	 if (fCuDiam>=0 && fPosAbsorber==2) {
+	if (fAbsDiam>=0 && fPosAbsorber==2) {
 		RmaxDummy2= 13. *mm;
-	}else if(fCuDiam>=0 && fPosAbsorber==1 && fGaSet==2) {
+	}else if(fAbsDiam>=0 && fPosAbsorber==1 && fGaSet==2) {
 		RmaxDummy2 = 10.5*mm;
-	}else if(fCuDiam>=0 && fPosAbsorber==1 && fGaSet==3) {
+	}else if(fAbsDiam>=0 && fPosAbsorber==1 && fGaSet==3) {
 		RmaxDummy2 = 11.*mm;
-	}else if(fCuDiam<0 && fPosAbsorber==1 && fGaSet==3) {
+	}else if(fAbsDiam<0 && fPosAbsorber==1 && fGaSet==3) {
 		RmaxDummy2 = 11.*mm;
 	}else RmaxDummy2=10.5*mm;
 	/*
-	if (fGaSet==3) {
-		RmaxDummy2= 11.*mm;
-	}else RmaxDummy2 = 10.5*mm;
+	 if (fGaSet==3) {
+	 RmaxDummy2= 11.*mm;
+	 }else RmaxDummy2 = 10.5*mm;
 	 */
 	G4double DzDummy2= 1.e-5*mm;
-	G4double SPhiDummy2 = 0.*deg;
-	G4double DPhiDummy2 = 360.*deg;
+	
 	G4double zDummy2;
 	//###
 	
@@ -511,45 +437,43 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminDummy3 = 0.*mm;
 	G4double RmaxDummy3 = 5.*mm;
 	G4double DzDummy3= 7.5*mm-fSourceThickness*mm;
-	G4double SPhiDummy3 = 0.*deg;
-	G4double DPhiDummy3 = 360.*deg;
 	G4double zDummy3;
 	//###
 	
+	//### SiPm
+	G4double DxSiPm = 3.*mm;
+	G4double DySiPm= 3.*mm;
+	G4double DzSiPm = 300.e-6*mm;
+	
+	//### Table
+	G4double DxTable = 500*mm;
+	G4double DyTable= 500*mm;
+	G4double DzTable = 50*mm;
 	
 	//### Pter
-	
 	G4double Pter_Diam=fPterDiameter*mm;
 	G4double PVC_outer_r=12.0*mm/2.;
 	G4double Pter_sizeZ=fPterThickness*mm;
-	G4double Pter_start_angle=0.*deg;
-	G4double Pter_spanning_angle=360.0*deg;
 	G4double Pter_Posz=0.*mm;
 	G4double Pter_ZScan=fZValue*mm;
 	
 	G4double PVC_inner_r= PVC_outer_r - 2*mm;
-
+	
 	
 	//### Probe Case
 	
 	G4double CaseDepth = fCaseDepth*mm;
-	//G4double SPhiCase = 0.*deg;
-	//G4double DPhiCase = 360.*deg;
 	G4double LateralCaseThickness = fLateralCaseThickness*mm;
 	G4double BackCaseThickness = fBackCaseThickness*mm;
 	//G4double ProbeCase_Posz=0.*mm;
 	G4double TopCaseDepth=2.*mm;
-	G4double SPhiTopCase = 0.*deg;
-	G4double DPhiTopCase = 360.*deg;
-	G4double SPhiAroundTopCase = 0.*deg;
-	G4double DPhiAroundTopCase = 360.*deg;
 	//G4double Case_r = PVC_outer_r +0.1*mm;
 	G4double HorsesShoeLateralThickness = fHorsesShoeLateralThickness * mm;
 	G4double HorsesShoeBackThickness = fHorsesShoeBackThickness * mm;
-
+	
 	
 	//### GaSet 2
-
+	
 	G4double D_CylABCD = 70*mm;
 	G4double H_CylA = 19*mm;
 	G4double d_CylB = 10*mm;
@@ -567,9 +491,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double D_CylG = 51*mm;
 	G4double d_CylG = 13*mm;
 	G4double H_CylG = 32*mm;
-
-	G4double SPhiCyl = 0.*deg;
-	G4double DPhiCyl = 360.*deg;
+	
 	
 	//### GaSet 3
 	
@@ -591,8 +513,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double d_CylG3 = 13*mm;
 	G4double H_CylG3 = 32*mm;
 	
-	G4double SPhiCyl3 = 0.*deg;
-	G4double DPhiCyl3 = 360.*deg;
 	
 	//##########################
 	//###################################################
@@ -616,8 +536,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 RminSourceExtY,
 						 RmaxSourceExtY,
 						 0.5*DzSourceExtY,
-						 SPhiSourceExtY,
-						 DPhiSourceExtY);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicSourceExtY =
 	new G4LogicalVolume(solidSourceExtY,          //its solid
@@ -625,13 +545,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"SourceExtY");            //its name
 	
 	if(fSourceSelect==3) { //I place the ExtY source if I am not asking for Sr source
-
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceExtY= "<<DzSourceExtY/mm<<", Z pos= "<<-DzSourceExtY*0.5<<G4endl;
 		
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceExtY= "<<DzSourceExtY/mm<<", Z pos= "<<posSourceExtY.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
-											posSourceExtY,       //at (0,0,0)
+											posSourceExtY,
 											logicSourceExtY,            //its logical volume
 											"SourceExtY",               //its name
 											logicWorld,            //its mother  volume
@@ -639,8 +558,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
-		
-		//G4Region* sorgente = new G4Region("SourceReg");
 		logicSourceExtY->SetRegion(sorgente);
 		sorgente->AddRootLogicalVolume(logicSourceExtY);
 	}
@@ -657,17 +574,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 RminABSaround,
 						 RmaxABSaround,
 						 0.5*DzABSaround,
-						 SPhiABSaround,
-						 DPhiABSaround);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicABSaround =
 	new G4LogicalVolume(solidABSaround,          //its solid
 											ABSaround_mat,           //its material
 											"ABSaround");            //its name
 	
-	if(fSourceSelect==3) {  //I place the ABS carrier of the ExtY source if I am not asking for Sr source
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<-DzABSaround*0.5<<G4endl;
-		
+	if(fSourceSelect==3) {  //I place the ABS carrier of the ExtY source
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<posABSaround.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
@@ -679,10 +595,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
+		logicABSaround->SetRegion(ABSRegion);
+		ABSRegion->AddRootLogicalVolume(logicABSaround);
 	}
-	//G4Region* ABSRegion = new G4Region("ABSRegion");
-	logicABSaround->SetRegion(ABSRegion);
-	ABSRegion->AddRootLogicalVolume(logicABSaround);
 	
 	//################################################### END ABS AROUND
 	
@@ -696,8 +611,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 						 RminABSbehind,
 						 RmaxABSbehind,
 						 0.5*DzABSbehind,
-						 SPhiABSbehind,
-						 DPhiABSbehind);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicABSbehind =
 	new G4LogicalVolume(solidABSbehind,          //its solid
@@ -705,8 +620,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"ABSbehind");            //its name
 	
 	if(fSourceSelect==3) { //I place the ABS carrier of the ExtY source if I am not asking for Sr source
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<-DzABSbehind*0.5- DzABSaround<<G4endl;
-		
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<posABSbehind.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
@@ -718,10 +632,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
+		logicABSbehind->SetRegion(ABSRegion);
+		ABSRegion->AddRootLogicalVolume(logicABSbehind);
 	}
-	logicABSbehind->SetRegion(ABSRegion);
-	ABSRegion->AddRootLogicalVolume(logicABSbehind);
-	
 	//################################################### END ABS BEHIND
 	
 	
@@ -730,23 +643,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//##########################
 	G4ThreeVector posSourceSR = G4ThreeVector(0, 0, -DzSourceSR*0.5);
 	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<-DzSourceSR*0.5<<G4endl;
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<posSourceSR.z()/mm<<G4endl;
 	
 	G4Tubs* solidSourceSR =
 	new G4Tubs("SourceSR",                       //its name
 						 RminSourceSR,
 						 RmaxSourceSR,
 						 0.5*DzSourceSR,
-						 SPhiSourceSR,
-						 DPhiSourceSR);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicSourceSR =
 	new G4LogicalVolume(solidSourceSR,          //its solid
 											SourceSR_mat,           //its material
 											"SourceSR");            //its name
 	
-	if(fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==5 || fSourceSelect==6) { //If i requested the Sr source
-		G4cout<<"GEOMETRY DEBUG - Sr Source has been placed!!"<<G4endl;
+	if(fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==6 || fSourceSelect==7) { //If I requested the Sr source (or the flat ones for efficiencies)
+		G4cout<<"GEOMETRY DEBUG - Sr(-like) Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
 											posSourceSR,       //at (0,0,0)
@@ -757,8 +670,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
-		
-		//G4Region* sorgente = new G4Region("SourceReg");
 		logicSourceSR->SetRegion(sorgente);
 		sorgente->AddRootLogicalVolume(logicSourceSR);
 	}
@@ -770,56 +681,48 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// Probe's Solids
 	//##########################
 	
-	
-	//################ Dummy
-
-	
+	//###########################
+	//Dummy
+	//###########################
 	G4Tubs* solidShapeDummy =
 	new G4Tubs("Dummy",                       //its name
 						 RminDummy,
 						 RmaxDummy,
 						 0.5*DzDummy,
-						 SPhiDummy,
-						 DPhiDummy);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicShapeDummy =
 	new G4LogicalVolume(solidShapeDummy,          //its solid
 											shapeDummy_mat,           //its material
 											"Dummy");            //its name
 	
-
-	
 	//###########################
 	//Dummy2
 	//###########################
-	
-	
 	G4Tubs* solidShapeDummy2 =
 	new G4Tubs("Dummy2",                       //its name
 						 RminDummy2,
 						 RmaxDummy2,
 						 0.5*DzDummy2,
-						 SPhiDummy2,
-						 DPhiDummy2);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicShapeDummy2 =
 	new G4LogicalVolume(solidShapeDummy2,          //its solid
 											shapeDummy_mat,           //its material
 											"Dummy2");            //its name
 	
-	
 	//###########################
 	//Dummy3
 	//###########################
-	
-	
 	G4Tubs* solidShapeDummy3 =
 	new G4Tubs("Dummy3",                       //its name
 						 RminDummy3,
 						 RmaxDummy3,
 						 0.5*DzDummy3,
-						 SPhiDummy3,
-						 DPhiDummy3);     //its size
+						 Ang0,
+						 Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicShapeDummy3 =
 	new G4LogicalVolume(solidShapeDummy3,          //its solid
@@ -827,42 +730,30 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"Dummy3");            //its name
 	
 	
-	//################ Front-Shield
-
-	
-	
+	//###########################
+	//Front Shield
+	//###########################
 	G4Tubs* solidFrontShield =
 	new G4Tubs("FrontShield",                       //its name
-						 0.,FrontShield_outer_r,FrontShield_sizeZ*0.5,FrontShield_start_angle,FrontShield_spanning_angle);     //its size
-	
-	
+						 0.,FrontShield_outer_r,FrontShield_sizeZ*0.5,Ang0,Ang2Pi);     //its size
 	
 	G4LogicalVolume* logicFrontShield =
 	new G4LogicalVolume(solidFrontShield,          //its solid
 											FrontShield_mat,           //its material
 											"FrontShield");            //its name
 	
+	G4VPhysicalVolume* physFrontShield;
 	
 	//################ Pter
-
-	
 	G4Tubs* solidPter =
 	new G4Tubs("Pter",                                                                         //its name
-						 0.,Pter_Diam*0.5,Pter_sizeZ*0.5,Pter_start_angle,Pter_spanning_angle);                //its size
-	
+						 0.,Pter_Diam*0.5,Pter_sizeZ*0.5,Ang0,Ang2Pi);                //its size
 	G4LogicalVolume* logicPter =
 	new G4LogicalVolume(solidPter,          //its solid
 											Pter_mat,           //its material
 											"Pter");            //its name
 	
-	
 	//################ SiPM
-
-	
-	G4double DxSiPm = 3.*mm;
-	G4double DySiPm= 3.*mm;
-	G4double DzSiPm = 300.e-6*mm;
-	
 	G4Box* solidSiPm =
 	new G4Box("SiPm",                       //its name
 						DxSiPm/2.,
@@ -874,14 +765,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SiPM_mat,           //its material
 											"SiPm");            //its name
 	
-	
 	//################ Table
-	
-	
-	G4double DxTable = 500*mm;
-	G4double DyTable= 500*mm;
-	G4double DzTable = 50*mm;
-	
 	G4Box* solidTable =
 	new G4Box("Table",                       //its name
 						DxTable/2.,
@@ -894,28 +778,19 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"Table");            //its name
 	
 	
-	
-	//################ PVC Around Pter
-
-	
+	//################ PVC Around delrin
 	G4Tubs* solidPVC =
 	new G4Tubs("PVC",                                                                         //its name
-						 PVC_inner_r,PVC_outer_r,Pter_sizeZ*0.5,Pter_start_angle,Pter_spanning_angle);                //its size
+						 PVC_inner_r,PVC_outer_r,Pter_sizeZ*0.5,Ang0,Ang2Pi);                //its size
 	
 	G4LogicalVolume* logicPVC =
 	new G4LogicalVolume(solidPVC,          //its solid
 											PVC_mat,              //its material
 											"PVC");            //its name
 	
-	
-	
-	
 	//################ Delrin Around Pter
-
-	
 	G4Tubs* solidDelrin =
-	new G4Tubs("Delrin",                                                                         //its name
-						 Pter_Diam*0.5,PVC_inner_r,Pter_sizeZ*0.5,Pter_start_angle,Pter_spanning_angle);                //its size
+	new G4Tubs("Delrin", Pter_Diam*0.5,PVC_inner_r,Pter_sizeZ*0.5,Ang0,Ang2Pi);                //its size
 	
 	
 	G4LogicalVolume* logicDelrin =
@@ -923,199 +798,164 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											Delrin_mat,           //its material
 											"Delrin");            //its name
 	
+	//################ Absorber
+	G4Tubs* solidAbsorber = 	new G4Tubs("Absorber",
+																			 RminAbs,
+																			 RmaxAbs,
+																			 0.5*DzAbs,
+																			 Ang0,
+																			 Ang2Pi);     //its size
 	
+	if(fAbsorberMaterial==1){
+		Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
+	}else if(fAbsorberMaterial==2){
+		Absorber_mat = nist->FindOrBuildMaterial("G4_Pb");
+	}else if(fAbsorberMaterial==3){
+		Absorber_mat = nist->FindOrBuildMaterial("MyAlu");
+	}else if(fAbsorberMaterial==4){
+		Absorber_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+	}
 	
+	G4LogicalVolume* logicAbsorber =
+	new G4LogicalVolume(solidAbsorber,          //its solid
+											Absorber_mat,           //its material
+											"Absorber");            //its name
 	
+	G4VPhysicalVolume* physAbsorber;
 	
 	//################################################### Old case (Ga Container = Hole in a table)
 	
 	if(fGaSet==1){
-	//###################################################
-	//Ga Source Container
-	//##########################
-	
-	G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -DzContainer*0.5);
-	G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5);
-
-	
-	//G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<-DzSourceSR*0.5<<G4endl;
-	
-	//G4cout<<"GEOMETRY DEBUG Source Diameter "<<fSourceDiameter<<G4endl;
-	//G4cout<<"GEOMETRY DEBUG Source thickness "<<fSourceThickness<<G4endl;
-	G4cout<<"GEOMETRY DEBUG Absorber thickness "<<fAbsorberThickness<<G4endl;
-
-
-
-	
-	G4VSolid* GaCylinder =
-	new G4Tubs("GaCylinder",                       //its name
-						 0.,
-						 RContainer,
-						 0.5*DzContainer,
-						 SPhiSourceExtGa,
-						 DPhiSourceExtGa);     //its size
-	
-	
-	G4VSolid* SourceExtGa =
-	new G4Tubs("SourceExtGa",                       //its name
-						 0.,
-						 rSourceExtGa,
-						 0.5*dzSourceExtGa,
-						 SPhiSourceExtGa,
-						 DPhiSourceExtGa);     //its size
-	
-	
-	G4VSolid* GaContainer=
-	new G4SubtractionSolid ("GaContainer",      //GaContainer=GaCylinder-GaSource
-													GaCylinder,
-													SourceExtGa,
-													0,
-													G4ThreeVector(0.,0.,DzContainer*0.5-dzSourceExtGa/2.));
-	
-	
-	
-	G4LogicalVolume* logicGaContainer =
-	new G4LogicalVolume(GaContainer,               //its solid
-											GaContainer_mat,           //its material
-											"GaContainer");            //its name
-	
-	G4LogicalVolume* logicSourceExtGa =
-	new G4LogicalVolume(SourceExtGa,               //its solid
-											SourceExtGa_mat,           //its material
-											"SourceExtGa");            //its name
-	
-	
-	
-	if(fSourceSelect==4) { //If i requested the Sr source
-		//G4cout<<"GEOMETRY DEBUG - Sr Source has been placed!!"<<G4endl;
 		
-		new G4PVPlacement(0,                     //no rotation
-											posContainerExtGa,       //at (0,0,0)
-											logicGaContainer,            //its logical volume
-											"GaContainer",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		new G4PVPlacement(0,                     //no rotation
-											posExtGa,       //at (0,0,0)
-											logicSourceExtGa,            //its logical volume
-											"SourceExtGa",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		/*
-		//G4Region* Container = new G4Region("ContainerReg");
-		logicGaContainer->SetRegion(Container);
-		Container->AddRootLogicalVolume(logicGaContainer);
-		
-		//G4Region* Water = new G4Region("WaterReg");
-		logicGaWater->SetRegion(Water);
-		Water->AddRootLogicalVolume(logicGaWater);
-		 */
-	}
-	
-	
-	//################################################### END Ga SOURCE
-	
-
-	
-	//###################################################
-	//Copper Collimator
-	//##########################
-	
-	G4ThreeVector posCo = G4ThreeVector(0, 0, DzCo*0.5);
-	
-	//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
-	
-	G4Tubs* solidShapeCo =
-	new G4Tubs("CuCollimator",                       //its name
-						 RminCo,
-						 RmaxCo,
-						 0.5*DzCo,
-						 SPhiCo,
-						 DPhiCo);     //its size
-	
-	if(fAbsorberMaterial==1){
-		shapeCo_mat = nist->FindOrBuildMaterial("G4_Cu");
-	}else if(fAbsorberMaterial==2){
-		shapeCo_mat = nist->FindOrBuildMaterial("G4_Pb");
-	}else if(fAbsorberMaterial==3){
-		shapeCo_mat = nist->FindOrBuildMaterial("MyAlu");
-	}else if(fAbsorberMaterial==4){
-		shapeCo_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-	}
-	
-	G4cout<<"GEOMETRY DEBUG - absorber mat="<<shapeCo_mat<<G4endl;
-	
-	G4LogicalVolume* logicShapeCo =
-	new G4LogicalVolume(solidShapeCo,          //its solid
-											shapeCo_mat,           //its material
-											"CuCollimator");            //its name
-	
-	if (fCuDiam>=0) {
-		G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
-		
-		new G4PVPlacement(0,                     //no rotation
-											posCo,       //at (0,0,0)
-											logicShapeCo,            //its logical volume
-											"CuCollimator",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		//		G4Region* sorgente = new G4Region("SourceReg");
-		logicShapeCo->SetRegion(sorgente);
-		sorgente->AddRootLogicalVolume(logicShapeCo);
-		
-	}
-	
-	//################################################### END OF COPPER COLLIMATOR
-	
-	
-	
-	//###################################################
-	//Dummy volume for scoring what exits source
-	//##########################
-	
-	if (fCuDiam<0) {
-		zDummy=DzDummy*0.5;
-	} else {
-		zDummy=DzDummy*0.5+DzCo;
-	}
-	G4ThreeVector posDummy = G4ThreeVector(0, 0, zDummy);
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeDummy= "<<DzDummy/mm<<", Z pos= "<<zDummy<<G4endl;
-	
-	G4cout<<"GEOMETRY DEBUG - Dummy volume has been placed!!"<<G4endl;
-	
-	new G4PVPlacement(0,                     //no rotation
-										posDummy,       //at (0,0,0)
-										logicShapeDummy,            //its logical volume
-										"Dummy",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-	
-	
-	//		G4Region* sorgente = new G4Region("SourceReg");
-	logicShapeDummy->SetRegion(sorgente);
-	sorgente->AddRootLogicalVolume(logicShapeDummy);
-	
-	//################################################### END OF DUMMY VOLUME
-	
-		/*
 		//###################################################
-		// Table
+		//Ga Source Container
 		//##########################
 		
+		G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -DzContainer*0.5);
+		G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5);
 		
+		G4VSolid* GaCylinder =
+		new G4Tubs("GaCylinder",                       //its name
+							 0.,
+							 RContainer,
+							 0.5*DzContainer,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* SourceExtGa =
+		new G4Tubs("SourceExtGa",                       //its name
+							 0.,
+							 rSourceExtGa,
+							 0.5*dzSourceExtGa,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* GaContainer=
+		new G4SubtractionSolid ("GaContainer",      //GaContainer=GaCylinder-SourceExtGa
+														GaCylinder,
+														SourceExtGa,
+														0,
+														G4ThreeVector(0.,0.,DzContainer*0.5-dzSourceExtGa/2.));
+		
+		//Its the "outside" of the source (table with hole)
+		G4LogicalVolume* logicGaContainer =
+		new G4LogicalVolume(GaContainer,               //its solid
+												GaContainer_mat,           //its material
+												"GaContainer");            //its name
+		
+		//is the active area itself
+		G4LogicalVolume* logicSourceExtGa =
+		new G4LogicalVolume(SourceExtGa,               //its solid
+												SourceExtGa_mat,           //its material
+												"SourceExtGa");            //its name
+		
+		if(fSourceSelect==4) { //If i requested the Ga source
+			G4cout<<"GEOMETRY DEBUG - Gallium Source has been placed!!"<<G4endl;
+			
+			new G4PVPlacement(0,                     //no rotation
+												posContainerExtGa,       //at (0,0,0)
+												logicGaContainer,            //its logical volume
+												"GaContainer",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			new G4PVPlacement(0,                     //no rotation
+												posExtGa,       //at (0,0,0)
+												logicSourceExtGa,            //its logical volume
+												"SourceExtGa",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			logicSourceExtGa->SetRegion(sorgente);
+			sorgente->AddRootLogicalVolume(logicSourceExtGa);
+		
+		}
+		//################################################### END Ga SOURCE
+		
+
+		//###################################################
+		//Absorber
+		//##########################
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, fAbsCenter);
+		if (fAbsDiam>=0) {
+			G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
+			
+			physAbsorber=new G4PVPlacement(0,                     //no rotation
+												posAbs,       //at (0,0,0)
+												logicAbsorber,            //its logical volume
+												"Absorber",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			//		G4Region* sorgente = new G4Region("SourceReg");
+			logicAbsorber->SetRegion(sorgente);
+			sorgente->AddRootLogicalVolume(logicAbsorber);
+		}
+		//################################################### END OF ABSORBER
+		
+		
+		
+		//###################################################
+		//Dummy volume for scoring what exits source
+		//##########################
+		
+		if (fAbsDiam<0) {
+			zDummy=DzDummy*0.5;
+		} else {
+			zDummy=DzDummy*0.5+DzAbs;
+		}
+		G4ThreeVector posDummy = G4ThreeVector(0, 0, zDummy);
+		
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeDummy= "<<DzDummy/mm<<", Z pos= "<<posDummy.z()/mm<<G4endl;
+		G4cout<<"GEOMETRY DEBUG - Dummy volume has been placed!!"<<G4endl;
+		
+		new G4PVPlacement(0,                     //no rotation
+											posDummy,       //at (0,0,0)
+											logicShapeDummy,            //its logical volume
+											"Dummy",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		logicShapeDummy->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicShapeDummy);
+		
+		//################################################### END OF DUMMY VOLUME
+		
+		/*
+		 //###################################################
+		 // Table
+		 //##########################
+		 
+		 
 		 G4ThreeVector posTable = G4ThreeVector(0, 0, -3.0*mm - DzTable/2.);
 		 
 		 
@@ -1128,423 +968,338 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		 0,                     //copy number
 		 checkOverlaps);        //overlaps checking
 		 */
-		 
-	
-	
-	//###################################################
-	//Frontal part of the Probe
-	//##########################
-	
-	
-	
-	
-	//###################################################
-	//Electron Filter FrontShield
-	//##########################
-	
-	/*
-	if (fSensorChoice==2) fFilterFlag=1; //Sensor 2 is always with filter
-	if (fSensorChoice==3) fFilterFlag=0; //Sensor 3 is always with filter
-																			 //	if (fFilterFlag==1) {
-	//FrontShield_sizeX = noX*PixelSize*ScaleFactor;
-	//FrontShield_sizeY = noY*PixelSize*ScaleFactor;
-	*/
-	
-	
-		if (fCuDiam>=0){
-	Z_FrontShield = DzCo + Pter_ZScan + FrontShield_sizeZ*0.5;
+		
+		
+		
+		//###################################################
+		//Front shield
+		//##########################
+		
+		if (fAbsDiam>=0){
+			Z_FrontShield = DzAbs + Pter_ZScan + FrontShield_sizeZ*0.5;
+			Pter_Posz = DzAbs+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		} else{
 			Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
-		}
-	
-	/*
-	if (fFilterFlag==0) { //if I do not want the filter, place it but make it thin and empty
-		FrontShield_mat=world_mat;
-	}*/
-	
-	G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<Z_FrontShield/mm<<G4endl;
-	
-	
-	new G4PVPlacement(0,                     //no rotation
-										posFilter,
-										logicFrontShield,            //its logical volume
-										"FrontShield",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-																					 //	G4Region* filtro = new G4Region("FrontShieldReg");
-	
-	logicFrontShield->SetRegion(frontshieldreg);
-	frontshieldreg->AddRootLogicalVolume(logicFrontShield);
-
-	
-	//################################################### END OF FrontShield FILTER
-	/*
-	if(fSensorChoice==1) {
-		Pter_ZScan=fZValue + FrontShield_sizeZ+Pter_sizeZ*0.5; //modified on 2017.11.21 by collamaf - Z distance does not take into account Cu thickness! is always from source top to possible resin
-	}
-	
-	G4cout<<"GEOMETRY DEBUG - Z thickness of solidPter= "<<Pter_sizeZ/mm<<", Z pos= "<<Pter_ZScan/mm<<G4endl;
-  //G4cout<<"GEOMETRY DEBUG - PterSizeX= "<<Pter_sizeX/mm<<", PterSizeY= "<<Pter_sizeY/mm<<", PterSizeZ= "<<pixZ/mm<<G4endl;
-	
-*/
-	
-	
-	//###################################################
-	// 	P-Terphenyl
-	//##########################
-	
-	//G4cout<<"GEOMETRY DEBUG Pter Diameter "<<fPterDiameter<<G4endl;
-	//G4cout<<"GEOMETRY DEBUG Pter thickness "<<fPterThickness<<G4endl;
-	
-
-	
-	// place detector-Pter in world
-		
-		if (fCuDiam>=0){
-			Pter_Posz = DzCo+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		} else{
 			Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		}
+		
+		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<posFrontShield.z()/mm<<G4endl;
 
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		G4VPhysicalVolume* physPter=new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicPter,            //its logical volume
-											"Pter",               //its name
+		physFrontShield= new G4PVPlacement(0,                     //no rotation
+											posFrontShield,
+											logicFrontShield,            //its logical volume
+											"FrontShield",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
+		logicFrontShield->SetRegion(frontshieldreg);
+		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
 	
-	
-		//G4Region* Pterreg = new G4Region("PterReg");
+		//###################################################
+		// 	P-Terphenyl
+		//##########################
+
+		// place detector-Pter in world
+		
+		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+		G4VPhysicalVolume* physPter=new G4PVPlacement(0,                     //no rotation
+																									posPter,
+																									logicPter,            //its logical volume
+																									"Pter",               //its name
+																									logicWorld,            //its mother  volume
+																									false,                 //no boolean operation
+																									0,                     //copy number
+																									checkOverlaps);        //overlaps checking
+		
 		logicPter->SetRegion(pterreg);
 		pterreg->AddRootLogicalVolume(logicPter);
-	
-		//Solid Si Pter
+		
 		fScoringVolume = logicPter;
-	
-	
-	//###################################################
-	// SiPm volume behind PTER
-	//##########################
-	
 		
-	G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
-
-	
-	new G4PVPlacement(0,                     //no rotation
-										posSiPm,       //at (0,0,0)
-										logicSiPm,            //its logical volume
-										"SiPm",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
+		//###################################################
+		// SiPm volume behind PTER
+		//##########################
 		
-	
-	
-	
-	//###################################################
-	// PVC around P-Terphenyl
-	//##########################
-	
-	
-	new G4PVPlacement(0,                     //no rotation
-										pos2,
-										logicPVC,            //its logical volume
-										"PVC",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-	
-	
-	//###################################################
-	// Delrin around P-Terphenyl
-	//##########################
-	
+		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
+		
+		new G4PVPlacement(0,                     //no rotation
+											posSiPm,       //at (0,0,0)
+											logicSiPm,            //its logical volume
+											"SiPm",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		//###################################################
+		// PVC around P-Terphenyl
+		//##########################
+		new G4PVPlacement(0,                     //no rotation
+											posPter,
+											logicPVC,            //its logical volume
+											"PVC",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
 
-	
-	
+		//###################################################
+		// Delrin around P-Terphenyl
+		//##########################
+		
 		G4VPhysicalVolume* physDelrin=new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicDelrin,            //its logical volume
-											"Delrin",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-	
-		
-//		//Prova parametri ottici superficie, funziona ma è da capire...
-//		G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
-//		new G4LogicalBorderSurface("wrapper", physPter, physFrontShield, wrapper);
-//		wrapper->SetType(dielectric_metal);
-//		wrapper->SetFinish(polished);
-//		wrapper->SetModel(glisur);
-//		const G4int NUM = 1;
-//		G4double pp[NUM] = {2.96*eV};
-//		G4double reflectivity[NUM] = {0.};
-//		G4double efficiency[NUM] = {0.0};
-//		G4MaterialPropertiesTable* wrapperProperty = new G4MaterialPropertiesTable();
-//		wrapperProperty->AddProperty("REFLECTIVITY", pp, reflectivity, NUM);
-//		wrapperProperty->AddProperty("EFFICIENCY", pp, efficiency, NUM);
-//		wrapper->SetMaterialPropertiesTable(wrapperProperty);
-		
-	
-	//################################################### END OF Frontal part of the Probe
-	
-		
-	
-	if(CaseDepth>0){
-	
+																										posPter,
+																										logicDelrin,            //its logical volume
+																										"Delrin",               //its name
+																										logicWorld,            //its mother  volume
+																										false,                 //no boolean operation
+																										0,                     //copy number
+																										checkOverlaps);        //overlaps checking
 		
 		
-		
-		//################ Top Prob Case
-		
-		
-		G4Tubs* solidTopCase =
-		new G4Tubs("solidTopCase",
-							 0.,
-							 PVC_outer_r - LateralCaseThickness,
-							 TopCaseDepth*0.5,
-							 SPhiTopCase,
-							 DPhiTopCase);
-		
-		
-		G4Tubs* solidAroundTopCase =
-		new G4Tubs("AroundTopCase",
-							 PVC_outer_r - LateralCaseThickness,
-							 PVC_outer_r,
-							 TopCaseDepth*0.5,
-							 SPhiAroundTopCase,
-							 DPhiAroundTopCase);
+		//		//Prova parametri ottici superficie, funziona ma è da capire...
+		//		G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
+		//		new G4LogicalBorderSurface("wrapper", physPter, physFrontShield, wrapper);
+		//		wrapper->SetType(dielectric_metal);
+		//		wrapper->SetFinish(polished);
+		//		wrapper->SetModel(glisur);
+		//		const G4int NUM = 1;
+		//		G4double pp[NUM] = {2.96*eV};
+		//		G4double reflectivity[NUM] = {0.};
+		//		G4double efficiency[NUM] = {0.0};
+		//		G4MaterialPropertiesTable* wrapperProperty = new G4MaterialPropertiesTable();
+		//		wrapperProperty->AddProperty("REFLECTIVITY", pp, reflectivity, NUM);
+		//		wrapperProperty->AddProperty("EFFICIENCY", pp, efficiency, NUM);
+		//		wrapper->SetMaterialPropertiesTable(wrapperProperty);
 		
 		
-		//################ Middle Case
+		//################################################### END OF Frontal part of the Probe
 		
 		
-		G4double MiddleCaseDepth= (CaseDepth - HorsesShoeBackThickness - BackCaseThickness);
+		if (CaseDepth>0)
+		{
+			
+			//################ Top Prob Case
+			G4Tubs* solidTopCase =
+			new G4Tubs("solidTopCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness,
+								 TopCaseDepth*0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4Tubs* solidAroundTopCase =
+			new G4Tubs("AroundTopCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 TopCaseDepth*0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			//################ Middle Case
+			G4double MiddleCaseDepth= (CaseDepth - HorsesShoeBackThickness - BackCaseThickness);
+			
+			G4Tubs* solidMiddleCase =
+			new G4Tubs("MiddleCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4Tubs* solidAroundMiddleCase =
+			new G4Tubs("AroundMiddleCase",
+								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
+								 PVC_outer_r - LateralCaseThickness,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4Tubs* solidExtMiddleCase =
+			new G4Tubs("AroundMiddleCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4LogicalVolume* logicMiddleCase =
+			new G4LogicalVolume(solidMiddleCase,               //its solid
+													MiddleCase_mat,           //its material
+													"MiddleCase");            //its name
+			
+			//################ Back Middle Case
+			G4Tubs* solidBackMiddleCase =
+			new G4Tubs("BackMiddleCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness,
+								 HorsesShoeBackThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4Tubs* solidAroundBackMiddleCase =
+			new G4Tubs("AroundBackMiddleCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 HorsesShoeBackThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			//################ End Case
+			
+			G4Tubs* solidEndCase =
+			new G4Tubs("EndCase",
+								 0.,
+								 PVC_outer_r,
+								 BackCaseThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			//###################################################
+			// Middle Probe case
+			//##########################
+			
+			
+			G4double ProbeMiddleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+			G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posMiddleCase,       //at (0,0,0)
+												logicMiddleCase,            //its logical volume
+												"MiddleCase",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			
+			//###################################################
+			// G4Union Probe
+			//##########################
+			
+			
+			
+			//###################################################
+			// G4Union External Case
+			//##########################
+			
+			
+			G4VSolid* Union1
+			= new G4UnionSolid("Union1", solidAroundTopCase , solidExtMiddleCase,0 , G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5));
+			//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
+			
+			
+			G4VSolid* Union2
+			= new G4UnionSolid("Union2", solidAroundBackMiddleCase , solidEndCase, 0 , G4ThreeVector(0.,0.,(BackCaseThickness + HorsesShoeBackThickness)*0.5));
+			
+			
+			G4VSolid* PlasticCase
+			= new G4UnionSolid("PlasticCase", Union1 , Union2 ,0, G4ThreeVector(0.,0.,MiddleCaseDepth + TopCaseDepth*0.5 + HorsesShoeBackThickness*0.5));
+			
+			G4LogicalVolume* logicPlasticCase =
+			new G4LogicalVolume(PlasticCase,               //its solid
+													PlasticCase_mat,           //its material
+													"PlasticCase");            //its name
+			
+			
+			
+			G4double PlastiCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posPlasticCase,        //at (0,0,0)
+												logicPlasticCase,            //its logical volume
+												"PlasticCase",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			//###################################################
+			// G4Union HorsesShoe Probe
+			//##########################
+			
+			
+			G4VSolid* HorsesShoe
+			= new G4UnionSolid("HorsesShoe", solidAroundMiddleCase , solidBackMiddleCase  ,0, G4ThreeVector(0.,0.,(MiddleCaseDepth +  HorsesShoeBackThickness)*0.5));
+			
+			
+			G4LogicalVolume* logicHorsesShoe =
+			new G4LogicalVolume(HorsesShoe,               //its solid
+													HorsesShoe_mat,           //its material
+													"HorsesShoe");            //its name
+			
+			G4double HorsesShoe_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+			G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posHorsesShoe,        //at (0,0,0)
+												logicHorsesShoe,            //its logical volume
+												"HorsesShoe",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			//###################################################
+			// G4Union TopCase Probe
+			//###################################################
+			
+			G4VSolid* TopCase=
+			new G4SubtractionSolid ("TopCase",
+															solidTopCase,
+															solidSiPm,
+															0,
+															G4ThreeVector(0.,0.,TopCaseDepth*0.5-DzSiPm*0.5));
+			
+			G4LogicalVolume* logicTopCase =
+			new G4LogicalVolume(TopCase,          //its solid
+													TopCase_mat,           //its material
+													"TopCase");            //its name
+			
+			
+			
+			G4double ProbeTopCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
+			
+			G4RotationMatrix *rm = new G4RotationMatrix();
+			rm->rotateY(180*deg);
+			
+			
+			new G4PVPlacement(rm,                    // rotation
+												posTopCase,            //at (0,0,0)
+												logicTopCase,          //its logical volume
+												"TopCase",             //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			
+			
+			//###################################################
+			// End of Probe
+			//##########################
+			
+			
+		}
+			//End of if(CaseDepth>0)
 		
-		
-		G4Tubs* solidMiddleCase =
-		new G4Tubs("MiddleCase",
-							 0.,
-							 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
-							 MiddleCaseDepth * 0.5,
-							 SPhiTopCase,
-							 DPhiTopCase);
-		
-		
-		G4Tubs* solidAroundMiddleCase =
-		new G4Tubs("AroundMiddleCase",
-							 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
-							 PVC_outer_r - LateralCaseThickness,
-							 MiddleCaseDepth * 0.5,
-							 SPhiAroundTopCase,
-							 DPhiAroundTopCase);
-		
-		G4Tubs* solidExtMiddleCase =
-		new G4Tubs("AroundMiddleCase",
-							 PVC_outer_r - LateralCaseThickness,
-							 PVC_outer_r,
-							 MiddleCaseDepth * 0.5,
-							 SPhiAroundTopCase,
-							 DPhiAroundTopCase);
-		
-		
-		G4LogicalVolume* logicMiddleCase =
-		new G4LogicalVolume(solidMiddleCase,               //its solid
-												MiddleCase_mat,           //its material
-												"MiddleCase");            //its name
-		
-		
-		
-		
-		//################ Back Middle Case
-		
-		
-		G4Tubs* solidBackMiddleCase =
-		new G4Tubs("BackMiddleCase",
-							 0.,
-							 PVC_outer_r - LateralCaseThickness,
-							 HorsesShoeBackThickness * 0.5,
-							 SPhiTopCase,
-							 DPhiTopCase);
-		
-		
-		G4Tubs* solidAroundBackMiddleCase =
-		new G4Tubs("AroundBackMiddleCase",
-							 PVC_outer_r - LateralCaseThickness,
-							 PVC_outer_r,
-							 HorsesShoeBackThickness * 0.5,
-							 SPhiAroundTopCase,
-							 DPhiAroundTopCase);
-		
-		
-		
-		
-		//################ End Case
-		
-		
-		G4Tubs* solidEndCase =
-		new G4Tubs("EndCase",
-							 0.,
-							 PVC_outer_r,
-							 BackCaseThickness * 0.5,
-							 SPhiTopCase,
-							 DPhiTopCase);
-	
-	
-	//###################################################
-	// Middle Probe case
-	//##########################
-	
-	
-	G4double ProbeMiddleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
-	G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
-	
-	
-	new G4PVPlacement(0,                     //no rotation
-										posMiddleCase,       //at (0,0,0)
-										logicMiddleCase,            //its logical volume
-										"MiddleCase",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-	
-
-	
-	//###################################################
-	// G4Union Probe
-	//##########################
-	
-	
-	
-	//###################################################
-	// G4Union External Case
-	//##########################
-	
-	
-	G4VSolid* Union1
-	= new G4UnionSolid("Union1", solidAroundTopCase , solidExtMiddleCase,0 , G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5));
-	//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
-	
-	
-	G4VSolid* Union2
-	= new G4UnionSolid("Union2", solidAroundBackMiddleCase , solidEndCase, 0 , G4ThreeVector(0.,0.,(BackCaseThickness + HorsesShoeBackThickness)*0.5));
-	
-	
-	G4VSolid* PlasticCase
-	= new G4UnionSolid("PlasticCase", Union1 , Union2 ,0, G4ThreeVector(0.,0.,MiddleCaseDepth + TopCaseDepth*0.5 + HorsesShoeBackThickness*0.5));
-	
-	G4LogicalVolume* logicPlasticCase =
-	new G4LogicalVolume(PlasticCase,               //its solid
-											PlasticCase_mat,           //its material
-											"PlasticCase");            //its name
-	
-	
-	
-	G4double PlastiCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-	G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
-	
-	
-	new G4PVPlacement(0,                     //no rotation
-										posPlasticCase,        //at (0,0,0)
-										logicPlasticCase,            //its logical volume
-										"PlasticCase",               //its name
-										logicWorld,            //its mother  volume
-										false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-	
-	
-	//###################################################
-	// G4Union HorsesShoe Probe
-	//##########################
-	
-	
-	G4VSolid* HorsesShoe
-	= new G4UnionSolid("HorsesShoe", solidAroundMiddleCase , solidBackMiddleCase  ,0, G4ThreeVector(0.,0.,(MiddleCaseDepth +  HorsesShoeBackThickness)*0.5));
-	
-	
-	G4LogicalVolume* logicHorsesShoe =
-	new G4LogicalVolume(HorsesShoe,               //its solid
-											HorsesShoe_mat,           //its material
-											"HorsesShoe");            //its name
-	
-	G4double HorsesShoe_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
-	G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
-		
-	
-	new G4PVPlacement(0,                     //no rotation
-							      posHorsesShoe,        //at (0,0,0)
-							      logicHorsesShoe,            //its logical volume
-							      "HorsesShoe",               //its name
-								    logicWorld,            //its mother  volume
-								    false,                 //no boolean operation
-										0,                     //copy number
-										checkOverlaps);        //overlaps checking
-		
-	
-	//###################################################
-	// G4Union TopCase Probe
-	//###################################################
-	
-		
-	
-	G4VSolid* TopCase=
-	new G4SubtractionSolid ("TopCase",
-													solidTopCase,
-													solidSiPm,
-													0,
-													G4ThreeVector(0.,0.,TopCaseDepth*0.5-DzSiPm*0.5));
-		
-		
-		
-		G4LogicalVolume* logicTopCase =
-		new G4LogicalVolume(TopCase,          //its solid
-												TopCase_mat,           //its material
-												"TopCase");            //its name
-		
-		
-		
-		G4double ProbeTopCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-		G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
-		
-		G4RotationMatrix *rm = new G4RotationMatrix();
-		rm->rotateY(180*deg);
-		
-		
-		new G4PVPlacement(rm,                    // rotation
-											posTopCase,            //at (0,0,0)
-											logicTopCase,          //its logical volume
-											"TopCase",             //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		
-
-	//###################################################
-	// End of Probe
-	//##########################
-	
-	}
-	
 		
 		
 	}else if(fGaSet==2){      	//########## New case (Ga Container made with 3D Printer)
-
+		
 		
 		//###################################################
 		//Ga Source Container
@@ -1559,8 +1314,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							 0.,
 							 D_CylABCD*0.5,
 							 H_CylA*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		
 		G4VSolid* CylinderB =
@@ -1568,8 +1323,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							 0.,
 							 d_CylB*0.5,
 							 H_CylB*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		
 		G4VSolid* BackGaContainer=
@@ -1581,7 +1336,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		
-
+		
 		
 		G4LogicalVolume* logicSourceExtGa2 =
 		new G4LogicalVolume(CylinderB,               //its solid
@@ -1589,15 +1344,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												"SourceExtGa");            //its name
 		
 		
-	
-			new G4PVPlacement(0,                     //no rotation
-												posExtGa2,       //at (0,0,0)
-												logicSourceExtGa2,            //its logical volume
-												"SourceExtGa",               //its name
-												logicWorld,            //its mother  volume
-												false,                 //no boolean operation
-												0,                     //copy number
-												checkOverlaps);        //overlaps checking
+		
+		new G4PVPlacement(0,                     //no rotation
+											posExtGa2,       //at (0,0,0)
+											logicSourceExtGa2,            //its logical volume
+											"SourceExtGa",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
 		
 		
 		G4VSolid* CylinderC =
@@ -1605,16 +1360,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							 d_CylC*0.5,
 							 D_CylABCD*0.5,
 							 H_CylC*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		G4VSolid* CylinderD =
 		new G4Tubs("CylinderD",                       //its name
 							 d_CylD*0.5,
 							 D_CylABCD*0.5,
 							 H_CylD*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		G4VSolid* UnionCD
 		= new G4UnionSolid("UnionCD",
@@ -1658,29 +1413,29 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							 d_CylE*0.5,
 							 D_CylEF*0.5,
 							 H_CylE*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		G4VSolid* CylinderF =
 		new G4Tubs("CylinderF",                       //its name
 							 d_CylF*0.5,
 							 D_CylEF*0.5,
 							 H_CylF*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		G4VSolid* CylinderG =
 		new G4Tubs("CylinderG",                       //its name
 							 d_CylG*0.5,
 							 D_CylG*0.5,
 							 H_CylG*0.5,
-							 SPhiCyl,
-							 DPhiCyl);     //its size
+							 Ang0,
+							 Ang2Pi);     //its size
 		
 		
 		
 		
-	
+		
 		G4VSolid* UnionEF
 		= new G4UnionSolid("UnionEF",
 											 CylinderF,
@@ -1722,39 +1477,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, ZCenterAbs);
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, fAbsCenter);
 		
 		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
 		
-		G4Tubs* solidAbsorber =
-		new G4Tubs("Absorber",                       //its name
-							 RminAbs,
-							 RmaxAbs,
-							 0.5*DzAbs,
-							 SPhiAbs,
-							 DPhiAbs);     //its size
 		
-		if(fAbsorberMaterial==1){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
-		}else if(fAbsorberMaterial==2){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_Pb");
-		}else if(fAbsorberMaterial==3){
-			Absorber_mat = nist->FindOrBuildMaterial("MyAlu");
-		}else if(fAbsorberMaterial==4){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-		}
 		
 		G4cout<<"GEOMETRY DEBUG - absorber mat="<<Absorber_mat<<G4endl;
 		
-		G4LogicalVolume* logicAbsorber =
-		new G4LogicalVolume(solidAbsorber,          //its solid
-												Absorber_mat,           //its material
-												"Absorber");            //its name
+//		G4LogicalVolume* logicAbsorber =
+//		new G4LogicalVolume(solidAbsorber,          //its solid
+//												Absorber_mat,           //its material
+//												"Absorber");            //its name
 		
-		if (fCuDiam>=0) {
+		if (fAbsDiam>=0) {
 			G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
 			
-			new G4PVPlacement(0,                     //no rotation
+			physAbsorber= new G4PVPlacement(0,                     //no rotation
 												posAbs,       //at (0,0,0)
 												logicAbsorber,            //its logical volume
 												"Absorber",               //its name
@@ -1771,7 +1510,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		//################################################### END OF COPPER COLLIMATOR
 		
-	
+		
 		
 		
 		
@@ -1780,10 +1519,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		
-		if (fCuDiam<0) {           // No Absorber
+		if (fAbsDiam<0) {           // No Absorber
 			zDummy2=DzDummy2*0.5;
-		} else {                   // With Absorber (if fCuDiam>0 the absorber is drilled in the midle)
-			zDummy2=DzDummy2*0.5+DzAbs*0.5+ ZCenterAbs;   //N.B. ZCenterAbs is the position of the center of the absorber
+		} else {                   // With Absorber (if fAbsDiam>0 the absorber is drilled in the midle)
+			zDummy2=DzDummy2*0.5+DzAbs*0.5+ fAbsCenter;   //N.B. fAbsCenter is the position of the center of the absorber
 		}
 		
 		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
@@ -1815,11 +1554,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Z_FrontShield = DzAbs*0.5 + Pter_ZScan + DzDummy2 + FrontShield_sizeZ*0.5;
 		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
 		
-		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		
 		
 		new G4PVPlacement(0,                     //no rotation
-											posFilter,
+											posFrontShield,
 											logicFrontShield,            //its logical volume
 											"FrontShield",               //its name
 											logicWorld,            //its mother  volume
@@ -1839,728 +1578,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		//Pter_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ*0.5;
 		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
 		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicPter,            //its logical volume
-											"Pter",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//G4Region* Pterreg = new G4Region("PterReg");
-		logicPter->SetRegion(pterreg);
-		pterreg->AddRootLogicalVolume(logicPter);
-		
-		//Solid Si Pter
-		fScoringVolume = logicPter;
-		
-		
-		//###################################################
-		// SiPm volume behind PTER
-		//##########################
-		
-		
-		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
-
-		
-		new G4PVPlacement(0,                     //no rotation
-											posSiPm,       //at (0,0,0)
-											logicSiPm,            //its logical volume
-											"SiPm",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//###################################################
-		// Table
-		//##########################
-		
-		/*
-		G4ThreeVector posTable = G4ThreeVector(0, 0, -H_CylA - DzTable/2.);
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posTable,       //at (0,0,0)
-											logicTable,            //its logical volume
-											"Table",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		*/
-		
-		//###################################################
-		// PVC around P-Terphenyl
-		//##########################
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicPVC,            //its logical volume
-											"PVC",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-
-		
-		//###################################################
-		// Delrin around P-Terphenyl
-		//##########################
-		
-		
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
-											logicDelrin,            //its logical volume
-											"Delrin",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		if(CaseDepth>0){
-
-			
-			//################ Top Prob Case
-			
-			
-			G4Tubs* solidTopCase =
-			new G4Tubs("solidTopCase",
-								 0.,
-								 PVC_outer_r - LateralCaseThickness,
-								 TopCaseDepth*0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
-			
-			
-			G4Tubs* solidAroundTopCase =
-			new G4Tubs("AroundTopCase",
-								 PVC_outer_r - LateralCaseThickness,
-								 PVC_outer_r,
-								 TopCaseDepth*0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
-			
-			
-			//################ Middle Case
-			
-			
-			G4double MiddleCaseDepth= (CaseDepth - HorsesShoeBackThickness - BackCaseThickness);
-			
-			
-			G4Tubs* solidMiddleCase =
-			new G4Tubs("MiddleCase",
-								 0.,
-								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
-								 MiddleCaseDepth * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
-			
-			
-			G4Tubs* solidAroundMiddleCase =
-			new G4Tubs("AroundMiddleCase",
-								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
-								 PVC_outer_r - LateralCaseThickness,
-								 MiddleCaseDepth * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
-			
-			G4Tubs* solidExtMiddleCase =
-			new G4Tubs("AroundMiddleCase",
-								 PVC_outer_r - LateralCaseThickness,
-								 PVC_outer_r,
-								 MiddleCaseDepth * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
-			
-			
-			G4LogicalVolume* logicMiddleCase =
-			new G4LogicalVolume(solidMiddleCase,               //its solid
-													MiddleCase_mat,           //its material
-													"MiddleCase");            //its name
-			
-			
-			
-			
-			//################ Back Middle Case
-			
-			
-			G4Tubs* solidBackMiddleCase =
-			new G4Tubs("BackMiddleCase",
-								 0.,
-								 PVC_outer_r - LateralCaseThickness,
-								 HorsesShoeBackThickness * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
-			
-			
-			G4Tubs* solidAroundBackMiddleCase =
-			new G4Tubs("AroundBackMiddleCase",
-								 PVC_outer_r - LateralCaseThickness,
-								 PVC_outer_r,
-								 HorsesShoeBackThickness * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
-			
-			
-			
-			
-			//################ End Case
-			
-			
-			G4Tubs* solidEndCase =
-			new G4Tubs("EndCase",
-								 0.,
-								 PVC_outer_r,
-								 BackCaseThickness * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
-			
-			
-			
-			
-		
-		//###################################################
-		// Middle Probe case
-		//##########################
-		
-			//G4double ProbeMiddleCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
-
-		G4double ProbeMiddleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
-		G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posMiddleCase,       //at (0,0,0)
-											logicMiddleCase,            //its logical volume
-											"MiddleCase",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		
-		//###################################################
-		// G4Union Probe
-		//##########################
-		
-		
-		
-		//###################################################
-		// G4Union External Case
-		//##########################
-		
-		
-		G4VSolid* Union1
-		= new G4UnionSolid("Union1", solidAroundTopCase , solidExtMiddleCase,0 , G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5));
-		//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
-		
-		
-		G4VSolid* Union2
-		= new G4UnionSolid("Union2", solidAroundBackMiddleCase , solidEndCase, 0 , G4ThreeVector(0.,0.,(BackCaseThickness + HorsesShoeBackThickness)*0.5));
-		
-		
-		G4VSolid* PlasticCase
-		= new G4UnionSolid("PlasticCase", Union1 , Union2 ,0, G4ThreeVector(0.,0.,MiddleCaseDepth + TopCaseDepth*0.5 + HorsesShoeBackThickness*0.5));
-		
-		G4LogicalVolume* logicPlasticCase =
-		new G4LogicalVolume(PlasticCase,               //its solid
-												PlasticCase_mat,           //its material
-												"PlasticCase");            //its name
-		
-		
-		
-		//G4double PlastiCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-		G4double PlastiCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-		G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posPlasticCase,        //at (0,0,0)
-											logicPlasticCase,            //its logical volume
-											"PlasticCase",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//###################################################
-		// G4Union HorsesShoe Probe
-		//##########################
-		
-		
-		G4VSolid* HorsesShoe
-		= new G4UnionSolid("HorsesShoe", solidAroundMiddleCase , solidBackMiddleCase  ,0, G4ThreeVector(0.,0.,(MiddleCaseDepth +  HorsesShoeBackThickness)*0.5));
-		
-		
-		G4LogicalVolume* logicHorsesShoe =
-		new G4LogicalVolume(HorsesShoe,               //its solid
-												HorsesShoe_mat,           //its material
-												"HorsesShoe");            //its name
-		
-		//G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
-		G4double HorsesShoe_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
-		G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posHorsesShoe,        //at (0,0,0)
-											logicHorsesShoe,            //its logical volume
-											"HorsesShoe",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//###################################################
-		// G4Union TopCase Probe
-		//###################################################
-		
-		
-		
-		G4VSolid* TopCase=
-		new G4SubtractionSolid ("TopCase",
-														solidTopCase,
-														solidSiPm,
-														0,
-														G4ThreeVector(0.,0.,TopCaseDepth*0.5-DzSiPm*0.5));
-		
-		
-		
-		G4LogicalVolume* logicTopCase =
-		new G4LogicalVolume(TopCase,          //its solid
-												TopCase_mat,           //its material
-												"TopCase");            //its name
-		
-		
-		//G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-		G4double ProbeTopCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
-		G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
-		
-		G4RotationMatrix *rm1 = new G4RotationMatrix();
-		rm1->rotateY(180*deg);
-		
-		
-		new G4PVPlacement(rm1,                    // rotation
-											posTopCase,            //at (0,0,0)
-											logicTopCase,          //its logical volume
-											"TopCase",             //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		
-		
-		//###################################################
-		// End of Probe
-		//##########################
-		
-		}else if (CaseDepth<0){
-		
-			
-		G4double AluCaseDepth=fabs(CaseDepth);
-		/*
-		G4double Alu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
-		G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
-		
-		G4double BackAlu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
-		G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
-		*/
-		G4double Alu_Posz = DzDummy2 + Pter_ZScan  + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
-		G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
-			
-		G4double BackAlu_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
-		G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
-			
-			
-		G4Tubs* solidAlu =
-		new G4Tubs("AluCase",
-							 9.7*0.5*mm,
-							 12.*0.5*mm,
-							 (AluCaseDepth-1.15)*0.5*mm,
-							 SPhiTopCase,
-							 DPhiTopCase);
-		
-		
-		G4Tubs* solidBackAlu =
-		new G4Tubs("BackAluCase",
-							 0.,
-							 12.*0.5*mm,
-							 1.15*0.5*mm,
-							 SPhiTopCase,
-							 DPhiTopCase);
-		
-		G4LogicalVolume* logicsolidAlu =
-		new G4LogicalVolume(solidAlu,          //its solid
-												FrontShield_mat,           //its material
-												"AluCase");            //its name
-		
-		G4LogicalVolume* logicsolidBackAlu =
-		new G4LogicalVolume(solidBackAlu,          //its solid
-												FrontShield_mat,           //its material
-												"BackAluCase");            //its name
-		
-		new G4PVPlacement(0,                    // rotation
-											posAlu,            //at (0,0,0)
-											logicsolidAlu,          //its logical volume
-											"AluCase",             //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		new G4PVPlacement(0,                    // rotation
-											posBackAlu,            //at (0,0,0)
-											logicsolidBackAlu,          //its logical volume
-											"BackAluCase",             //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		}
-		
-		
-	}else if(fGaSet==3){ // end of GaSet 2
-		//########## New case (Ga Container made with PVC)
-		
-		
-		//###################################################
-		//Ga Source Container
-		//##########################
-		
-		G4ThreeVector posContainerExtGa2 = G4ThreeVector(0, 0, -H_CylA3*0.5);
-		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-DzDummy3/2); //centro la sorgente in -0.4
-		
-		
-		G4VSolid* CylinderA =
-		new G4Tubs("CylinderA",                       //its name
-							 0.,
-							 D_CylABCD3*0.5,
-							 H_CylA3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		
-		G4VSolid* CylinderB =
-		new G4Tubs("CylinderB",                       //its name
-							 0.,
-							 d_CylB3*0.5,
-							 H_CylB3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		G4VSolid* SourceGaDOTATOC =
-		new G4Tubs("SourceGa-DOTATOC",
-							 0.,
-							 d_CylB3*0.5,
-							 (fSourceThickness*mm)*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);
-		
-		
-		G4VSolid* BackGaContainer=
-		new G4SubtractionSolid ("BackGaContainer",      //GaContainer=GaCylinder-GaSource
-														CylinderA,
-														CylinderB,
-														0,
-														G4ThreeVector(0.,0.,H_CylA3*0.5-H_CylB3*0.5));
-		
-		
-		
-		
-		
-		G4LogicalVolume* logicSourceExtGa2 =
-		new G4LogicalVolume(SourceGaDOTATOC,               //its solid
-												SourceExtGa_mat,           //its material
-												"SourceExtGa");            //its name
-		
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posExtGa3,             //at (0,0,0)
-											logicSourceExtGa2,            //its logical volume
-											"SourceExtGa",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		G4VSolid* CylinderC =
-		new G4Tubs("CylinderC",                       //its name
-							 d_CylC3*0.5,
-							 D_CylABCD3*0.5,
-							 H_CylC3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		G4VSolid* CylinderD =
-		new G4Tubs("CylinderD",                       //its name
-							 d_CylD3*0.5,
-							 D_CylABCD3*0.5,
-							 H_CylD3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		G4VSolid* UnionCD
-		= new G4UnionSolid("UnionCD",
-											 CylinderC,
-											 CylinderD,
-											 0,
-											 G4ThreeVector(0.,0.,(H_CylC3+H_CylD3)*0.5));
-		//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
-		
-		
-		
-		G4VSolid* GaContainer
-		= new G4UnionSolid("GaContainer",
-											 BackGaContainer,
-											 UnionCD,
-											 0,
-											 G4ThreeVector(0.,0.,(H_CylA3 + H_CylC3)*0.5));
-		
-		
-		G4LogicalVolume* logicGaContainer2 =
-		new G4LogicalVolume(GaContainer,               //its solid
-												GaContainer3_mat,           //its material
-												"GaContainer");            //its name
-		
-		new G4PVPlacement(0,                     //no rotation
-											posContainerExtGa2,       //at (0,0,0)
-											logicGaContainer2,            //its logical volume
-											"GaContainer",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);
-		
-		
-		//###################################################
-		//Probe Container
-		//##########################
-		
-		G4VSolid* CylinderE =
-		new G4Tubs("CylinderE",                       //its name
-							 d_CylE3*0.5,
-							 D_CylEF3*0.5,
-							 H_CylE3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		G4VSolid* CylinderF =
-		new G4Tubs("CylinderF",                       //its name
-							 d_CylF3*0.5,
-							 D_CylEF3*0.5,
-							 H_CylF3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		G4VSolid* CylinderG =
-		new G4Tubs("CylinderG",                       //its name
-							 d_CylG3*0.5,
-							 D_CylG3*0.5,
-							 H_CylG3*0.5,
-							 SPhiCyl3,
-							 DPhiCyl3);     //its size
-		
-		
-		
-		
-		
-		G4VSolid* UnionEF
-		= new G4UnionSolid("UnionEF",
-											 CylinderF,
-											 CylinderE,
-											 0,
-											 G4ThreeVector(0.,0.,(H_CylE3+H_CylF3)*0.5));
-		
-		G4RotationMatrix* rm = new G4RotationMatrix();
-		rm->rotateY(180.*deg);
-		
-		G4VSolid* ProbeContainer
-		= new G4UnionSolid("ProbeContainer",
-											 CylinderG,
-											 UnionEF,
-											 0,
-											 G4ThreeVector(0.,0.,(H_CylG3+H_CylF3)*0.5));
-		
-		G4LogicalVolume* logicProbeContainer =
-		new G4LogicalVolume(ProbeContainer,               //its solid
-												ProbeContainer_mat,           //its material
-												"ProbeContainer");            //its name
-		
-		
-		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.31*cm);  //H_C+(H_G/2)+H_F+H_E
-		
-		new G4PVPlacement(rm,                     //no rotation
-											ProbeContainerPos,       //at (0,0,0)
-											logicProbeContainer,            //its logical volume
-											"ProbeContainer",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);
-		
-		
-		
-		//###################################################
-		//Absrober
-		//##########################
-		
-		G4ThreeVector posAbs = G4ThreeVector(0, 0, ZCenterAbs);
-		
-		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
-		
-		G4Tubs* solidAbsorber =
-		new G4Tubs("Absorber",                       //its name
-							 RminAbs,
-							 RmaxAbs,
-							 0.5*DzAbs,
-							 SPhiAbs,
-							 DPhiAbs);     //its size
-		
-		if(fAbsorberMaterial==1){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
-		}else if(fAbsorberMaterial==2){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_Pb");
-		}else if(fAbsorberMaterial==3){
-			Absorber_mat = nist->FindOrBuildMaterial("MyAlu");
-		}else if(fAbsorberMaterial==4){
-			Absorber_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-		}
-		
-		G4cout<<"GEOMETRY DEBUG - absorber mat="<<Absorber_mat<<G4endl;
-		
-		G4LogicalVolume* logicAbsorber =
-		new G4LogicalVolume(solidAbsorber,          //its solid
-												Absorber_mat,           //its material
-												"Absorber");            //its name
-		
-		if (fCuDiam>=0) {
-			G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
-			
-			new G4PVPlacement(0,                     //no rotation
-												posAbs,       //at (0,0,0)
-												logicAbsorber,            //its logical volume
-												"Absorber",               //its name
-												logicWorld,            //its mother  volume
-												false,                 //no boolean operation
-												0,                     //copy number
-												checkOverlaps);        //overlaps checking
-			
-			//		G4Region* sorgente = new G4Region("SourceReg");
-			logicAbsorber->SetRegion(sorgente);
-			sorgente->AddRootLogicalVolume(logicAbsorber);
-			
-		}
-		
-		//################################################### END OF COPPER COLLIMATOR
-		
-		
-		
-		
-		
-		//###################################################
-		//Dummy volume for scoring what exit from the source
-		//##########################
-		
-		if (fCuDiam<0) {           // No Absorber
-			zDummy2=DzDummy2*0.5;
-		} else {                   // With Absorber (if fCuDiam>0 the absorber is drilled in the midle)
-			zDummy2=DzDummy2*0.5+DzAbs*0.5+ ZCenterAbs;   //N.B. Pter_ZScan is the position of the center of the absorber
-		}
-		
-		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
-		
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posDummy2,       //at (0,0,0)
-											logicShapeDummy2,            //its logical volume
-											"Dummy2",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//		G4Region* sorgente = new G4Region("SourceReg");
-		logicShapeDummy2->SetRegion(sorgente);
-		sorgente->AddRootLogicalVolume(logicShapeDummy2);
-		
-		zDummy3=-DzDummy3*0.5;
-
-		
-		G4ThreeVector posDummy3 = G4ThreeVector(0, 0, zDummy3);
-		
-		
-		
-		new G4PVPlacement(0,                     //no rotation
-											posDummy3,       //at (0,0,0)
-											logicShapeDummy3,            //its logical volume
-											"Dummy3",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		
-		
-		//		G4Region* sorgente = new G4Region("SourceReg");
-		logicShapeDummy3->SetRegion(sorgente);
-		sorgente->AddRootLogicalVolume(logicShapeDummy3);
-		
-		
-		
-		//###################################################
-		//Electron Filter FrontShield
-		//##########################
-		
-		
-		
-		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
-		
-		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
-		
-		G4VPhysicalVolume* physFrontShield= new G4PVPlacement(0,                     //no rotation
-											posFilter,
-											logicFrontShield,            //its logical volume
-											"FrontShield",               //its name
-											logicWorld,            //its mother  volume
-											false,                 //no boolean operation
-											0,                     //copy number
-											checkOverlaps);        //overlaps checking
-		//	G4Region* filtro = new G4Region("FrontShieldReg");
-		
-		logicFrontShield->SetRegion(frontshieldreg);
-		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
-		
-		
-		
-		//###################################################
-		// 	P-Terphenyl
-		//##########################
-		
-		
-		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		new G4PVPlacement(0,                     //no rotation
-											pos2,
+											posPter,
 											logicPter,            //its logical volume
 											"Pter",               //its name
 											logicWorld,            //its mother  volume
@@ -2621,7 +1641,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		new G4PVPlacement(0,                     //no rotation
-											pos2,
+											posPter,
 											logicPVC,            //its logical volume
 											"PVC",               //its name
 											logicWorld,            //its mother  volume
@@ -2638,7 +1658,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		
 		new G4PVPlacement(0,                     //no rotation
-											pos2,
+											posPter,
 											logicDelrin,            //its logical volume
 											"Delrin",               //its name
 											logicWorld,            //its mother  volume
@@ -2658,8 +1678,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 0.,
 								 PVC_outer_r - LateralCaseThickness,
 								 TopCaseDepth*0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			G4Tubs* solidAroundTopCase =
@@ -2667,8 +1687,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 PVC_outer_r - LateralCaseThickness,
 								 PVC_outer_r,
 								 TopCaseDepth*0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			//################ Middle Case
@@ -2682,8 +1702,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 0.,
 								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
 								 MiddleCaseDepth * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			G4Tubs* solidAroundMiddleCase =
@@ -2691,16 +1711,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
 								 PVC_outer_r - LateralCaseThickness,
 								 MiddleCaseDepth * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			G4Tubs* solidExtMiddleCase =
 			new G4Tubs("AroundMiddleCase",
 								 PVC_outer_r - LateralCaseThickness,
 								 PVC_outer_r,
 								 MiddleCaseDepth * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			G4LogicalVolume* logicMiddleCase =
@@ -2719,8 +1739,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 0.,
 								 PVC_outer_r - LateralCaseThickness,
 								 HorsesShoeBackThickness * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			G4Tubs* solidAroundBackMiddleCase =
@@ -2728,8 +1748,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 PVC_outer_r - LateralCaseThickness,
 								 PVC_outer_r,
 								 HorsesShoeBackThickness * 0.5,
-								 SPhiAroundTopCase,
-								 DPhiAroundTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			
@@ -2742,8 +1762,724 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 0.,
 								 PVC_outer_r,
 								 BackCaseThickness * 0.5,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			
+			
+			
+			//###################################################
+			// Middle Probe case
+			//##########################
+			
+			//G4double ProbeMiddleCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+			
+			G4double ProbeMiddleCase_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth * 0.5;
+			G4ThreeVector posMiddleCase = G4ThreeVector(fX0Scan, 0, ProbeMiddleCase_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posMiddleCase,       //at (0,0,0)
+												logicMiddleCase,            //its logical volume
+												"MiddleCase",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			
+			//###################################################
+			// G4Union Probe
+			//##########################
+			
+			
+			
+			//###################################################
+			// G4Union External Case
+			//##########################
+			
+			
+			G4VSolid* Union1
+			= new G4UnionSolid("Union1", solidAroundTopCase , solidExtMiddleCase,0 , G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5));
+			//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
+			
+			
+			G4VSolid* Union2
+			= new G4UnionSolid("Union2", solidAroundBackMiddleCase , solidEndCase, 0 , G4ThreeVector(0.,0.,(BackCaseThickness + HorsesShoeBackThickness)*0.5));
+			
+			
+			G4VSolid* PlasticCase
+			= new G4UnionSolid("PlasticCase", Union1 , Union2 ,0, G4ThreeVector(0.,0.,MiddleCaseDepth + TopCaseDepth*0.5 + HorsesShoeBackThickness*0.5));
+			
+			G4LogicalVolume* logicPlasticCase =
+			new G4LogicalVolume(PlasticCase,               //its solid
+													PlasticCase_mat,           //its material
+													"PlasticCase");            //its name
+			
+			
+			
+			//G4double PlastiCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4double PlastiCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlastiCase_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posPlasticCase,        //at (0,0,0)
+												logicPlasticCase,            //its logical volume
+												"PlasticCase",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			//###################################################
+			// G4Union HorsesShoe Probe
+			//##########################
+			
+			
+			G4VSolid* HorsesShoe
+			= new G4UnionSolid("HorsesShoe", solidAroundMiddleCase , solidBackMiddleCase  ,0, G4ThreeVector(0.,0.,(MiddleCaseDepth +  HorsesShoeBackThickness)*0.5));
+			
+			
+			G4LogicalVolume* logicHorsesShoe =
+			new G4LogicalVolume(HorsesShoe,               //its solid
+													HorsesShoe_mat,           //its material
+													"HorsesShoe");            //its name
+			
+			//G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+			G4double HorsesShoe_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
+			G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
+			
+			
+			new G4PVPlacement(0,                     //no rotation
+												posHorsesShoe,        //at (0,0,0)
+												logicHorsesShoe,            //its logical volume
+												"HorsesShoe",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			//###################################################
+			// G4Union TopCase Probe
+			//###################################################
+			
+			
+			
+			G4VSolid* TopCase=
+			new G4SubtractionSolid ("TopCase",
+															solidTopCase,
+															solidSiPm,
+															0,
+															G4ThreeVector(0.,0.,TopCaseDepth*0.5-DzSiPm*0.5));
+			
+			
+			
+			G4LogicalVolume* logicTopCase =
+			new G4LogicalVolume(TopCase,          //its solid
+													TopCase_mat,           //its material
+													"TopCase");            //its name
+			
+			
+			//G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4double ProbeTopCase_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
+			G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
+			
+			G4RotationMatrix *rm1 = new G4RotationMatrix();
+			rm1->rotateY(180*deg);
+			
+			
+			new G4PVPlacement(rm1,                    // rotation
+												posTopCase,            //at (0,0,0)
+												logicTopCase,          //its logical volume
+												"TopCase",             //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			
+			
+			//###################################################
+			// End of Probe
+			//##########################
+			
+		}else if (CaseDepth<0){
+			
+			
+			G4double AluCaseDepth=fabs(CaseDepth);
+			/*
+			 G4double Alu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
+			 G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
+			 
+			 G4double BackAlu_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
+			 G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
+			 */
+			G4double Alu_Posz = DzDummy2 + Pter_ZScan  + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*0.5*mm;
+			G4ThreeVector posAlu = G4ThreeVector(0, 0, Alu_Posz);
+			
+			G4double BackAlu_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + (AluCaseDepth-1.15)*mm + 1.15*0.5*mm;
+			G4ThreeVector posBackAlu = G4ThreeVector(0, 0, BackAlu_Posz);
+			
+			
+			G4Tubs* solidAlu =
+			new G4Tubs("AluCase",
+								 9.7*0.5*mm,
+								 12.*0.5*mm,
+								 (AluCaseDepth-1.15)*0.5*mm,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4Tubs* solidBackAlu =
+			new G4Tubs("BackAluCase",
+								 0.,
+								 12.*0.5*mm,
+								 1.15*0.5*mm,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4LogicalVolume* logicsolidAlu =
+			new G4LogicalVolume(solidAlu,          //its solid
+													FrontShield_mat,           //its material
+													"AluCase");            //its name
+			
+			G4LogicalVolume* logicsolidBackAlu =
+			new G4LogicalVolume(solidBackAlu,          //its solid
+													FrontShield_mat,           //its material
+													"BackAluCase");            //its name
+			
+			new G4PVPlacement(0,                    // rotation
+												posAlu,            //at (0,0,0)
+												logicsolidAlu,          //its logical volume
+												"AluCase",             //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			new G4PVPlacement(0,                    // rotation
+												posBackAlu,            //at (0,0,0)
+												logicsolidBackAlu,          //its logical volume
+												"BackAluCase",             //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+		}
+		
+		
+	}else if(fGaSet==3){ // end of GaSet 2
+		//########## New case (Ga Container made with PVC)
+		
+		
+		//###################################################
+		//Ga Source Container
+		//##########################
+		
+		G4ThreeVector posContainerExtGa2 = G4ThreeVector(0, 0, -H_CylA3*0.5);
+		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-DzDummy3/2); //centro la sorgente in -0.4
+		
+		
+		G4VSolid* CylinderA =
+		new G4Tubs("CylinderA",                       //its name
+							 0.,
+							 D_CylABCD3*0.5,
+							 H_CylA3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		
+		G4VSolid* CylinderB =
+		new G4Tubs("CylinderB",                       //its name
+							 0.,
+							 d_CylB3*0.5,
+							 H_CylB3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* SourceGaDOTATOC =
+		new G4Tubs("SourceGa-DOTATOC",
+							 0.,
+							 d_CylB3*0.5,
+							 (fSourceThickness*mm)*0.5,
+							 Ang0,
+							 Ang2Pi);
+		
+		
+		G4VSolid* BackGaContainer=
+		new G4SubtractionSolid ("BackGaContainer",      //GaContainer=GaCylinder-GaSource
+														CylinderA,
+														CylinderB,
+														0,
+														G4ThreeVector(0.,0.,H_CylA3*0.5-H_CylB3*0.5));
+		
+		
+		
+		
+		
+		G4LogicalVolume* logicSourceExtGa2 =
+		new G4LogicalVolume(SourceGaDOTATOC,               //its solid
+												SourceExtGa_mat,           //its material
+												"SourceExtGa");            //its name
+		
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posExtGa3,             //at (0,0,0)
+											logicSourceExtGa2,            //its logical volume
+											"SourceExtGa",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		G4VSolid* CylinderC =
+		new G4Tubs("CylinderC",                       //its name
+							 d_CylC3*0.5,
+							 D_CylABCD3*0.5,
+							 H_CylC3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* CylinderD =
+		new G4Tubs("CylinderD",                       //its name
+							 d_CylD3*0.5,
+							 D_CylABCD3*0.5,
+							 H_CylD3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* UnionCD
+		= new G4UnionSolid("UnionCD",
+											 CylinderC,
+											 CylinderD,
+											 0,
+											 G4ThreeVector(0.,0.,(H_CylC3+H_CylD3)*0.5));
+		//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
+		
+		
+		
+		G4VSolid* GaContainer
+		= new G4UnionSolid("GaContainer",
+											 BackGaContainer,
+											 UnionCD,
+											 0,
+											 G4ThreeVector(0.,0.,(H_CylA3 + H_CylC3)*0.5));
+		
+		
+		G4LogicalVolume* logicGaContainer2 =
+		new G4LogicalVolume(GaContainer,               //its solid
+												GaContainer3_mat,           //its material
+												"GaContainer");            //its name
+		
+		new G4PVPlacement(0,                     //no rotation
+											posContainerExtGa2,       //at (0,0,0)
+											logicGaContainer2,            //its logical volume
+											"GaContainer",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);
+		
+		
+		//###################################################
+		//Probe Container
+		//##########################
+		
+		G4VSolid* CylinderE =
+		new G4Tubs("CylinderE",                       //its name
+							 d_CylE3*0.5,
+							 D_CylEF3*0.5,
+							 H_CylE3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* CylinderF =
+		new G4Tubs("CylinderF",                       //its name
+							 d_CylF3*0.5,
+							 D_CylEF3*0.5,
+							 H_CylF3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		G4VSolid* CylinderG =
+		new G4Tubs("CylinderG",                       //its name
+							 d_CylG3*0.5,
+							 D_CylG3*0.5,
+							 H_CylG3*0.5,
+							 Ang0,
+							 Ang2Pi);     //its size
+		
+		
+		
+		
+		
+		G4VSolid* UnionEF
+		= new G4UnionSolid("UnionEF",
+											 CylinderF,
+											 CylinderE,
+											 0,
+											 G4ThreeVector(0.,0.,(H_CylE3+H_CylF3)*0.5));
+		
+		G4RotationMatrix* rm = new G4RotationMatrix();
+		rm->rotateY(180.*deg);
+		
+		G4VSolid* ProbeContainer
+		= new G4UnionSolid("ProbeContainer",
+											 CylinderG,
+											 UnionEF,
+											 0,
+											 G4ThreeVector(0.,0.,(H_CylG3+H_CylF3)*0.5));
+		
+		G4LogicalVolume* logicProbeContainer =
+		new G4LogicalVolume(ProbeContainer,               //its solid
+												ProbeContainer_mat,           //its material
+												"ProbeContainer");            //its name
+		
+		
+		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.31*cm);  //H_C+(H_G/2)+H_F+H_E
+		
+		new G4PVPlacement(rm,                     //no rotation
+											ProbeContainerPos,       //at (0,0,0)
+											logicProbeContainer,            //its logical volume
+											"ProbeContainer",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);
+		
+		
+		
+		//###################################################
+		//Absrober
+		//##########################
+		
+		G4ThreeVector posAbs = G4ThreeVector(0, 0, fAbsCenter);
+		
+		//G4cout<<"GEOMETRY DEBUG - Z thickness of solidShapeCo= "<<DzCo/mm<<", Z pos= "<<posCo.z()<<G4endl;
+		
+//		G4Tubs* solidAbsorber =
+//		new G4Tubs("Absorber",                       //its name
+//							 RminAbs,
+//							 RmaxAbs,
+//							 0.5*DzAbs,
+//							 Ang0,
+//							 Ang2Pi);     //its size
+//
+//		if(fAbsorberMaterial==1){
+//			Absorber_mat = nist->FindOrBuildMaterial("G4_Cu");
+//		}else if(fAbsorberMaterial==2){
+//			Absorber_mat = nist->FindOrBuildMaterial("G4_Pb");
+//		}else if(fAbsorberMaterial==3){
+//			Absorber_mat = nist->FindOrBuildMaterial("MyAlu");
+//		}else if(fAbsorberMaterial==4){
+//			Absorber_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+//		}
+//
+		G4cout<<"GEOMETRY DEBUG - absorber mat="<<Absorber_mat<<G4endl;
+		
+	
+		
+		if (fAbsDiam>=0) {
+			G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
+			
+			physAbsorber= new G4PVPlacement(0,                     //no rotation
+												posAbs,       //at (0,0,0)
+												logicAbsorber,            //its logical volume
+												"Absorber",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			//		G4Region* sorgente = new G4Region("SourceReg");
+			logicAbsorber->SetRegion(sorgente);
+			sorgente->AddRootLogicalVolume(logicAbsorber);
+			
+		}
+		
+		//################################################### END OF COPPER COLLIMATOR
+		
+		
+		
+		
+		
+		//###################################################
+		//Dummy volume for scoring what exit from the source
+		//##########################
+		
+		if (fAbsDiam<0) {           // No Absorber
+			zDummy2=DzDummy2*0.5;
+		} else {                   // With Absorber (if fAbsDiam>0 the absorber is drilled in the midle)
+			zDummy2=DzDummy2*0.5+DzAbs*0.5+ fAbsCenter;   //N.B. Pter_ZScan is the position of the center of the absorber
+		}
+		
+		G4ThreeVector posDummy2 = G4ThreeVector(0, 0, zDummy2);
+		
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posDummy2,       //at (0,0,0)
+											logicShapeDummy2,            //its logical volume
+											"Dummy2",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		//		G4Region* sorgente = new G4Region("SourceReg");
+		logicShapeDummy2->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicShapeDummy2);
+		
+		zDummy3=-DzDummy3*0.5;
+		
+		
+		G4ThreeVector posDummy3 = G4ThreeVector(0, 0, zDummy3);
+		
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posDummy3,       //at (0,0,0)
+											logicShapeDummy3,            //its logical volume
+											"Dummy3",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		//		G4Region* sorgente = new G4Region("SourceReg");
+		logicShapeDummy3->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicShapeDummy3);
+		
+		
+		
+		//###################################################
+		//Electron Filter FrontShield
+		//##########################
+		
+		
+		
+		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
+		
+		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		
+		physFrontShield= new G4PVPlacement(0,                     //no rotation
+																													posFrontShield,
+																													logicFrontShield,            //its logical volume
+																													"FrontShield",               //its name
+																													logicWorld,            //its mother  volume
+																													false,                 //no boolean operation
+																													0,                     //copy number
+																													checkOverlaps);        //overlaps checking
+		//	G4Region* filtro = new G4Region("FrontShieldReg");
+		
+		logicFrontShield->SetRegion(frontshieldreg);
+		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
+		
+		
+		
+		//###################################################
+		// 	P-Terphenyl
+		//##########################
+		
+		
+		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
+		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+new G4PVPlacement(0,                     //no rotation
+											posPter,
+											logicPter,            //its logical volume
+											"Pter",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		//G4Region* Pterreg = new G4Region("PterReg");
+		logicPter->SetRegion(pterreg);
+		pterreg->AddRootLogicalVolume(logicPter);
+		
+		//Solid Si Pter
+		fScoringVolume = logicPter;
+		
+		
+		//###################################################
+		// SiPm volume behind PTER
+		//##########################
+		
+		
+		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posSiPm,       //at (0,0,0)
+											logicSiPm,            //its logical volume
+											"SiPm",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		//###################################################
+		// Table
+		//##########################
+		
+		/*
+		 G4ThreeVector posTable = G4ThreeVector(0, 0, -H_CylA - DzTable/2.);
+		 
+		 
+		 new G4PVPlacement(0,                     //no rotation
+		 posTable,       //at (0,0,0)
+		 logicTable,            //its logical volume
+		 "Table",               //its name
+		 logicWorld,            //its mother  volume
+		 false,                 //no boolean operation
+		 0,                     //copy number
+		 checkOverlaps);        //overlaps checking
+		 
+		 
+		 */
+		
+		//###################################################
+		// PVC around P-Terphenyl
+		//##########################
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posPter,
+											logicPVC,            //its logical volume
+											"PVC",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		//###################################################
+		// Delrin around P-Terphenyl
+		//##########################
+		
+		
+		
+		
+		new G4PVPlacement(0,                     //no rotation
+											posPter,
+											logicDelrin,            //its logical volume
+											"Delrin",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		
+		if(CaseDepth>0){
+			
+			
+			//################ Top Prob Case
+			
+			
+			G4Tubs* solidTopCase =
+			new G4Tubs("solidTopCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness,
+								 TopCaseDepth*0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4Tubs* solidAroundTopCase =
+			new G4Tubs("AroundTopCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 TopCaseDepth*0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			//################ Middle Case
+			
+			
+			G4double MiddleCaseDepth= (CaseDepth - HorsesShoeBackThickness - BackCaseThickness);
+			
+			
+			G4Tubs* solidMiddleCase =
+			new G4Tubs("MiddleCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4Tubs* solidAroundMiddleCase =
+			new G4Tubs("AroundMiddleCase",
+								 PVC_outer_r - LateralCaseThickness - HorsesShoeLateralThickness,
+								 PVC_outer_r - LateralCaseThickness,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			G4Tubs* solidExtMiddleCase =
+			new G4Tubs("AroundMiddleCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 MiddleCaseDepth * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4LogicalVolume* logicMiddleCase =
+			new G4LogicalVolume(solidMiddleCase,               //its solid
+													MiddleCase_mat,           //its material
+													"MiddleCase");            //its name
+			
+			
+			
+			
+			//################ Back Middle Case
+			
+			
+			G4Tubs* solidBackMiddleCase =
+			new G4Tubs("BackMiddleCase",
+								 0.,
+								 PVC_outer_r - LateralCaseThickness,
+								 HorsesShoeBackThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			G4Tubs* solidAroundBackMiddleCase =
+			new G4Tubs("AroundBackMiddleCase",
+								 PVC_outer_r - LateralCaseThickness,
+								 PVC_outer_r,
+								 HorsesShoeBackThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
+			
+			
+			
+			
+			//################ End Case
+			
+			
+			G4Tubs* solidEndCase =
+			new G4Tubs("EndCase",
+								 0.,
+								 PVC_outer_r,
+								 BackCaseThickness * 0.5,
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			
@@ -2902,8 +2638,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 9.7*0.5*mm,
 								 12.*0.5*mm,
 								 (AluCaseDepth-1.15)*0.5*mm,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			
 			G4Tubs* solidBackAlu =
@@ -2911,8 +2647,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 								 0.,
 								 12.*0.5*mm,
 								 1.15*0.5*mm,
-								 SPhiTopCase,
-								 DPhiTopCase);
+								 Ang0,
+								 Ang2Pi);
 			
 			G4LogicalVolume* logicsolidAlu =
 			new G4LogicalVolume(solidAlu,          //its solid
@@ -2942,11 +2678,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												false,                 //no boolean operation
 												0,                     //copy number
 												checkOverlaps);        //overlaps checking
-		} // end of GaSet3
+		}
 		
-	}
+	}// end of GaSet3
 	
-
+	
 	
 	return physWorld;
 	
@@ -2963,5 +2699,4 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //Voglio Pter_inner_r da terminale
-
 

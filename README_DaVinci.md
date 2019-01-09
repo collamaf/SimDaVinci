@@ -79,9 +79,9 @@ Source Choice:
 
 - -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way give this value taking in consideration that the distance of the probe's head ( the frontshield ) from the source is given by Z + AbsT/2.
 
-- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   N.B. in detector construction it is fCuDiam. 
+- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   
 
-- -ZAbs is used to choose the position of the center of the absorber  respect the source.
+- -ZAbs is used to choose the position of the center of the absorber with respect to the source.
 
 - -AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
 

@@ -54,7 +54,7 @@ protected:
 	G4LogicalVolume*  fScoringVolume;
 	G4double fX0Scan;
 	G4double fZValue;
-	G4double fCuDiam;
+	G4double fAbsDiam;
 	G4int fSourceSelect;
 	G4int fAbsorberMaterial;
 	G4double fPterDiameter;
