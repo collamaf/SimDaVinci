@@ -420,6 +420,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2018.12.12 by collamaf
 - Added flat sources (ele-6, gamma-7) for efficiency studies
 
+2019.01.09 by collamaf
+- First attempt of deep reorganization and cleaning of DetConst: seems to work fine at least up to GaSet 1. Please note that in this case the absorber is always ontop of source (no need of AbsorberPos) and the Z distance of the probe is always from source surface
 
 
 ## TO DO's
