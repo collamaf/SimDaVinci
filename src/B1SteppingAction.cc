@@ -87,7 +87,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ########################################
 	// ###################### Optical Photons ENTERING SiPm
 	if(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()== 0 && NextVol && ThisVol->GetName()=="Pter" && NextVol->GetName()=="SiPm") {
-		//		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
+		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
 		fEventAction->AddNPMT(1);
 	}
 	

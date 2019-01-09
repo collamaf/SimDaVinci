@@ -49,6 +49,8 @@
 #include "G4Region.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4UnionSolid.hh"
+#include "G4OpticalSurface.hh"
+#include "G4LogicalBorderSurface.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -118,8 +120,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Element* elO = new G4Element (name="Oxygen", symbol="O", z=8.,a );
 	a = 14.00*g/mole;
 	G4Element* elN = new G4Element (name="Nitrogen", symbol="N", z=7.,a );
-	
-	
 	
 	
 	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
@@ -300,7 +300,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	materialTablePter->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
 	->SetSpline(true);
 	
-	materialTablePter->AddConstProperty("SCINTILLATIONYIELD",28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
+	materialTablePter->AddConstProperty("SCINTILLATIONYIELD",0.1*28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
 	materialTablePter->AddConstProperty("RESOLUTIONSCALE",1.0);
 	materialTablePter->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
 	materialTablePter->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
@@ -310,12 +310,37 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double refractiveIndexDelrin = 1.48;
 	G4MaterialPropertiesTable* materialTableDelrin = new G4MaterialPropertiesTable();
 	materialTableDelrin->AddConstProperty("RINDEX", refractiveIndexDelrin);
-	
+	materialTableDelrin->AddConstProperty("REFLECTIVITY",1);
 	
 	
 	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
 	materialTablePter->DumpTable();
 	materialTableDelrin->DumpTable();
+	
+
+	/*
+	 G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
+	 new G4LogicalBorderSurface("wrapper", slab, expHall_phys, wrapper);
+	 wrapper->SetType(dielectric_metal);
+	 wrapper->SetFinish(polished);
+	 wrapper->SetModel(glisur);
+	 const G4int NUM = 2;
+	 G4double pp[NUM] = {2.0*eV, 3.5*eV};
+	 G4double reflectivity[NUM] = {1., 1.};
+	 G4double efficiency[NUM] = {0.0, 0.0};
+	 G4MaterialPropertiesTable* wrapperProperty = new G4MaterialPropertiesTable();
+	 wrapperProperty->AddProperty("REFLECTIVITY", pp, reflectivity, NUM);
+	 wrapperProperty->AddProperty("EFFICIENCY", pp, efficiency, NUM);
+	 wrapper->SetMaterialPropertiesTable(wrapperProperty);
+	 
+	 
+	 */
+	
+	
+	
+	
+	
+	
 	
 	if (fScintFlag) {
 		PTerphenyl->SetMaterialPropertiesTable(materialTablePter); //to toggle scintillation
@@ -1186,7 +1211,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		}
 
 		G4ThreeVector pos2 = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		new G4PVPlacement(0,                     //no rotation
+		G4VPhysicalVolume* physPter=new G4PVPlacement(0,                     //no rotation
 											pos2,
 											logicPter,            //its logical volume
 											"Pter",               //its name
@@ -1246,7 +1271,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	
 	
-		new G4PVPlacement(0,                     //no rotation
+		G4VPhysicalVolume* physDelrin=new G4PVPlacement(0,                     //no rotation
 											pos2,
 											logicDelrin,            //its logical volume
 											"Delrin",               //its name
@@ -1255,7 +1280,22 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											0,                     //copy number
 											checkOverlaps);        //overlaps checking
 	
-	
+		
+//		//Prova parametri ottici superficie, funziona ma è da capire...
+//		G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
+//		new G4LogicalBorderSurface("wrapper", physPter, physFrontShield, wrapper);
+//		wrapper->SetType(dielectric_metal);
+//		wrapper->SetFinish(polished);
+//		wrapper->SetModel(glisur);
+//		const G4int NUM = 1;
+//		G4double pp[NUM] = {2.96*eV};
+//		G4double reflectivity[NUM] = {0.};
+//		G4double efficiency[NUM] = {0.0};
+//		G4MaterialPropertiesTable* wrapperProperty = new G4MaterialPropertiesTable();
+//		wrapperProperty->AddProperty("REFLECTIVITY", pp, reflectivity, NUM);
+//		wrapperProperty->AddProperty("EFFICIENCY", pp, efficiency, NUM);
+//		wrapper->SetMaterialPropertiesTable(wrapperProperty);
+		
 	
 	//################################################### END OF Frontal part of the Probe
 	
@@ -2497,8 +2537,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 		G4ThreeVector posFilter = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		
-		
-		new G4PVPlacement(0,                     //no rotation
+		G4VPhysicalVolume* physFrontShield= new G4PVPlacement(0,                     //no rotation
 											posFilter,
 											logicFrontShield,            //its logical volume
 											"FrontShield",               //its name
@@ -2907,6 +2946,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		
 	}
 	
+
 	
 	return physWorld;
 	
