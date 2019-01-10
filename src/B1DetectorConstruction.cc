@@ -354,6 +354,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double Z_FrontShield= 0*mm;
 	G4double FrontShield_outer_r=(12.0/2.0)*mm;
 	G4double FrontShield_sizeZ=15*um;
+	G4ThreeVector posFrontShield;
 	//###
 
 	//### Absorber
@@ -369,6 +370,32 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}else if (fPosAbsorber==2 && fGaSet==3){
 		RmaxAbs = 26/2.*mm;
 	};
+	//###
+	
+	//### Dummy Exit Sorg
+	G4double RminDummyExitSorg = 0.*mm;
+	G4double RmaxDummyExitSorg = 18.*mm;
+	if (fGaSet==3) RmaxDummyExitSorg = fSourceDiameter/2.;
+	G4double DzDummyExitSorg= 1.e-5*mm;
+	G4double zDummyExitSorg;
+	G4ThreeVector posDummyExitSorg;
+	//###
+	
+	//### Dummy Enter Abs
+	G4double RminDummyExitAbs = 0.*mm;
+	G4double RmaxDummyExitAbs = 18.*mm;
+	if (fGaSet==3) RmaxDummyExitAbs = 22/2.*mm; //to be bound to GaSet 3 cylinder
+	G4double DzDummyExitAbs= 1.e-5*mm;
+	G4double zDummyExitAbs;
+	G4ThreeVector posDummyExitAbs;
+	//###
+	
+	//### Dummy Enter Pter
+	G4double RminDummyEnterPter = 0.*mm;
+	G4double RmaxDummyEnterPter = 18.*mm;
+	G4double DzDummyEnterPter= 1.e-5*mm;
+	G4double zDummyEnterPter;
+	G4ThreeVector posDummyEnterPter;
 	//###
 	
 	//### Dummy
@@ -485,11 +512,58 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//##########################
 	//###################################################################
 	
+	//###########################
+	//Dummy exit sorg
+	//###########################
+	G4Tubs* solidShapeDummyExitSorg =
+	new G4Tubs("DummyExitSorg",                       //its name
+						 RminDummyExitSorg,
+						 RmaxDummyExitSorg,
+						 0.5*DzDummyExitSorg,
+						 Ang0,
+						 Ang2Pi);     //its size
+	
+	G4LogicalVolume* logicShapeDummyExitSorg =
+	new G4LogicalVolume(solidShapeDummyExitSorg,          //its solid
+											shapeDummy_mat,           //its material
+											"DummyExitSorg");            //its name
+
+	//###########################
+	//Dummy Enter Abs
+	//###########################
+	G4Tubs* solidShapeDummyExitAbs =
+	new G4Tubs("DummyExitAbs",                       //its name
+						 RminDummyExitAbs,
+						 RmaxDummyExitAbs,
+						 0.5*DzDummyExitAbs,
+						 Ang0,
+						 Ang2Pi);     //its size
+	
+	G4LogicalVolume* logicShapeDummyExitAbs =
+	new G4LogicalVolume(solidShapeDummyExitAbs,          //its solid
+											shapeDummy_mat,           //its material
+											"DummyExitAbs");            //its name
+	
+	//###########################
+	//Dummy Enter Pter
+	//###########################
+	G4Tubs* solidShapeDummyEnterPter =
+	new G4Tubs("DummyEnterPter",                       //its name
+						 RminDummyEnterPter,
+						 RmaxDummyEnterPter,
+						 0.5*DzDummyEnterPter,
+						 Ang0,
+						 Ang2Pi);     //its size
+	
+	G4LogicalVolume* logicShapeDummyEnterPter =
+	new G4LogicalVolume(solidShapeDummyEnterPter,          //its solid
+											shapeDummy_mat,           //its material
+											"DummyEnterPter");            //its name
 	
 	//###################################################
 	// ExtY Source
 	//##########################
-	G4ThreeVector posSourceExtY = G4ThreeVector(0, 0, -DzSourceExtY*0.5);
+	G4ThreeVector posSourceExtY = G4ThreeVector(0, 0, -DzSourceExtY*0.5-DzDummyExitSorg);
 	
 	G4Tubs* solidSourceExtY =
 	new G4Tubs("SourceExtY",                       //its name
@@ -504,7 +578,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceExtY_mat,           //its material
 											"SourceExtY");            //its name
 	
-	if(fSourceSelect==3) {
+	if(fGaSet==1 && fSourceSelect==3) {
 		
 		G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceExtY= "<<DzSourceExtY/mm<<", Z pos= "<<posSourceExtY.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtY Source has been placed!!"<<G4endl;
@@ -527,7 +601,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// ABS carrier around ExtY Source
 	//##########################
-	G4ThreeVector posABSaround = G4ThreeVector(0, 0, -DzABSaround*0.5);
+	G4ThreeVector posABSaround = G4ThreeVector(0, 0, -DzABSaround*0.5-DzDummyExitSorg);
 	
 	G4Tubs* solidABSaround =
 	new G4Tubs("ABSaround",                       //its name
@@ -542,7 +616,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											ABSaround_mat,           //its material
 											"ABSaround");            //its name
 	
-	if(fSourceSelect==3) {  //I place the ABS carrier of the ExtY source
+	if(fGaSet==1 && fSourceSelect==3) {  //I place the ABS carrier of the ExtY source
 		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<posABSaround.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
 		
@@ -563,7 +637,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// ABS carrier behind ExtY Source
 	//##########################
-	G4ThreeVector posABSbehind = G4ThreeVector(0, 0, -DzABSbehind*0.5- DzABSaround);
+	G4ThreeVector posABSbehind = G4ThreeVector(0, 0, -DzABSbehind*0.5- DzABSaround-DzDummyExitSorg);
 	
 	G4Tubs* solidABSbehind =
 	new G4Tubs("ABSbehind",                       //its name
@@ -578,7 +652,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											ABSbehind_mat,           //its material
 											"ABSbehind");            //its name
 	
-	if(fSourceSelect==3) { //I place the ABS carrier of the ExtY source
+	if(fGaSet==1 && fSourceSelect==3) { //I place the ABS carrier of the ExtY source
 		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<posABSbehind.z()/mm<<G4endl;
 		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
 		
@@ -600,7 +674,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// Sr90 lab Source
 	//##########################
-	G4ThreeVector posSourceSR = G4ThreeVector(0, 0, -DzSourceSR*0.5);
+	G4ThreeVector posSourceSR = G4ThreeVector(0, 0, -DzSourceSR*0.5-DzDummyExitSorg);
 	
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<posSourceSR.z()/mm<<G4endl;
 	
@@ -634,9 +708,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}
 	//################################################### END SR SOURCE
 	
+	
+	
 	//###################################################
 	// Probe's Solids
 	//##########################
+	
+	
 	
 	//###########################
 	//Dummy
@@ -794,8 +872,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Ga Source Container
 		//##########################
 		
-		G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -DzContainer*0.5);
-		G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5);
+		G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -DzContainer*0.5-DzDummyExitSorg);
+		G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5-DzDummyExitSorg); //TODO: fix ExtGa z position to start from bottom
 		
 		G4VSolid* GaCylinder =
 		new G4Tubs("GaCylinder",                       //its name
@@ -939,15 +1017,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//Front shield
 		//##########################
 		
-		if (fAbsHoleDiam>=0){
-			Z_FrontShield = DzAbs + Pter_ZScan + FrontShield_sizeZ*0.5;
-//			Pter_Posz = DzAbs+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		} else{
+//		if (fAbsHoleDiam>=0){
+//			Z_FrontShield = /*DzAbs + */Pter_ZScan + FrontShield_sizeZ*0.5;
+//			Pter_Posz = /*DzAbs+ */Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5; //??
+//		} else{
 			Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
 			Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		}
+//		}
 		
-		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<posFrontShield.z()/mm<<G4endl;
 		
 		physFrontShield= new G4PVPlacement(0,                     //no rotation
@@ -1249,7 +1327,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
 		
-		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		
 		new G4PVPlacement(0,                     //no rotation
 											posFrontShield,
@@ -1579,7 +1657,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
-		G4ThreeVector posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
 		physFrontShield= new G4PVPlacement(0, posFrontShield,
 																			 logicFrontShield,            //its logical volume
 																			 "FrontShield",
@@ -1930,6 +2008,22 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											checkOverlaps);
 	}
 	
+	if(fGaSet==1) {
+		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
+		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+DzDummyExitAbs/2.);
+		posDummyEnterPter=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterPter/2.);
+	}
+	
+	if(fGaSet==3) {
+		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
+		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+DzDummyExitAbs/2.);
+		posDummyEnterPter=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterPter/2.);
+	}
+	
+	
+	new G4PVPlacement(0,posDummyExitSorg,logicShapeDummyExitSorg,"DummyExitSorg",logicWorld,false,0,checkOverlaps);        //overlaps checking
+	new G4PVPlacement(0,posDummyExitAbs,logicShapeDummyExitAbs,"DummyExitAbs",logicWorld,false,0,checkOverlaps);        //overlaps checking
+	new G4PVPlacement(0,posDummyEnterPter,logicShapeDummyEnterPter,"DummyEnterPter",logicWorld,false,0,checkOverlaps);        //overlaps checking
 
 	return physWorld;
 	
