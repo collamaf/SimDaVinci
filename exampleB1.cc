@@ -300,10 +300,10 @@ int main(int argc,char** argv)
 	
 
 	G4RunManager* runManager = new G4RunManager;
-	G4ScoringManager* scoringManager = G4ScoringManager::GetScoringManager();
+//	G4ScoringManager* scoringManager = G4ScoringManager::GetScoringManager();
 	//#endif
 	
-	G4ExceptionHandler* eccezione=new G4ExceptionHandler();
+//	G4ExceptionHandler* eccezione=new G4ExceptionHandler();
 	
 	// Set mandatory initialization classes
 	// Detector construction

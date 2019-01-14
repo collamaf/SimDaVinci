@@ -424,8 +424,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - First attempt of deep reorganization and cleaning of DetConst: seems to work fine at least up to GaSet 1. Please note that in this case the absorber is always ontop of source (no need of AbsorberPos) and the Z distance of the probe is always from source surface
 
 2019.01.10 by collamaf
-- 
+- Dummy reorganisation seems to work at least for Gaset 1 and 3. Need to fix DummyExitSource for GaSet 3, but first need to fix ExtGa z position in this case to start from the bottom of the hole
 
+2019.01.14 by collamaf
+- 
 
 ## TO DO's
 

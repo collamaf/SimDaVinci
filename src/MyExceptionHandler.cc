@@ -120,7 +120,7 @@ G4bool G4ExceptionHandler::Notify(const char* originOfException,
     abortionForCoreDump = false;
     break;
    default:
-    if(strncmp(exceptionCode,"GeomNav1002", 11)!=0) G4cout << ws_banner << message.str() << "*** This is just a warning message FANCULO. ***"
+    if(strncmp(exceptionCode,"GeomNav1002", 11)!=0) G4cout << ws_banner << message.str() << "*** This is just a warning message PLEASE. ***"
            << we_banner << "codice " << exceptionCode<< G4endl;
     abortionForCoreDump = false;
     break;
