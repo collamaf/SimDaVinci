@@ -427,7 +427,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Dummy reorganisation seems to work at least for Gaset 1 and 3. Need to fix DummyExitSource for GaSet 3, but first need to fix ExtGa z position in this case to start from the bottom of the hole
 
 2019.01.14 by collamaf
-- 
+- Finally got rid of all old "dummies". New 3 dummy scheme seems to work for all 3 gaset!
+- Removed all references to FilePrim
 
 ## TO DO's
 

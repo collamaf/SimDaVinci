@@ -39,7 +39,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1EventAction::B1EventAction(B1RunAction* runAction, std::ofstream & file)
+B1EventAction::B1EventAction(B1RunAction* runAction)
 : G4UserEventAction(),
 fRunAction(runAction),
 fEdep(0.),
@@ -60,7 +60,6 @@ fNSourceExit(0.),
 fStoreTrackIDSource(0),
 fStoreTrackIDPter(0),
 fStoreTrackIDDummy2(0),
-FilePrimaries(file),
 fEnterPterFlag(0)
 {}
 
@@ -174,8 +173,6 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//std::ofstream primFile("Primaries.dat", std::ios::out);
-
 
 void B1EventAction::EndOfEventAction(const G4Event* evento)
 {
@@ -196,7 +193,6 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	G4int NevTot=fRunAction->GetEventNumber();
 	
 	if ((10*evento->GetEventID())%NevTot==0) {
-		FilePrimaries<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
 		G4cout<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
 	}
 	// get analysis manager
