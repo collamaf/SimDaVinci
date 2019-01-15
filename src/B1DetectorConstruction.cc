@@ -532,7 +532,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4ThreeVector posSourceExtY = G4ThreeVector(0, 0, -DzSourceExtY*0.5-DzDummyExitSorg);
 	
 	G4Tubs* solidSourceExtY =
-	new G4Tubs("SourceExtY",                       //its name
+	new G4Tubs("Source",                       //its name
 						 RminSourceExtY,
 						 RmaxSourceExtY,
 						 0.5*DzSourceExtY,
@@ -542,7 +542,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4LogicalVolume* logicSourceExtY =
 	new G4LogicalVolume(solidSourceExtY,          //its solid
 											SourceExtY_mat,           //its material
-											"SourceExtY");            //its name
+											"Source");            //its name
 	
 	if(fGaSet==1 && fSourceSelect==3) {
 		
@@ -552,7 +552,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		new G4PVPlacement(0,                     //no rotation
 											posSourceExtY,
 											logicSourceExtY,            //its logical volume
-											"SourceExtY",               //its name
+											"Source",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number
@@ -645,7 +645,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceSR= "<<DzSourceSR/mm<<", Z pos= "<<posSourceSR.z()/mm<<G4endl;
 	
 	G4Tubs* solidSourceSR =
-	new G4Tubs("SourceSR",                       //its name
+	new G4Tubs("Source",                       //its name
 						 RminSourceSR,
 						 RmaxSourceSR,
 						 0.5*DzSourceSR,
@@ -655,7 +655,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4LogicalVolume* logicSourceSR =
 	new G4LogicalVolume(solidSourceSR,          //its solid
 											SourceSR_mat,           //its material
-											"SourceSR");            //its name
+											"Source");            //its name
 	
 	if(fGaSet==1 && (fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==6)) { //If I requested the Sr source (or the flat electron one for efficiencies)
 		G4cout<<"GEOMETRY DEBUG - Sr(-like) Source has been placed!!"<<G4endl;
@@ -663,7 +663,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		new G4PVPlacement(0,                     //no rotation
 											posSourceSR,       //at (0,0,0)
 											logicSourceSR,            //its logical volume
-											"SourceSR",               //its name
+											"Source",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number
@@ -801,7 +801,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 							 Ang2Pi);     //its size
 		
 		G4VSolid* SourceExtGa =
-		new G4Tubs("SourceExtGa",                       //its name
+		new G4Tubs("Source",                       //its name
 							 0.,
 							 rSourceExtGa,
 							 0.5*dzSourceExtGa,
@@ -825,7 +825,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4LogicalVolume* logicSourceExtGa =
 		new G4LogicalVolume(SourceExtGa,               //its solid
 												SourceExtGa_mat,           //its material
-												"SourceExtGa");            //its name
+												"Source");            //its name
 		
 		if(fSourceSelect==4) { //If i requested the Ga source
 			G4cout<<"GEOMETRY DEBUG - Gallium Source has been placed!!"<<G4endl;
@@ -842,7 +842,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			new G4PVPlacement(0,                     //no rotation
 												posExtGa,       //at (0,0,0)
 												logicSourceExtGa,            //its logical volume
-												"SourceExtGa",               //its name
+												"Source",               //its name
 												logicWorld,            //its mother  volume
 												false,                 //no boolean operation
 												0,                     //copy number
@@ -1024,12 +1024,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4LogicalVolume* logicSourceExtGa2 =
 		new G4LogicalVolume(CylinderB,               //its solid
 												SourceExtGa_mat,           //its material
-												"SourceExtGa");            //its name
+												"Source");            //its name
 		
 		new G4PVPlacement(0,                     //no rotation
 											posExtGa2,       //at (0,0,0)
 											logicSourceExtGa2,            //its logical volume
-											"SourceExtGa",               //its name
+											"Source",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number
@@ -1311,12 +1311,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4LogicalVolume* logicSourceExtGa2 =
 		new G4LogicalVolume(SourceGa,               //its solid
 												SourceExtGa_mat,           //its material
-												"SourceExtGa");            //its name
+												"Source");            //its name
 		
 		new G4PVPlacement(0,                     //no rotation
 											posExtGa3,             //at (0,0,0)
 											logicSourceExtGa2,            //its logical volume
-											"SourceExtGa",               //its name
+											"Source",               //its name
 											logicWorld,            //its mother  volume
 											false,                 //no boolean operation
 											0,                     //copy number
