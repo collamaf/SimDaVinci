@@ -204,71 +204,71 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtuple("Source", "SourceNtuple");
 	
 	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
-	analysisManager->CreateNtupleDColumn(0,"EabsComp", RunVectorEAbsComp); //1
+	analysisManager->CreateNtupleDColumn(0,"EabsComp", RunVEAbsComp); //1
 	analysisManager->CreateNtupleDColumn(0,"PrePterTrackN");                  //2
-	analysisManager->CreateNtupleDColumn(0,"PrePterPart", RunVectorPart); //3
-	analysisManager->CreateNtupleDColumn(0,"PrePterEn", RunVectorEnPre); //4
+	analysisManager->CreateNtupleDColumn(0,"PrePterPart", RunVPart); //3
+	analysisManager->CreateNtupleDColumn(0,"PrePterEn", RunVEnPre); //4
 	analysisManager->CreateNtupleDColumn(0,"InPterTrackN");                   //5
-	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVectorPartPter); //6
-	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVectorEnPter); //7
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVectorEnPterPrim); //8
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVectorPartPterPrim); //9
-	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVectorEnPterTime); //10
-	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVectorXPter); //11
-	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVectorYPter); //12
-	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVectorZPter); //13
+	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVPartPter); //6
+	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVEnPter); //7
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVEnPterPrim); //8
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVPartPterPrim); //9
+	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVEnPterTime); //10
+	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVXPter); //11
+	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVYPter); //12
+	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVZPter); //13
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //14
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //15
 	analysisManager->CreateNtupleDColumn(0,"SourceZ");                           //16
-	analysisManager->CreateNtupleDColumn(0,"SourceCosX", RunVectorCosX); //17
-	analysisManager->CreateNtupleDColumn(0,"SourceCosY", RunVectorCosY); //18
-	analysisManager->CreateNtupleDColumn(0,"SourceCosZ", RunVectorCosZ); //19
-	analysisManager->CreateNtupleDColumn(0,"SourceEne", RunVectorEnGen); //20
-	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", RunVectorIsotopeGen); //21
+	analysisManager->CreateNtupleDColumn(0,"SourceCosX", RunVCosX); //17
+	analysisManager->CreateNtupleDColumn(0,"SourceCosY", RunVCosY); //18
+	analysisManager->CreateNtupleDColumn(0,"SourceCosZ", RunVCosZ); //19
+	analysisManager->CreateNtupleDColumn(0,"SourceEne", RunVEnGen); //20
+	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", RunVIsotopeGen); //21
 	analysisManager->CreateNtupleIColumn(0,"Npmt");							//22
 	analysisManager->CreateNtupleIColumn(0,"Nev");							//23
 
 
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVectorAnnihX); //24
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVectorAnnihY); //25
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVectorAnnihZ); //26
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVAnnihX); //24
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVAnnihY); //25
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVAnnihZ); //26
 	
-	analysisManager->CreateNtupleDColumn(0,"PreAbsEn", RunVectorPreAbsEn); //27   //Energy arriving on Abs from source
-	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVectorEnExit); //28
-	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVectorPartPreAbs); //29
-	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVectorPartPostAbs); //30
+	analysisManager->CreateNtupleDColumn(0,"PreAbsEn", RunVPreAbsEn); //27   //Energy arriving on Abs from source
+	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVEnExit); //28
+	analysisManager->CreateNtupleDColumn(0,"PreAbsPart", RunVPartPreAbs); //29
+	analysisManager->CreateNtupleDColumn(0,"PostAbsPart", RunVPartPostAbs); //30
 	//analysisManager->CreateNtupleDColumn(0,"EabsSiPM");       //34
-	//analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVectorEAbsSiPMComp);
-	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVectorAnnihT); //31
+	//analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVEAbsSiPMComp);
+	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVAnnihT); //31
 	analysisManager->CreateNtupleIColumn(0,"EnterPterFlag"); //32
 
 	
 	analysisManager->CreateNtupleDColumn(1,"AllX");                           //0
 	analysisManager->CreateNtupleDColumn(1,"AllY");                           //1
 	analysisManager->CreateNtupleDColumn(1,"AllZ");                           //2
-	analysisManager->CreateNtupleDColumn(1,"AllCosX", RunVectorCosX);                           //3
-	analysisManager->CreateNtupleDColumn(1,"AllCosY", RunVectorCosY);                           //4
-	analysisManager->CreateNtupleDColumn(1,"AllCosZ", RunVectorCosZ);                           //5
-	analysisManager->CreateNtupleDColumn(1,"AllEne", RunVectorEnGen);                           //6
-	analysisManager->CreateNtupleDColumn(1,"AllPart", RunVectorEnPart);                           //7
-	analysisManager->CreateNtupleDColumn(1,"AllIsotope", RunVectorIsotopeGen);                           //8
-	analysisManager->CreateNtupleDColumn(1,"ExitX", RunVectorXExit);                           //9
-	analysisManager->CreateNtupleDColumn(1,"ExitY", RunVectorYExit);                           //10
-	analysisManager->CreateNtupleDColumn(1,"ExitZ", RunVectorZExit);                           //11
-	analysisManager->CreateNtupleDColumn(1,"ExitCosX", RunVectorCosXExit);                           //12
-	analysisManager->CreateNtupleDColumn(1,"ExitCosY", RunVectorCosYExit);                           //13
-	analysisManager->CreateNtupleDColumn(1,"ExitCosZ", RunVectorCosZExit);                           //14
-	analysisManager->CreateNtupleDColumn(1,"ExitEne", RunVectorEnExit);                           //15
-	analysisManager->CreateNtupleDColumn(1,"ExitPart", RunVectorPartExit);                           //16
-	analysisManager->CreateNtupleDColumn(1,"ExitParentID", RunVectorParentIDExit);                           //17
+	analysisManager->CreateNtupleDColumn(1,"AllCosX", RunVCosX);                           //3
+	analysisManager->CreateNtupleDColumn(1,"AllCosY", RunVCosY);                           //4
+	analysisManager->CreateNtupleDColumn(1,"AllCosZ", RunVCosZ);                           //5
+	analysisManager->CreateNtupleDColumn(1,"AllEne", RunVEnGen);                           //6
+	analysisManager->CreateNtupleDColumn(1,"AllPart", RunVEnPart);                           //7
+	analysisManager->CreateNtupleDColumn(1,"AllIsotope", RunVIsotopeGen);                           //8
+	analysisManager->CreateNtupleDColumn(1,"ExitX", RunVXExit);                           //9
+	analysisManager->CreateNtupleDColumn(1,"ExitY", RunVYExit);                           //10
+	analysisManager->CreateNtupleDColumn(1,"ExitZ", RunVZExit);                           //11
+	analysisManager->CreateNtupleDColumn(1,"ExitCosX", RunVCosXExit);                           //12
+	analysisManager->CreateNtupleDColumn(1,"ExitCosY", RunVCosYExit);                           //13
+	analysisManager->CreateNtupleDColumn(1,"ExitCosZ", RunVCosZExit);                           //14
+	analysisManager->CreateNtupleDColumn(1,"ExitEne", RunVEnExit);                           //15
+	analysisManager->CreateNtupleDColumn(1,"ExitPart", RunVPartExit);                           //16
+	analysisManager->CreateNtupleDColumn(1,"ExitParentID", RunVParentIDExit);                           //17
 	analysisManager->CreateNtupleIColumn(1,"ExitProcess", RunExitProcess); //18
 	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //19
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationX", RunVectorAnnihX); //20
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationY", RunVectorAnnihY); //21
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationZ", RunVectorAnnihZ); //22
-	analysisManager->CreateNtupleDColumn(1,"PreAbsEn", RunVectorPreAbsEn);    //23 Energy arriving on Abs from source
-	analysisManager->CreateNtupleDColumn(1,"PreAbsPart", RunVectorPartPreAbs); //24
-	analysisManager->CreateNtupleDColumn(1,"PostAbsPart", RunVectorPartPostAbs); //25
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationX", RunVAnnihX); //20
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationY", RunVAnnihY); //21
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationZ", RunVAnnihZ); //22
+	analysisManager->CreateNtupleDColumn(1,"PreAbsEn", RunVPreAbsEn);    //23 Energy arriving on Abs from source
+	analysisManager->CreateNtupleDColumn(1,"PreAbsPart", RunVPartPreAbs); //24
+	analysisManager->CreateNtupleDColumn(1,"PostAbsPart", RunVPartPostAbs); //25
 	
 	analysisManager->FinishNtuple(0);
 	analysisManager->FinishNtuple(1);

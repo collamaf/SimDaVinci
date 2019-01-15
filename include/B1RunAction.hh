@@ -64,61 +64,61 @@ public:
 	// void AddEdepEl (G4double edepEl);
 	
 	
-	std::vector<G4double>& GetRunEnPter() {return RunVectorEnPter; }
-	std::vector<G4double>& GetRunEnPterPrim() {return RunVectorEnPterPrim; }
-	std::vector<G4double>& GetRunPartPterPrim() {return RunVectorPartPterPrim; }
-	std::vector<G4float>& GetRunEnPterTime() {return RunVectorEnPterTime; }
-	std::vector<G4double>& GetRunXPter() {return RunVectorXPter; }
-	std::vector<G4double>& GetRunYPter() {return RunVectorYPter; }
-	std::vector<G4double>& GetRunZPter() {return RunVectorZPter; }
-	std::vector<G4double>& GetRunPartPter() {return RunVectorPartPter; }
+	std::vector<G4double>& GetRunEnPter() {return RunVEnPter; }
+	std::vector<G4double>& GetRunEnPterPrim() {return RunVEnPterPrim; }
+	std::vector<G4double>& GetRunPartPterPrim() {return RunVPartPterPrim; }
+	std::vector<G4float>& GetRunEnPterTime() {return RunVEnPterTime; }
+	std::vector<G4double>& GetRunXPter() {return RunVXPter; }
+	std::vector<G4double>& GetRunYPter() {return RunVYPter; }
+	std::vector<G4double>& GetRunZPter() {return RunVZPter; }
+	std::vector<G4double>& GetRunPartPter() {return RunVPartPter; }
 	
-	std::vector<G4double>& GetRunEnExit() {return RunVectorEnExit; }
-	std::vector<G4double>& GetRunXExit() {return RunVectorXExit; }
-	std::vector<G4double>& GetRunYExit() {return RunVectorYExit; }
-	std::vector<G4double>& GetRunZExit() {return RunVectorZExit; }
-	std::vector<G4double>& GetRunCosXExit() {return RunVectorCosXExit; }
-	std::vector<G4double>& GetRunCosYExit() {return RunVectorCosYExit; }
-	std::vector<G4double>& GetRunCosZExit() {return RunVectorCosZExit; }
-	std::vector<G4double>& GetRunPartExit() {return RunVectorPartExit; }
-	std::vector<G4double>& GetRunParentIDExit() {return RunVectorParentIDExit; }
+	std::vector<G4double>& GetRunEnExit() {return RunVEnExit; }
+	std::vector<G4double>& GetRunXExit() {return RunVXExit; }
+	std::vector<G4double>& GetRunYExit() {return RunVYExit; }
+	std::vector<G4double>& GetRunZExit() {return RunVZExit; }
+	std::vector<G4double>& GetRunCosXExit() {return RunVCosXExit; }
+	std::vector<G4double>& GetRunCosYExit() {return RunVCosYExit; }
+	std::vector<G4double>& GetRunCosZExit() {return RunVCosZExit; }
+	std::vector<G4double>& GetRunPartExit() {return RunVPartExit; }
+	std::vector<G4double>& GetRunParentIDExit() {return RunVParentIDExit; }
 	
 	std::vector<G4int>& GetRunExitProcess() {return RunExitProcess; }
 	
-	std::vector<G4double>& GetRunCosX() {return RunVectorCosX; }
-	std::vector<G4double>& GetRunCosY() {return RunVectorCosY; }
-	std::vector<G4double>& GetRunCosZ() {return RunVectorCosZ; }
-	std::vector<G4double>& GetRunEnGen() {return RunVectorEnGen; }
-	std::vector<G4double>& GetRunEnPart() {return RunVectorEnPart; }
-	std::vector<G4double>& GetRunIsotopeGen() {return RunVectorIsotopeGen; }
+	std::vector<G4double>& GetRunCosX() {return RunVCosX; }
+	std::vector<G4double>& GetRunCosY() {return RunVCosY; }
+	std::vector<G4double>& GetRunCosZ() {return RunVCosZ; }
+	std::vector<G4double>& GetRunEnGen() {return RunVEnGen; }
+	std::vector<G4double>& GetRunEnPart() {return RunVEnPart; }
+	std::vector<G4double>& GetRunIsotopeGen() {return RunVIsotopeGen; }
 	
-	std::vector<G4double>& GetRunEAbsComp() {return RunVectorEAbsComp; }
-	std::vector<G4double>& GetRunEAbsSiPMComp() {return RunVectorEAbsSiPMComp; }
+	std::vector<G4double>& GetRunEAbsComp() {return RunVEAbsComp; }
+	std::vector<G4double>& GetRunEAbsSiPMComp() {return RunVEAbsSiPMComp; }
 
 
-	std::vector<G4double>& GetRunEnPre() {return RunVectorEnPre; }
-	std::vector<G4double>& GetRunPart() {return RunVectorPart; }
+	std::vector<G4double>& GetRunEnPre() {return RunVEnPre; }
+	std::vector<G4double>& GetRunPart() {return RunVPart; }
 	
 	
-	std::vector<G4double>& GetRunAnnihX() {return RunVectorAnnihX; }
-	std::vector<G4double>& GetRunAnnihY() {return RunVectorAnnihY; }
-	std::vector<G4double>& GetRunAnnihZ() {return RunVectorAnnihZ; }
+	std::vector<G4double>& GetRunAnnihX() {return RunVAnnihX; }
+	std::vector<G4double>& GetRunAnnihY() {return RunVAnnihY; }
+	std::vector<G4double>& GetRunAnnihZ() {return RunVAnnihZ; }
 	
-	std::vector<G4double>& GetRunPreAbsEn() {return RunVectorPreAbsEn; }
-	std::vector<G4double>& GetRunPartPreAbs() {return RunVectorPartPreAbs; }
-	std::vector<G4double>& GetRunPartPostAbs() {return RunVectorPartPostAbs; }
+	std::vector<G4double>& GetRunPreAbsEn() {return RunVPreAbsEn; }
+	std::vector<G4double>& GetRunPartPreAbs() {return RunVPartPreAbs; }
+	std::vector<G4double>& GetRunPartPostAbs() {return RunVPartPostAbs; }
 
 
-	std::vector<G4double>& GetRunAnnihT() {return RunVectorAnnihT; }
+	std::vector<G4double>& GetRunAnnihT() {return RunVAnnihT; }
 
 	
 
 	
 	
-	std::vector<G4double>& GetRunPixNo() {return RunVectorPixNo; }
-//	std::vector<G4double>& GetRunPixEneDep() {return RunVectorPixEneDep; }
-	std::vector<G4double>& GetRunPixXpos() {return RunVectorPixXpos; }
-	std::vector<G4double>& GetRunPixYpos() {return RunVectorPixYpos; }
+	std::vector<G4double>& GetRunPixNo() {return RunVPixNo; }
+//	std::vector<G4double>& GetRunPixEneDep() {return RunVPixEneDep; }
+	std::vector<G4double>& GetRunPixXpos() {return RunVPixXpos; }
+	std::vector<G4double>& GetRunPixYpos() {return RunVPixYpos; }
 	
 	G4int GetEventNumber() {return nbEventInRun;}
 	
@@ -133,10 +133,10 @@ public:
 	
 	
 	/*
-	 std::vector<G4double>& GetSourceX() {return RunVectorSourceX; }
-	 std::vector<G4double>& GetSourceY() {return RunVectorSourceY; }
-	 std::vector<G4double>& GetSourceZ() {return RunVectorSourceZ; }
-	 std::vector<G4double>& GetSourceEne() {return RunVectorSourceEne; }
+	 std::vector<G4double>& GetSourceX() {return RunVSourceX; }
+	 std::vector<G4double>& GetSourceY() {return RunVSourceY; }
+	 std::vector<G4double>& GetSourceZ() {return RunVSourceZ; }
+	 std::vector<G4double>& GetSourceEne() {return RunVSourceEne; }
 	 */
 	
 	
@@ -168,66 +168,66 @@ private:
 	void CreateHistogram();
 	void WriteHistogram();
 	
-	std::vector<G4double> RunVectorEnPter;
-	std::vector<G4double>	RunVectorEnPterPrim;
-	std::vector<G4double> RunVectorPartPterPrim;
-	std::vector<G4float>	RunVectorEnPterTime;
-	std::vector<G4double> RunVectorXPter;
-	std::vector<G4double> RunVectorYPter;
-	std::vector<G4double> RunVectorZPter;
-	std::vector<G4double> RunVectorPartPter;
+	std::vector<G4double> RunVEnPter;
+	std::vector<G4double>	RunVEnPterPrim;
+	std::vector<G4double> RunVPartPterPrim;
+	std::vector<G4float>	RunVEnPterTime;
+	std::vector<G4double> RunVXPter;
+	std::vector<G4double> RunVYPter;
+	std::vector<G4double> RunVZPter;
+	std::vector<G4double> RunVPartPter;
 	
-	std::vector<G4double> RunVectorEnPre;
-	std::vector<G4double> RunVectorPart;
+	std::vector<G4double> RunVEnPre;
+	std::vector<G4double> RunVPart;
 	
 	
-	std::vector<G4double> RunVectorAnnihX;
-	std::vector<G4double> RunVectorAnnihY;
-	std::vector<G4double> RunVectorAnnihZ;
+	std::vector<G4double> RunVAnnihX;
+	std::vector<G4double> RunVAnnihY;
+	std::vector<G4double> RunVAnnihZ;
 	
-	std::vector<G4double> RunVectorPreAbsEn;
-	std::vector<G4double> RunVectorPartPreAbs;
-	std::vector<G4double> RunVectorPartPostAbs;
+	std::vector<G4double> RunVPreAbsEn;
+	std::vector<G4double> RunVPartPreAbs;
+	std::vector<G4double> RunVPartPostAbs;
 	
-	std::vector<G4double> RunVectorAnnihT;
+	std::vector<G4double> RunVAnnihT;
 
 	
-	std::vector<G4double> RunVectorPixNo;
-//	std::vector<G4double> RunVectorPixEneDep;
-	std::vector<G4double> RunVectorPixXpos;
-	std::vector<G4double> RunVectorPixYpos;
+	std::vector<G4double> RunVPixNo;
+//	std::vector<G4double> RunVPixEneDep;
+	std::vector<G4double> RunVPixXpos;
+	std::vector<G4double> RunVPixYpos;
 	
-	std::vector<G4double> RunVectorCosX;
-	std::vector<G4double> RunVectorCosY;
-	std::vector<G4double> RunVectorCosZ;
+	std::vector<G4double> RunVCosX;
+	std::vector<G4double> RunVCosY;
+	std::vector<G4double> RunVCosZ;
 	
-	std::vector<G4double> RunVectorEnGen;
-	std::vector<G4double> RunVectorEnPart;
-	std::vector<G4double> RunVectorIsotopeGen;
+	std::vector<G4double> RunVEnGen;
+	std::vector<G4double> RunVEnPart;
+	std::vector<G4double> RunVIsotopeGen;
 	
 	
-	std::vector<G4double> RunVectorEnExit;
-	std::vector<G4double> RunVectorXExit;
-	std::vector<G4double> RunVectorYExit;
-	std::vector<G4double> RunVectorZExit;
-	std::vector<G4double> RunVectorCosXExit;
-	std::vector<G4double> RunVectorCosYExit;
-	std::vector<G4double> RunVectorCosZExit;
+	std::vector<G4double> RunVEnExit;
+	std::vector<G4double> RunVXExit;
+	std::vector<G4double> RunVYExit;
+	std::vector<G4double> RunVZExit;
+	std::vector<G4double> RunVCosXExit;
+	std::vector<G4double> RunVCosYExit;
+	std::vector<G4double> RunVCosZExit;
 	
-	std::vector<G4double> RunVectorPartExit;
-	std::vector<G4double> RunVectorParentIDExit;
+	std::vector<G4double> RunVPartExit;
+	std::vector<G4double> RunVParentIDExit;
 	
 	std::vector<G4int> RunExitProcess;
 	
-	std::vector<G4double> RunVectorEAbsComp;
-	std::vector<G4double> RunVectorEAbsSiPMComp;
+	std::vector<G4double> RunVEAbsComp;
+	std::vector<G4double> RunVEAbsSiPMComp;
 
 	
 	/*
-	 std::vector<G4double> RunVectorSourceX;
-	 std::vector<G4double> RunVectorSourceY;
-	 std::vector<G4double> RunVectorSourceZ;
-	 std::vector<G4double> RunVectorSourceEne;
+	 std::vector<G4double> RunVSourceX;
+	 std::vector<G4double> RunVSourceY;
+	 std::vector<G4double> RunVSourceZ;
+	 std::vector<G4double> RunVSourceEne;
 	 */
 	G4String fOutFileName;
 	
