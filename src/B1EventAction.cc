@@ -45,7 +45,7 @@ fRunAction(runAction),
 fEdep(0.),
 fEdepSiPM(0.),
 fEdkin(0.),
-fno(0),
+fNumHitsDet(0),
 fPreNo(0),
 fEdepEle(0.),
 fEdepPos(0.),
@@ -54,11 +54,11 @@ fEdepSiPMpos(0.),
 fEdepSiPMfot(0.),
 fEnteringParticle(0),
 fSourceExitPassCounter(0.),
-fPassCounterPter(0.),
+fPterPassCounter(0.),
 fPassCounterDummy2(0.),
 fNSourceExit(0.),
 fSourceExitStoreTrackID(0),
-fStoreTrackIDPter(0),
+fPterStoreTrackID(0),
 fStoreTrackIDDummy2(0),
 fEnterPterFlag(0)
 {}
@@ -130,7 +130,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunEAbsComp()).clear();
 	(fRunAction->GetRunEAbsSiPMComp()).clear();
 
-	fno=0;
+	fNumHitsDet=0;
 	fPreNo=0;
 	
 	fEdepEle=0.;
@@ -141,10 +141,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEnteringParticle=0;
 	fNSourceExit=0;
 	fSourceExitPassCounter=0;
-	fPassCounterPter=0;
+	fPterPassCounter=0;
 	fPassCounterDummy2=0;
 	fSourceExitStoreTrackID=0;
-	fStoreTrackIDPter=0;
+	fPterStoreTrackID=0;
 	fStoreTrackIDDummy2=0;
 	fNPMT=0;
 	fEnterPterFlag=0;
@@ -185,7 +185,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	if(1||fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
 	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
 	analysisManager->FillNtupleDColumn(0, 2, fPreNo);
-	analysisManager->FillNtupleDColumn(0, 5, fno); //number of hits into the detector
+	analysisManager->FillNtupleDColumn(0, 5, fNumHitsDet); //number of hits into the detector
 	analysisManager->FillNtupleDColumn(0,14, fSourceX/mm);
 	analysisManager->FillNtupleDColumn(0,15, fSourceY/mm);
 	analysisManager->FillNtupleDColumn(0,16, fSourceZ/mm);

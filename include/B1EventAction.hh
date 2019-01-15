@@ -52,7 +52,7 @@ public:
 	void AddEdep(G4double edep) { fEdep += edep; }
 	void AddEdepSiPM(G4double EdepSiPM) { fEdepSiPM += EdepSiPM; }
 	void AddEdkin(G4double edkin) { fEdkin += edkin; }
-	void AddNo(G4int no) { fno += no; }
+	void AddNumHitsDet(G4int no) { fNumHitsDet += no; }
 	
 	void AddNoPre(G4int PreNo) { fPreNo += PreNo; }
 	
@@ -86,11 +86,11 @@ public:
 	void ResetSourceExitPassCounter() {fSourceExitPassCounter=0;}
 	G4int GetSourceExitPassCounter(void) {return fSourceExitPassCounter;}
 	
-	void SetStoreTrackIDPter(G4int trid) {fStoreTrackIDPter=trid;}
-	G4int GetStoreTrackIDPter(void) {return fStoreTrackIDPter;}
-	void AddPassCounterPter(G4int num) {fPassCounterPter+=num;}
-	void ResetPassCounterPter() {fPassCounterPter=0;}
-	G4int GetPassCounterPter(void) {return fPassCounterPter;}
+	void SetPterStoreTrackID(G4int trid) {fPterStoreTrackID=trid;}
+	G4int GetPterStoreTrackID(void) {return fPterStoreTrackID;}
+	void AddPterPassCounter(G4int num) {fPterPassCounter+=num;}
+	void ResetPterPassCounter() {fPterPassCounter=0;}
+	G4int GetPterPassCounter(void) {return fPterPassCounter;}
 	
 	void SetStoreTrackIDDummy2(G4int trid) {fStoreTrackIDDummy2=trid;}
 	G4int GetStoreTrackIDDummy2(void) {return fStoreTrackIDDummy2;}
@@ -115,7 +115,7 @@ private:
 	// G4double xstop;
 	// G4double ystop;
 	// G4double zstop;
-	G4int fno;
+	G4int fNumHitsDet;
 	G4int fPreNo;
 	
 	G4double	fEdepEle;
@@ -138,7 +138,7 @@ private:
 	G4double fSourceCosZ;
 	
 	G4int fSourceExitPassCounter;
-	G4int fPassCounterPter;
+	G4int fPterPassCounter;
 	G4int fPassCounterDummy2;
 
 	G4double fNSourceExit;
@@ -146,7 +146,7 @@ private:
 	
 	G4String fExitProcess;
 	G4int fSourceExitStoreTrackID;
-	G4int fStoreTrackIDPter;
+	G4int fPterStoreTrackID;
 	G4int fStoreTrackIDDummy2;
 	G4int fEnterPterFlag;
 };

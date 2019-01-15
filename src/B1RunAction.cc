@@ -150,7 +150,7 @@ void B1RunAction::EndOfRunAction(const G4Run* run)
 	<< " The run consists of " << nofEvents << " "<< runCondition
 	<< G4endl
 	<< G4endl
-	// << " N. of hits in scoring volume :" << fnofHits
+	// << " N. of hits in scoring volume :" << fNumHitsDetfHits
 	// << G4endl
 	<< G4endl
 	<< G4endl;

@@ -73,7 +73,7 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 	//	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
 	
 	fEventAction->ResetSourceExitPassCounter(); //collamaf: at each new track we reset the pass counter
-	fEventAction->ResetPassCounterPter(); //collamaf: at each new track we reset the pass counter
+	fEventAction->ResetPterPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPassCounterDummy2();
 	
 	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle()->GetPDGcode()<9e8 && track->GetDynamicParticle()->GetPDGcode()!=0 && track->GetCurrentStepNumber()==0) { //to exclude optical photons and to avoid counting several times particles that undergo optical interactions (eg scintillation) - added on 2018.06.21
