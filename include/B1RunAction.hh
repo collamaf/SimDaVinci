@@ -229,7 +229,7 @@ private:
 	 std::vector<G4double> RunVectorSourceZ;
 	 std::vector<G4double> RunVectorSourceEne;
 	 */
-	G4String fFileNameALL;
+	G4String fOutFileName;
 	
 };
 

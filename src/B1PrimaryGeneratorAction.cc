@@ -50,7 +50,6 @@
 #include "B1RunAction.hh"
 #include "B1Analysis.hh"
 
-
 #include "G4Event.hh"
 
 #include <iostream>
@@ -134,8 +133,6 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 		fDZExt=fSourceThickness*mm;
 	}
 	
-	
-	ofstream SourceFile;
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4ParticleDefinition* particle = particleTable->FindParticle("geantino");
 	
@@ -260,10 +257,6 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double Source_Y=rho*sin(alpha);
 	G4double Source_Z=zSource;
 
-	
-//	G4ThreeVector position = G4ThreeVector(rho*cos(alpha), rho*sin(alpha), zSource);
-
-//	G4ThreeVector position = G4ThreeVector(Sphere_X, Sphere_Y, Sphere_Z);
 /*
 	evtPrimAction->SetSourceCosX(0);
 	evtPrimAction->SetSourceCosY(0);
@@ -313,7 +306,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}
 	
 	
-	const	G4ThreeVector position = G4ThreeVector(Source_X, Source_Y, Source_Z);
+	const	G4ThreeVector SourcePosition = G4ThreeVector(Source_X, Source_Y, Source_Z);
 
 	
 	//###################################################
@@ -335,13 +328,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}
 	
 	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xDirection,yDirection,zDirection));
-	fParticleGun->SetParticlePosition(position);
+	fParticleGun->SetParticlePosition(SourcePosition);
 	
 	
-//	evtPrimAction->SetSourceEne(fParticleGun->GetParticleEnergy());
-	evtPrimAction->SetSourceX((position.x())/mm);
-	evtPrimAction->SetSourceY((position.y())/mm);
-	evtPrimAction->SetSourceZ((position.z())/mm);
+//	Save source info to root file
+	evtPrimAction->SetSourceX((SourcePosition.x())/mm);
+	evtPrimAction->SetSourceY((SourcePosition.y())/mm);
+	evtPrimAction->SetSourceZ((SourcePosition.z())/mm);
 	
 	
 	fParticleGun->GeneratePrimaryVertex(anEvent);

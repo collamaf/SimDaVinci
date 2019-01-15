@@ -105,14 +105,7 @@ public:
 	G4int GetEnterPterFlag(void) {return fEnterPterFlag;}
 
 	void AddNPMT(G4int n) {fNPMT+=n;}
-	
-	//  void SetStopPosition (G4double x,G4double y, G4double z){
-	//  xstop=x;
-	//  ystop=y;
-	// zstop=z;
-	
-	//ma}
-	
+
 	
 private:
 	B1RunAction* fRunAction;
@@ -151,15 +144,6 @@ private:
 	G4double fNSourceExit;
 	G4int fNPMT;
 	
-	/*
-	 G4double fSourceXExit;
-	 G4double fSourceYExit;
-	 G4double fSourceZExit;
-	 G4double fSourceEneExit;
-	 G4double fSourceCosXExit;
-	 G4double fSourceCosYExit;
-	 G4double fSourceCosZExit;
-	 */
 	G4String fExitProcess;
 	G4int fStoreTrackIDSource;
 	G4int fStoreTrackIDPter;

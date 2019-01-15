@@ -430,6 +430,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Finally got rid of all old "dummies". New 3 dummy scheme seems to work for all 3 gaset!
 - Removed all references to FilePrim
 
+2019.01.15 by collamaf
+- Cleaning of scoring
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
