@@ -135,29 +135,21 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
 	
+	
 	// ########################################
 	// ###################### EXITING SOURCE
-	
-	
-	if( NextVol &&
-		 (
-			(
-			 (ThisVol->GetName()=="SourceSR"
-				&&
-				(NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) ||
-			 (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) ||
-			 (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber")))
-			) ) { //what actually exits the source
+	if( NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0)
+	{
 			 
 			 //collamaf: to avoid double counting same track going back and forth, check if I already counted it
-			 if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-				 fEventAction->AddPassCounterSource(1);  //increase the counter
+			 if (fEventAction->GetSourceExitStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+				 fEventAction->AddSourceExitPassCounter(1);  //increase the counter
 			 }else {
-				 fEventAction->SetStoreTrackIDSource(step->GetTrack()->GetTrackID());
+				 fEventAction->SetSourceExitStoreTrackID(step->GetTrack()->GetTrackID());
 			 }
 			 
 			 // Salvo le info solo della prima volta che una particella esce dalla sorgente
-			 if (fEventAction->GetPassCounterSource()==0) {
+			 if (fEventAction->GetSourceExitPassCounter()==0) {
 				 fEventAction->AddNSourceExit(1);
 			 (runStepAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			 (runStepAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);

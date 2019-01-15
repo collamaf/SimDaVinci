@@ -80,11 +80,11 @@ public:
 	void AddNSourceExit(G4double snsexit) {fNSourceExit+=snsexit;}
 	G4double GetNSourceExit(void) {return fNSourceExit;}
 	
-	void SetStoreTrackIDSource(G4int trid) {fStoreTrackIDSource=trid;}
-	G4int GetStoreTrackIDSource(void) {return fStoreTrackIDSource;}
-	void AddPassCounterSource(G4int num) {fPassCounterSource+=num;}
-	void ResetPassCounterSource() {fPassCounterSource=0;}
-	G4int GetPassCounterSource(void) {return fPassCounterSource;}
+	void SetSourceExitStoreTrackID(G4int trid) {fSourceExitStoreTrackID=trid;}
+	G4int GetSourceExitStoreTrackID(void) {return fSourceExitStoreTrackID;}
+	void AddSourceExitPassCounter(G4int num) {fSourceExitPassCounter+=num;}
+	void ResetSourceExitPassCounter() {fSourceExitPassCounter=0;}
+	G4int GetSourceExitPassCounter(void) {return fSourceExitPassCounter;}
 	
 	void SetStoreTrackIDPter(G4int trid) {fStoreTrackIDPter=trid;}
 	G4int GetStoreTrackIDPter(void) {return fStoreTrackIDPter;}
@@ -137,7 +137,7 @@ private:
 	G4double fSourceCosY;
 	G4double fSourceCosZ;
 	
-	G4int fPassCounterSource;
+	G4int fSourceExitPassCounter;
 	G4int fPassCounterPter;
 	G4int fPassCounterDummy2;
 
@@ -145,7 +145,7 @@ private:
 	G4int fNPMT;
 	
 	G4String fExitProcess;
-	G4int fStoreTrackIDSource;
+	G4int fSourceExitStoreTrackID;
 	G4int fStoreTrackIDPter;
 	G4int fStoreTrackIDDummy2;
 	G4int fEnterPterFlag;

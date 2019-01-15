@@ -53,11 +53,11 @@ fEdepFot(0.),
 fEdepSiPMpos(0.),
 fEdepSiPMfot(0.),
 fEnteringParticle(0),
-fPassCounterSource(0.),
+fSourceExitPassCounter(0.),
 fPassCounterPter(0.),
 fPassCounterDummy2(0.),
 fNSourceExit(0.),
-fStoreTrackIDSource(0),
+fSourceExitStoreTrackID(0),
 fStoreTrackIDPter(0),
 fStoreTrackIDDummy2(0),
 fEnterPterFlag(0)
@@ -140,10 +140,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdepSiPMfot=0.,
 	fEnteringParticle=0;
 	fNSourceExit=0;
-	fPassCounterSource=0;
+	fSourceExitPassCounter=0;
 	fPassCounterPter=0;
 	fPassCounterDummy2=0;
-	fStoreTrackIDSource=0;
+	fSourceExitStoreTrackID=0;
 	fStoreTrackIDPter=0;
 	fStoreTrackIDDummy2=0;
 	fNPMT=0;
