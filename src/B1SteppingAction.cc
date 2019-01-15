@@ -72,10 +72,10 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
-		(fRunningAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
-		(fRunningAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
-		(fRunningAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-		(fRunningAction->GetRunAnnihT()).push_back(step->GetPostStepPoint()->GetLocalTime()/ns);
+		(fRunningAction->GetAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+		(fRunningAction->GetAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+		(fRunningAction->GetAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+		(fRunningAction->GetAnnihT()).push_back(step->GetPostStepPoint()->GetLocalTime()/ns);
 	}
 	
 	// ########################################
@@ -100,7 +100,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	// ########################################
 	// ###################### ENTERING Pter (from wherever)
-	
 	//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
@@ -122,9 +121,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		if (fEventAction->GetPterPassCounter()==0) {
 			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
 			//Fill vector
-			(fRunningAction->GetRunEnPre()).push_back(eKinPre/keV);
+			(fRunningAction->GetEnPre()).push_back(eKinPre/keV);
 			fEventAction->AddNoPre(1); //update the counter of particles entering Pter in the event
-			(fRunningAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
+			(fRunningAction->GetPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
 		}
 	}
 	
@@ -150,22 +149,22 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 		if (fEventAction->GetSourceExitPassCounter()==0) {
 			fEventAction->AddNSourceExit(1); //contatore di quante tracce escono dalla sorgente
-			(fRunningAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-			(fRunningAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
-			(fRunningAction->GetRunYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
-			(fRunningAction->GetRunZExit()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-			(fRunningAction->GetRunCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
-			(fRunningAction->GetRunCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
-			(fRunningAction->GetRunCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
-			(fRunningAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
-			(fRunningAction->GetRunParentIDExit()).push_back(step->GetTrack()->GetParentID());
+			(fRunningAction->GetEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(fRunningAction->GetXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+			(fRunningAction->GetYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+			(fRunningAction->GetZExit()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+			(fRunningAction->GetCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
+			(fRunningAction->GetCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
+			(fRunningAction->GetCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
+			(fRunningAction->GetPartExit()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+			(fRunningAction->GetParentIDExit()).push_back(step->GetTrack()->GetParentID());
 			
 			if (step->GetTrack()->GetCreatorProcess()) {
-				(fRunningAction->GetRunExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
+				(fRunningAction->GetExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
 			} else {
-				 (fRunningAction->GetRunExitProcess().push_back(-17));
+				 (fRunningAction->GetExitProcess().push_back(-17));
 			 }
-			 (fRunningAction->GetRunPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+			 (fRunningAction->GetPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		 }
 	 }
 	
@@ -181,9 +180,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 //
 //		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 //		if (fEventAction->GetPassCounterDummy2()==0) {
-//			(fRunningAction->GetRunPreAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-//			(fRunningAction->GetRunPartPreAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-//			(fRunningAction->GetRunPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+//			(fRunningAction->GetPreAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+//			(fRunningAction->GetPartPreAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+//			(fRunningAction->GetPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 //		}
 //	}
 	
@@ -206,16 +205,16 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		G4double edepStep = step->GetTotalEnergyDeposit();
 		
 		//Fill vector
-		(fRunningAction->GetRunEnPter()).push_back(step->GetTotalEnergyDeposit()/keV);
-		(fRunningAction->GetRunEnPterPrim()).push_back(fRunningAction->GetMotherEnergy());
-		(fRunningAction->GetRunPartPterPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-		//		(fRunningAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
-		(fRunningAction->GetRunEnPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime());
+		(fRunningAction->GetEnPter()).push_back(step->GetTotalEnergyDeposit()/keV);
+		(fRunningAction->GetEnPterPrim()).push_back(fRunningAction->GetMotherEnergy());
+		(fRunningAction->GetPartPterPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		//		(fRunningAction->GetEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
+		(fRunningAction->GetEnPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime());
 		//		G4cout<<"PterDEBUG  MotherTime= "<< fRunningAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime() <<G4endl;
-		(fRunningAction->GetRunXPter()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
-		(fRunningAction->GetRunYPter()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
-		(fRunningAction->GetRunZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
-		(fRunningAction->GetRunPartPter()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		(fRunningAction->GetXPter()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
+		(fRunningAction->GetYPter()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
+		(fRunningAction->GetZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
+		(fRunningAction->GetPartPter()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
 		if (debug)  G4cout<<"CIAODEBUG Ho un rilascio di energia ("<< step->GetTotalEnergyDeposit()/keV<<" [KeV]) dovuto ad una particella entrata nel CMOS di tipo: "<<fEventAction->GetEnteringParticle()<<G4endl;
 		
@@ -242,9 +241,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
  if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil" && (NextVol->GetName()=="ProbeContainer" )) {
  G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
  evt->KeepTheEvent();
- (fRunningAction->GetRunAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
- (fRunningAction->GetRunAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
- (fRunningAction->GetRunAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+ (fRunningAction->GetAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+ (fRunningAction->GetAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+ (fRunningAction->GetAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
  }
  */
 

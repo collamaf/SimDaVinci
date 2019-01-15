@@ -83,12 +83,12 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		runStackAction->SetMotherIsotope(track->GetParentID()-1);
 		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetRunIsotopeGen()).push_back(track->GetParentID()-1);
-		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+		(runStackAction->GetEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetIsotopeGen()).push_back(track->GetParentID()-1);
+		(runStackAction->GetCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetCosZ()).push_back(track->GetMomentumDirection().z());
 			
 	}
 	
@@ -97,12 +97,12 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 //		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
 		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetRunIsotopeGen()).push_back(0);
-		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+		(runStackAction->GetEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetIsotopeGen()).push_back(0);
+		(runStackAction->GetCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetCosZ()).push_back(track->GetMomentumDirection().z());
 	}
 	
 	if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) { //if direct gamma source store its properties
@@ -110,12 +110,12 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 //		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
 		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetRunEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetRunIsotopeGen()).push_back(0);
-		(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+		(runStackAction->GetEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(runStackAction->GetEnPart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(runStackAction->GetIsotopeGen()).push_back(0);
+		(runStackAction->GetCosX()).push_back(track->GetMomentumDirection().x());
+		(runStackAction->GetCosY()).push_back(track->GetMomentumDirection().y());
+		(runStackAction->GetCosZ()).push_back(track->GetMomentumDirection().z());
 	}
 	
 	
@@ -128,22 +128,22 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 			runStackAction->SetMotherIsotope(0);
 			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-			(runStackAction->GetRunIsotopeGen()).push_back(0);
-			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
-			(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
-			(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+			(runStackAction->GetEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+			(runStackAction->GetIsotopeGen()).push_back(0);
+			(runStackAction->GetCosX()).push_back(track->GetMomentumDirection().x());
+			(runStackAction->GetCosY()).push_back(track->GetMomentumDirection().y());
+			(runStackAction->GetCosZ()).push_back(track->GetMomentumDirection().z());
 		} else if (track->GetParentID() == 2) {  //figlio di Y
 			if (debug) G4cout<<"PterDEBUG Y Setto il MotherIsotope a 1"<<G4endl;
 			runStackAction->SetMotherIsotope(1);
 			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
 			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
 			//			G4cout<<"PterDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
-			(runStackAction->GetRunEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-			(runStackAction->GetRunIsotopeGen()).push_back(1);
-			(runStackAction->GetRunCosX()).push_back(track->GetMomentumDirection().x());
-			(runStackAction->GetRunCosY()).push_back(track->GetMomentumDirection().y());
-			(runStackAction->GetRunCosZ()).push_back(track->GetMomentumDirection().z());
+			(runStackAction->GetEnGen()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+			(runStackAction->GetIsotopeGen()).push_back(1);
+			(runStackAction->GetCosX()).push_back(track->GetMomentumDirection().x());
+			(runStackAction->GetCosY()).push_back(track->GetMomentumDirection().y());
+			(runStackAction->GetCosZ()).push_back(track->GetMomentumDirection().z());
 		}
 	}
 	

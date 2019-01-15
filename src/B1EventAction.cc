@@ -76,59 +76,59 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdep = 0.;
 	fEdepSiPM=0.;
 	fEdkin = 0.;
-	(fRunAction->GetRunEnPre()).clear();
-	(fRunAction->GetRunPart()).clear();
-	(fRunAction->GetRunEnPter()).clear();
-	(fRunAction->GetRunEnPterPrim()).clear();
-	(fRunAction->GetRunPartPterPrim()).clear();
-	(fRunAction->GetRunEnPterTime()).clear();
-	(fRunAction->GetRunXPter()).clear();
-	(fRunAction->GetRunYPter()).clear();
-	(fRunAction->GetRunZPter()).clear();
-	(fRunAction->GetRunPartPter()).clear();
+	(fRunAction->GetEnPre()).clear();
+	(fRunAction->GetPart()).clear();
+	(fRunAction->GetEnPter()).clear();
+	(fRunAction->GetEnPterPrim()).clear();
+	(fRunAction->GetPartPterPrim()).clear();
+	(fRunAction->GetEnPterTime()).clear();
+	(fRunAction->GetXPter()).clear();
+	(fRunAction->GetYPter()).clear();
+	(fRunAction->GetZPter()).clear();
+	(fRunAction->GetPartPter()).clear();
 	
 	
-	(fRunAction->GetRunAnnihX()).clear();
-	(fRunAction->GetRunAnnihY()).clear();
-	(fRunAction->GetRunAnnihZ()).clear();
+	(fRunAction->GetAnnihX()).clear();
+	(fRunAction->GetAnnihY()).clear();
+	(fRunAction->GetAnnihZ()).clear();
 	
-	(fRunAction->GetRunAnnihT()).clear();
+	(fRunAction->GetAnnihT()).clear();
 	
-	(fRunAction->GetRunPreAbsEn()).clear();
-	(fRunAction->GetRunPartPreAbs()).clear();
-	(fRunAction->GetRunPartPostAbs()).clear();
+	(fRunAction->GetPreAbsEn()).clear();
+	(fRunAction->GetPartPreAbs()).clear();
+	(fRunAction->GetPartPostAbs()).clear();
 
-	(fRunAction->GetRunPixNo()).clear();
-//	(fRunAction->GetRunPixEneDep()).clear();
-	(fRunAction->GetRunPixXpos()).clear();
-	(fRunAction->GetRunPixYpos()).clear();
+	(fRunAction->GetPixNo()).clear();
+//	(fRunAction->GetPixEneDep()).clear();
+	(fRunAction->GetPixXpos()).clear();
+	(fRunAction->GetPixYpos()).clear();
 	
-	(fRunAction->GetRunCosX()).clear();
-	(fRunAction->GetRunCosY()).clear();
-	(fRunAction->GetRunCosZ()).clear();
+	(fRunAction->GetCosX()).clear();
+	(fRunAction->GetCosY()).clear();
+	(fRunAction->GetCosZ()).clear();
 
-	(fRunAction->GetRunEnGen()).clear();
-	(fRunAction->GetRunEnPart()).clear();
-	(fRunAction->GetRunIsotopeGen()).clear();
+	(fRunAction->GetEnGen()).clear();
+	(fRunAction->GetEnPart()).clear();
+	(fRunAction->GetIsotopeGen()).clear();
 
 	(fRunAction->SetMotherIsotope(-10));
 	(fRunAction->SetMotherEnergy(-10));
 	(fRunAction->SetMotherTime(0));
 
-	(fRunAction->GetRunEnExit()).clear();
-	(fRunAction->GetRunXExit()).clear();
-	(fRunAction->GetRunYExit()).clear();
-	(fRunAction->GetRunZExit()).clear();
-	(fRunAction->GetRunCosXExit()).clear();
-	(fRunAction->GetRunCosYExit()).clear();
-	(fRunAction->GetRunCosZExit()).clear();
-	(fRunAction->GetRunPartExit()).clear();
-	(fRunAction->GetRunParentIDExit()).clear();
+	(fRunAction->GetEnExit()).clear();
+	(fRunAction->GetXExit()).clear();
+	(fRunAction->GetYExit()).clear();
+	(fRunAction->GetZExit()).clear();
+	(fRunAction->GetCosXExit()).clear();
+	(fRunAction->GetCosYExit()).clear();
+	(fRunAction->GetCosZExit()).clear();
+	(fRunAction->GetPartExit()).clear();
+	(fRunAction->GetParentIDExit()).clear();
 	
-	(fRunAction->GetRunExitProcess()).clear();
+	(fRunAction->GetExitProcess()).clear();
 	
-	(fRunAction->GetRunEAbsComp()).clear();
-	(fRunAction->GetRunEAbsSiPMComp()).clear();
+	(fRunAction->GetEAbsComp()).clear();
+	(fRunAction->GetEAbsSiPMComp()).clear();
 
 	fNumHitsDet=0;
 	fPreNo=0;
@@ -167,11 +167,11 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 //	fRunAction->AddEdepSiPM(fEdepSiPM);
 	fRunAction->AddEdkin(fEdkin);
 
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepEle/keV);
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepPos/keV);
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepFot/keV);
-//	(fRunAction->GetRunEAbsSiPMComp()).push_back(fEdepSiPMpos/keV);
-//	(fRunAction->GetRunEAbsSiPMComp()).push_back(fEdepSiPMfot/keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepEle/keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepPos/keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepFot/keV);
+//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMpos/keV);
+//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMfot/keV);
 
 	G4int NevTot=fRunAction->GetEventNumber();
 	
