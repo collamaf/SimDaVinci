@@ -58,8 +58,6 @@ fGaSet(GaSet)
 B1SteppingAction::~B1SteppingAction()
 {}
 
-//std::ofstream pixelOut("PixelTest.dat", std::ios::out);
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void B1SteppingAction::UserSteppingAction(const G4Step* step)
@@ -70,7 +68,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	G4int debug=0;
 	
-	
+	//In case of GaSet 2/3 look for annihilation points (since it's probably Gallium)
 	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
@@ -80,20 +78,25 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(runStepAction->GetRunAnnihT()).push_back(step->GetPostStepPoint()->GetLocalTime()/ns);
 	}
 	
-	/* AddNPMT*/
-	
 	// ########################################
 	// ###################### Optical Photons ENTERING SiPm
 	if(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()== 0 && NextVol && ThisVol->GetName()=="Pter" && NextVol->GetName()=="SiPm") {
-		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
+//		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
 		fEventAction->AddNPMT(1);
 	}
+	// ######################
+	// ########################################
 	
 	
+	// ########################################
+	// ###################### Interactions in SiPm
 	if (ThisVol->GetName()=="SiPm") {
 		fEventAction->AddEdepSiPM(step->GetTotalEnergyDeposit());
 //		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
 	}
+	// ######################
+	// ########################################
+	
 	
 	// ########################################
 	// ###################### ENTERING Pter

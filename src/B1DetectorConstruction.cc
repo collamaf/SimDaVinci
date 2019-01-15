@@ -458,12 +458,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### Dummy Enter Pter
-	G4double RminDummyEnterPter = 0.*mm;
-	G4double RmaxDummyEnterPter = 18.*mm;
-	if (fGaSet==2) RmaxDummyEnterPter = d_CylG3/2.*mm;
-	if (fGaSet==3) RmaxDummyEnterPter = d_CylG3/2.*mm;
-	G4double DzDummyEnterPter= 1.e-5*mm;
-	G4ThreeVector posDummyEnterPter;
+	G4double RminDummyEnterProbe = 0.*mm;
+	G4double RmaxDummyEnterProbe = 18.*mm;
+	if (fGaSet==2) RmaxDummyEnterProbe = d_CylG3/2.*mm;
+	if (fGaSet==3) RmaxDummyEnterProbe = d_CylG3/2.*mm;
+	G4double DzDummyEnterProbe= 1.e-5*mm;
+	G4ThreeVector posDummyEnterProbe;
 	//###
 	
 	G4ThreeVector posAbs;
@@ -513,18 +513,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###########################
 	//Dummy Enter Pter
 	//###########################
-	G4Tubs* solidShapeDummyEnterPter =
-	new G4Tubs("DummyEnterPter",                       //its name
-						 RminDummyEnterPter,
-						 RmaxDummyEnterPter,
-						 0.5*DzDummyEnterPter,
+	G4Tubs* solidShapeDummyEnterProbe =
+	new G4Tubs("DummyEnterProbe",                       //its name
+						 RminDummyEnterProbe,
+						 RmaxDummyEnterProbe,
+						 0.5*DzDummyEnterProbe,
 						 Ang0,
 						 Ang2Pi);     //its size
 	
-	G4LogicalVolume* logicShapeDummyEnterPter =
-	new G4LogicalVolume(solidShapeDummyEnterPter,          //its solid
+	G4LogicalVolume* logicShapeDummyEnterProbe =
+	new G4LogicalVolume(solidShapeDummyEnterProbe,          //its solid
 											shapeDummy_mat,           //its material
-											"DummyEnterPter");            //its name
+											"DummyEnterProbe");            //its name
 	
 	//###################################################
 	// ExtY Source
@@ -1814,25 +1814,25 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
 		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+DzDummyExitAbs/2.);
 		G4cout<<"CIAONE debug: prima: "<< fAbsorberThickness+DzDummyExitAbs/2.<<" dopo "<< posAbs.z()+fAbsorberThickness/2.+DzDummyExitAbs/2.<<G4endl;
-		posDummyEnterPter=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterPter/2.);
+		posDummyEnterProbe=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterProbe/2.);
 	}
 	if (fGaSet==2) {
 		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
 		posDummyExitAbs = G4ThreeVector(0, 0, posAbs.z()+fAbsorberThickness/2.+DzDummyExitAbs/2.);
-		posDummyEnterPter=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterPter/2.);
+		posDummyEnterProbe=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterProbe/2.);
 	}
 	if(fGaSet==3) {
 		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
 		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+DzDummyExitAbs/2.);
 		G4cout<<"CIAONE debug: prima: "<< fAbsorberThickness+DzDummyExitAbs/2.<<" dopo "<< posAbs.z()+fAbsorberThickness/2.+DzDummyExitAbs/2.<<G4endl;
-	posDummyEnterPter=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterPter/2.);
+	posDummyEnterProbe=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterProbe/2.);
 	}
 	
 
 	
 	new G4PVPlacement(0,posDummyExitSorg,logicShapeDummyExitSorg,"DummyExitSorg",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	new G4PVPlacement(0,posDummyExitAbs,logicShapeDummyExitAbs,"DummyExitAbs",logicWorld,false,0,checkOverlaps);        //overlaps checking
-	new G4PVPlacement(0,posDummyEnterPter,logicShapeDummyEnterPter,"DummyEnterPter",logicWorld,false,0,checkOverlaps);        //overlaps checking
+	new G4PVPlacement(0,posDummyEnterProbe,logicShapeDummyEnterProbe,"DummyEnterProbe",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	
 	logicShapeDummyExitSorg->SetRegion(sorgente);
 	sorgente->AddRootLogicalVolume(logicShapeDummyExitSorg);
@@ -1840,8 +1840,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	logicShapeDummyExitAbs->SetRegion(sorgente);
 	sorgente->AddRootLogicalVolume(logicShapeDummyExitAbs);
 	
-	logicShapeDummyEnterPter->SetRegion(sorgente);
-	sorgente->AddRootLogicalVolume(logicShapeDummyEnterPter);
+	logicShapeDummyEnterProbe->SetRegion(sorgente);
+	sorgente->AddRootLogicalVolume(logicShapeDummyEnterProbe);
 	
 	return physWorld;
 	
