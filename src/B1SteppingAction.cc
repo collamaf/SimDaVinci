@@ -43,16 +43,14 @@
 
 #include "B1Analysis.hh"
 
-
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double CuDiam, G4int GaSet)
+B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double AbsHoleDiam, G4int GaSet)
 : G4UserSteppingAction(),
 fEventAction(eventAction),
 fScoringVolume(0),
 runStepAction(runAction),
-fCuDiam(CuDiam),
+fAbsHoleDiam(AbsHoleDiam),
 fGaSet(GaSet)
 {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -142,7 +140,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	if( NextVol &&
-		 ( ((fCuDiam<0 || fCuDiam>=0 )
+		 ( ((fAbsHoleDiam<0 || fAbsHoleDiam>=0 )
 				&&
 				(
 				 (ThisVol->GetName()=="SourceSR"
@@ -186,7 +184,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	 }
 	
 	
-	if (NextVol && ((fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
+	if (NextVol && ((fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
 		
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetStoreTrackIDDummy2()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
@@ -281,7 +279,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 /*
- 	if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fCuDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
+ 	if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fAbsHoleDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
  */
 
 /*
@@ -300,18 +298,18 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 //Nuova Condizione
 
 /*
- if( NextVol && ( ((fCuDiam<0 || fCuDiam>=0 ) &&  ( (ThisVol->GetName()=="SourceSR" && (NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) || (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) || (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber"))) ) ) ) { //what actually exits the source
+ if( NextVol && ( ((fAbsHoleDiam<0 || fAbsHoleDiam>=0 ) &&  ( (ThisVol->GetName()=="SourceSR" && (NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) || (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) || (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber"))) ) ) ) { //what actually exits the source
  */
 
 //Vecchia condizione
 
 /*
- if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) )
+ if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) )
  */
 
 //Modifica alla vecchia condizione per dummy3
 
 /*
- if( NextVol && ( (fCuDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fCuDiam<0 && fGaSet == 3 &&  (ThisVol->GetName()=="Dummy3" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fCuDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) ) || ( (fCuDiam>=0 && fGaSet == 3 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) )  ) )
+ if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fAbsHoleDiam<0 && fGaSet == 3 &&  (ThisVol->GetName()=="Dummy3" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 3 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) )  ) )
  */
 

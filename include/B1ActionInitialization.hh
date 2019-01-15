@@ -47,7 +47,7 @@ public:
 protected:
 	G4double fX0Scan;
 	G4double fZValue;
-	G4double fCuDiam;
+	G4double fAbsHoleDiam;
 	G4double fTBR;
 //	G4bool fSrSourceFlag;
 	G4int fSourceSelect;

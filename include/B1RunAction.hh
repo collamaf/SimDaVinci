@@ -148,7 +148,7 @@ private:
 	
 	G4double fX0Scan;
 	G4double fZValue;
-	G4double fCuDiam;
+	G4double fAbsHoleDiam;
 	G4int nbEventInRun;
 	G4double fTBR;
 	G4int fSourceSelect;
