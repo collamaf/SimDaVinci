@@ -99,35 +99,32 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	// ########################################
-	// ###################### ENTERING Pter
+	// ###################### ENTERING Pter (from wherever)
 	
 	//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
-		
-		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER da FrontShield - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
-		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
+		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
 		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
 		
-		
+		// Check if the current track had already enetered somehow the PTER (to avoid double counting), otherwise increase the counter
 		if (fEventAction->GetStoreTrackIDPter()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-			
 			fEventAction->AddPassCounterPter(1);  //increase the counter
-			
 			//			G4cout<<"PterDEBUG CONTROLLA "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
 		}else {
 			fEventAction->SetStoreTrackIDPter(step->GetTrack()->GetTrackID());
 			//			G4cout<<"PterDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetStoreTrackIDPter()<<", PassCounter= "<<fEventAction->GetPassCounterPter()<<G4endl;
 			//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
 		}
-		// Salvo le info solo della prima volta che una particella esce dalla sorgente
+		
+		// Salvo le info solo della prima volta che una particella entra in pter
 		if (fEventAction->GetPassCounterPter()==0) {
 			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
 			//Fill vector
 			(runStepAction->GetRunEnPre()).push_back(eKinPre/keV);
 			fEventAction->AddNoPre(1); //update the counter of particles entering Pter in the event
 			(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
-																																																			//		fEventAction->AddEdkin(eKinPre); //credo fosse eredità dell'esempio di base che contava l'energia depositata...
 		}
 	}
 	
@@ -143,26 +140,25 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	
 	if( NextVol &&
-		 ( ((fAbsHoleDiam<0 || fAbsHoleDiam>=0 )
+		 (
+			(
+			 (ThisVol->GetName()=="SourceSR"
 				&&
-				(
-				 (ThisVol->GetName()=="SourceSR"
-					&&
-					(NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) ||
-				 (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) ||
-				 (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber")))
-				) ) ) { //what actually exits the source
-		
-		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
-		if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-			fEventAction->AddPassCounterSource(1);  //increase the counter
-		}else {
-			fEventAction->SetStoreTrackIDSource(step->GetTrack()->GetTrackID());
-		}
-		
-		 // Salvo le info solo della prima volta che una particella esce dalla sorgente
-		 if (fEventAction->GetPassCounterSource()==0) {
-			 fEventAction->AddNSourceExit(1);
+				(NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) ||
+			 (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) ||
+			 (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber")))
+			) ) { //what actually exits the source
+			 
+			 //collamaf: to avoid double counting same track going back and forth, check if I already counted it
+			 if (fEventAction->GetStoreTrackIDSource()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+				 fEventAction->AddPassCounterSource(1);  //increase the counter
+			 }else {
+				 fEventAction->SetStoreTrackIDSource(step->GetTrack()->GetTrackID());
+			 }
+			 
+			 // Salvo le info solo della prima volta che una particella esce dalla sorgente
+			 if (fEventAction->GetPassCounterSource()==0) {
+				 fEventAction->AddNSourceExit(1);
 			 (runStepAction->GetRunEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			 (runStepAction->GetRunXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
 			 (runStepAction->GetRunYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);

@@ -206,17 +206,17 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
 	analysisManager->CreateNtupleDColumn(0,"EabsComp", RunVEAbsComp); //1
 	analysisManager->CreateNtupleDColumn(0,"PrePterTrackN");                  //2
-	analysisManager->CreateNtupleDColumn(0,"PrePterPart", RunVPart); //3
-	analysisManager->CreateNtupleDColumn(0,"PrePterEn", RunVEnPre); //4
+	analysisManager->CreateNtupleDColumn(0,"PrePterPart", RunVPrePterPart); //3
+	analysisManager->CreateNtupleDColumn(0,"PrePterEn", RunVPrePterEn); //4
 	analysisManager->CreateNtupleDColumn(0,"InPterTrackN");                   //5
-	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVPartPter); //6
-	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVEnPter); //7
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVEnPterPrim); //8
-	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVPartPterPrim); //9
-	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVEnPterTime); //10
-	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVXPter); //11
-	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVYPter); //12
-	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVZPter); //13
+	analysisManager->CreateNtupleDColumn(0,"InPterPart", RunVPterPart); //6
+	analysisManager->CreateNtupleDColumn(0,"InPterEn", RunVPterEn); //7
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimEn", RunVPterPrimEn); //8
+	analysisManager->CreateNtupleDColumn(0,"InPterPrimPart", RunVPterPrimPart); //9
+	analysisManager->CreateNtupleFColumn(0,"InPterTime", RunVPterTime); //10
+	analysisManager->CreateNtupleDColumn(0,"InPterX", RunVPterX); //11
+	analysisManager->CreateNtupleDColumn(0,"InPterY", RunVPterY); //12
+	analysisManager->CreateNtupleDColumn(0,"InPterZ", RunVPterZ); //13
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //14
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //15
 	analysisManager->CreateNtupleDColumn(0,"SourceZ");                           //16
