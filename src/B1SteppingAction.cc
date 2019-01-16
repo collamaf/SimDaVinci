@@ -67,7 +67,8 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 
 	G4int debug=0;
-	
+
+#pragma mark Annihilation
 	//In case of GaSet 2/3 look for annihilation points (since it's probably Gallium)
 	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
@@ -78,29 +79,30 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(fRunningAction->GetAnnihT()).push_back(step->GetPostStepPoint()->GetLocalTime()/ns);
 	}
 	
-	// ########################################
+#pragma mark Optical Photons
+	// ################################################################################
 	// ###################### Optical Photons ENTERING SiPm
 	if(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()== 0 && NextVol && ThisVol->GetName()=="Pter" && NextVol->GetName()=="SiPm") {
 //		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
 		fEventAction->AddNPMT(1);
 	}
 	// ######################
-	// ########################################
+	// ################################################################################
 	
-	
-	// ########################################
+	//TODO: test
+#pragma mark SiPm
+	// ################################################################################
 	// ###################### Interactions in SiPm
 	if (ThisVol->GetName()=="SiPm") {
 		fEventAction->AddEdepSiPM(step->GetTotalEnergyDeposit());
 //		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
 	}
 	// ######################
-	// ########################################
+	// ################################################################################
 	
-	
-	// ########################################
+#pragma mark Entering Pter
+	// ################################################################################
 	// ###################### ENTERING Pter (from wherever)
-	//	if((NextVol && ThisVol->GetName()=="FrontShield" && NextVol->GetName()=="Pter")|| (NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Pter")) { //what enters Pter (either from FrontShield or world)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
 		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
@@ -126,22 +128,22 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(fRunningAction->GetPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
 		}
 	}
-	
 	// ###################### END ENTERING Pter
-	// ########################################
+	// ################################################################################
 	
 	
 	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
 	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
 	
 	
-	// ########################################
+#pragma mark Exiting Source
+	// ################################################################################
 	// ###################### EXITING SOURCE
-	if( NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0)
+	if( NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0) //New (2019.01.16) logic: if I go from somewhere into DummyExitSorg with a negative Z direction..
 	{
 			 //collamaf: to avoid double counting same track going back and forth, check if I already counted it
 			 if (fEventAction->GetSourceExitStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-				 fEventAction->AddSourceExitPassCounter(1);  //increase the counter: number of times that this track exits the source
+				 fEventAction->AddSourceExitPassCounter(1);  //increase the counter: number of times that this track exits the source (will not be written in scoring, but used to check if it is the first crossing
 			 }else {
 				 fEventAction->SetSourceExitStoreTrackID(step->GetTrack()->GetTrackID());
 			 }
@@ -167,7 +169,22 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			 (fRunningAction->GetPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		 }
 	 }
+	// ###################### END EXITING SOURCE
+	// ################################################################################
 	
+	// ################################################################################
+	// ###################### EXITING POSSIBLE ABSORBER
+
+	if(fAbsHoleDiam>0 && NextVol && ThisVol->GetName()=="Absorber" && NextVol->GetName()=="DummyExitAbs") {
+		
+		
+	}
+
+	
+	
+	// ###################### END EXITING POSSIBLE ABSORBER
+	// ################################################################################
+
 	
 //	if (NextVol && ((fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
 //
@@ -194,7 +211,8 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fScoringVolume = detectorConstruction->GetScoringVolume();
 	}
 	
-	// ########################################
+#pragma mark Inside Pter
+// ########################################
 	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
 	if (ThisVol->GetLogicalVolume() == fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {

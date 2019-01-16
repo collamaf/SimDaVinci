@@ -112,14 +112,6 @@ public:
 	std::vector<G4double>& GetAnnihT() {return RunVAnnihT; }
 
 	
-
-	
-	
-	std::vector<G4double>& GetPixNo() {return RunVPixNo; }
-//	std::vector<G4double>& GetPixEneDep() {return RunVPixEneDep; }
-	std::vector<G4double>& GetPixXpos() {return RunVPixXpos; }
-	std::vector<G4double>& GetPixYpos() {return RunVPixYpos; }
-	
 	G4int GetEventNumber() {return nbEventInRun;}
 	
 	void SetMotherIsotope(G4double miso) {fMotherIsotope=miso;}

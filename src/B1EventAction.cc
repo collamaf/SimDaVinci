@@ -98,11 +98,6 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetPartPreAbs()).clear();
 	(fRunAction->GetPartPostAbs()).clear();
 
-	(fRunAction->GetPixNo()).clear();
-//	(fRunAction->GetPixEneDep()).clear();
-	(fRunAction->GetPixXpos()).clear();
-	(fRunAction->GetPixYpos()).clear();
-	
 	(fRunAction->GetCosX()).clear();
 	(fRunAction->GetCosY()).clear();
 	(fRunAction->GetCosZ()).clear();

@@ -125,28 +125,29 @@ CPU TIMES NEEDED FOR 1e5 PRIMARIES:
 
 
 ## OUTPUT:
-The usual PrimariesX{}_Z{}_CuD{}_Fil{}_TBR{}{_Sr}.dat is created to keep track of the progress
 A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset value, in which on an event (i.e. a primary particle) by event basis it is stored:
+
 ### SOURCE vector (one entry per primary particle, only for first 100k primaries if more primaries are requested):
-- AllX: X coordinate of primary particle [mm];
-- AllY: Y coordinate of primary particle [mm];
-- AllZ: Z coordinate of primary particle [mm];
-- AllCosX[2]: X directive cosine of produced electron;
-- AllCosY[2]: Y directive cosine of produced electron;
-- AllCosZ[2]: Z directive cosine of produced electron;
-- AllEne[2]: kinetic energy of produced electron [keV];
-- AllIsotope[2]: isotope of primary particle (0=Sr, 1=Y);
-- ExitX: X coordinate of primary particle exiting the source volume [mm];
-- ExitY: Y coordinate of primary particle exiting the source volume [mm];
-- ExitZ: Z coordinate of primary particle exiting the source volume [mm];
-- ExitCosX[2+]: X directive cosine of primary particle exiting the source volume;
-- ExitCosY[2+]: Y directive cosine of primary particle exiting the source volume;
-- ExitCosZ[2+]: Z directive cosine of primary particle exiting the source volume;
-- ExitEne[2+]: kinetic energy of primary particle exiting the source volume [keV];
-- ExitPart[2+]: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
-- ExitParentID[2+]: partent-id of particle exiting the source
-- ExitProcess[2+]: process that created the particles that exits the source (see table above)
-- ExitTrackN: number of different tracks exiting the source per event
+- 0: AllX: X coordinate of primary particle [mm];
+- 1: AllY: Y coordinate of primary particle [mm];
+- 2: AllZ: Z coordinate of primary particle [mm];
+- 3: AllCosX[1+]: X directive cosine of produced particle;
+- 4: AllCosY[1+]: Y directive cosine of produced particle;
+- 5: AllCosZ[1+]: Z directive cosine of produced particle;
+- 6: AllEne[1+]: kinetic energy of produced particle [keV];
+- 7: AllPart[1+]: PID of produced particle;
+- 8: AllIsotope[1+]: isotope of primary particle (0=Sr, 1=Y ??, ParentID - 1);
+- 9: ExitX: X coordinate of primary particle exiting the source volume [mm];
+- 10: ExitY: Y coordinate of primary particle exiting the source volume [mm];
+- 11: ExitZ: Z coordinate of primary particle exiting the source volume [mm];
+- 12: ExitCosX[2+]: X directive cosine of primary particle exiting the source volume;
+- 13: ExitCosY[2+]: Y directive cosine of primary particle exiting the source volume;
+- 14: ExitCosZ[2+]: Z directive cosine of primary particle exiting the source volume;
+- 15: ExitEne[2+]: kinetic energy of primary particle exiting the source volume [keV];
+- 16: ExitPart[2+]: kind of primary particle (11=e-, -11=e+, 22=gamma, 13=mu-...) exiting the source volume;
+- 17: ExitParentID[2+]: partent-id of particle exiting the source
+- 18: ExitProcess[2+]: process that created the particles that exits the source (see table above)
+- 19: ExitTrackN: number of different tracks exiting the source per event
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
 - Eabs: energy absorbed in Pter [keV];
@@ -430,7 +431,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Finally got rid of all old "dummies". New 3 dummy scheme seems to work for all 3 gaset!
 - Removed all references to FilePrim
 
-2019.01.15 by collamaf
+2019.01.16 by collamaf
 - Cleaning of scoring
 
 ## TO DO's

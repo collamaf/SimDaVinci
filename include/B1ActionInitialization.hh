@@ -49,7 +49,6 @@ protected:
 	G4double fZValue;
 	G4double fAbsHoleDiam;
 	G4double fTBR;
-//	G4bool fSrSourceFlag;
 	G4int fSourceSelect;
 	G4int fSensorChoice;
 	G4double fSourceDiameter;

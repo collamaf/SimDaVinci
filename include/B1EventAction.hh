@@ -56,9 +56,6 @@ public:
 	
 	void AddNoPre(G4int PreNo) { fPreNo += PreNo; }
 	
-//	void AddEdepSr(G4double edepSr) { fEdepSr += edepSr; }
-	//	void AddEdepEl(G4double edepEl) { fEdepEl += edepEl; }
-//	void AddEdepY(G4double edepY) { fEdepY += edepY; }
 	void AddEdepEle(G4double edepEle) { fEdepEle += edepEle; }
 	void AddEdepPos(G4double edepPos) { fEdepPos += edepPos; }
 	void AddEdepFot(G4double edepFot) { fEdepFot += edepFot; }
@@ -112,9 +109,6 @@ private:
 	G4double fEdep;
 	G4double fEdepSiPM;
 	G4double fEdkin;
-	// G4double xstop;
-	// G4double ystop;
-	// G4double zstop;
 	G4int fNumHitsDet;
 	G4int fPreNo;
 	

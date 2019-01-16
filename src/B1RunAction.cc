@@ -228,7 +228,6 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(0,"Npmt");							//22
 	analysisManager->CreateNtupleIColumn(0,"Nev");							//23
 
-
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationX", RunVAnnihX); //24
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationY", RunVAnnihY); //25
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationZ", RunVAnnihZ); //26
