@@ -131,12 +131,12 @@
 # To get nice view
 /vis/geometry/set/visibility World 0 false
 #/vis/geometry/set/visibility Envelope 0 false
-/vis/viewer/set/style surface
+#/vis/viewer/set/style surface
 #/vis/viewer/set/hiddenMarker true
 #/vis/viewer/set/viewpointThetaPhi 120 150
 /vis/viewer/set/viewpointThetaPhi 90 0
 #/vis/geometry/set/colour SourceDOTA 0 1 0 0 1
-/vis/geometry/set/colour SourceSR 0 0 1  0 1
+/vis/geometry/set/colour Source 0 0 1  0 1
 /vis/geometry/set/colour ABSbehind 0 0 0 1 1
 /vis/geometry/set/colour ABSaround 0 0 0 1 1
 #/vis/geometry/set/colour Carrier 0 1 1 1 0.05
@@ -171,3 +171,5 @@
 #/score/list
 #/run/beamOn 1000
 #/score/drawProjection boxMesh_1 eDep
+/vis/viewer/set/targetPoint -15.1084 0.482028 -0.406357 cm
+/vis/viewer/zoomTo 8
