@@ -38,7 +38,7 @@
 class B1ActionInitialization : public G4VUserActionInitialization
 {
 public:
-	B1ActionInitialization(G4double, G4double, G4double, G4double/*, G4bool*/, G4int, G4int, G4double, G4double, G4String,G4int);
+	B1ActionInitialization(G4double, G4double, G4double, G4double/*, G4bool*/, G4int, G4int, G4double, G4double, G4String,G4int, G4double);
 	virtual ~B1ActionInitialization();
 	
 	virtual void BuildForMaster() const;
@@ -55,6 +55,7 @@ protected:
 	G4double fSourceThickness;
 	G4String fFileName;
 	G4int fGaSet;
+	G4double fCaseDepth;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

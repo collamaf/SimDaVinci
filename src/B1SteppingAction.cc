@@ -135,7 +135,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 #pragma mark Exiting Source
 	// ################################################################################
 	// ###################### EXITING SOURCE
-	if( NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0) //New (2019.01.16) logic: if I go from somewhere into DummyExitSorg with a negative Z direction..
+	if(fSourceChoice!=5 && fSourceChoice!=7 && NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0) //New (2019.01.16) logic: if I go from somewhere into DummyExitSorg with a negative Z direction..
 	{
 		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetSourceExitStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...

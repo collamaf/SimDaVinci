@@ -63,10 +63,10 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting)
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting, G4double CaseDepth)
 : G4VUserPrimaryGeneratorAction(),
 fParticleGun(0) ,
-evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting)
+evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting), fCaseDepth(CaseDepth)
 
 {
 	G4int n_particle = 1;
@@ -159,7 +159,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double ProbC=VolC/denominatore;
 	
 	G4double zSource=0;
-	G4double zSourceOffset=1e-6*mm; //to avoid generating particles at the very boundary of source!
+	G4double zSourceOffset=2e-5*mm; //to avoid generating particles at the very boundary of source!
 	
 	//	if (fRadiusExt==fRadiusInt) { //se ho un solo raggio ignoro il TBR e faccio la pasticca di sorgente
 	if (fSourceSelect==1||fSourceSelect==2 || fSourceSelect==6) { //se ho una delle due pasticche di Sr ignoro il TBR e faccio la pasticca di sorgente
@@ -192,13 +192,18 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	} else if (fSourceSelect==4 && fGaSet==2) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
-		fZ=7*mm;
+		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
+		fZ=SorgVol->GetZHalfLength ()*2*mm;
+//		G4cout<<"CENA gaset2 fZ= "<<fZ<<G4endl;
 		zSource = -G4UniformRand()*fZ-zSourceOffset;
 	}else if (fSourceSelect==4 && fGaSet==3) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;
-		zSource = -G4UniformRand()*fZ-zSourceOffset-(7.5*mm-fDZExt);  //source's height is less than container height
+		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
+		G4double ZGaOffset=(G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetTranslation().z()-SorgVol->GetZHalfLength ())*mm;
+		zSource = -G4UniformRand()*fZ-zSourceOffset-(ZGaOffset-fDZExt);
+//		G4cout<<"CENA gaset3 zSource era = "<<7.5*mm<<" sarà "<< ZGaOffset <<G4endl;
 	}
 	
 	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;
@@ -233,10 +238,8 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	if (fSourceSelect==5) {
 		Source_X=Sphere_Radius*Sphere_X;
 		Source_Y=Sphere_Radius*Sphere_Y;
-		if (G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")!=NULL)
-		{
+		if (fCaseDepth>0 )
 			Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")->GetTranslation().z();
-		}
 		Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
 		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
 		fParticleGun->SetParticleDefinition(fotone);
@@ -258,10 +261,8 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		evtPrimAction->SetSourceEne(randomEne);
 		Source_X=Sphere_Radius*Sphere_X;
 		Source_Y=Sphere_Radius*Sphere_Y;
-		if (G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")!=NULL)
-		{
+		if (fCaseDepth>0)
 			Sphere_ZOffset=G4PhysicalVolumeStore::GetInstance()->GetVolume("MiddleCase")->GetTranslation().z();
-		}
 		Source_Z=Sphere_Radius*Sphere_Z+Sphere_ZOffset;
 		G4ParticleDefinition* fotone = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
 		fParticleGun->SetParticleDefinition(fotone);

@@ -51,7 +51,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
 //    B1PrimaryGeneratorAction(B1EventAction* eventAction);
-	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1);
+	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50);
     virtual ~B1PrimaryGeneratorAction();
 
     // method from the base class
@@ -87,6 +87,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 	G4int fGaSet;
 	G4bool FlatEle=false;
 	G4bool FlatGamma=false;
+	G4double fCaseDepth;
 	//	G4LogicalVolume* sourceLV;
 //	G4VPhysicalVolume* sourcePV;
 	

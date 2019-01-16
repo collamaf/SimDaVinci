@@ -1829,7 +1829,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 	
-	new G4PVPlacement(0,posDummyExitSorg,logicShapeDummyExitSorg,"DummyExitSorg",logicWorld,false,0,checkOverlaps);        //overlaps checking
+	if (fSourceSelect!=5 && fSourceSelect!=7) new G4PVPlacement(0,posDummyExitSorg,logicShapeDummyExitSorg,"DummyExitSorg",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	if (fAbsHoleDiam>=0) new G4PVPlacement(0,posDummyExitAbs,logicShapeDummyExitAbs,"DummyExitAbs",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	new G4PVPlacement(0,posDummyEnterProbe,logicShapeDummyEnterProbe,"DummyEnterProbe",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	
