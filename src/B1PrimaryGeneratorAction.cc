@@ -194,7 +194,6 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		fRadiusMin=0*mm;
 		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
 		fZ=SorgVol->GetZHalfLength ()*2*mm;
-//		G4cout<<"CENA gaset2 fZ= "<<fZ<<G4endl;
 		zSource = -G4UniformRand()*fZ-zSourceOffset;
 	}else if (fSourceSelect==4 && fGaSet==3) {
 		fRadiusMax=fRadiusInt;
@@ -202,8 +201,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		fZ=fDZExt;
 		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
 		G4double ZGaOffset=(G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetTranslation().z()-SorgVol->GetZHalfLength ())*mm;
-		zSource = -G4UniformRand()*fZ-zSourceOffset-(ZGaOffset-fDZExt);
-//		G4cout<<"CENA gaset3 zSource era = "<<7.5*mm<<" sarà "<< ZGaOffset <<G4endl;
+		zSource = -G4UniformRand()*fZ-zSourceOffset-(-ZGaOffset-fDZExt);
 	}
 	
 	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;
