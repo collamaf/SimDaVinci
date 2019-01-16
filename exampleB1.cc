@@ -68,7 +68,7 @@ int main(int argc,char** argv)
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
 	
-	G4double x0Scan=0., ZValue=2., AbsorberDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-50., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
+	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-50., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
 	G4bool ScintFlag=0;
 	
@@ -82,7 +82,7 @@ int main(int argc,char** argv)
 			G4cout<<"option: "<<i<<" "<<option<<G4endl;
 			if(option.compare("-AbsD")==0)
 			{
-				AbsorberDiam=strtod (argv[++i], NULL);;
+				AbsorberHoleDiam=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-AbsT")==0)
 			{
@@ -176,63 +176,60 @@ int main(int argc,char** argv)
 	
 	G4int SourceSelect=SourceChoice;
 	G4int GaSet=GaSetting;
-	//G4double FrontShieldDistance= ZValue + AbsorberThickness *0.5;  // Distance of probe's head from the source
-	G4double FrontShieldDistance= ZValue;  // Distance of probe's head from the source
 
-	
-	//if (SourceSelect==1|| SourceSelect==2) SrSourceFlag=1; //if it is a Sr source... tell to DetCons
-	
-	G4String FileNamePrim="Primaries";
 	G4String OutFileName="PTERmc";
 	G4String FileNameCommonPart;
-	G4String NewProbe="TRUE";
 
 	G4String MaterialiAssorbitore[4]= {"Cu","Pb","Al","PVC"};
 	
+	// ###### PTER
 	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));
 	
-	if (AbsorberDiam>=0 && GaSet==1) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
-	else if (AbsorberDiam<0 && GaSet==1) FileNameCommonPart.append("_NoAbs");
+	// ###### ABSORBER SIZE
+	if (AbsorberHoleDiam>=0 && GaSet==1) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	else if (AbsorberHoleDiam<0 && GaSet==1) FileNameCommonPart.append("_NoAbs");
 	
-	
+	// ###### If Laparoscopic case
 	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness)+"_HSMat" + std::to_string(HousingCase) );
 	
-	if (GaSet==1)FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
-	if (GaSet==1)FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
-	if (GaSet==2 && AbsorberDiam>=0)FileNameCommonPart.append("_ZAbs"+ std::to_string((G4int)(100*AbsCenter)));
+	if (GaSet==1) {
+		FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
+		FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
+	}
+	if (GaSet==2 && AbsorberHoleDiam>=0)FileNameCommonPart.append("_ZAbs"+ std::to_string((G4int)(100*AbsCenter)));
+	
+	// ###### Sources
 	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
 	
 	if (SourceSelect==4 && GaSet== 1) FileNameCommonPart.append("_ExtGa_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
 	
-	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)AbsorberDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberHoleDiam>=0) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	
-	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_NoAbs");
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3) && AbsorberHoleDiam<0) FileNameCommonPart.append("_NoAbs");
 	
 	
-	if (SourceSelect==4 && (GaSet== 2) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance)));
+	if (SourceSelect==4 && (GaSet== 2) && AbsorberHoleDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*ZValue)));
 	
-	if (SourceSelect==4 && (GaSet==3) && AbsorberDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*FrontShieldDistance+0.5*100*mm))); // vaschetta alta 7.5mm anzichè 7.0mm
+	if (SourceSelect==4 && (GaSet==3) && AbsorberHoleDiam<0) FileNameCommonPart.append("_ProbeDis"+std::to_string((G4int)(100*ZValue+0.5*100*mm))); // vaschetta alta 7.5mm anzichè 7.0mm
 
 	
-	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3)) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)) +"_Set2");
+	if (SourceSelect==4 && (GaSet== 2 ||GaSet==3)) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)));
 	
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	if (SourceSelect==6) FileNameCommonPart.append("_FlatEle");
 	if (SourceSelect==7) FileNameCommonPart.append("_FlatGamma");
 	
+	
+	
+	
 	if (ScintFlag) FileNameCommonPart.append("_Scint"); 
 
-//	FileNameCommonPart.append("_TotalAirH");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	
-	FileNamePrim.append(FileNameCommonPart);
 	OutFileName.append(FileNameCommonPart);
-	
-	FileNamePrim.append(+ ".dat");
-	std::ofstream primFile(FileNamePrim, std::ios::out);
 	
 	// Choose the Random engine
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
@@ -260,7 +257,7 @@ int main(int argc,char** argv)
 	
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -281,7 +278,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth));
 	
 	// Initialize visualization
 	//

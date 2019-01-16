@@ -432,7 +432,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Removed all references to FilePrim
 
 2019.01.16 by collamaf
-- Cleaning of scoring
+- Deep Cleaning of scoring, root file, PrimAction etc
+- Now primary particle position in GaSet 2/3 is based on "Source" volume in DetConst
+- Still need to clean OutFIleName creation in main
+
 
 ## TO DO's
 
