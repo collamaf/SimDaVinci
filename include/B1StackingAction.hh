@@ -50,7 +50,7 @@ public:
     virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
     
 private:
-    B1RunAction* runStackAction;
+    B1RunAction* fRunningAction;
     B1EventAction*  fEventAction;
 };
 

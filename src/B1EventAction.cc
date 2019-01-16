@@ -46,7 +46,9 @@ fEdep(0.),
 fEdepSiPM(0.),
 fEdkin(0.),
 fNumHitsDet(0),
-fPreNo(0),
+fPrePterNo(0),
+fPreProbeNo(0),
+fPostAbsNo(0),
 fEdepEle(0.),
 fEdepPos(0.),
 fEdepFot(0.),
@@ -80,6 +82,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdkin = 0.;
 	(fRunAction->GetPrePterEn()).clear();
 	(fRunAction->GetPrePterPart()).clear();
+	(fRunAction->GetPreProbeEn()).clear();
+	(fRunAction->GetPreProbePart()).clear();
+	(fRunAction->GetPostAbsEn()).clear();
+	(fRunAction->GetPostAbsPart()).clear();
 	(fRunAction->GetPterEn()).clear();
 	(fRunAction->GetPterEnPrim()).clear();
 	(fRunAction->GetPterPartPrim()).clear();
@@ -126,8 +132,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetEAbsSiPMComp()).clear();
 
 	fNumHitsDet=0;
-	fPreNo=0;
-	
+	fPrePterNo=0;
+	fPreProbeNo=0;
+	fPostAbsNo=0;
+
 	fEdepEle=0.;
 	fEdepPos=0;
 	fEdepFot=0.;
@@ -145,10 +153,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fPreProbeStoreTrackID=0;
 	fNPMT=0;
 	fEnterPterFlag=0;
-	
-	fSourceX=0;
-	fSourceY=0;
-	fSourceZ=0;
+
+//	fSourceX=0;
+//	fSourceY=0;
+//	fSourceZ=0;
 	/*
 		 fSourceEne=0;
 	 */
@@ -181,14 +189,17 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	// fill ntuple
 	analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
 	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
-	analysisManager->FillNtupleDColumn(0, 11, fPreNo);
 	analysisManager->FillNtupleDColumn(0, 2, fNumHitsDet); //number of hits into the detector
+	analysisManager->FillNtupleDColumn(0, 11, fPrePterNo);
+	analysisManager->FillNtupleDColumn(0, 14, fPreProbeNo);
+	analysisManager->FillNtupleDColumn(0, 17, fPostAbsNo);
+	
 	analysisManager->FillNtupleDColumn(0,21, fSourceX/mm);
 	analysisManager->FillNtupleDColumn(0,22, fSourceY/mm);
 	analysisManager->FillNtupleDColumn(0,23, fSourceZ/mm);
 
-	analysisManager->FillNtupleIColumn(0,29, fNPMT);
-	analysisManager->FillNtupleIColumn(0,30, fEnterPterFlag);
+	analysisManager->FillNtupleIColumn(0,30, fNPMT);
+	analysisManager->FillNtupleIColumn(0,31, fEnterPterFlag);
 	
 	if(1||fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
 	

@@ -45,13 +45,14 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* RunningAction, G4double AbsHoleDiam, G4int GaSet)
+B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* RunningAction, G4double AbsHoleDiam, G4int GaSet, G4int SourceChoice)
 : G4UserSteppingAction(),
 fEventAction(eventAction),
 fScoringVolume(0),
 fRunningAction(RunningAction),
 fAbsHoleDiam(AbsHoleDiam),
-fGaSet(GaSet)
+fGaSet(GaSet),
+fSourceChoice(SourceChoice)
 {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -62,15 +63,17 @@ B1SteppingAction::~B1SteppingAction()
 
 void B1SteppingAction::UserSteppingAction(const G4Step* step)
 {
-	
+	if (fGaSet) {
+		//to mute the "unused" warning, could be useful in the future!
+	}
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
 	
 	G4int debug=0;
 	
 #pragma mark Annihilation
-	//In case of GaSet 2/3 look for annihilation points (since it's probably Gallium)
-	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
+	//In case of Beta+ source look for annihilation points
+	if (fSourceChoice==4 && step->GetTrack()->GetDynamicParticle()->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
 		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 		evt->KeepTheEvent();
 		(fRunningAction->GetAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
@@ -122,7 +125,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		// Salvo le info solo della prima volta che una particella entra in pter
 		if (fEventAction->GetPterPassCounter()==0) {
 			(fRunningAction->GetPrePterEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-			fEventAction->AddNoPre(1); //update the counter of particles entering Pter in the event
+			fEventAction->AddPrePterNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPrePterPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //add PID of particle enetering Pter
 		}
 	}
@@ -159,7 +162,6 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			} else {
 				(fRunningAction->GetExitProcess().push_back(-17));
 			}
-			//			 (fRunningAction->GetPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		}
 	}
 	// ###################### END EXITING SOURCE
@@ -168,7 +170,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 #pragma mark Exiting Absorber
 	// ################################################################################
 	// ###################### EXITING ABSORBER (if any)
-	if(fAbsHoleDiam>0 && NextVol && ThisVol->GetName()=="Absorber" && NextVol->GetName()=="DummyExitAbs") {
+	if(fAbsHoleDiam>=0 && NextVol && ThisVol->GetName()=="Absorber" && NextVol->GetName()=="DummyExitAbs") {
 		
 		//to avoid double counting same track going back and forth, check if I already counted it
 		if (fEventAction->GetPostAbsStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the absorber...
@@ -179,6 +181,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		// Salvo le info solo della prima volta che una particella esce dall'assorbitore
 		if (fEventAction->GetPostAbsPassCounter()==0) {
+			fEventAction->AddPostAbsNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPostAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			(fRunningAction->GetPostAbsPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
 		}
@@ -201,6 +204,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		// Salvo le info solo della prima volta che una particella esce dall'assorbitore
 		if (fEventAction->GetPreProbePassCounter()==0) {
+			fEventAction->AddPreProbeNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPreProbeEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			(fRunningAction->GetPreProbePart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
 		}

@@ -54,14 +54,16 @@ public:
 	void AddEdkin(G4double edkin) { fEdkin += edkin; }
 	void AddNumHitsDet(G4int no) { fNumHitsDet += no; }
 	
-	void AddNoPre(G4int PreNo) { fPreNo += PreNo; }
-	
+	void AddPrePterNo(G4int No) { fPrePterNo += No; }
+	void AddPreProbeNo(G4int No) { fPreProbeNo += No; }
+	void AddPostAbsNo(G4int No) { fPostAbsNo += No; }
+
 	void AddEdepEle(G4double edepEle) { fEdepEle += edepEle; }
 	void AddEdepPos(G4double edepPos) { fEdepPos += edepPos; }
 	void AddEdepFot(G4double edepFot) { fEdepFot += edepFot; }
 	void AddEdepSiPMPos(G4double EdepSiPMpos) { fEdepSiPMpos += EdepSiPMpos; }
 	void AddEdepSiPMFot(G4double EdepSiPMfot) { fEdepSiPMfot += EdepSiPMfot; }
-	G4double GetSourceX() {return fSourceX;}
+	
 	void SetSourceX(G4double sx) {fSourceX=sx;}
 	void SetSourceY(G4double sy) {fSourceY=sy;}
 	void SetSourceZ(G4double sz) {fSourceZ=sz;}
@@ -116,8 +118,10 @@ private:
 	G4double fEdepSiPM;
 	G4double fEdkin;
 	G4int fNumHitsDet;
-	G4int fPreNo;
-	
+	G4int fPrePterNo;
+	G4int fPreProbeNo;
+	G4int fPostAbsNo;
+
 	G4double	fEdepEle;
 	G4double	fEdepPos;
 	G4double	fEdepFot;

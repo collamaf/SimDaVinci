@@ -39,7 +39,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B1StackingAction::B1StackingAction(B1RunAction* runAction, B1EventAction* EventAction)
-:runStackAction(runAction), fEventAction(EventAction)
+:fRunningAction(runAction), fEventAction(EventAction)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -53,108 +53,71 @@ G4ClassificationOfNewTrack
 B1StackingAction::ClassifyNewTrack(const G4Track* track)
 {
 	G4int debug=0;
-	G4int ParticleToWatch=-11;
 	if (fabs(track->GetDynamicParticle() ->GetPDGcode())==12) return fKill; //kill neutrinos
-
-	if (debug) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", MotherIsotope Val= "<< runStackAction->GetMotherIsotope()
-		<<G4endl;
+	
+	if (debug) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", MotherIsotope Val= "<< fRunningAction->GetMotherIsotope()<<G4endl;
 	
 	const G4VProcess* creator=track->GetCreatorProcess();
-	// << " trk->GetMaterial()=" << trk->GetMaterial()
 	std::string CreatorProcname="undefined";
 	if(creator) CreatorProcname=creator->GetProcessName();
-	
-	
-//	if (track->GetParentID() <= 2 ) G4cout<<"PterDEBUG PROVA STACKING creata nuova traccia tipo= "<< track->GetDynamicParticle() ->GetPDGcode()<<", ParentID= "<< track->GetParentID()<<" Proc= "<<CreatorProcname<<G4endl;
-
-	//keep primary particle
-	//	if (track->GetParentID() == 0) return fUrgent;
-	//	if (track->GetParentID() == 1 && track->GetDynamicParticle() ->GetPDGcode()==11)		  G4cout<<"PterDEBUG PROVA STACKING elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
-	//	runStackAction->SetMotherIsotope(-10); //I have a new particle, so a initialise the flag
 	
 	fEventAction->ResetSourceExitPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPterPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPostAbsPassCounter();
+	fEventAction->ResetPreProbePassCounter();
 	
+	// ################################################################################
+	// ###################### Interception of decay products
 	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle()->GetPDGcode()<9e8 && track->GetDynamicParticle()->GetPDGcode()!=0 && track->GetCurrentStepNumber()==0) { //to exclude optical photons and to avoid counting several times particles that undergo optical interactions (eg scintillation) - added on 2018.06.21
-//		G4cout<<"Aggiungo al calderone sorgente! ParentID= "<<track->GetParentID()<<" PID= "<<track->GetDynamicParticle() ->GetPDGcode()<<" EkeV= "<<track->GetKineticEnergy()/CLHEP::keV<<G4endl;
-		if (0&&fabs(track->GetKineticEnergy()/CLHEP::keV-130)<10) G4cout<<"Aggiunta sospetta! "<<G4endl;
-
-		runStackAction->SetMotherIsotope(track->GetParentID()-1);
-		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetSourceIsotope()).push_back(track->GetParentID()-1);
-		(runStackAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-			
+		//		G4cout<<"Aggiungo al calderone sorgente! ParentID= "<<track->GetParentID()<<" PID= "<<track->GetDynamicParticle() ->GetPDGcode()<<" EkeV= "<<track->GetKineticEnergy()/CLHEP::keV<<G4endl;
+		
+		fRunningAction->SetMotherIsotope(track->GetParentID()-1);
+		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle()->GetPDGcode());
+		(fRunningAction->GetSourceIsotope()).push_back(track->GetParentID()-1);
+		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+		
 	}
+	// ###################### End of Interception of decay products
+	// ################################################################################
 	
-	if (track->GetDynamicParticle() ->GetPDGcode()==11 && track->GetTrackID()==1) { //if direct electron source store its properties
-		runStackAction->SetMotherIsotope(0);
-		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-//		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
-		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetSourceIsotope()).push_back(0);
-		(runStackAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+	// ################################################################################
+	// ###################### Direct electron production
+	if (track->GetDynamicParticle() ->GetPDGcode()==11 && track->GetTrackID()==1) {
+		fRunningAction->SetMotherIsotope(0);
+		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(fRunningAction->GetSourceIsotope()).push_back(0);
+		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
 	}
+	// ###################### End of Direct electron production
+	// ################################################################################
 	
-	if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) { //if direct gamma source store its properties
-		runStackAction->SetMotherIsotope(0);
-		(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-//		(runStackAction->SetMotherPart(track->GetDynamicParticle()->GetPDGcode()));
-		(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(runStackAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(runStackAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(runStackAction->GetSourceIsotope()).push_back(0);
-		(runStackAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(runStackAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(runStackAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+	// ################################################################################
+	// ###################### Direct gamma production
+	if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) {
+		fRunningAction->SetMotherIsotope(0);
+		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+		(fRunningAction->GetSourceIsotope()).push_back(0);
+		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
 	}
-	
-	
-	
-#if 0
-	if (track->GetDynamicParticle() ->GetPDGcode()==ParticleToWatch) { //if I generated an electron
-		if (debug) G4cout<<"PterDEBUG PROVA STACKING nuovo elettrone! en= "<< track->GetKineticEnergy()/CLHEP::keV  <<G4endl;
-		if (track->GetParentID() == 1) { //figlio di Sr
-			if (debug) G4cout<<"PterDEBUG Sr Setto il MotherIsotope a 0"<<G4endl;
-			runStackAction->SetMotherIsotope(0);
-			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-			(runStackAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-			(runStackAction->GetSourceIsotope()).push_back(0);
-			(runStackAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-			(runStackAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-			(runStackAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-		} else if (track->GetParentID() == 2) {  //figlio di Y
-			if (debug) G4cout<<"PterDEBUG Y Setto il MotherIsotope a 1"<<G4endl;
-			runStackAction->SetMotherIsotope(1);
-			(runStackAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-			(runStackAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-			//			G4cout<<"PterDEBUG Tempo ns= "<< track->GetGlobalTime()/CLHEP::ns*1e-16<<G4endl;
-			(runStackAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-			(runStackAction->GetSourceIsotope()).push_back(1);
-			(runStackAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-			(runStackAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-			(runStackAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-		}
-	}
-	
-#endif
-	
+	// ###################### End of Direct gamma production
+	// ################################################################################
 	
 	return fUrgent;
 }
-//kill secondary neutrino
-//  if (track->GetDefinition() == G4NeutrinoE::NeutrinoE()) return fKill;
-//  else return fUrgent;
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

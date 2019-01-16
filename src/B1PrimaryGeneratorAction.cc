@@ -335,8 +335,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	evtPrimAction->SetSourceX((SourcePosition.x())/mm);
 	evtPrimAction->SetSourceY((SourcePosition.y())/mm);
 	evtPrimAction->SetSourceZ((SourcePosition.z())/mm);
-	
-	
+
 	fParticleGun->GeneratePrimaryVertex(anEvent);
 	
 	if(anEvent->GetEventID()==1) {  //stampo informazioni sorgente

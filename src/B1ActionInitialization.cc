@@ -69,7 +69,7 @@ void B1ActionInitialization::Build() const
   B1EventAction* eventAction = new B1EventAction(runAction);
   SetUserAction(eventAction);
 	
-  SetUserAction(new B1SteppingAction(eventAction, runAction, fAbsHoleDiam,fGaSet));
+  SetUserAction(new B1SteppingAction(eventAction, runAction, fAbsHoleDiam,fGaSet, fSourceSelect));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
 	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness,fGaSet);

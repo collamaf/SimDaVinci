@@ -46,7 +46,7 @@ class G4LogicalVolume;
 class B1SteppingAction : public G4UserSteppingAction
 {
   public:
-  B1SteppingAction(B1EventAction* eventAction,B1RunAction* RunningAction, G4double AbsHoleDiam, G4int GaSet);
+  B1SteppingAction(B1EventAction* eventAction,B1RunAction* RunningAction, G4double AbsHoleDiam, G4int GaSet, G4int SourceChoice);
     virtual ~B1SteppingAction();
 
     // method from the base class
@@ -63,6 +63,7 @@ class B1SteppingAction : public G4UserSteppingAction
     B1RunAction* fRunningAction;
 	G4double fAbsHoleDiam;
 	G4int fGaSet;
+	G4int fSourceChoice;
 	
     std::vector<double> EntEnStep;
 
