@@ -65,9 +65,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	G4VPhysicalVolume* ThisVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 	G4VPhysicalVolume* NextVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
-
+	
 	G4int debug=0;
-
+	
 #pragma mark Annihilation
 	//In case of GaSet 2/3 look for annihilation points (since it's probably Gallium)
 	if ((fGaSet==2 ||fGaSet==3) && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil") {
@@ -83,7 +83,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ################################################################################
 	// ###################### Optical Photons ENTERING SiPm
 	if(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()== 0 && NextVol && ThisVol->GetName()=="Pter" && NextVol->GetName()=="SiPm") {
-//		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
+		//		G4cout<<"FOTONE OTTICO ENTRA IN SiPm"<<G4endl;
 		fEventAction->AddNPMT(1);
 	}
 	// ######################
@@ -95,7 +95,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### Interactions in SiPm
 	if (ThisVol->GetName()=="SiPm") {
 		fEventAction->AddEdepSiPM(step->GetTotalEnergyDeposit());
-//		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
+		//		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
 	}
 	// ######################
 	// ################################################################################
@@ -106,7 +106,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
 		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
-		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //TODO: sistemare per evitare errori dovuti al fatto che è l'ultima traccia creata la prima ad essere tracciata..
 		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
 		
 		// Check if the current track had already enetered somehow the PTER (to avoid double counting), otherwise increase the counter
@@ -121,88 +121,94 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		
 		// Salvo le info solo della prima volta che una particella entra in pter
 		if (fEventAction->GetPterPassCounter()==0) {
-			G4double eKinPre = step->GetPostStepPoint()->GetKineticEnergy();
-			//Fill vector
-			(fRunningAction->GetEnPre()).push_back(eKinPre/keV);
+			(fRunningAction->GetPrePterEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			fEventAction->AddNoPre(1); //update the counter of particles entering Pter in the event
-			(fRunningAction->GetPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering Pter
+			(fRunningAction->GetPrePterPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //add PID of particle enetering Pter
 		}
 	}
 	// ###################### END ENTERING Pter
 	// ################################################################################
-	
-	
-	//Modified on 2017-11-17 by collamaf: now the condition works for both cases: with or without Cu collimator.
-	//If there is not collimator save what goes from source to dummy. If there is a collimator save what goes from world (the hole) into dummy
-	
 	
 #pragma mark Exiting Source
 	// ################################################################################
 	// ###################### EXITING SOURCE
 	if( NextVol && ThisVol->GetName()!="DummyExitSorg" && NextVol->GetName()=="DummyExitSorg" && step->GetPreStepPoint()->GetMomentumDirection().z()>0) //New (2019.01.16) logic: if I go from somewhere into DummyExitSorg with a negative Z direction..
 	{
-			 //collamaf: to avoid double counting same track going back and forth, check if I already counted it
-			 if (fEventAction->GetSourceExitStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-				 fEventAction->AddSourceExitPassCounter(1);  //increase the counter: number of times that this track exits the source (will not be written in scoring, but used to check if it is the first crossing
-			 }else {
-				 fEventAction->SetSourceExitStoreTrackID(step->GetTrack()->GetTrackID());
-			 }
+		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
+		if (fEventAction->GetSourceExitStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
+			fEventAction->AddSourceExitPassCounter(1);  //increase the counter: number of times that this track exits the source (will not be written in scoring, but used to check if it is the first crossing
+		}else {
+			fEventAction->SetSourceExitStoreTrackID(step->GetTrack()->GetTrackID());
+		}
 		
 		// Salvo le info solo della prima volta che una particella esce dalla sorgente
 		if (fEventAction->GetSourceExitPassCounter()==0) {
 			fEventAction->AddNSourceExit(1); //contatore di quante tracce escono dalla sorgente
-			(fRunningAction->GetEnExit()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-			(fRunningAction->GetXExit()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
-			(fRunningAction->GetYExit()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
-			(fRunningAction->GetZExit()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
-			(fRunningAction->GetCosXExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
-			(fRunningAction->GetCosYExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
-			(fRunningAction->GetCosZExit()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
-			(fRunningAction->GetPartExit()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
-			(fRunningAction->GetParentIDExit()).push_back(step->GetTrack()->GetParentID());
+			(fRunningAction->GetExitEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(fRunningAction->GetExitX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+			(fRunningAction->GetExitY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+			(fRunningAction->GetExitZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+			(fRunningAction->GetExitCosX()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
+			(fRunningAction->GetExitCosY()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
+			(fRunningAction->GetExitCosZ()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
+			(fRunningAction->GetExitPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+			(fRunningAction->GetExitParentID()).push_back(step->GetTrack()->GetParentID());
 			
 			if (step->GetTrack()->GetCreatorProcess()) {
 				(fRunningAction->GetExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
 			} else {
-				 (fRunningAction->GetExitProcess().push_back(-17));
-			 }
-			 (fRunningAction->GetPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-		 }
-	 }
+				(fRunningAction->GetExitProcess().push_back(-17));
+			}
+			//			 (fRunningAction->GetPartPostAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		}
+	}
 	// ###################### END EXITING SOURCE
 	// ################################################################################
 	
+#pragma mark Exiting Absorber
 	// ################################################################################
-	// ###################### EXITING POSSIBLE ABSORBER
-
+	// ###################### EXITING ABSORBER (if any)
 	if(fAbsHoleDiam>0 && NextVol && ThisVol->GetName()=="Absorber" && NextVol->GetName()=="DummyExitAbs") {
 		
+		//to avoid double counting same track going back and forth, check if I already counted it
+		if (fEventAction->GetPostAbsStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the absorber...
+			fEventAction->AddPostAbsPassCounter(1);  //increase the counter
+		}else {
+			fEventAction->SetPostAbsStoreTrackID(step->GetTrack()->GetTrackID());
+		}
 		
+		// Salvo le info solo della prima volta che una particella esce dall'assorbitore
+		if (fEventAction->GetPostAbsPassCounter()==0) {
+			(fRunningAction->GetPostAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(fRunningAction->GetPostAbsPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+		}
 	}
-
-	
-	
-	// ###################### END EXITING POSSIBLE ABSORBER
+	// ###################### END EXITING ABSORBER (if any)
 	// ################################################################################
-
 	
-//	if (NextVol && ((fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Absorber") ) )) { //what actually exits the source
-//
-//		//collamaf: to avoid double counting same track going back and forth, check if I already counted it
-//		if (fEventAction->GetStoreTrackIDDummy2()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
-//			fEventAction->AddPassCounterDummy2(1);  //increase the counter
-//		}else {
-//			fEventAction->SetStoreTrackIDDummy2(step->GetTrack()->GetTrackID());
-//		}
-//
-//		// Salvo le info solo della prima volta che una particella esce dalla sorgente
-//		if (fEventAction->GetPassCounterDummy2()==0) {
-//			(fRunningAction->GetPreAbsEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
-//			(fRunningAction->GetPartPreAbs()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-//			(fRunningAction->GetPartExit()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-//		}
-//	}
 	
+#pragma mark Entering Probe
+	// ################################################################################
+	// ###################### ENTERING PROBE
+	if(NextVol && ThisVol->GetName()=="DummyEnterProbe" && NextVol->GetName()=="FrontShield") {
+		
+		//to avoid double counting same track going back and forth, check if I already counted it
+		if (fEventAction->GetPreProbeStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the absorber...
+			fEventAction->AddPreProbePassCounter(1);  //increase the counter
+		}else {
+			fEventAction->SetPreProbeStoreTrackID(step->GetTrack()->GetTrackID());
+		}
+		
+		// Salvo le info solo della prima volta che una particella esce dall'assorbitore
+		if (fEventAction->GetPreProbePassCounter()==0) {
+			(fRunningAction->GetPreProbeEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+			(fRunningAction->GetPreProbePart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+		}
+	}
+	// ###################### END ENTERING PROBE
+	// ################################################################################
+	
+#pragma mark Inside Pter
 	//Retrieve scoring volume
 	if (!fScoringVolume) {
 		const B1DetectorConstruction* detectorConstruction
@@ -211,28 +217,27 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		fScoringVolume = detectorConstruction->GetScoringVolume();
 	}
 	
-#pragma mark Inside Pter
-// ########################################
+	// ########################################
 	// ###################### INSIDE Pter - Per each hit into sensitive detector
 	// check if we are in scoring volume
 	if (ThisVol->GetLogicalVolume() == fScoringVolume && step->GetTrack()->GetDynamicParticle() ->GetPDGcode()!=0 ) {
 		fEventAction->SetEnterPterFlag(); //Something entered pter in this event
 		fEventAction->AddNumHitsDet(1); //Update the counter of number of interactions in detector
-
+		
 		// collect energy deposited in this step
 		G4double edepStep = step->GetTotalEnergyDeposit();
 		
 		//Fill vector
-		(fRunningAction->GetEnPter()).push_back(step->GetTotalEnergyDeposit()/keV);
-		(fRunningAction->GetEnPterPrim()).push_back(fRunningAction->GetMotherEnergy());
-		(fRunningAction->GetPartPterPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
-		//		(fRunningAction->GetEnPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
-		(fRunningAction->GetEnPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime());
+		(fRunningAction->GetPterEn()).push_back(step->GetTotalEnergyDeposit()/keV);
+		(fRunningAction->GetPterEnPrim()).push_back(fRunningAction->GetMotherEnergy());
+		(fRunningAction->GetPterPartPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		//		(fRunningAction->GetPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
+		(fRunningAction->GetPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime());
 		//		G4cout<<"PterDEBUG  MotherTime= "<< fRunningAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime() <<G4endl;
-		(fRunningAction->GetXPter()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
-		(fRunningAction->GetYPter()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
-		(fRunningAction->GetZPter()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
-		(fRunningAction->GetPartPter()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		(fRunningAction->GetPterX()).push_back(step->GetPreStepPoint()->GetPosition().x()/mm);
+		(fRunningAction->GetPterY()).push_back(step->GetPreStepPoint()->GetPosition().y()/mm);
+		(fRunningAction->GetPterZ()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
+		(fRunningAction->GetPterPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
 		if (debug)  G4cout<<"CIAODEBUG Ho un rilascio di energia ("<< step->GetTotalEnergyDeposit()/keV<<" [KeV]) dovuto ad una particella entrata nel CMOS di tipo: "<<fEventAction->GetEnteringParticle()<<G4endl;
 		
@@ -250,39 +255,3 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	}
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-/*
- 	if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy"))) || ( (fAbsHoleDiam>=0 &&   (ThisVol->GetName()=="World" && NextVol->GetName()=="Dummy") ) )) ) { //what actually exits the source
- */
-
-/*
- if (fGaSet==2 && step->GetTrack()->GetDynamicParticle() ->GetPDGcode() == -11 && step->GetPostStepPoint()->GetProcessDefinedStep() && step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="annihil" && (NextVol->GetName()=="ProbeContainer" )) {
- G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
- evt->KeepTheEvent();
- (fRunningAction->GetAnnihX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
- (fRunningAction->GetAnnihY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
- (fRunningAction->GetAnnihZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
- }
- */
-
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//Nuova Condizione
-
-/*
- if( NextVol && ( ((fAbsHoleDiam<0 || fAbsHoleDiam>=0 ) &&  ( (ThisVol->GetName()=="SourceSR" && (NextVol->GetName()=="Dummy" || NextVol->GetName()=="CuCollimator" || NextVol->GetName()=="World")) || (ThisVol->GetName()=="SourceExtY" && (NextVol->GetName()=="Dummy"|| NextVol->GetName()=="ABSaround" || NextVol->GetName()=="ABSbehind" || NextVol->GetName()=="CuCollimator")) || (ThisVol->GetName()=="SourceExtGa" && (NextVol->GetName()=="GaContainer" || NextVol->GetName()=="Dummy3" || NextVol->GetName()=="Dummy2" || NextVol->GetName()=="Absorber"))) ) ) ) { //what actually exits the source
- */
-
-//Vecchia condizione
-
-/*
- if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) )   ) )
- */
-
-//Modifica alla vecchia condizione per dummy3
-
-/*
- if( NextVol && ( (fAbsHoleDiam<0 &&  ( (ThisVol->GetName()=="SourceSR" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtY" && NextVol->GetName()=="Dummy") || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy")  || (ThisVol->GetName()=="SourceExtGa" && NextVol->GetName()=="Dummy2") )) || ( (fAbsHoleDiam<0 && fGaSet == 3 &&  (ThisVol->GetName()=="Dummy3" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 2 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 1 && (ThisVol->GetName()=="CuCollimator" && NextVol->GetName()=="Dummy") ) ) || ( (fAbsHoleDiam>=0 && fGaSet == 3 &&  (ThisVol->GetName()=="Absorber" && NextVol->GetName()=="Dummy2") ) )  ) )
- */
-

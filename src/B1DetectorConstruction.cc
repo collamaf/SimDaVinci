@@ -1672,7 +1672,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4double PlasticCase_Posz =  Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlasticCase_Posz);
 		
-		//TODO: arrivato qui a controllare
 		//		if (fGaSet==2 || fGaSet==3) PlasticCase_Posz+= DzDummy2;
 		
 		new G4PVPlacement(0,                     //no rotation
@@ -1831,7 +1830,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 	
 	new G4PVPlacement(0,posDummyExitSorg,logicShapeDummyExitSorg,"DummyExitSorg",logicWorld,false,0,checkOverlaps);        //overlaps checking
-	new G4PVPlacement(0,posDummyExitAbs,logicShapeDummyExitAbs,"DummyExitAbs",logicWorld,false,0,checkOverlaps);        //overlaps checking
+	if (fAbsHoleDiam>=0) new G4PVPlacement(0,posDummyExitAbs,logicShapeDummyExitAbs,"DummyExitAbs",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	new G4PVPlacement(0,posDummyEnterProbe,logicShapeDummyEnterProbe,"DummyEnterProbe",logicWorld,false,0,checkOverlaps);        //overlaps checking
 	
 	logicShapeDummyExitSorg->SetRegion(sorgente);

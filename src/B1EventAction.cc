@@ -55,11 +55,13 @@ fEdepSiPMfot(0.),
 fEnteringParticle(0),
 fSourceExitPassCounter(0.),
 fPterPassCounter(0.),
-fPassCounterDummy2(0.),
+fPostAbsPassCounter(0.),
+fPreProbePassCounter(0.),
 fNSourceExit(0.),
 fSourceExitStoreTrackID(0),
 fPterStoreTrackID(0),
-fStoreTrackIDDummy2(0),
+fPostAbsStoreTrackID(0),
+fPreProbeStoreTrackID(0),
 fEnterPterFlag(0)
 {}
 
@@ -76,16 +78,16 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdep = 0.;
 	fEdepSiPM=0.;
 	fEdkin = 0.;
-	(fRunAction->GetEnPre()).clear();
-	(fRunAction->GetPart()).clear();
-	(fRunAction->GetEnPter()).clear();
-	(fRunAction->GetEnPterPrim()).clear();
-	(fRunAction->GetPartPterPrim()).clear();
-	(fRunAction->GetEnPterTime()).clear();
-	(fRunAction->GetXPter()).clear();
-	(fRunAction->GetYPter()).clear();
-	(fRunAction->GetZPter()).clear();
-	(fRunAction->GetPartPter()).clear();
+	(fRunAction->GetPrePterEn()).clear();
+	(fRunAction->GetPrePterPart()).clear();
+	(fRunAction->GetPterEn()).clear();
+	(fRunAction->GetPterEnPrim()).clear();
+	(fRunAction->GetPterPartPrim()).clear();
+	(fRunAction->GetPterTime()).clear();
+	(fRunAction->GetPterX()).clear();
+	(fRunAction->GetPterY()).clear();
+	(fRunAction->GetPterZ()).clear();
+	(fRunAction->GetPterPart()).clear();
 	
 	
 	(fRunAction->GetAnnihX()).clear();
@@ -94,31 +96,29 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	
 	(fRunAction->GetAnnihT()).clear();
 	
-	(fRunAction->GetPreAbsEn()).clear();
-	(fRunAction->GetPartPreAbs()).clear();
-	(fRunAction->GetPartPostAbs()).clear();
+	(fRunAction->GetPostAbsPart()).clear();
 
-	(fRunAction->GetCosX()).clear();
-	(fRunAction->GetCosY()).clear();
-	(fRunAction->GetCosZ()).clear();
+	(fRunAction->GetSourceCosX()).clear();
+	(fRunAction->GetSourceCosY()).clear();
+	(fRunAction->GetSourceCosZ()).clear();
 
-	(fRunAction->GetEnGen()).clear();
-	(fRunAction->GetEnPart()).clear();
-	(fRunAction->GetIsotopeGen()).clear();
+	(fRunAction->GetSourceEn()).clear();
+	(fRunAction->GetSourcePart()).clear();
+	(fRunAction->GetSourceIsotope()).clear();
 
 	(fRunAction->SetMotherIsotope(-10));
 	(fRunAction->SetMotherEnergy(-10));
 	(fRunAction->SetMotherTime(0));
 
-	(fRunAction->GetEnExit()).clear();
-	(fRunAction->GetXExit()).clear();
-	(fRunAction->GetYExit()).clear();
-	(fRunAction->GetZExit()).clear();
-	(fRunAction->GetCosXExit()).clear();
-	(fRunAction->GetCosYExit()).clear();
-	(fRunAction->GetCosZExit()).clear();
-	(fRunAction->GetPartExit()).clear();
-	(fRunAction->GetParentIDExit()).clear();
+	(fRunAction->GetExitEn()).clear();
+	(fRunAction->GetExitX()).clear();
+	(fRunAction->GetExitY()).clear();
+	(fRunAction->GetExitZ()).clear();
+	(fRunAction->GetExitCosX()).clear();
+	(fRunAction->GetExitCosY()).clear();
+	(fRunAction->GetExitCosZ()).clear();
+	(fRunAction->GetExitPart()).clear();
+	(fRunAction->GetExitParentID()).clear();
 	
 	(fRunAction->GetExitProcess()).clear();
 	
@@ -137,10 +137,12 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fNSourceExit=0;
 	fSourceExitPassCounter=0;
 	fPterPassCounter=0;
-	fPassCounterDummy2=0;
+	fPostAbsPassCounter=0;
+	fPreProbePassCounter=0;
 	fSourceExitStoreTrackID=0;
 	fPterStoreTrackID=0;
-	fStoreTrackIDDummy2=0;
+	fPostAbsStoreTrackID=0;
+	fPreProbeStoreTrackID=0;
 	fNPMT=0;
 	fEnterPterFlag=0;
 	
@@ -177,22 +179,16 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	auto analysisManager = G4AnalysisManager::Instance();
 	
 	// fill ntuple
-	if(1||fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
+	analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
 	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
-	analysisManager->FillNtupleDColumn(0, 2, fPreNo);
-	analysisManager->FillNtupleDColumn(0, 5, fNumHitsDet); //number of hits into the detector
-	analysisManager->FillNtupleDColumn(0,14, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,15, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,16, fSourceZ/mm);
-	/*
-	analysisManager->FillNtupleDColumn(0,17, fSourceCosX/mm);
-	analysisManager->FillNtupleDColumn(0,18, fSourceCosY/mm);
-	analysisManager->FillNtupleDColumn(0,19, fSourceCosZ/mm);
-	analysisManager->FillNtupleDColumn(0,20, fSourceEne/keV);
-	analysisManager->FillNtupleDColumn(0,21, fSourceIsotope);
-	*/
-	analysisManager->FillNtupleIColumn(0,22, fNPMT);
-	analysisManager->FillNtupleIColumn(0,32, fEnterPterFlag);
+	analysisManager->FillNtupleDColumn(0, 11, fPreNo);
+	analysisManager->FillNtupleDColumn(0, 2, fNumHitsDet); //number of hits into the detector
+	analysisManager->FillNtupleDColumn(0,21, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,22, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,23, fSourceZ/mm);
+
+	analysisManager->FillNtupleIColumn(0,29, fNPMT);
+	analysisManager->FillNtupleIColumn(0,30, fEnterPterFlag);
 	
 	if(1||fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
 	

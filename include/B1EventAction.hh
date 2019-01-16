@@ -89,11 +89,17 @@ public:
 	void ResetPterPassCounter() {fPterPassCounter=0;}
 	G4int GetPterPassCounter(void) {return fPterPassCounter;}
 	
-	void SetStoreTrackIDDummy2(G4int trid) {fStoreTrackIDDummy2=trid;}
-	G4int GetStoreTrackIDDummy2(void) {return fStoreTrackIDDummy2;}
-	void AddPassCounterDummy2(G4int num) {fPassCounterDummy2+=num;}
-	void ResetPassCounterDummy2() {fPassCounterDummy2=0;}
-	G4int GetPassCounterDummy2(void) {return fPassCounterDummy2;}
+	void SetPostAbsStoreTrackID(G4int trid) {fPostAbsStoreTrackID=trid;}
+	G4int GetPostAbsStoreTrackID(void) {return fPostAbsStoreTrackID;}
+	void AddPostAbsPassCounter(G4int num) {fPostAbsPassCounter+=num;}
+	void ResetPostAbsPassCounter() {fPostAbsPassCounter=0;}
+	G4int GetPostAbsPassCounter(void) {return fPostAbsPassCounter;}
+	
+	void SetPreProbeStoreTrackID(G4int trid) {fPreProbeStoreTrackID=trid;}
+	G4int GetPreProbeStoreTrackID(void) {return fPreProbeStoreTrackID;}
+	void AddPreProbePassCounter(G4int num) {fPreProbePassCounter+=num;}
+	void ResetPreProbePassCounter() {fPreProbePassCounter=0;}
+	G4int GetPreProbePassCounter(void) {return fPreProbePassCounter;}
 	
 	void SetEnteringParticle(G4int part) {fEnteringParticle=part;}
 	G4int GetEnteringParticle(void) {return fEnteringParticle;}
@@ -133,7 +139,8 @@ private:
 	
 	G4int fSourceExitPassCounter;
 	G4int fPterPassCounter;
-	G4int fPassCounterDummy2;
+	G4int fPostAbsPassCounter;
+	G4int fPreProbePassCounter;
 
 	G4double fNSourceExit;
 	G4int fNPMT;
@@ -141,7 +148,8 @@ private:
 	G4String fExitProcess;
 	G4int fSourceExitStoreTrackID;
 	G4int fPterStoreTrackID;
-	G4int fStoreTrackIDDummy2;
+	G4int fPostAbsStoreTrackID;
+	G4int fPreProbeStoreTrackID;
 	G4int fEnterPterFlag;
 };
 
