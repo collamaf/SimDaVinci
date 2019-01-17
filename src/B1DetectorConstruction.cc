@@ -850,7 +850,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			
 			logicSourceExtGa->SetRegion(sorgente);
 			sorgente->AddRootLogicalVolume(logicSourceExtGa);
-			
 		}
 		//################################################### END Ga SOURCE
 		
@@ -872,7 +871,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 																		 0,                     //copy number
 																		 checkOverlaps);        //overlaps checking
 			
-			//		G4Region* sorgente = new G4Region("SourceReg");
 			logicAbsorber->SetRegion(sorgente);
 			sorgente->AddRootLogicalVolume(logicAbsorber);
 		}

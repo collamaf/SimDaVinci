@@ -234,7 +234,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		//Fill vector
 		(fRunningAction->GetPterEn()).push_back(step->GetTotalEnergyDeposit()/keV);
 		(fRunningAction->GetPterEnPrim()).push_back(fRunningAction->GetMotherEnergy());
-		(fRunningAction->GetPterPartPrim()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+		(fRunningAction->GetPterPartPrim()).push_back(fRunningAction->GetMotherPID());
 		//		(fRunningAction->GetPterTime()).push_back(step->GetTrack()->GetLocalTime()/ns);
 		(fRunningAction->GetPterTime()).push_back(step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime());
 		//		G4cout<<"PterDEBUG  MotherTime= "<< fRunningAction->GetMotherTime()<<" PostDiff= "<<  step->GetTrack()->GetGlobalTime()/ns-fRunningAction->GetMotherTime() <<G4endl;

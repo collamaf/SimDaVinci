@@ -117,11 +117,12 @@ public:
 	
 	void SetMotherEnergy(G4double mene) {fMotherEnergy=mene;}
 	G4double GetMotherEnergy() {return fMotherEnergy;}
+
+	void SetMotherPID(G4double mpid) {fMotherPID=mpid;}
+	G4double GetMotherPID() {return fMotherPID;}
 	
 	void SetMotherTime(G4double mtime) {fMotherTime=mtime;}
 	G4float GetMotherTime() {return fMotherTime;}
-	
-	
 	
 private:
 	G4Accumulable<G4double> fEdep;
@@ -140,6 +141,7 @@ private:
 	G4int fSensorChoice;
 
 	G4double fMotherEnergy=-10;
+	G4double fMotherPID=999;
 	G4float fMotherTime=0;
 	
 	//G4Accumulable <G4double> fEdepPhot;
@@ -199,13 +201,7 @@ private:
 	std::vector<G4double> RunVEAbsComp;
 	std::vector<G4double> RunVEAbsSiPMComp;
 
-	
-	/*
-	 std::vector<G4double> RunVSourceX;
-	 std::vector<G4double> RunVSourceY;
-	 std::vector<G4double> RunVSourceZ;
-	 std::vector<G4double> RunVSourceEne;
-	 */
+
 	G4String fOutFileName;
 	
 };

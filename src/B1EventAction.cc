@@ -114,6 +114,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 
 	(fRunAction->SetMotherIsotope(-10));
 	(fRunAction->SetMotherEnergy(-10));
+	(fRunAction->SetMotherPID(999));
 	(fRunAction->SetMotherTime(0));
 
 	(fRunAction->GetExitEn()).clear();

@@ -68,8 +68,6 @@ public:
 	void SetSourceY(G4double sy) {fSourceY=sy;}
 	void SetSourceZ(G4double sz) {fSourceZ=sz;}
 	
-	//	void SetExitProcess(G4String proc) {fExitProcess=proc;}
-	
 	void SetSourceCosX(G4double scx) {fSourceCosX=scx;}
 	void SetSourceCosY(G4double scy) {fSourceCosY=scy;}
 	void SetSourceCosZ(G4double scz) {fSourceCosZ=scz;}
@@ -128,10 +126,7 @@ private:
 	G4double  fEdepSiPMpos;
 	G4double  fEdepSiPMfot;
 	G4int fEnteringParticle;
-	
-
-	
-	
+		
 	G4double fSourceX;
 	G4double fSourceY;
 	G4double fSourceZ;

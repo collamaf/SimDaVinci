@@ -52,7 +52,7 @@ num->Draw("E")
 
 
 
-Source Choice:
+## SOURCES
 1 - Pointlike Sr
 2 - Extended Sr
 3 - ExtY
@@ -64,11 +64,10 @@ Source Choice:
 
 
 ## GEOMETRY
-- Extended Sr Source ending at Z=0
-- Cu collimator on top of Sr source (toggleble)
-- Pter Detector starting at Z offset (Z distance is from source surface to Front-Shield )
-- Front-Shield in contact with Pter (towards source)
-- Dummy volume for scoring purposes between source (or if presente CU Collimator) and World to score what exits the primary generation
+- All sources ending at Z=0
+- DummyExitSorg: after source (with possible air gap in GaSet 3)
+- DummyExitAbs: after absorber (if any)
+- DummyEnterProbe: before FrontShield
 
 
 ## FLAGS
@@ -123,9 +122,16 @@ eBrem				2			3
 
 CPU TIMES NEEDED FOR 1e5 PRIMARIES:
 
+## SCORING:
+- Primary paricles generated (PrimAction);
+- Decay products (StackingAction);
+- What exits source (!->DummyExitSorg) (StepAction);
+- What exit Absorber (if any) (Abs->DummyExitAbs) (StepAction);
+- What enters Probe (DummyEnterProbe->FrontShield) (StepAction);
+- What enters Pter (!->Pter) (StepAction)
 
 ## OUTPUT:
-A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset value, in which on an event (i.e. a primary particle) by event basis it is stored:
+A root file named MCsondaGEANT_{Relevant sim info}.root is created, in which on an event (i.e. a primary particle) by event basis it is stored:
 
 ### SOURCE vector (one entry per primary particle, only for first 100k primaries if more primaries are requested):
 - 0: AllX: X coordinate of primary particle [mm];
@@ -137,7 +143,7 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - 6: AllEne[1+]: kinetic energy of produced particle [keV];
 - 7: AllPart[1+]: PID of produced particle;
 - 8: AllIsotope[1+]: isotope of primary particle (0=Sr, 1=Y ??, ParentID - 1);
-- 9: ExitX: X coordinate of primary particle exiting the source volume [mm];
+- 9: ExitX: X coordinate of primary particle exiting the source volume (-> DummyExitSorg) [mm];
 - 10: ExitY: Y coordinate of primary particle exiting the source volume [mm];
 - 11: ExitZ: Z coordinate of primary particle exiting the source volume [mm];
 - 12: ExitCosX[2+]: X directive cosine of primary particle exiting the source volume;
@@ -148,37 +154,52 @@ A root file named MCsondaGEANT_Z{XX}.root is created, reporting the Z offset val
 - 17: ExitParentID[2+]: partent-id of particle exiting the source
 - 18: ExitProcess[2+]: process that created the particles that exits the source (see table above)
 - 19: ExitTrackN: number of different tracks exiting the source per event
+- 20: AnnihilationX: X coord of annihilation point of beta+ source particle [mm]
+- 21: AnnihilationY: Y coord of annihilation point of beta+ source particle [mm]
+- 22: AnnihilationZ: Z coord of annihilation point of beta+ source particle [mm]
 
 ### B1 vector (one entry per primary particle that gives a >0 energy deposition):
-- Eabs: energy absorbed in Pter [keV];
-- EAbsComp[]: vector containing energy absorbed in Pter [keV] due to Electrons (EAbsComp[0]), Positrons (EAbsComp[1]) and photons (EAbsComp[2])
-- PrePterTrackN: number of tracks entering Pter per primary (from front Alluminum) (it's the length of the following vector);
-- PrePterPart[PrePterTrackN]: kind of particle of each track entering Pter(from front resin);
-- PrePterEn[PrePterTrackN]: kinetic energy of particle of each tracks entering Pter (from front resin) [keV];
-- InPterTrackN: number of hits inside Pter (it's the length of the following vector);
-- InPterPart[InPterTrackN]: kind of particle of hit inside Pter;
-- InPterEn[InPterTrackN]: energy deposit of single hit of particle inside Pter;
-- InPterEnPrim[InPterTrackN]: energy of the primary particle that origined the hit of particle inside Pter [keV];
-- InPterTime[InPterTrackN]: time of interaction of hit inside Pter [ns] (To be really undersood);
-- InPterX[InPterTrackN]: X position of hit inside Pter [mm];
-- InPterY[InPterTrackN]: Y position of hit inside Pter [mm];
-- InPterZ[InPterTrackN]: Z position of hit inside Pter [mm];
-- PixelID[InPterTrackN]: number of pixel in which the hit occurred (from 1 to NpixMax);
-- PixXPos[InPterTrackN]: x position of the pixel in which the hit occurred [mm];
-- PixYPos[InPterTrackN]: y position of the pixel in which the hit occurred [mm];
-- SourceX: X coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- SourceY: Y coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- SourceZ: Z coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Pter;
-- SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Pter;
-- SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Pter;
-- SourceEne[2]: kinetic energy of  decay electron(s)  giving a signal in Pter [keV];
-- SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Pter;
-- Nev: storing number of events generated
+- 0: Eabs: energy absorbed in Pter [keV];
+- 1: EAbsComp[3]: vector containing energy absorbed in Pter [keV] due to Electrons (EAbsComp[0]), Positrons (EAbsComp[1]) and photons (EAbsComp[2])
+- 2: InPterTrackN: number of hits inside Pter (it's the length of the following vector);
+- 3: InPterPart[InPterTrackN]: kind of particle of hit inside Pter;
+- 4: InPterEn[InPterTrackN]: energy deposit of single hit of particle inside Pter;
+- 5: InPterPrimEn[InPterTrackN]: energy of the primary particle (decay product, or fresh primary e/gamma) that origined the hit of particle inside Pter [keV];
+- 6: InPterPrimPart[InPterTrackN]: PID of the primary particle (decay product, or fresh primary e/gamma) that origined the hit of particle inside Pter [keV];
+- 7: InPterTime[InPterTrackN]: time of interaction of hit inside Pter [ns] (To be really undersood);
+- 8: InPterX[InPterTrackN]: X position of hit inside Pter [mm];
+- 9: InPterY[InPterTrackN]: Y position of hit inside Pter [mm];
+- 10: InPterZ[InPterTrackN]: Z position of hit inside Pter [mm];
+- 11: PrePterTrackN: number of tracks entering Pter (from wherever) per primary (it's the length of the following vector);
+- 12: PrePterPart[PrePterTrackN]: kind of particle of each track entering Pter (from wherever);
+- 13: PrePterEn[PrePterTrackN]: kinetic energy of particle of each tracks entering Pter (from wherever) [keV];
+- 14: PreProbeTrackN: number of tracks entering Probe (DummyEnterProbe->FrontShield) per primary (it's the length of the following vector);
+- 15: PreProbePart[PreProbeTrackN]: kind of particle of each track entering Probe (DummyEnterProbe->FrontShield);
+- 16: PreProbeEn[PreProbeTrackN]: kinetic energy of particle of each tracks entering Probe (DummyEnterProbe->FrontShield) [keV];
+- 17: PostAbsTrackN: number of tracks exiting Absorber (Abs->DummyExitAbs) (if any, otherwise 0) per primary (it's the length of the following vector);
+- 18: PostAbsPart[PrePterTrackN]: kind of particle of each track entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty);
+- 19: PostAbsEn[PrePterTrackN]: kinetic energy of particle of each tracks entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty)  [keV];
+- 20:  ExitEne[2+]: kinetic energy of primary particle exiting the source volume (-> DummyExitSorg) [keV];
+- 21: SourceX: X coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 22: SourceY: Y coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 23: SourceZ: Z coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 24: SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Pter;
+- 25: SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Pter;
+- 26: SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Pter;
+- 27: SourceEne[2]: kinetic energy of  decay product(s)  giving a signal in Pter [keV];
+- 28: SourcePart[2]: PID of  decay product(s)  giving a signal in Pter [keV];
+- 29: SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Pter;
+- 30: Npmt: number of optical photons entering SiPm per event;
+- 31: EnterPterFlag: bool flag to save if the primary particle had a secondary track entering PTER;
+- 32: AnnihilationX: X coord of annihilation point of beta+ source particle [mm]
+- 33: AnnihilationY: Y coord of annihilation point of beta+ source particle [mm]
+- 34: AnnihilationZ: Z coord of annihilation point of beta+ source particle [mm]
+- 35: AnnihilationTime: time of annihilation point of beta+ source particle [ns]
+- 36: Nev: storing number of events generated
 
 
 ```
-Source->Draw("ExitEne","ExitPart==11&&ExitProcess==6")
+
 
 file=$(ls -t Primaries_*.dat | head -n1); tail -f $file
 
@@ -435,6 +456,11 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Deep Cleaning of scoring, root file, PrimAction etc
 - Now primary particle position in GaSet 2/3 is based on "Source" volume in DetConst
 - Still need to clean OutFIleName creation in main
+
+2019.01.17 by collamaf
+- Cleaned OutFileName generation in main
+- Fixed InPterPrimPart (was same as SourcePart)
+- Updated readme about scoring
 
 
 ## TO DO's

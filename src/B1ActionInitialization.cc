@@ -37,8 +37,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4double TBR/*, G4bool SrSourceFlag*/, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName, G4int GaSet, G4double CaseDepth)
-  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName), fGaSet(GaSet), fCaseDepth(CaseDepth)
+B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName, G4int GaSet, G4double CaseDepth)
+  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fTBR(TBR),  	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName), fGaSet(GaSet), fCaseDepth(CaseDepth)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

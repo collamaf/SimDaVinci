@@ -73,47 +73,50 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		
 		fRunningAction->SetMotherIsotope(track->GetParentID()-1);
 		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle()->GetPDGcode());
-		(fRunningAction->GetSourceIsotope()).push_back(track->GetParentID()-1);
-		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-		
-	}
-	// ###################### End of Interception of decay products
-	// ################################################################################
-	
-	// ################################################################################
-	// ###################### Direct electron production
-	if (track->GetDynamicParticle() ->GetPDGcode()==11 && track->GetTrackID()==1) {
-		fRunningAction->SetMotherIsotope(0);
-		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(fRunningAction->GetSourceIsotope()).push_back(0);
-		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-	}
-	// ###################### End of Direct electron production
-	// ################################################################################
-	
-	// ################################################################################
-	// ###################### Direct gamma production
-	if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) {
-		fRunningAction->SetMotherIsotope(0);
-		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
-		(fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
-		(fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
-		(fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
-		(fRunningAction->GetSourceIsotope()).push_back(0);
-		(fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
-		(fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
-		(fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
-	}
+		(fRunningAction->SetMotherPID(track->GetDynamicParticle()->GetPDGcode()));
+		 (fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+		 (fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+		 (fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle()->GetPDGcode());
+		 (fRunningAction->GetSourceIsotope()).push_back(track->GetParentID()-1);
+		 (fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+		 (fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+		 (fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+		 
+		 }
+		 // ###################### End of Interception of decay products
+		 // ################################################################################
+		 
+		 // ################################################################################
+		 // ###################### Direct electron production
+		 if (track->GetDynamicParticle() ->GetPDGcode()==11 && track->GetTrackID()==1) {
+			 fRunningAction->SetMotherIsotope(0);
+			 (fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+			 (fRunningAction->SetMotherPID(track->GetDynamicParticle()->GetPDGcode()));
+			 (fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+			 (fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+			 (fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+			 (fRunningAction->GetSourceIsotope()).push_back(0);
+			 (fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+			 (fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+			 (fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+		 }
+		 // ###################### End of Direct electron production
+		 // ################################################################################
+		 
+		 // ################################################################################
+		 // ###################### Direct gamma production
+		 if (track->GetDynamicParticle() ->GetPDGcode()==22 && track->GetTrackID()==1) {
+			 fRunningAction->SetMotherIsotope(0);
+			 (fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));
+			 (fRunningAction->SetMotherPID(track->GetDynamicParticle()->GetPDGcode()));
+			 (fRunningAction->SetMotherTime(track->GetGlobalTime()/CLHEP::ns));
+			 (fRunningAction->GetSourceEn()).push_back(track->GetKineticEnergy()/CLHEP::keV);
+			 (fRunningAction->GetSourcePart()).push_back(track->GetDynamicParticle() ->GetPDGcode());
+			 (fRunningAction->GetSourceIsotope()).push_back(0);
+			 (fRunningAction->GetSourceCosX()).push_back(track->GetMomentumDirection().x());
+			 (fRunningAction->GetSourceCosY()).push_back(track->GetMomentumDirection().y());
+			 (fRunningAction->GetSourceCosZ()).push_back(track->GetMomentumDirection().z());
+		 }
 	// ###################### End of Direct gamma production
 	// ################################################################################
 	
