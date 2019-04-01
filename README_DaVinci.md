@@ -1,5 +1,5 @@
 # Full simulation of Pter beta- probe in Geant4
-test
+
 ## HOW TO RUN:
 ```
 cd build
