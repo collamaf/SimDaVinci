@@ -136,6 +136,8 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	if (fSourceSelect==4 ) {
 		Z=31;
 		A=68;
+//		Z=53;
+//		A=131;
 	} else if (fSourceSelect==6) { //Flat Ele
 		FlatEle=true;
 	} else if (fSourceSelect==7) { //Flat Gamma

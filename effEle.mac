@@ -1,0 +1,25 @@
+# Macro file for example B1
+#
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Change the default number of workers (in multi-threading mode)
+#/run/numberOfWorkers 4
+#
+# Initialize kernel
+/run/initialize
+#
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+#
+/tracking/verbose 0
+#
+#/run/beamOn 4512500
+#/run/beamOn 18873470
+#/run/beamOn 3200000
+#/run/beamOn 1887347
+#/run/beamOn 1646000
+/run/beamOn 10000000
+#000

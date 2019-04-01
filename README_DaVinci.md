@@ -21,21 +21,35 @@ Some Use cases:
 
 - Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
-./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../quick.mac 
+./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effEle.mac 
 
 ```
 
 - Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
-./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../quick.mac 
+./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effGamma.mac 
 
 ```
+
+- Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
+```
+./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
+
+```
+
+- Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
+```
+./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
+
+```
+
+
 - To obtain efficiency curve:
 ```
 - With Eabs
 
-B1->Draw("SourceEne>>num(200)","Eabs>68","")
-B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
+B1->Draw("SourceEne>>num(100)","Eabs>68","")
+B1->Draw("SourceEne>>denom(100)","EnterPterFlag==1","")
 num->Sumw2()
 num->Divide(denom)
 num->Draw("E")
@@ -106,7 +120,7 @@ num->Draw("E")
 
 - -HBLT is used to set the back thickness of the structure inside the case (this structure looks like an horseshoe too).
 
-- -CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not.
+- -CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not. If 0 the "bare probe" is placed (just PTER+Delrin+PVC)
 
 - -HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
 
@@ -462,6 +476,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fixed InPterPrimPart (was same as SourcePart)
 - Updated readme about scoring
 
+2019.04.01 by collamaf
+- Updated readme about Efficiency (also for stanard pen like probe)
 
 ## TO DO's
 
