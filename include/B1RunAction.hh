@@ -84,6 +84,12 @@ public:
 	std::vector<G4double>& GetExitParentID() {return RunVExitParentID; }
 	std::vector<G4int>& GetExitProcess() {return RunExitProcess; }
 	
+	std::vector<G4double>& GetExitOrigX() {return RunVExitOrigX; }
+	std::vector<G4double>& GetExitOrigY() {return RunVExitOrigY; }
+	std::vector<G4double>& GetExitOrigZ() {return RunVExitOrigZ; }
+
+	
+	
 	std::vector<G4double>& GetSourceCosX() {return RunVSourceCosX; }
 	std::vector<G4double>& GetSourceCosY() {return RunVSourceCosY; }
 	std::vector<G4double>& GetSourceCosZ() {return RunVSourceCosZ; }
@@ -193,6 +199,10 @@ private:
 	std::vector<G4double> RunVExitCosY;
 	std::vector<G4double> RunVExitCosZ;
 	
+	std::vector<G4double> RunVExitOrigX;
+	std::vector<G4double> RunVExitOrigY;
+	std::vector<G4double> RunVExitOrigZ;
+
 	std::vector<G4double> RunVExitPart;
 	std::vector<G4double> RunVExitParentID;
 	

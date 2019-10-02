@@ -208,7 +208,8 @@ int main(int argc,char** argv)
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	if (SourceSelect==6) FileNameCommonPart.append("_FlatEle");
 	if (SourceSelect==7) FileNameCommonPart.append("_FlatGamma");
-	
+	if (SourceSelect==8) FileNameCommonPart.append("_VolCu67");
+
 	// ####### MISCELLANEUS
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);

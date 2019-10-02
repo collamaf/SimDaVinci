@@ -270,11 +270,14 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(1,"ExitPart", RunVExitPart);                           //16
 	analysisManager->CreateNtupleDColumn(1,"ExitParentID", RunVExitParentID);                           //17
 	analysisManager->CreateNtupleIColumn(1,"ExitProcess", RunExitProcess); //18
-	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //19
+	analysisManager->CreateNtupleDColumn(1,"ExitOrigX", RunVExitOrigX); //19
+	analysisManager->CreateNtupleDColumn(1,"ExitOrigY", RunVExitOrigY); //20
+	analysisManager->CreateNtupleDColumn(1,"ExitOrigZ", RunVExitOrigZ); //21
+	analysisManager->CreateNtupleDColumn(1,"ExitTrackN"); //22
 	
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationX", RunVAnnihX); //20
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationY", RunVAnnihY); //21
-	analysisManager->CreateNtupleDColumn(1,"AnnihilationZ", RunVAnnihZ); //22
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationX", RunVAnnihX); //23
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationY", RunVAnnihY); //24
+	analysisManager->CreateNtupleDColumn(1,"AnnihilationZ", RunVAnnihZ); //25
 	
 	// ######################
 	// ################################################################################

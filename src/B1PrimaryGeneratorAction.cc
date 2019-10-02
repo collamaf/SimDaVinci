@@ -99,6 +99,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 			break;
 			
 		case 4: //Ga68
+		case 8:
 			fRadiusInt=fSourceDiameter/2.*mm;
 			fDZInt=0*mm;
 			fRadiusExt=fSourceDiameter/2.*mm;
@@ -142,6 +143,10 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		FlatEle=true;
 	} else if (fSourceSelect==7) { //Flat Gamma
 		FlatGamma=true;
+	}	else if (fSourceSelect==8) { //Cu67 volume source
+		Z=29;
+		A=67;
+		
 	}
 	G4double ionCharge   = 0.*eplus;
 	G4double excitEnergy = 0.*keV;
@@ -186,7 +191,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
 		}
-	} else if (fSourceSelect==4 && fGaSet==1) {
+	} else if ((fSourceSelect==4 && fGaSet==1) || fSourceSelect==8) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;

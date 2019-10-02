@@ -126,7 +126,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetExitCosZ()).clear();
 	(fRunAction->GetExitPart()).clear();
 	(fRunAction->GetExitParentID()).clear();
-	
+	(fRunAction->GetExitOrigX()).clear();
+	(fRunAction->GetExitOrigY()).clear();
+	(fRunAction->GetExitOrigZ()).clear();
+
 	(fRunAction->GetExitProcess()).clear();
 	
 	(fRunAction->GetEAbsComp()).clear();
@@ -208,7 +211,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
 		analysisManager->FillNtupleDColumn(1,1, fSourceY/mm);
 		analysisManager->FillNtupleDColumn(1,2, fSourceZ/mm);
-		analysisManager->FillNtupleDColumn(1,19, fNSourceExit);
+		analysisManager->FillNtupleDColumn(1,22, fNSourceExit);
 		
 		analysisManager->AddNtupleRow(1);
 	} 

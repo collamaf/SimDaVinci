@@ -479,6 +479,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2019.04.01 by collamaf
 - Updated readme about Efficiency (also for stanard pen like probe)
 
+2019.10.02 by collamaf
+- Added sourcechoice 8: Cu67 "ex-vivo" simple sample
+- Added scoring of Vertex XYZ of particles exiting the source
+
 ## TO DO's
 
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo

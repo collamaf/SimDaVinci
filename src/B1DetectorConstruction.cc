@@ -187,6 +187,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* ProbeContainer_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* SourceExtGa_mat=nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu");
+	G4Material* SourceCu_mat = nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* FrontShield_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* Pter_mat = PTerphenyl;
@@ -341,6 +342,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminSourceSR = 0.*mm;
 	G4double RmaxSourceSR = 12.5*mm;
 	G4double DzSourceSR= 3*mm;
+	//###
+	
+	//### Cu Source
+	G4double RminSourceCu = 0.*mm;
+	G4double RmaxSourceCu = fSourceDiameter*0.5*mm;
+	G4double DzSourceCu= fSourceThickness*mm;
 	//###
 	
 	//### Ga Source Container
@@ -673,6 +680,43 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		sorgente->AddRootLogicalVolume(logicSourceSR);
 	}
 	//################################################### END SR SOURCE
+	
+	
+	//###################################################
+	// Cu67/64 volume Source
+	//##########################
+	G4ThreeVector posSourceCu = G4ThreeVector(0, 0, -DzSourceCu*0.5-DzDummyExitSorg);
+		
+	G4Tubs* solidSourceCu =
+	new G4Tubs("Source",                       //its name
+						 RminSourceCu,
+						 RmaxSourceCu,
+						 0.5*DzSourceCu,
+						 Ang0,
+						 Ang2Pi);     //its size
+	
+	G4LogicalVolume* logicSourceCu =
+	new G4LogicalVolume(solidSourceCu,          //its solid
+											SourceCu_mat,           //its material
+											"Source");            //its name
+	
+	if(fSourceSelect==8) { //If I requested the Sr source (or the flat electron one for efficiencies)
+		G4cout<<"GEOMETRY DEBUG - Cu Source has been placed!!"<<G4endl;
+		
+		new G4PVPlacement(0,                     //no rotation
+											posSourceCu,       //at (0,0,0)
+											logicSourceCu,            //its logical volume
+											"Source",               //its name
+											logicWorld,            //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		logicSourceCu->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicSourceCu);
+	}
+	//################################################### END SR SOURCE
+	
 	
 	
 	

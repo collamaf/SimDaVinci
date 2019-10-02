@@ -154,8 +154,15 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(fRunningAction->GetExitCosX()).push_back(step->GetPreStepPoint()->GetMomentumDirection().x());
 			(fRunningAction->GetExitCosY()).push_back(step->GetPreStepPoint()->GetMomentumDirection().y());
 			(fRunningAction->GetExitCosZ()).push_back(step->GetPreStepPoint()->GetMomentumDirection().z());
+			
+			
 			(fRunningAction->GetExitPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
 			(fRunningAction->GetExitParentID()).push_back(step->GetTrack()->GetParentID());
+			
+			(fRunningAction->GetExitOrigX()).push_back(step->GetTrack()->GetVertexPosition().x());
+			(fRunningAction->GetExitOrigY()).push_back(step->GetTrack()->GetVertexPosition().y());
+			(fRunningAction->GetExitOrigZ()).push_back(step->GetTrack()->GetVertexPosition().z());
+
 			
 			if (step->GetTrack()->GetCreatorProcess()) {
 				(fRunningAction->GetExitProcess().push_back((step->GetTrack()->GetCreatorProcess()->GetProcessType())));
