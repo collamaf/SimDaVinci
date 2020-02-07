@@ -99,7 +99,8 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 			break;
 			
 		case 4: //Ga68
-		case 8:
+		case 8: //Cu67
+		case 9: //F18
 			fRadiusInt=fSourceDiameter/2.*mm;
 			fDZInt=0*mm;
 			fRadiusExt=fSourceDiameter/2.*mm;
@@ -146,8 +147,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}	else if (fSourceSelect==8) { //Cu67 volume source
 		Z=29;
 		A=67;
-		
+	}	else if (fSourceSelect==9) { //F18 volume source
+		Z=9;
+		A=18;
 	}
+	
 	G4double ionCharge   = 0.*eplus;
 	G4double excitEnergy = 0.*keV;
 	
@@ -191,7 +195,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
 		}
-	} else if ((fSourceSelect==4 && fGaSet==1) || fSourceSelect==8) {
+	} else if ((fSourceSelect==4 && fGaSet==1) || (fSourceSelect==8 || fSourceSelect==9) ) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;

@@ -198,12 +198,12 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleDColumn(0, 14, fPreProbeNo);
 	analysisManager->FillNtupleDColumn(0, 17, fPostAbsNo);
 	
-	analysisManager->FillNtupleDColumn(0,21, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,22, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,23, fSourceZ/mm);
+	analysisManager->FillNtupleDColumn(0,22, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,23, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,24, fSourceZ/mm);
 
-	analysisManager->FillNtupleIColumn(0,30, fNPMT);
-	analysisManager->FillNtupleIColumn(0,31, fEnterPterFlag);
+	analysisManager->FillNtupleIColumn(0,31, fNPMT);
+	analysisManager->FillNtupleIColumn(0,32, fEnterPterFlag);
 	
 	if(1||fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
 	

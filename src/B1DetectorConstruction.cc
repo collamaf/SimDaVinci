@@ -683,7 +683,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	//###################################################
-	// Cu67/64 volume Source
+	// Cu67/64-F18 volume Sources for pure MC tests (not exp meas.)
 	//##########################
 	G4ThreeVector posSourceCu = G4ThreeVector(0, 0, -DzSourceCu*0.5-DzDummyExitSorg);
 		
@@ -700,8 +700,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceCu_mat,           //its material
 											"Source");            //its name
 	
-	if(fSourceSelect==8) { //If I requested the Sr source (or the flat electron one for efficiencies)
-		G4cout<<"GEOMETRY DEBUG - Cu Source has been placed!!"<<G4endl;
+	if(fSourceSelect==8 || fSourceSelect==9) { //If I requested the Cu67 source (or the flat electron one for efficiencies)
+		G4cout<<"GEOMETRY DEBUG - Cu/F Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
 											posSourceCu,       //at (0,0,0)

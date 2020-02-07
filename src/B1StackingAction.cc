@@ -65,11 +65,10 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 	fEventAction->ResetPterPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPostAbsPassCounter();
 	fEventAction->ResetPreProbePassCounter();
-	
 	// ################################################################################
 	// ###################### Interception of decay products
-	if (CreatorProcname=="RadioactiveDecay" && track->GetDynamicParticle()->GetPDGcode()<9e8 && track->GetDynamicParticle()->GetPDGcode()!=0 && track->GetCurrentStepNumber()==0) { //to exclude optical photons and to avoid counting several times particles that undergo optical interactions (eg scintillation) - added on 2018.06.21
-		//		G4cout<<"Aggiungo al calderone sorgente! ParentID= "<<track->GetParentID()<<" PID= "<<track->GetDynamicParticle() ->GetPDGcode()<<" EkeV= "<<track->GetKineticEnergy()/CLHEP::keV<<G4endl;
+	if ((CreatorProcname!="" && CreatorProcname.find("RadioactiveDecay")!=std::string::npos) && track->GetDynamicParticle()->GetPDGcode()<9e8 && track->GetDynamicParticle()->GetPDGcode()!=0 && track->GetCurrentStepNumber()==0) { //to exclude optical photons and to avoid counting several times particles that undergo optical interactions (eg scintillation) - added on 2018.06.21
+		// G4cout<<"Aggiungo al calderone sorgente! ParentID= "<<track->GetParentID()<<" PID= "<<track->GetDynamicParticle() ->GetPDGcode()<<" EkeV= "<<track->GetKineticEnergy()/CLHEP::keV<<" Process "<<CreatorProcname<<G4endl;
 		
 		fRunningAction->SetMotherIsotope(track->GetParentID()-1);
 		(fRunningAction->SetMotherEnergy(track->GetKineticEnergy()/CLHEP::keV));

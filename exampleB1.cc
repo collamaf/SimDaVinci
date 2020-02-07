@@ -208,7 +208,9 @@ int main(int argc,char** argv)
 	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
 	if (SourceSelect==6) FileNameCommonPart.append("_FlatEle");
 	if (SourceSelect==7) FileNameCommonPart.append("_FlatGamma");
-	if (SourceSelect==8) FileNameCommonPart.append("_VolCu67");
+	if (SourceSelect==8) FileNameCommonPart.append("_VolCu67_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+
+	if (SourceSelect==9) FileNameCommonPart.append("_VolF18_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
 	// ####### MISCELLANEUS
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
@@ -249,7 +251,7 @@ int main(int argc,char** argv)
 	//	G4VModularPhysicsList* physicsList = new QBBC;
 	//	physicsList->RegisterPhysics(new G4OpticalPhysics());
 	
-	B1PhysicsList* physicsList=new B1PhysicsList;
+	B1PhysicsList* physicsList=new B1PhysicsList(ScintFlag);
 	physicsList->RegisterPhysics(new G4StepLimiterPhysics());
 	
 	runManager->SetUserInitialization(physicsList);

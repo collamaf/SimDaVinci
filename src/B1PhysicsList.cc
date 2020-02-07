@@ -48,8 +48,10 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1PhysicsList::B1PhysicsList() 
-: G4VModularPhysicsList(){
+B1PhysicsList::B1PhysicsList(G4bool scintFlag)
+: G4VModularPhysicsList(),
+fscintFlag(scintFlag) {
+
   SetVerboseLevel(1);
 
   // Default physics
@@ -71,7 +73,7 @@ B1PhysicsList::B1PhysicsList()
 	opticalPhysics->Configure(kCerenkov, false);
 	opticalPhysics->SetCerenkovStackPhotons(false);
 	opticalPhysics->SetScintillationStackPhotons(true);
-	RegisterPhysics(opticalPhysics);
+ if (fscintFlag)	RegisterPhysics(opticalPhysics);
 	
 }
 

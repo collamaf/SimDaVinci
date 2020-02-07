@@ -42,7 +42,10 @@ Some Use cases:
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
 
 ```
-
+- Monte Carlo tests with F18 with Robotic Probe (GEN 2020)
+```
+./exampleb1  -Source 9   -PterD 6 -PterT 3 -Z 0 -SourceD 30 ../run1.mac
+```
 
 - To obtain efficiency curve:
 ```
@@ -73,7 +76,9 @@ num->Draw("E")
 4 - ExtGa
 5 - 511KeV gamma sphere
 6 - FlatEle
-7 - FlatGamma
+7 - FlatGamma sphere
+8 - ExtCu67 (vol for MC studies, not exp. meas.)
+9 - ExtF18 (vol for MC studies, not exp. meas.)
 
 
 
@@ -90,7 +95,7 @@ num->Draw("E")
 
 - -Z is used to choose the distance of the frontshield from the source.
 
-- -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way give this value taking in consideration that the distance of the probe's head ( the frontshield ) from the source is given by Z + AbsT/2.
+- -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way to give this value taking in consideration that the distance of the probe's head (the frontshield) from the source is given by Z + AbsT/2.
 
 - -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   
 
@@ -483,8 +488,16 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Added sourcechoice 8: Cu67 "ex-vivo" simple sample
 - Added scoring of Vertex XYZ of particles exiting the source
 
+2020.02.07 by collamaf
+- Add extended F18 source (like Cu), source 9
+- Fix StackAct condition to intercept decay product with new RadioactiveDecayBase process (should howevere be retro compatible)
+- Now ScintFlag is passed to PhysList also (not onlu DetConst), since the mere process somehow overshadowed the RadioactiveDecay one preventing the StackAction scoring
+- Add "AnaProbe" analysis macro
+- Add ExitPart scoring also in B1 tree
+
 ## TO DO's
 
+- F18/Cu67 su supporto GaSet per fare misure al gemelli
 - flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
 - Sistemare l'overlap fra il volume SiPm e il tappo presente dietro il PTER quando c'è il case
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)

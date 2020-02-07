@@ -95,7 +95,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,36, nbEventInRun);
+	analysisManager->FillNtupleIColumn(0,37, nbEventInRun);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -222,6 +222,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"PostAbsEn", RunVPostAbsEn); //19
 	
 	analysisManager->CreateNtupleDColumn(0,"ExitEne", RunVExitEn); //20
+	analysisManager->CreateNtupleDColumn(0,"ExitPart", RunVExitPart);   //21 added 2020.02.07
 	
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //21
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //22
