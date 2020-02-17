@@ -73,7 +73,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 	fParticleGun  = new G4ParticleGun(n_particle);
 	
 	
-	
+	// Define source dimensions according to the selected source
 	switch (fSourceSelect) {
 		case 1: //PSr
 			fRadiusInt=0*mm;
@@ -107,6 +107,10 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 			fDZExt=fSourceThickness*mm;
 			
 		default:
+			fRadiusInt=fSourceDiameter/2.*mm;
+			fDZInt=0*mm;
+			fRadiusExt=fSourceDiameter/2.*mm;
+			fDZExt=fSourceThickness*mm;
 			break;
 	}
 	
@@ -150,7 +154,12 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}	else if (fSourceSelect==9) { //F18 volume source
 		Z=9;
 		A=18;
+	}	else if (fSourceSelect<0) { //Variable Radioactive Isotope source: -Source -ZZAA
+		Z=int(-fSourceSelect/100);
+		A=int(-fSourceSelect%100);
+		//G4cout<<"#### RICHIESTO ISOTOPO GENERICO CON Z= "<< Z <<", e A= "<<A<<G4endl;
 	}
+	
 	
 	G4double ionCharge   = 0.*eplus;
 	G4double excitEnergy = 0.*keV;
@@ -195,7 +204,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 			fZ=fDZExt-fDZInt;
 			zSource = -G4UniformRand()*fZ-fDZInt-zSourceOffset;
 		}
-	} else if ((fSourceSelect==4 && fGaSet==1) || (fSourceSelect==8 || fSourceSelect==9) ) {
+	} else if ((fSourceSelect==4 && fGaSet==1) || (fSourceSelect==8 || fSourceSelect==9 || fSourceSelect<0) ) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;

@@ -212,6 +212,9 @@ int main(int argc,char** argv)
 
 	if (SourceSelect==9) FileNameCommonPart.append("_VolF18_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
+	if (SourceSelect<0) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" + std::to_string(int(-SourceSelect%100)) + "_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+
+	
 	// ####### MISCELLANEUS
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);

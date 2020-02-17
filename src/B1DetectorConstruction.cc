@@ -700,7 +700,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceCu_mat,           //its material
 											"Source");            //its name
 	
-	if(fSourceSelect==8 || fSourceSelect==9) { //If I requested the Cu67 source (or the flat electron one for efficiencies)
+	if(fSourceSelect==8 || fSourceSelect==9 || fSourceSelect<0) { //If I requested the Cu67/F18/GenericIon source (or the flat electron one for efficiencies)
 		G4cout<<"GEOMETRY DEBUG - Cu/F Source has been placed!!"<<G4endl;
 		
 		new G4PVPlacement(0,                     //no rotation
