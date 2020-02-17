@@ -8,6 +8,9 @@
 #ifndef AnaProbe_h
 #define AnaProbe_h
 
+#define NANAPART 3
+#define NTHR 4
+
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -114,6 +117,12 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 		TFile* outputfile;
+	TDirectory* dirCanvas;
+//	TDirectory* dirPart=new TDirectory();
+	TDirectory* dirPart[NANAPART];
+	TDirectory* dirThr[NTHR];
+
+
 };
 
 #endif
@@ -126,6 +135,12 @@ AnaProbe::AnaProbe(TString filename) : fChain(0)
 	TTree *tree = (TTree*)gDirectory->Get("B1");
 	if (file!=NULL) outputfile=new TFile(Form("%s_Ana.root",filename.Data()),"RECREATE");
 	Init(tree);
+	
+	dirCanvas = outputfile->mkdir("Canvas");
+//	dirPart[0] = outputfile->mkdir("Ele");
+//	dirPart[1] = outputfile->mkdir("Pos");
+//	dirPart[2] = outputfile->mkdir("Fot");
+
 	
 	
 //	fVectorNoise->Dump();

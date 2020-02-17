@@ -108,22 +108,23 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### ENTERING Pter (from wherever)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
-		if (debug) G4cout<<"\nCIAODEBUG\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
+		// Check te kind of entering particle to attribute the energy deposit correctly to electrons, gammas ecc
+		if (debug) G4cout<<"\nSTEPDEBUGPTER\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
 		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //TODO: sistemare per evitare errori dovuti al fatto che è l'ultima traccia creata la prima ad essere tracciata..
 		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
 		
 		// Check if the current track had already enetered somehow the PTER (to avoid double counting), otherwise increase the counter
 		if (fEventAction->GetPterStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the source...
 			fEventAction->AddPterPassCounter(1);  //increase the counter
-			//			G4cout<<"PterDEBUG CONTROLLA "<<fEventAction->GetPterStoreTrackID()<<", PassCounter= "<<fEventAction->GetPterPassCounter()<<G4endl;
+			if (debug)			G4cout<<"STEPDEBUGPTER Traccia gia vista! "<<fEventAction->GetPterStoreTrackID()<<", PassCounter= "<<fEventAction->GetPterPassCounter()<<G4endl;
 		}else {
 			fEventAction->SetPterStoreTrackID(step->GetTrack()->GetTrackID());
-			//			G4cout<<"PterDEBUG PRIMO PASSAGGIO!! "<<fEventAction->GetPterStoreTrackID()<<", PassCounter= "<<fEventAction->GetPterPassCounter()<<G4endl;
-			//            if (fEventAction->GetPassCounter()!=0) G4cout<<"MERDAAAAA Primo passaggio di"<<fEventAction->GetStoreTrackID()<<" ma con PassCounter= "<<fEventAction->GetPassCounter()<<G4endl;
+			if (debug)			G4cout<<"STEPDEBUGPTER PterDEBUG PRIMO PASSAGGIO!! della traccia "<<fEventAction->GetPterStoreTrackID()<<", PassCounter= "<<fEventAction->GetPterPassCounter()<<G4endl;
 		}
 		
 		// Salvo le info solo della prima volta che una particella entra in pter
 		if (fEventAction->GetPterPassCounter()==0) {
+			if (debug) G4cout<<"\nSTEPDEBUGPTER\n Siccome è la prima volta della traccia  "<<step->GetTrack()->GetTrackID()<<" la salvo"<<G4endl;
 			(fRunningAction->GetPrePterEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			fEventAction->AddPrePterNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPrePterPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //add PID of particle enetering Pter
@@ -203,14 +204,21 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	if(NextVol && ThisVol->GetName()=="DummyEnterProbe" && NextVol->GetName()=="FrontShield") {
 		
 		//to avoid double counting same track going back and forth, check if I already counted it
+		if (debug) G4cout<<"\nSTEPDEBUGPROBE\n Particella entrata in PROBE - fEventAction->GetPreProbeStoreTrackID() ERA = "<<fEventAction->GetPreProbeStoreTrackID();
 		if (fEventAction->GetPreProbeStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the absorber...
 			fEventAction->AddPreProbePassCounter(1);  //increase the counter
+			if (debug) G4cout<<"\nSTEPDEBUGPROBE\n Particella entrata in PROBE ma traccia gia vista! - fEventAction->GetPreProbePassCounter() Counter = "<<fEventAction->GetPreProbePassCounter()<<" (traccia) "<<fEventAction->GetPreProbeStoreTrackID()<<G4endl;
+
 		}else {
+			if (debug) G4cout<<"\nSTEPDEBUGPROBE\n Particella entrata in PROBE e traccia nuova! - step->GetTrack()->GetTrackID()  = "<<step->GetTrack()->GetTrackID()<<G4endl;
+
 			fEventAction->SetPreProbeStoreTrackID(step->GetTrack()->GetTrackID());
 		}
 		
 		// Salvo le info solo della prima volta che una particella esce dall'assorbitore
 		if (fEventAction->GetPreProbePassCounter()==0) {
+			if (debug) G4cout<<"\nSTEPDEBUGPROBE\n Siccome è la prima volta della traccia  "<<step->GetTrack()->GetTrackID()<<" la salvo"<<G4endl;
+
 			fEventAction->AddPreProbeNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPreProbeEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			(fRunningAction->GetPreProbePart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
@@ -250,7 +258,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		(fRunningAction->GetPterZ()).push_back(step->GetPreStepPoint()->GetPosition().z()/mm);
 		(fRunningAction->GetPterPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
 		
-		if (debug)  G4cout<<"CIAODEBUG Ho un rilascio di energia ("<< step->GetTotalEnergyDeposit()/keV<<" [KeV]) dovuto ad una particella entrata nel CMOS di tipo: "<<fEventAction->GetEnteringParticle()<<G4endl;
+		if (0&&debug)  G4cout<<"CIAODEBUG Ho un rilascio di energia ("<< step->GetTotalEnergyDeposit()/keV<<" [KeV]) dovuto ad una particella entrata nel CMOS di tipo: "<<fEventAction->GetEnteringParticle()<<G4endl;
 		
 		if (fEventAction->GetEnteringParticle()==11) {  //if son of electron
 			fEventAction->AddEdepEle(step->GetTotalEnergyDeposit());

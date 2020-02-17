@@ -467,6 +467,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy Enter Pter
 	G4double RminDummyEnterProbe = 0.*mm;
 	G4double RmaxDummyEnterProbe = 18.*mm;
+//	G4double RmaxDummyEnterProbe = PVC_outer_r;
 	if (fGaSet==2) RmaxDummyEnterProbe = d_CylG3/2.*mm;
 	if (fGaSet==3) RmaxDummyEnterProbe = d_CylG3/2.*mm;
 	G4double DzDummyEnterProbe= 1.e-5*mm;

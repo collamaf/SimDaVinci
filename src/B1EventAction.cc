@@ -214,7 +214,20 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 		analysisManager->FillNtupleDColumn(1,22, fNSourceExit);
 		
 		analysisManager->AddNtupleRow(1);
-	} 
+	}
+	
+	//Keep interesting events for offline visualization
+////	if (fPterPassCounter==0 && fPreProbePassCounter>0) {
+//			if (fPrePterNo>0 && fPreProbeNo==0) {
+////		if (fPterPassCounter>fPreProbePassCounter) {
+//		G4cout<<"Evento con tracce in pter ma 0 in Probe: "<<evento->GetEventID()<<" "<<fPrePterNo<<" "<< fPreProbeNo  <<G4endl;
+//		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+//		evt->KeepTheEvent();
+//		
+//	}
+//	
+	
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
