@@ -104,6 +104,7 @@ public :
    TBranch        *b_Nev;   //!
 
    AnaProbe(TString filename);
+	TString inputFileName;
    virtual ~AnaProbe();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -120,6 +121,7 @@ public :
 #ifdef AnaProbe_cxx
 AnaProbe::AnaProbe(TString filename) : fChain(0)
 {
+	inputFileName=filename;
 	TFile *file = new TFile(Form("%s.root",filename.Data()));
 	TTree *tree = (TTree*)gDirectory->Get("B1");
 	outputfile=new TFile(Form("%s_Ana.root",filename.Data()),"RECREATE");

@@ -7,15 +7,21 @@
 #define NBINERED 50
 #define EMIN 0
 #define EMAX 2300
+
 #define NBINZ 50
 #define ZMIN -10
 #define ZMAX 0
+
+#define NBINX 50
+#define XMIN 0
+#define XMAX -20
+
 #define NANAPART 3
 #define NTHR 4
 
 //
 //  Root Macro to Analyse probe simulation output
-//  Last modification: 2020.02.07 by collamaf
+//  Last modification: 2020.02.17 by collamaf
 //
 //
 //
@@ -37,6 +43,9 @@ void AnaProbe::Loop()
 	int ParticlePosition;
 	
 	double eThr[NTHR]= {0, 67, 150, 600};
+	double probeDiam=6, probeDepth=3; //probe dimensions in mm
+	probeDiam=strtod(inputFileName(inputFileName.Index("_PDiam")+6,1).Data(), NULL);
+	probeDepth=strtod(inputFileName(inputFileName.Index("_PDz")+4,1).Data(), NULL);
 	
 	TH1F* hExitSource[NANAPART];
 	TH1F* hPostAbs[NANAPART];
@@ -45,9 +54,13 @@ void AnaProbe::Loop()
 	TH1F* hEnDep[NANAPART];
 
 	TH1F*	hSourceZ[NTHR];
+	TH2F* hSourceZX[NTHR];
+	TCanvas * cSourceZX[NTHR];
 	
 	for (int ii=0; ii<NTHR; ii++) {
 		hSourceZ[ii]= new TH1F(Form("hSourceZThr%d",(int)eThr[ii]),Form("Source Depth for Edep Thr = %d keV; Source Depth [mm]; ",(int)eThr[ii]), NBINZ, ZMIN, ZMAX);
+		hSourceZX[ii] = new TH2F(Form("hSourceZX%d",(int)eThr[ii]),Form("Position of primary particles giving a signal > %d keV ; X [mm]; Z [mm]",(int)eThr[ii]), NBINX, XMIN, XMAX, NBINZ, ZMIN, ZMAX);
+
 	}
 	
 	Color_t colori[4]={kBlack, kRed, kGreen, kBlue};
@@ -106,6 +119,7 @@ void AnaProbe::Loop()
 		for (int ii = 0; ii <NTHR; ii++) {
 			if (Eabs>eThr[ii])  {
 				hSourceZ[ii]->Fill(SourceZ);
+				hSourceZX[ii]->Fill(SourceX, SourceZ);
 			}
 		}
 
@@ -139,6 +153,31 @@ void AnaProbe::Loop()
 		hSourceZ[ii]->Write();
 	}
 	cSourceZ->BuildLegend();
+	
+//	cSourceZX->Divide(2,2);
+	for (int ii=0; ii<NTHR; ii++) {
+		cSourceZX[ii]=new TCanvas(Form("cSourceZX%d", (int)eThr[ii]),Form("cSourceZX%d", (int)eThr[ii]));
+//		cSourceZX->cd(ii);
+		hSourceZX[ii]->Draw("colz");
+		TLine* probeShadowX= new TLine(-probeDiam/2., -probeDepth, probeDiam/2., -probeDepth);
+		TLine* probeShadowY1= new TLine(-probeDiam/2., -probeDepth, -probeDiam/2., 0);
+		TLine* probeShadowY2= new TLine(probeDiam/2., -probeDepth, probeDiam/2., 0);
+		probeShadowX->SetLineColor(kRed);
+		probeShadowY1->SetLineColor(kRed);
+		probeShadowY2->SetLineColor(kRed);
+		probeShadowX->SetLineWidth(3);
+		probeShadowY1->SetLineWidth(3);
+		probeShadowY2->SetLineWidth(3);
+		probeShadowX->SetLineStyle(5);
+		probeShadowY1->SetLineStyle(5);
+		probeShadowY2->SetLineStyle(5);
+		probeShadowX->Draw("same");
+		probeShadowY1->Draw("same");
+		probeShadowY2->Draw("same");
+		hSourceZX[ii]->Write();
+		cSourceZX[ii]->Write();
+
+	}
 	
 	cSourceZEabs->cd();
 	hSourceZEabs->Draw("colz");
