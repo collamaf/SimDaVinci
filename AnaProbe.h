@@ -124,7 +124,7 @@ AnaProbe::AnaProbe(TString filename) : fChain(0)
 	inputFileName=filename;
 	TFile *file = new TFile(Form("%s.root",filename.Data()));
 	TTree *tree = (TTree*)gDirectory->Get("B1");
-	outputfile=new TFile(Form("%s_Ana.root",filename.Data()),"RECREATE");
+	if (file!=NULL) outputfile=new TFile(Form("%s_Ana.root",filename.Data()),"RECREATE");
 	Init(tree);
 	
 	

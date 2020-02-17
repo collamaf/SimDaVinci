@@ -181,6 +181,14 @@ void AnaProbe::Loop()
 	
 	cSourceZEabs->cd();
 	hSourceZEabs->Draw("colz");
+	TLine* lineThr[NTHR];
+	for (int ii=0; ii<NTHR; ii++) {
+		lineThr[ii]=new TLine(eThr[ii], ZMIN, eThr[ii], 0);
+		lineThr[ii]->SetLineStyle(5);
+		lineThr[ii]->SetLineColor(kRed);
+		lineThr[ii]->SetLineWidth(3);
+		lineThr[ii]->Draw("same");
+	}
 	cSourceZEabs->SetLogz();
 	cSourceZEabs->Write();
 
