@@ -13,14 +13,14 @@
 #define ZMAX 0
 
 #define NBINX 100
-#define XMIN 0
-#define XMAX -20
+#define XMIN -10
+#define XMAX 10
 
 
 
 //
 //  Root Macro to Analyse probe simulation output
-//  Last modification: 2020.02.17 by collamaf
+//  Last modification: 2020.02.19 by collamaf
 //
 //
 //
@@ -41,7 +41,8 @@ void AnaProbe::Loop()
 	};
 	int ParticlePosition;
 	
-	double eThr[NTHR]= {0, 67, 150, 600};
+	double eThr[NTHR]= {0, 67, 150, 300};
+	double	zCumThr = 0.9;
 	double probeDiam=6, probeDepth=3; //probe dimensions in mm
 	probeDiam=strtod(inputFileName(inputFileName.Index("_PDiam")+6,1).Data(), NULL);
 	probeDepth=strtod(inputFileName(inputFileName.Index("_PDz")+4,1).Data(), NULL);
@@ -55,17 +56,17 @@ void AnaProbe::Loop()
 	TH1F*	hSourceZ[NTHR];
 	TH1F*	hSourceZcum[NTHR];
 	TH2F* hSourceZX[NTHR];
-	TCanvas * cSourceZX[NTHR];
 	
 	for (int ii=0; ii<NTHR; ii++) {
 		hSourceZ[ii]= new TH1F(Form("hSourceZThr%d",(int)eThr[ii]),Form("Source Depth for Edep Thr = %d keV; Source Depth [mm]; ",(int)eThr[ii]), NBINZ, ZMIN, ZMAX);
-		hSourceZcum[ii]= new TH1F(Form("hSourceZcumThr%d",(int)eThr[ii]),Form("Cumulative Source Depth for Edep Thr = %d keV; Source Depth [mm]; ",(int)eThr[ii]), NBINZ, ZMIN, ZMAX);
+		hSourceZcum[ii]= new TH1F(Form("hSourceZcumThr%d",(int)eThr[ii]),Form("Cum. Source Depth for Edep Thr = %d keV; Source Depth [mm]; ",(int)eThr[ii]), NBINZ, ZMIN, ZMAX);
 		hSourceZX[ii] = new TH2F(Form("hSourceZX%d",(int)eThr[ii]),Form("Position of primary particles giving a signal > %d keV ; X [mm]; Z [mm]",(int)eThr[ii]), NBINX, XMIN, XMAX, NBINZ, ZMIN, ZMAX);
 		dirThr[ii]=outputfile->mkdir(Form("Thr%d",(int)eThr[ii]));
 	}
 	
-	Color_t colori[4]={kBlack, kRed, kGreen, kBlue};
+	Color_t colori[5]={kBlack, kRed, kGreen, kBlue, kMagenta};
 
+	TCanvas * cSourceZX[NTHR];
 	TCanvas * cSumUp[NANAPART];
 	TCanvas * cSourceZ=new TCanvas("cSourceZ","cSourceZ");
 	TCanvas * cSourceZcum=new TCanvas("cSourceZcum","cSourceZcum");
@@ -87,6 +88,7 @@ void AnaProbe::Loop()
 		hPostAbs[ii]->SetLineColor(colori[1]);
 		hPreProbe[ii]->SetLineColor(colori[2]);
 		hPrePter[ii]->SetLineColor(colori[3]);
+		hEnDep[ii]->SetLineColor(colori[4]);
 	}
 
 	Long64_t nbytes = 0, nb = 0;
@@ -127,7 +129,7 @@ void AnaProbe::Loop()
 			}
 		}
 
-		hSourceZEabs->Fill(Eabs, SourceZ);
+		if (Eabs>0) hSourceZEabs->Fill(Eabs, SourceZ);
 		
 	} //fine loop sulle entries
 	
@@ -138,9 +140,12 @@ void AnaProbe::Loop()
 		hPostAbs[ii]->Draw("sames");
 		hPreProbe[ii]->Draw("sames");
 		hPrePter[ii]->Draw("sames");
+		hEnDep[ii]->Draw("sames");
+
 		cSumUp[ii]->BuildLegend();
 		dirCanvas->cd();
 		cSumUp[ii]->Write();
+		cSumUp[ii]->SaveAs(Form("%s/%s%s.pdf",canvDir.Data(),inputFileName.Data(),cSumUp[ii]->GetName()));
 		dirPart[ii]->cd();
 		
 		hExitSource[ii]->Write();
@@ -160,14 +165,25 @@ void AnaProbe::Loop()
 		cSourceZcum->cd();
 		hSourceZcum[ii]=(TH1F*)hSourceZ[ii]->GetCumulative(kFALSE);
 		hSourceZcum[ii]->SetName(Form("hSourceZcumThr%d",(int)eThr[ii]));
-		hSourceZcum[ii]->SetTitle("Source Depth of detected signals cumulative function");
+//		hSourceZcum[ii]->SetTitle("Source Depth of Edep signals cumulative function");
 		hSourceZcum[ii]->Scale(1/hSourceZcum[ii]->GetMaximum());
 		hSourceZcum[ii]->Draw("samePLC");
+		double tempX= hSourceZcum[ii]->GetBinCenter(hSourceZcum[ii]->FindLastBinAbove(zCumThr));
+		double tempY= hSourceZcum[ii]->GetBinContent(hSourceZcum[ii]->FindLastBinAbove(zCumThr));
+		TLine* cumThrLine= new TLine(tempX, 0, tempX, tempY);
+		cumThrLine->Draw("samePLC");
 		hSourceZcum[ii]->Write();
+		if (ii==1) cout<<" ZCUM Fraction: "<<100*zCumThr<<"% of signal comes from the last "<<-tempX<<"mm of tissue "<<endl;
 	}
-	outputfile->cd();
+	dirCanvas->cd();
 	cSourceZ->BuildLegend();
-	
+	cSourceZ->Write();
+	cSourceZ->SaveAs(Form("%s/%s%s.pdf",canvDir.Data(),inputFileName.Data(),cSourceZ->GetName()));
+	cSourceZcum->BuildLegend();
+	cSourceZcum->Write();
+	cSourceZcum->SaveAs(Form("%s/%s%s.pdf",canvDir.Data(),inputFileName.Data(),cSourceZcum->GetName()));
+	outputfile->cd();
+
 //	cSourceZX->Divide(2,2);
 	for (int ii=0; ii<NTHR; ii++) {
 		dirThr[ii]->cd();
@@ -192,22 +208,25 @@ void AnaProbe::Loop()
 		hSourceZX[ii]->Write();
 		dirCanvas->cd();
 		cSourceZX[ii]->Write();
+		cSourceZX[ii]->SaveAs(Form("%s/%s%s.pdf",canvDir.Data(),inputFileName.Data(),cSourceZX[ii]->GetName()));
+
 		outputfile->cd();
 	}
 	
 	cSourceZEabs->cd();
 	hSourceZEabs->Draw("colz");
 	TLine* lineThr[NTHR];
-	for (int ii=0; ii<NTHR; ii++) {
+	for (int ii=0; ii<NTHR; ii++) { //not sure I want to show here all the threshold lines...
 		lineThr[ii]=new TLine(eThr[ii], ZMIN, eThr[ii], 0);
 		lineThr[ii]->SetLineStyle(5);
 		lineThr[ii]->SetLineColor(kRed);
 		lineThr[ii]->SetLineWidth(3);
-		lineThr[ii]->Draw("same");
+		if (ii==1) lineThr[ii]->Draw("same");
 	}
-	cSourceZEabs->SetLogz();
+//	cSourceZEabs->SetLogz();
 	dirCanvas->cd();
 	cSourceZEabs->Write();
+	cSourceZEabs->SaveAs(Form("%s/%s%s.pdf",canvDir.Data(),inputFileName.Data(),cSourceZEabs->GetName()));
 	outputfile->cd();
 	hSourceZEabs->Write();
 	

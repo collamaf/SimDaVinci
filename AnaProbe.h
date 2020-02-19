@@ -117,6 +117,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 		TFile* outputfile;
+	TString canvDir="CanvDir";
 	TDirectory* dirCanvas;
 //	TDirectory* dirPart=new TDirectory();
 	TDirectory* dirPart[NANAPART];
