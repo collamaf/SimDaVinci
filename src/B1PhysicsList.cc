@@ -33,6 +33,7 @@
 #include "G4DecayPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
 #include "G4EmStandardPhysics.hh"
+#include "G4EmStandardPhysics_option4.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4RegionStore.hh"
 
@@ -61,7 +62,8 @@ fscintFlag(scintFlag) {
   RegisterPhysics(new G4RadioactiveDecayPhysics());
 
   // EM physics
-  RegisterPhysics(new G4EmStandardPhysics());
+//  RegisterPhysics(new G4EmStandardPhysics());
+  RegisterPhysics(new G4EmStandardPhysics_option4());
 
 	// Optical physics
 //	RegisterPhysics(new G4OpticalPhysics());
@@ -97,6 +99,7 @@ void B1PhysicsList::SetCuts()
 	 G4Region* region;
 	G4String regName;
 	
+	 
 	
 	regName = "CuReg";
 	region = G4RegionStore::GetInstance()->GetRegion(regName);
@@ -104,6 +107,12 @@ void B1PhysicsList::SetCuts()
 	cuts->SetProductionCut(0.01*mm); // same cuts for gamma, e- and e+
 	region->SetProductionCuts(cuts);
 	*/
+	
+	SetCutValue(0.1 * mm, "gamma");
+	SetCutValue(0.01 * mm, "e+");
+	SetCutValue(0.01 * mm, "e-");
+	G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(250*eV, 100.*GeV);
+	
 	G4ProductionCuts* cuts = new G4ProductionCuts;
 	cuts->SetProductionCut(0.1*mm);
 	G4ProductionCuts* cutsPter = new G4ProductionCuts;

@@ -47,6 +47,11 @@ Some Use cases:
 ./exampleb1  -Source 9   -PterD 6 -PterT 3 -Z 0 -SourceD 30 ../run1.mac
 ```
 
+- Monte Carlo tests with variable isotope with Standard Probe (FEB 2020)
+```
+./exampleb1  -Source -3990   -PterD 6 -PterT 3 -Z 0 -SourceD 20 -SourceT 10  ../run1.mac
+```
+
 - To obtain efficiency curve:
 ```
 - With Eabs
@@ -498,6 +503,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2020.02.17 by collamaf
 - Add new <0 SourceSelect, to choose generic radioactive ion: -SourceSelect -ZZAA (has the same source geometry than SourceSelect 8-9: simple active water voulme (manageble via SourceD SourceT) 
 
+2020.02.25 by collamaf
+- Fix physics list: opt4 and proper cuts (maybe excessive too..)
 
 ## TO DO's
 
