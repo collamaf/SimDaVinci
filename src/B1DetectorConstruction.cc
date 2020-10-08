@@ -78,8 +78,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//
 	// World
 	//
-	G4double world_sizeXY = 0.5*m;
-	G4double world_sizeZ  = 0.5*m;
+	G4double world_sizeXY = 1.*m;
+	G4double world_sizeZ  = 1.*m;
 	G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
 	//	G4Material* world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 	
@@ -210,7 +210,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* MiddleCase_mat=CaseInner_mat;
 	G4Material* TopCase_mat=CaseInner_mat;
 	
-	if (fSourceSelect==6 || fSourceSelect==7) SourceSR_mat=world_mat;
+	if (fSourceSelect==6 || fSourceSelect==7|| fSourceSelect==10) SourceSR_mat=world_mat;
 	
 	//To modify GaSet 2/3 materials according to flags
 	if (fGaSet==2 || fGaSet==3) {

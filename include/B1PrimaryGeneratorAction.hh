@@ -51,7 +51,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
 //    B1PrimaryGeneratorAction(B1EventAction* eventAction);
-	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50);
+	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50, G4String ExtSourceFile="");
     virtual ~B1PrimaryGeneratorAction();
 
     // method from the base class
@@ -90,8 +90,8 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 	G4double fCaseDepth;
 	//	G4LogicalVolume* sourceLV;
 //	G4VPhysicalVolume* sourcePV;
-	
-	
+	G4VPrimaryGenerator* hepmcAscii;
+	G4String fExtSourceFile;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

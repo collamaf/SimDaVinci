@@ -55,6 +55,10 @@
 #include <iostream>
 #include <fstream>
 
+#define HEPFLAG
+#ifdef HEPFLAG
+#include "HepMCG4AsciiReader.hh"
+#endif
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -63,15 +67,14 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting, G4double CaseDepth)
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting, G4double CaseDepth, G4String ExtSourceFile)
 : G4VUserPrimaryGeneratorAction(),
 fParticleGun(0) ,
-evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting), fCaseDepth(CaseDepth)
+evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting), fCaseDepth(CaseDepth), fExtSourceFile(ExtSourceFile)
 
 {
 	G4int n_particle = 1;
 	fParticleGun  = new G4ParticleGun(n_particle);
-	
 	
 	// Define source dimensions according to the selected source
 	switch (fSourceSelect) {
@@ -117,10 +120,16 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 	if (fSourceSelect==6) FlatEle = true;
 	if (fSourceSelect==7) FlatGamma=true;
 	
-	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-	G4ParticleDefinition* particle = particleTable->FindParticle("geantino");
 	
-	fParticleGun->SetParticleDefinition(particle);
+	
+	if (fExtSourceFile!="") hepmcAscii = new HepMCG4AsciiReader(fExtSourceFile); //path must be relative to where the code runs (eg build directory)
+	else {
+		G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+		G4ParticleDefinition* particle = particleTable->FindParticle("geantino");
+		
+		fParticleGun->SetParticleDefinition(particle);
+		
+	}
 	
 }
 
@@ -310,7 +319,18 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	evtPrimAction->SetSourceY((SourcePosition.y())/mm);
 	evtPrimAction->SetSourceZ((SourcePosition.z())/mm);
 	
-	fParticleGun->GeneratePrimaryVertex(anEvent);
+	
+	
+	
+	
+	if (fExtSourceFile!="") {
+		hepmcAscii->GeneratePrimaryVertex(anEvent);
+	}
+	else {
+		fParticleGun->GeneratePrimaryVertex(anEvent);
+	}
+	
+	
 	
 	if(anEvent->GetEventID()==1) {  //stampo informazioni sorgente
 		G4cout<<"############# SORGENTE RICHIESTA: = "<<fSourceSelect<<"##############"<<G4endl;

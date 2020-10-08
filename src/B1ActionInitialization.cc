@@ -37,8 +37,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName, G4int GaSet, G4double CaseDepth)
-  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fTBR(TBR),  	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName), fGaSet(GaSet), fCaseDepth(CaseDepth)
+B1ActionInitialization::B1ActionInitialization(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4double TBR, G4int SourceSelect, G4int SensorChoice, G4double SourceDiameter, G4double SourceThickness, G4String FileName, G4int GaSet, G4double CaseDepth, G4String ExtSourceFile)
+  : G4VUserActionInitialization(), fX0Scan(x0), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fTBR(TBR),  	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fSourceDiameter(SourceDiameter) ,fSourceThickness(SourceThickness), fFileName(FileName), fGaSet(GaSet), fCaseDepth(CaseDepth), fExtSourceFile(ExtSourceFile)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -72,7 +72,7 @@ void B1ActionInitialization::Build() const
   SetUserAction(new B1SteppingAction(eventAction, runAction, fAbsHoleDiam,fGaSet, fSourceSelect));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
-	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness,fGaSet, fCaseDepth);
+	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness,fGaSet, fCaseDepth, fExtSourceFile);
 	SetUserAction(primAction);
 	SetUserAction(new B1StackingAction(runAction, eventAction));
 }  

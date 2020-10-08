@@ -71,6 +71,7 @@ int main(int argc,char** argv)
 	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
 	G4bool ScintFlag=0;
+	G4String ExtSourceFile="";
 	
 	G4String fileName ="";
 	G4String FileNameLabel="";
@@ -119,6 +120,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-SourceD")==0)
 			{
 				SourceDiameter=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-SourceExtFile")==0)
+			{
+				ExtSourceFile=argv[++i];;
 			}
 			else if(option.compare("-SourceT")==0)
 			{
@@ -211,6 +216,9 @@ int main(int argc,char** argv)
 	if (SourceSelect==8) FileNameCommonPart.append("_VolCu67_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
 	if (SourceSelect==9) FileNameCommonPart.append("_VolF18_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+	
+	if (SourceSelect==10) FileNameCommonPart.append("_ExtSource");
+
 
 	if (SourceSelect<0) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" + std::to_string(int(-SourceSelect%100)) + "_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
@@ -261,7 +269,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile));
 	
 	// Initialize visualization
 	//

@@ -19,25 +19,25 @@ Some Use cases:
 
 ```
 
-- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018)
 ```
 ./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effEle.mac 
 
 ```
 
-- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018)
 ```
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effGamma.mac 
 
 ```
 
-- Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
+- Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019)
 ```
 ./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
 
 ```
 
-- Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
+- Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019)
 ```
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
 
@@ -50,6 +50,11 @@ Some Use cases:
 - Monte Carlo tests with variable isotope with Standard Probe (FEB 2020)
 ```
 ./exampleb1  -Source -3990   -PterD 6 -PterT 3 -Z 0 -SourceD 20 -SourceT 10  ../run1.mac
+```
+
+- Gamma Efficiency of laparoscopic NL-probe in F18 application via external generated file (from GAMOS) (OCT 2020)
+```
+./exampleb1 -Source 10 -SourceExtFile "sourceFileMod.txt" -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
 ```
 
 - To obtain efficiency curve:
@@ -84,6 +89,7 @@ num->Draw("E")
 7 - FlatGamma sphere
 8 - ExtCu67 (vol for MC studies, not exp. meas.)
 9 - ExtF18 (vol for MC studies, not exp. meas.)
+10 - ExternaFile (typically no lab source)
 
 
 
@@ -505,6 +511,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2020.02.25 by collamaf
 - Fix physics list: opt4 and proper cuts (maybe excessive too..)
+
+2020.10.08 by collamaf
+- Add possibility to use external HepMC generator for 18F PET/CT simulations performed with GAMOS. SourceSelect=10, no source volume is built. Scoring of this kind of primary particle has to be fixed.
 
 ## TO DO's
 
