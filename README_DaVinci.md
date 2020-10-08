@@ -496,7 +496,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2020.02.07 by collamaf
 - Add extended F18 source (like Cu), source 9
 - Fix StackAct condition to intercept decay product with new RadioactiveDecayBase process (should however be retro compatible)
-- Now ScintFlag is passed to PhysList also (not onlu DetConst), since the mere process somehow overshadowed the RadioactiveDecay one preventing the StackAction scoring
+- Now ScintFlag is passed to PhysList also (not only DetConst), since the mere process somehow overshadowed the RadioactiveDecay one preventing the StackAction scoring
 - Add "AnaProbe" analysis macro
 - Add ExitPart scoring also in B1 tree
 

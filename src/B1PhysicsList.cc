@@ -108,7 +108,7 @@ void B1PhysicsList::SetCuts()
 	region->SetProductionCuts(cuts);
 	*/
 	
-	SetCutValue(0.1 * mm, "gamma");
+	SetCutValue(0.01 * mm, "gamma");
 	SetCutValue(0.01 * mm, "e+");
 	SetCutValue(0.01 * mm, "e-");
 	G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(250*eV, 100.*GeV);
