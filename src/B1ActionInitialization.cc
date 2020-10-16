@@ -74,7 +74,7 @@ void B1ActionInitialization::Build() const
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
 	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect, fSourceDiameter, fSourceThickness,fGaSet, fCaseDepth, fExtSourceFile);
 	SetUserAction(primAction);
-	SetUserAction(new B1StackingAction(runAction, eventAction));
+	SetUserAction(new B1StackingAction(runAction, eventAction, fSourceSelect));
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

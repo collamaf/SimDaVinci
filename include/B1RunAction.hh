@@ -102,7 +102,10 @@ public:
 
 	std::vector<G4double>& GetPrePterEn() {return RunVPrePterEn; }
 	std::vector<G4double>& GetPrePterPart() {return RunVPrePterPart; }
-	
+	std::vector<G4double>& GetPrePterX() {return RunVPrePterX; }
+	std::vector<G4double>& GetPrePterY() {return RunVPrePterY; }
+	std::vector<G4double>& GetPrePterZ() {return RunVPrePterZ; }
+
 	std::vector<G4double>& GetPreProbeEn() {return RunVPreProbeEn; }
 	std::vector<G4double>& GetPreProbePart() {return RunVPreProbePart; }
 	
@@ -170,7 +173,10 @@ private:
 	
 	std::vector<G4double> RunVPrePterEn;
 	std::vector<G4double> RunVPrePterPart;
-	
+	std::vector<G4double> RunVPrePterX;
+	std::vector<G4double> RunVPrePterY;
+	std::vector<G4double> RunVPrePterZ;
+
 	std::vector<G4double> RunVPreProbeEn;
 	std::vector<G4double> RunVPreProbePart;
 	

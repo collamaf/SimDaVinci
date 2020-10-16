@@ -128,6 +128,10 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(fRunningAction->GetPrePterEn()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
 			fEventAction->AddPrePterNo(1); //update the counter of particles entering Pter in the event
 			(fRunningAction->GetPrePterPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //add PID of particle enetering Pter
+			(fRunningAction->GetPrePterX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+			(fRunningAction->GetPrePterY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+			(fRunningAction->GetPrePterZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+
 		}
 	}
 	// ###################### END ENTERING Pter

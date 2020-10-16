@@ -314,26 +314,25 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(xDirection,yDirection,zDirection));
 	fParticleGun->SetParticlePosition(SourcePosition);
 	
-	//	Save source info to root file
-	evtPrimAction->SetSourceX((SourcePosition.x())/mm);
-	evtPrimAction->SetSourceY((SourcePosition.y())/mm);
-	evtPrimAction->SetSourceZ((SourcePosition.z())/mm);
+
 	
 	
 	
-	
-	
-	if (fExtSourceFile!="") {
+	if (fSourceSelect==10 && fExtSourceFile!="") { //se ho richiesto la sorgente da file esterno, e c'è un file
 		hepmcAscii->GeneratePrimaryVertex(anEvent);
 	}
-	else {
+	else { //sorgente "classica"
 		fParticleGun->GeneratePrimaryVertex(anEvent);
+		//	Save source info to root file
+		evtPrimAction->SetSourceX((SourcePosition.x())/mm);
+		evtPrimAction->SetSourceY((SourcePosition.y())/mm);
+		evtPrimAction->SetSourceZ((SourcePosition.z())/mm);
 	}
 	
 	
 	
 	if(anEvent->GetEventID()==1) {  //stampo informazioni sorgente
-		G4cout<<"############# SORGENTE RICHIESTA: = "<<fSourceSelect<<"##############"<<G4endl;
+		G4cout<<"############# SORGENTE RICHIESTA: = "<<fSourceSelect<<" ##############"<<G4endl;
 		G4cout<<"Dimensioni sorgente: Raggio interno = "<<fRadiusInt<<", Raggio esterno = "<<fRadiusExt<<", H = "<<fZ<<G4endl;
 		if (fSourceSelect==3) { //solo se è la sorgente ExtY..
 			G4cout<<"TBR richiesto= "<<fTBR<<G4endl;

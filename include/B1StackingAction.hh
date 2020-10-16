@@ -44,7 +44,7 @@ class B1RunAction;
 class B1StackingAction : public G4UserStackingAction
 {
 public:
-    B1StackingAction(B1RunAction* runAction, B1EventAction* fEventAction);
+    B1StackingAction(B1RunAction* runAction, B1EventAction* fEventAction, G4int fSourceSelect);
     virtual ~B1StackingAction();
     
     virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
@@ -52,6 +52,7 @@ public:
 private:
     B1RunAction* fRunningAction;
     B1EventAction*  fEventAction;
+	G4int fSourceSelect;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

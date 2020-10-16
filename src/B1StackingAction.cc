@@ -38,8 +38,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1StackingAction::B1StackingAction(B1RunAction* runAction, B1EventAction* EventAction)
-:fRunningAction(runAction), fEventAction(EventAction)
+B1StackingAction::B1StackingAction(B1RunAction* runAction, B1EventAction* EventAction, G4int SourceSelect)
+:fRunningAction(runAction), fEventAction(EventAction), fSourceSelect(SourceSelect)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -118,6 +118,13 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 		 }
 	// ###################### End of Direct gamma production
 	// ################################################################################
+	
+	if (fSourceSelect==10 && track->GetParentID() == 0 && track->GetCurrentStepNumber()==0) { //modified by collamaf on 2017.12.29 - If is a new Primary particle - used to save info on primaries even if red by external file!
+																																				 // on 2018.02.12 added StepNumberCheck to avoid counting here also new particles created thereafter (eg optical photons)
+		fEventAction->SetSourceX((track->GetPosition().x())/CLHEP::mm);
+		fEventAction->SetSourceY((track->GetPosition().y())/CLHEP::mm);
+		fEventAction->SetSourceZ((track->GetPosition().z())/CLHEP::mm);
+	}
 	
 	return fUrgent;
 }

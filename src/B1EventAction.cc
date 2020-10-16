@@ -82,6 +82,9 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEdkin = 0.;
 	(fRunAction->GetPrePterEn()).clear();
 	(fRunAction->GetPrePterPart()).clear();
+	(fRunAction->GetPrePterX()).clear();
+	(fRunAction->GetPrePterY()).clear();
+	(fRunAction->GetPrePterZ()).clear();
 	(fRunAction->GetPreProbeEn()).clear();
 	(fRunAction->GetPreProbePart()).clear();
 	(fRunAction->GetPostAbsEn()).clear();
@@ -195,15 +198,15 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
 	analysisManager->FillNtupleDColumn(0, 2, fNumHitsDet); //number of hits into the detector
 	analysisManager->FillNtupleDColumn(0, 11, fPrePterNo);
-	analysisManager->FillNtupleDColumn(0, 14, fPreProbeNo);
-	analysisManager->FillNtupleDColumn(0, 17, fPostAbsNo);
+	analysisManager->FillNtupleDColumn(0, 17, fPreProbeNo);
+	analysisManager->FillNtupleDColumn(0, 20, fPostAbsNo);
 	
-	analysisManager->FillNtupleDColumn(0,22, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,23, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,24, fSourceZ/mm);
+	analysisManager->FillNtupleDColumn(0,25, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,26, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,27, fSourceZ/mm);
 
-	analysisManager->FillNtupleIColumn(0,31, fNPMT);
-	analysisManager->FillNtupleIColumn(0,32, fEnterPterFlag);
+	analysisManager->FillNtupleIColumn(0,34, fNPMT);
+	analysisManager->FillNtupleIColumn(0,35, fEnterPterFlag);
 	
 	if(1||fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
 	

@@ -1,3 +1,0 @@
-scp -r ../include/ ../src/ ../exampleB1.cc collamaf@farm-login.roma1.infn.it:NewLife/CMOS/B14/
-
-./exampleB1 run1.mac 0 8 1 0 2.35

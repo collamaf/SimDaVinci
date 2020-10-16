@@ -19,25 +19,25 @@ Some Use cases:
 
 ```
 
-- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018)
+- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
 ./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effEle.mac 
 
 ```
 
-- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018)
+- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effGamma.mac 
 
 ```
 
-- Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019)
+- Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
 ```
 ./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
 
 ```
 
-- Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019)
+- Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
 ```
 ./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
 
@@ -55,6 +55,11 @@ Some Use cases:
 - Gamma Efficiency of laparoscopic NL-probe in F18 application via external generated file (from GAMOS) (OCT 2020)
 ```
 ./exampleb1 -Source 10 -SourceExtFile "sourceFileMod.txt" -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
+```
+
+- Gamma Efficiency of laparoscopic NL-probe in F18 application on classical F18 signal sample (OCT 2020)
+```
+./exampleb1  -Source -0918 -SourceD 20 -SourceT 10  -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
 ```
 
 - To obtain efficiency curve:
@@ -203,29 +208,32 @@ A root file named MCsondaGEANT_{Relevant sim info}.root is created, in which on 
 - 11: PrePterTrackN: number of tracks entering Pter (from wherever) per primary (it's the length of the following vector);
 - 12: PrePterPart[PrePterTrackN]: kind of particle of each track entering Pter (from wherever);
 - 13: PrePterEn[PrePterTrackN]: kinetic energy of particle of each tracks entering Pter (from wherever) [keV];
-- 14: PreProbeTrackN: number of tracks entering Probe (DummyEnterProbe->FrontShield) per primary (it's the length of the following vector);
-- 15: PreProbePart[PreProbeTrackN]: kind of particle of each track entering Probe (DummyEnterProbe->FrontShield);
-- 16: PreProbeEn[PreProbeTrackN]: kinetic energy of particle of each tracks entering Probe (DummyEnterProbe->FrontShield) [keV];
-- 17: PostAbsTrackN: number of tracks exiting Absorber (Abs->DummyExitAbs) (if any, otherwise 0) per primary (it's the length of the following vector);
-- 18: PostAbsPart[PrePterTrackN]: kind of particle of each track entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty);
-- 19: PostAbsEn[PrePterTrackN]: kinetic energy of particle of each tracks entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty)  [keV];
-- 20:  ExitEne[2+]: kinetic energy of primary particle exiting the source volume (-> DummyExitSorg) [keV];
-- 21: SourceX: X coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- 22: SourceY: Y coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- 23: SourceZ: Z coordinate of primary particle (isotope) giving a signal in Pter [mm];
-- 24: SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Pter;
-- 25: SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Pter;
-- 26: SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Pter;
-- 27: SourceEne[2]: kinetic energy of  decay product(s)  giving a signal in Pter [keV];
-- 28: SourcePart[2]: PID of  decay product(s)  giving a signal in Pter [keV];
-- 29: SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Pter;
-- 30: Npmt: number of optical photons entering SiPm per event;
-- 31: EnterPterFlag: bool flag to save if the primary particle had a secondary track entering PTER;
-- 32: AnnihilationX: X coord of annihilation point of beta+ source particle [mm]
-- 33: AnnihilationY: Y coord of annihilation point of beta+ source particle [mm]
-- 34: AnnihilationZ: Z coord of annihilation point of beta+ source particle [mm]
-- 35: AnnihilationTime: time of annihilation point of beta+ source particle [ns]
-- 36: Nev: storing number of events generated
+- 14: PrePterX[PrePterTrackN]: X position of particle of each tracks entering Pter (from wherever) [mm];
+- 15: PrePterY[PrePterTrackN]: Y position of particle of each tracks entering Pter (from wherever) [mm];
+- 16: PrePterZ[PrePterTrackN]: Z position of particle of each tracks entering Pter (from wherever) [mm];
+- 17: PreProbeTrackN: number of tracks entering Probe (DummyEnterProbe->FrontShield) per primary (it's the length of the following vector);
+- 18: PreProbePart[PreProbeTrackN]: kind of particle of each track entering Probe (DummyEnterProbe->FrontShield);
+- 19: PreProbeEn[PreProbeTrackN]: kinetic energy of particle of each tracks entering Probe (DummyEnterProbe->FrontShield) [keV];
+- 20: PostAbsTrackN: number of tracks exiting Absorber (Abs->DummyExitAbs) (if any, otherwise 0) per primary (it's the length of the following vector);
+- 21: PostAbsPart[PrePterTrackN]: kind of particle of each track entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty);
+- 22: PostAbsEn[PrePterTrackN]: kinetic energy of particle of each tracks entering  Absorber (Abs->DummyExitAbs) (if any, otherwise empty)  [keV];
+- 23:  ExitEne[2+]: kinetic energy of primary particle exiting the source volume (-> DummyExitSorg) [keV];
+- 24: SourceX: X coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 25: SourceY: Y coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 26: SourceZ: Z coordinate of primary particle (isotope) giving a signal in Pter [mm];
+- 27: SourceCosX[2]: X directive cosine of decay electron(s) giving a signal in Pter;
+- 28: SourceCosY[2]: Y directive cosine of  decay electron(s) giving a signal in Pter;
+- 29: SourceCosZ[2]: Z directive cosine of decay electron(s) giving a signal in Pter;
+- 30: SourceEne[2]: kinetic energy of  decay product(s)  giving a signal in Pter [keV];
+- 31: SourcePart[2]: PID of  decay product(s)  giving a signal in Pter [keV];
+- 32: SourceIsotope: isotope of primary particle (0=Sr, 1=Y) giving a signal in Pter;
+- 33: Npmt: number of optical photons entering SiPm per event;
+- 34: EnterPterFlag: bool flag to save if the primary particle had a secondary track entering PTER;
+- 35: AnnihilationX: X coord of annihilation point of beta+ source particle [mm]
+- 36: AnnihilationY: Y coord of annihilation point of beta+ source particle [mm]
+- 37: AnnihilationZ: Z coord of annihilation point of beta+ source particle [mm]
+- 38: AnnihilationTime: time of annihilation point of beta+ source particle [ns]
+- 39: Nev: storing number of events generated
 
 
 ```
@@ -514,6 +522,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2020.10.08 by collamaf
 - Add possibility to use external HepMC generator for 18F PET/CT simulations performed with GAMOS. SourceSelect=10, no source volume is built. Scoring of this kind of primary particle has to be fixed.
+
+2020.10.16 by collamaf
+- Add scoring of X Y Z position for PrePter
 
 ## TO DO's
 
