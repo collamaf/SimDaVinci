@@ -164,8 +164,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		Z=9;
 		A=18;
 	}	else if (fSourceSelect<0) { //Variable Radioactive Isotope source: -Source -ZZAA
+		if (abs(fSourceSelect)>9999) {
+			Z=int(-fSourceSelect/1000);
+			A=int(-fSourceSelect%1000);
+		} else {
 		Z=int(-fSourceSelect/100);
 		A=int(-fSourceSelect%100);
+		}
 		//G4cout<<"#### RICHIESTO ISOTOPO GENERICO CON Z= "<< Z <<", e A= "<<A<<G4endl;
 	}
 	

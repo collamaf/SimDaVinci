@@ -34,6 +34,7 @@
 
 #include "HepMCG4Interface.hh"
 #include "HepMC/IO_GenEvent.h"
+//#include "HepMC3/ReaderFactory.h"
 
 //class HepMCG4AsciiReaderMessenger;
 
