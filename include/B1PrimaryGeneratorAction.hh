@@ -37,10 +37,12 @@
 #include "B1EventAction.hh"
 #include "G4LogicalVolume.hh"
 #include "G4VPhysicalVolume.hh"
+#include "G4SystemOfUnits.hh"
 
 class G4ParticleGun;
 class G4Event;
 class G4Tubs;
+class B1DetectorConstruction;
 
 
 /// The primary generator action class with particle gun.
@@ -51,7 +53,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
 //    B1PrimaryGeneratorAction(B1EventAction* eventAction);
-	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50, G4String ExtSourceFile="");
+	B1PrimaryGeneratorAction(B1DetectorConstruction*, B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50, G4String ExtSourceFile="");
     virtual ~B1PrimaryGeneratorAction();
 
     // method from the base class
@@ -66,6 +68,8 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 	inline void SetZ(const double Z){fZ=Z;};
 	
   private:
+	B1DetectorConstruction*      fDetector;
+
     G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
 	B1EventAction* evtPrimAction;
 //	G4Tubs * fSourceVol;
@@ -92,6 +96,9 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 //	G4VPhysicalVolume* sourcePV;
 	G4VPrimaryGenerator* hepmcAscii;
 	G4String fExtSourceFile;
+
+	double spessoreFondoContenitoreFluoro=10*mm;
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -32,7 +32,7 @@
 #include "B1ActionInitialization.hh"
 #include "MyExceptionHandler.hh"
 
-
+//#undef G4MULTITHREADED
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
 #else
@@ -219,6 +219,7 @@ int main(int argc,char** argv)
 	
 	if (SourceSelect==10) FileNameCommonPart.append("_ExtSource");
 
+	if (SourceSelect==11) FileNameCommonPart.append("_ContF18_Thick" + std::to_string((G4int)(SourceDiameter/2.)) + "_Dz" + std::to_string((G4int)(SourceThickness)));
 
 	if (SourceSelect<0) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" + std::to_string(int(-SourceSelect%100)) + "_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
@@ -241,17 +242,22 @@ int main(int argc,char** argv)
 	//  G4MTRunManager* runManager = new G4MTRunManager;
 	//#else
 	
-#if 0
+#ifdef G4MULTITHREADED
 	G4MTRunManager* runManager = new G4MTRunManager;
-	//	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
-	runManager->SetNumberOfThreads( 6 );
-#endif
-	
+		runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() -2);
+//	runManager->SetNumberOfThreads( 6 );
+#else
 	G4RunManager* runManager = new G4RunManager;
-	
+#endif
+
 	// Set mandatory initialization classes
 	// Detector construction
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
+	
+	
+	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter);
+	runManager->SetUserInitialization(detConst);
+	
+//	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -269,7 +275,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile));
+	runManager->SetUserInitialization(new B1ActionInitialization(detConst,x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile));
 	
 	// Initialize visualization
 	//

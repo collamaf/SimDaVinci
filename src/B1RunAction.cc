@@ -69,6 +69,9 @@ fEdkin("Edkin", 0.)
 //	accumulableManager->RegisterAccumulable(fEdepSiPM);
 	accumulableManager->RegisterAccumulable(fEdep2);
 	accumulableManager->RegisterAccumulable(fEdkin);
+	
+	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+	analysisManager->SetNtupleMerging(true);
 
 }
 
@@ -90,12 +93,16 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
 	accumulableManager->Reset();
 	
+	nbEventInRun = run->GetNumberOfEventToBeProcessed();
+	fOutFileName.append("_N" + std::to_string(nbEventInRun));
+
 	CreateHistogram();
 	
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,40, nbEventInRun);
+//	analysisManager->FillNtupleIColumn(0,40, nbEventInRun);
+//	fOutFileName.append("_N" + std::to_string(nbEventInRun));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

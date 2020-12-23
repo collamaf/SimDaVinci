@@ -60,6 +60,8 @@
 #include "HepMCG4AsciiReader.hh"
 #endif
 
+#include "B1DetectorConstruction.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 using std::ofstream;
@@ -67,8 +69,8 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting, G4double CaseDepth, G4String ExtSourceFile)
-: G4VUserPrimaryGeneratorAction(),
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1DetectorConstruction* det, B1EventAction* eventAction, G4double TBR, G4int SourceSelect, G4double SourceDiameter, G4double SourceThickness, G4int GaSetting, G4double CaseDepth, G4String ExtSourceFile)
+: G4VUserPrimaryGeneratorAction(), fDetector(det),
 fParticleGun(0) ,
 evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness),fGaSet(GaSetting), fCaseDepth(CaseDepth), fExtSourceFile(ExtSourceFile)
 
@@ -104,6 +106,12 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 		case 4: //Ga68
 		case 8: //Cu67
 		case 9: //F18
+			fRadiusInt=fSourceDiameter/2.*mm;
+			fDZInt=0*mm;
+			fRadiusExt=fSourceDiameter/2.*mm;
+			fDZExt=fSourceThickness*mm;
+			
+		case 11: //ExternalCatafalco for 18F - Dec2020
 			fRadiusInt=fSourceDiameter/2.*mm;
 			fDZInt=0*mm;
 			fRadiusExt=fSourceDiameter/2.*mm;
@@ -160,7 +168,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}	else if (fSourceSelect==8) { //Cu67 volume source
 		Z=29;
 		A=67;
-	}	else if (fSourceSelect==9) { //F18 volume source
+	}	else if (fSourceSelect==9||fSourceSelect==11) { //F18 volume source
 		Z=9;
 		A=18;
 	}	else if (fSourceSelect<0) { //Variable Radioactive Isotope source: -Source -ZZAA
@@ -236,6 +244,30 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
 		G4double ZGaOffset=(G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetTranslation().z()-SorgVol->GetZHalfLength ())*mm;
 		zSource = -G4UniformRand()*fZ-zSourceOffset-(-ZGaOffset-fDZExt);
+	}
+	else if (fSourceSelect==11 && fGaSet==3) {
+		G4double random=G4UniformRand();
+		double raggioFuori=fDetector->ContainerOuterRadius+fRadiusInt;
+		double raggioDentro=fDetector->ContainerOuterRadius;
+
+		double volFuori=CLHEP::pi*fDZExt/cm*(raggioFuori/cm*raggioFuori/cm-raggioDentro/cm*raggioDentro/cm);
+		double volDietro=CLHEP::pi*spessoreFondoContenitoreFluoro/cm*raggioFuori/cm*raggioFuori/cm;
+		if (random<volFuori/(volFuori+volDietro)) { //bordo
+		fRadiusMax=raggioFuori;
+		fRadiusMin=raggioDentro;
+		fZ=fDZExt;
+		zSource = -G4UniformRand()*fZ+(fZ-fDetector->ContainerMaxHeigth);
+		} else { //fondo
+			fRadiusMax=raggioFuori;
+			fRadiusMin=0;
+			fZ=spessoreFondoContenitoreFluoro;
+			zSource = -G4UniformRand()*fZ-fDetector->ContainerMaxHeigth;
+		}
+				if (anEvent->GetEventID()==1) {
+					G4cout<<"VolFuori= "<<volFuori<<" mL, ProbA= "<<volFuori/(volFuori+volDietro)<<G4endl;
+					G4cout<<"VolDentro= "<<volDietro<<" mL, ProbB= "<<volDietro/(volFuori+volDietro)<<G4endl;
+					G4cout<<"Volume sorgente tot= "<<volFuori+volDietro<<" mL"<<G4endl;
+				}
 	}
 	
 	G4double Sphere_Theta=G4UniformRand()*CLHEP::pi*2.;

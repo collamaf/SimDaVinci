@@ -62,6 +62,13 @@ Some Use cases:
 ./exampleb1  -Source -0918 -SourceD 20 -SourceT 10  -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
 ```
 
+- New Container for 18F measurments for gyneco applications (DEC 2020): Needs GaSet3, SourceT gives the height in mm of the fluorine column besides GaSet, SourceD is the lateral thinckness of the hollow cylinder. The bottom thickness of the liquid is hard coded and fixed to 1cm for now
+
+```
+./exampleb1 -GaSet 3 -CaseDepth -155 -Source 11 -AbsD -10 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 80 -SourceD 40 run1.mac
+
+```
+
 - To obtain efficiency curve:
 ```
 - With Eabs
@@ -95,6 +102,7 @@ num->Draw("E")
 8 - ExtCu67 (vol for MC studies, not exp. meas.)
 9 - ExtF18 (vol for MC studies, not exp. meas.)
 10 - ExternaFile (typically no lab source)
+11 - 18F container around GaSet3
 
 
 
@@ -525,6 +533,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2020.10.16 by collamaf
 - Add scoring of X Y Z position for PrePter
+
+2020.12.23 by collamaf
+- Add new source (11) for F18 container, to be used only around GaSet3. Seems to work and be retrocompatible with everything, but is a little too much accrocchiated. Probably time to perform a deep bottom-up reorganization of the whole simulation
+- Restore MT capability and add automatic merging of root files
 
 ## TO DO's
 

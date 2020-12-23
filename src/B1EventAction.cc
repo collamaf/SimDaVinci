@@ -208,7 +208,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	analysisManager->FillNtupleIColumn(0,34, fNPMT);
 	analysisManager->FillNtupleIColumn(0,35, fEnterPterFlag);
 	
-	if(1||fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
+	if(fEdep>0) analysisManager->AddNtupleRow(0);    //1|| toglie l'if
 	
 	if(evento->GetEventID()<=1e5){ //to write to proper ntuple all the source particles info
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);

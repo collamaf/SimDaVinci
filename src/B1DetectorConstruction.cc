@@ -445,6 +445,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double D_CylG3 = 51*mm;
 	G4double d_CylG3 = 13*mm;
 	G4double H_CylG3 = 32*mm;
+	ContainerOuterRadius=D_CylG3/2.;
+	ContainerMaxHeigth=H_CylA3;
 	
 	//### Dummy Exit Sorg
 	G4double RminDummyExitSorg = 0.*mm;
@@ -1557,7 +1559,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		G4ThreeVector posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg);
-		
+		if (fSourceSelect==11) posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg-10*mm); //per fare spazio allo strato di F18 sotto il contenitore
 		new G4PVPlacement(0,                     //no rotation
 											posTable,       //at (0,0,0)
 											logicTable,            //its logical volume
