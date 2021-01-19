@@ -538,6 +538,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Add new source (11) for F18 container, to be used only around GaSet3. Seems to work and be retrocompatible with everything, but is a little too much accrocchiated. Probably time to perform a deep bottom-up reorganization of the whole simulation
 - Restore MT capability and add automatic merging of root files
 
+2021.01.19 by collamaf
+- Go back to manual merging of root files in MT since the G4 way does not work on vectors
+
 ## TO DO's
 
 - F18/Cu67 su supporto GaSet per fare misure al gemelli
