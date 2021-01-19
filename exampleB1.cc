@@ -60,21 +60,26 @@
 #include <stdlib.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+using namespace std;
 
 int main(int argc,char** argv)
 {
-	G4bool VisFlag=true;
+	G4bool VisFlag=false;
 	
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
+	G4bool QuickFlag=false;
 	
 	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
-	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1;
+	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1, nThreadIn=-1;
 	G4bool ScintFlag=0;
 	G4String ExtSourceFile="";
 	
 	G4String fileName ="";
 	G4String FileNameLabel="";
+	
+	G4bool NoOfPrimToGenChangeFlag=false;
+	G4int NoOfPrimToGen=99, Verbose=0;
 	
 	for(int i=1;i<argc;i++)
 		if(argv[i][0] =='-')
@@ -128,7 +133,24 @@ int main(int argc,char** argv)
 			else if(option.compare("-SourceT")==0)
 			{
 				SourceThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-CaseDepth")==0)         //Probe Case Z_Lenght
+			}
+			else if(option.compare("-Vis")==0)
+			{
+				VisFlag=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-Verbose")==0)
+			{
+				Verbose=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-NPrim")==0)
+			{
+				NoOfPrimToGen=stoi (argv[++i], NULL);;
+			}
+			else if(option.compare("-NThreads")==0)
+			{
+				nThreadIn=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-CaseDepth")==0)         //Probe Case Z_Lenght
 			{
 				ProbeCaseDepth=strtod (argv[++i], NULL);;
 			}else if(option.compare("-CaseLT")==0)            //Lateral Probe Case Thickness
@@ -170,11 +192,15 @@ int main(int argc,char** argv)
 		{
 			fileName = argv[i]; //se ho trovato una macro (senza il "-" davanti) significa che NON voglio l'interattivo
 			VisFlag=false;
+			QuickFlag=false;
 		}
 	
-	if ( VisFlag ) { //Prepare for vis
-		ui = new G4UIExecutive(argc, argv);
-	}
+	if (VisFlag) QuickFlag=true;
+	
+	if (NoOfPrimToGen!=99) NoOfPrimToGenChangeFlag=true;
+	
+	G4cout<<"\n############## \nI WILL GENERATE n= "<<NoOfPrimToGen<<" primaries \n##############"<<G4endl;
+
 	
 	G4int SourceSelect=SourceChoice;
 	G4int GaSet=GaSetting;
@@ -228,7 +254,9 @@ int main(int argc,char** argv)
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
-	
+
+	if (NoOfPrimToGenChangeFlag) FileNameCommonPart.append("_N"+std::to_string((G4int)NoOfPrimToGen)); //if it was a TEST run under vis
+
 	OutFileName.append(FileNameCommonPart);
 	
 	// Choose the Random engine
@@ -244,7 +272,8 @@ int main(int argc,char** argv)
 	
 #ifdef G4MULTITHREADED
 	G4MTRunManager* runManager = new G4MTRunManager;
-		runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() -2);
+	G4int numOfThreads=(Verbose>0||VisFlag)?1:nThreadIn!=-1? nThreadIn:G4Threading::G4GetNumberOfCores() -2;
+		runManager->SetNumberOfThreads( numOfThreads);
 //	runManager->SetNumberOfThreads( 6 );
 #else
 	G4RunManager* runManager = new G4RunManager;
@@ -287,14 +316,25 @@ int main(int argc,char** argv)
 	// Get the pointer to the User Interface manager
 	G4UImanager* UImanager = G4UImanager::GetUIpointer();
 	
+	runManager->Initialize();
+
 	// Process macro or start UI session
 	//
 	
+	if ( VisFlag ) { //Prepare for vis
+		ui = new G4UIExecutive(argc, argv);
+	}
+	
 	if ( ! ui ) {
-		// batch mode
-		G4String command = "/control/execute ";
-		//		G4String fileName = argv[13];
-		UImanager->ApplyCommand(command+fileName);
+		if (fileName!="") { //se c'è una macro
+			// batch mode
+			G4String command = "/control/execute ";
+			//		G4String fileName = argv[13];
+			UImanager->ApplyCommand(command+fileName);
+		} else { //.. altrimenti genera tu i primari
+			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
+			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
+		}
 	}
 	else {
 		// interactive mode
@@ -302,6 +342,23 @@ int main(int argc,char** argv)
 		ui->SessionStart();
 		delete ui;
 	}
+	
+	//
+#ifdef G4MULTITHREADED
+	// Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
+	G4cout<<"hadd -f "<< OutFileName<<".root ";
+	G4String tempFileList="";
+	for (int iThread=0; iThread<numOfThreads; iThread++) {
+		tempFileList.append(OutFileName+ "_t"+to_string(iThread) + ".root ");
+	}
+	G4String comandoHadd="hadd -f  " + OutFileName + ".root " + tempFileList;
+	G4String comandoRm="rm " + tempFileList;
+
+	system(comandoHadd);
+	system(comandoRm);
+
+#endif
+	
 	
 	delete visManager;
 	delete runManager;
