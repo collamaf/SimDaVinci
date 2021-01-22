@@ -69,6 +69,39 @@ Some Use cases:
 
 ```
 
+- Misure per capire sonda morelli in vista di sperabile in-vivo (GEN2021): sonda open con scotch davanti su sorgente Sr estesa
+
+### Base
+```
+./exampleb1  -Source 2  -PterD 6  -PterT 3 -SecondShield 1 -Z 0 -NPrim 1000000 
+```
+### Spessori Alluminio
+```
+./exampleb1  -Source 2 -AbsT 0.1 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.101 -SecondShield 1  -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.2 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.201 -SecondShield 1  -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.3 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.301 -SecondShield 1  -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.4 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.401 -SecondShield 1  -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.5 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.501 -SecondShield 1  -NPrim 1000000
+```
+### Spessori Rame
+
+```
+./exampleb1  -Source 2 -AbsT 0.3 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.301 -SecondShield 1 -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.6 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.601 -SecondShield 1 -NPrim 1000000
+./exampleb1  -Source 2 -AbsT 0.9 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.901 -SecondShield 1 -NPrim 1000000
+```
+### Spessori ABS
+```
+./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 1.60 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.61 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 2 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.01 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 2.25 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.26 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1
+
+
+```
+
 - To obtain efficiency curve:
 ```
 - With Eabs
@@ -540,6 +573,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2021.01.19 by collamaf
 - Go back to manual merging of root files in MT since the G4 way does not work on vectors
+
+2021.01.19 by collamaf
+- Add possibility to add a "SecondShield", i.e. 10um of scotch in front. Command line argument to activate it
+
 
 ## TO DO's
 

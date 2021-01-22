@@ -73,6 +73,7 @@ int main(int argc,char** argv)
 	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1, nThreadIn=-1;
 	G4bool ScintFlag=0;
+	G4bool SecondShieldFlag=false;
 	G4String ExtSourceFile="";
 	
 	G4String fileName ="";
@@ -109,6 +110,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-Source")==0)
 			{
 				SourceChoice=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-SecondShield")==0)
+			{
+				SecondShieldFlag=stoi (argv[++i], NULL);;
 			}
 			else if(option.compare("-X")==0)
 			{
@@ -208,7 +213,7 @@ int main(int argc,char** argv)
 	G4String OutFileName="PTERmc";
 	G4String FileNameCommonPart;
 	
-	G4String MaterialiAssorbitore[4]= {"Cu","Pb","Al","PVC"};
+	G4String MaterialiAssorbitore[5]= {"Cu","Pb","Al","PVC", "ABS"};
 	
 	// ###### PTER
 	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));
@@ -252,6 +257,7 @@ int main(int argc,char** argv)
 	
 	// ####### MISCELLANEUS
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
+	if (SecondShieldFlag) FileNameCommonPart.append("_Scotch");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 
@@ -283,7 +289,7 @@ int main(int argc,char** argv)
 	// Detector construction
 	
 	
-	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter);
+	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter, SecondShieldFlag);
 	runManager->SetUserInitialization(detConst);
 	
 //	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));

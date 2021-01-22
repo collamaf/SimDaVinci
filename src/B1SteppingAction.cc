@@ -205,8 +205,9 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 #pragma mark Entering Probe
 	// ################################################################################
 	// ###################### ENTERING PROBE
-	if(NextVol && ThisVol->GetName()=="DummyEnterProbe" && NextVol->GetName()=="FrontShield") {
-		
+//	if(NextVol && ThisVol->GetName()=="DummyEnterProbe" && NextVol->GetName()=="FrontShield") {
+		if(NextVol && ThisVol->GetName()=="DummyEnterProbe" && NextVol->GetName().contains("FrontShield")) {
+
 		//to avoid double counting same track going back and forth, check if I already counted it
 		if (debug) G4cout<<"\nSTEPDEBUGPROBE\n Particella entrata in PROBE - fEventAction->GetPreProbeStoreTrackID() ERA = "<<fEventAction->GetPreProbeStoreTrackID();
 		if (fEventAction->GetPreProbeStoreTrackID()==step->GetTrack()->GetTrackID()) { //if I already saw this track exiting the absorber...
