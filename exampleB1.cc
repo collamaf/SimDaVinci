@@ -213,7 +213,7 @@ int main(int argc,char** argv)
 	G4String OutFileName="PTERmc";
 	G4String FileNameCommonPart;
 	
-	G4String MaterialiAssorbitore[5]= {"Cu","Pb","Al","PVC", "ABS"};
+	G4String MaterialiAssorbitore[6]= {"Cu","Pb","Al","PVC", "ABS", "PVCblack"};
 	
 	// ###### PTER
 	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));

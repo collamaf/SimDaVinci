@@ -136,7 +136,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###################################################
 	// ABS material - ABS should be C15 H17 N
 	//##########################
-	G4double ABSdensity = 0.9*g/cm3;
+//	G4double ABSdensity = 0.9*g/cm3;
+	G4double ABSdensity = 1.037*g/cm3;
+//	G4double ABSdensity = 1.08*g/cm3;
 	G4Material* ABS = new G4Material (name="ABS", ABSdensity, ncomponents=3);
 	ABS->AddElement (elH, natoms=17);
 	ABS->AddElement (elC, natoms=15);
@@ -197,6 +199,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* SiPM_mat = nist->FindOrBuildMaterial("G4_Si");
 	G4Material* Table_mat = nist->FindOrBuildMaterial("MyAlu");
 	
+	G4NistManager::Instance()->BuildMaterialWithNewDensity("BlackAbsMaterial","G4_POLYVINYL_CHLORIDE",1.4*g/cm3);
+
 	//Materials for NL probe case
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* HorsesShoe_mat= nist->FindOrBuildMaterial("G4_Pb");
@@ -838,7 +842,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		Absorber_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	}else if(fAbsorberMaterial==5){
 		Absorber_mat = ABS;
+	}else if(fAbsorberMaterial==6){ //Assorbitori neri, probabilmente PVC ma densità 1.4
+		Absorber_mat = nist->FindOrBuildMaterial("BlackAbsMaterial");
 	}
+	
 	
 	G4LogicalVolume* logicAbsorber =
 	new G4LogicalVolume(solidAbsorber,          //its solid
@@ -1406,7 +1413,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 												SourceExtGa_mat,           //its material
 												"Source");            //its name
 		
-		new G4PVPlacement(0,                     //no rotation
+		if (fSourceSelect!=11) new G4PVPlacement(0,                     //no rotation
 											posExtGa3,             //at (0,0,0)
 											logicSourceExtGa2,            //its logical volume
 											"Source",               //its name
@@ -1601,7 +1608,66 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 																 false,                 //no boolean operation
 																 0,                     //copy number
 																 checkOverlaps);        //overlaps checking
+	
+#if 1
+		//###################################################
+		// 18F Liquid layer around GaSet3 (only placed for source 11)
+		//##########################
 		
+		G4Tubs* FExtLiquidSide =
+		new G4Tubs("FExtLiquidSide",
+							 D_CylG3*0.5,
+							 D_CylG3*0.5+fSourceDiameter*0.5,
+							 (H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5,
+							 Ang0,
+							 Ang2Pi);
+		
+		G4LogicalVolume* logicFExtLiquidSide =
+		new G4LogicalVolume(FExtLiquidSide,               //its solid
+//												SourceExtGa_mat,           //its material
+												world_mat,           //its material
+												"FExtLiquidSide");            //its name
+		
+		if (fSourceSelect==11) {
+			new G4PVPlacement(0,//no rotation
+												posPter,             //at (0,0,0)
+												logicFExtLiquidSide,            //its logical volume
+												"FExtLiquidSide",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+		}
+		
+		G4ThreeVector posFLiquidBack = posPter+G4ThreeVector(0, 0, -(H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5 -5*mm);
+
+		G4Tubs* FExtLiquidBack =
+		new G4Tubs("FExtLiquidBack",
+							 0,
+							 D_CylG3*0.5+fSourceDiameter*0.5,
+							 (1*cm)*0.5-0.1*mm,
+							 Ang0,
+							 Ang2Pi);
+		
+		G4LogicalVolume* logicFExtLiquidBack =
+		new G4LogicalVolume(FExtLiquidBack,               //its solid
+//												SourceExtGa_mat,           //its material
+												world_mat,           //its material
+												"FExtLiquidBack");            //its name
+		
+		if (fSourceSelect==11) {
+			new G4PVPlacement(0,//no rotation
+												posFLiquidBack,             //at (0,0,0)
+												logicFExtLiquidBack,            //its logical volume
+												"FExtLiquidBack",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+		}
+#endif
 		//###################################################
 		// Table
 		//##########################

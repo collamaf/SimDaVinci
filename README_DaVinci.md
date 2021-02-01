@@ -62,7 +62,7 @@ Some Use cases:
 ./exampleb1  -Source -0918 -SourceD 20 -SourceT 10  -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
 ```
 
-- New Container for 18F measurments for gyneco applications (DEC 2020): Needs GaSet3, SourceT gives the height in mm of the fluorine column besides GaSet, SourceD is the lateral thinckness of the hollow cylinder. The bottom thickness of the liquid is hard coded and fixed to 1cm for now
+- New Container for 18F measurments for gyneco applications (DEC 2020): Needs GaSet3, SourceT gives the height in mm of the fluorine column besides GaSet, SourceD is such that 4cm means a 2cm thickness ring around the container. The bottom thickness of the liquid is hard coded and fixed to 1cm for now
 
 ```
 ./exampleb1 -GaSet 3 -CaseDepth -155 -Source 11 -AbsD -10 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 80 -SourceD 40 run1.mac
@@ -92,14 +92,37 @@ Some Use cases:
 ```
 ### Spessori ABS
 ```
-./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1
-./exampleb1  -Source 2 -AbsT 1.60 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.61 -NPrim 1000000 -SecondShield 1
-./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1
-./exampleb1  -Source 2 -AbsT 2 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.01 -NPrim 1000000 -SecondShield 1
-./exampleb1  -Source 2 -AbsT 2.25 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.26 -NPrim 1000000 -SecondShield 1
-./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 1.60 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.61 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 2 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.01 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 2.25 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.26 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1 -Label HiDens
 
 
+```
+Dopo misura piu accurata
+```
+./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 1.67 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.68 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 2.01 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.02 -NPrim 1000000 -SecondShield 1 -Label HiDens8
+./exampleb1  -Source 2 -AbsT 2.35 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.36 -NPrim 1000000 -SecondShield 1 -Label HiDens8
+./exampleb1  -Source 2 -AbsT 3.38 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.39 -NPrim 1000000 -SecondShield 1 -Label HiDens8
+
+```
+Spessori aggiuntivi bianchi
+```
+./exampleb1  -Source 2 -AbsT 1.27 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.28 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 3.13 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.14 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1 -Label HiDens
+./exampleb1  -Source 2 -AbsT 4.97 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 4.97 -NPrim 1000000 -SecondShield 1 -Label HiDens
+```
+Spessori neri (scoperto che sono probabilmente PVC ma con densità 1.4)
+```
+./exampleb1  -Source 2 -AbsT 2.01 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 2.02 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 2.35 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 2.36 -NPrim 1000000 -SecondShield 1
+./exampleb1  -Source 2 -AbsT 3.38 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 3.39 -NPrim 1000000 -SecondShield 1
 ```
 
 - To obtain efficiency curve:
@@ -577,6 +600,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2021.01.19 by collamaf
 - Add possibility to add a "SecondShield", i.e. 10um of scotch in front. Command line argument to activate it
 
+2021.02.01 by collamaf
+- Add absorber material 6 for black plastic, maybe PVC but with slightly higher density (1.4 vs 1.3))
+- Fix missing water around GaContainer in 18F studies (source 11)
 
 ## TO DO's
 
