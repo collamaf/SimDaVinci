@@ -672,11 +672,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 #pragma mark Logic PTER Definition
 	G4Tubs* solidPter =
 	new G4Tubs("Pter",                                                                         //its name
-						 0.,Pter_Diam*0.5,Pter_sizeZ*0.5,Ang0,Ang2Pi);                //its size
+						 0.,
+						 Pter_Diam*0.5,
+						 Pter_sizeZ*0.5,
+						 Ang0,Ang2Pi);                //its size
+	
 	G4LogicalVolume* logicPter =
 	new G4LogicalVolume(solidPter,          //its solid
 											Pter_mat,           //its material
 											"Pter");            //its name
+	
 	G4VPhysicalVolume* physPter;
 	
 	//################ SiPM
@@ -851,16 +856,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4LogicalVolume(GaContainer,               //its solid
 											GaContainer3_mat,           //its material
 											"GaContainer");            //its name
-	
-	//	new G4PVPlacement(0,                     //no rotation
-	//										posContainerExtGa,       //at (0,0,0)
-	//										logicGaContainer,            //its logical volume
-	//										"GaContainer",               //its name
-	//										logicWorld,            //its mother  volume
-	//										false,                 //no boolean operation
-	//										0,                     //copy number
-	//										checkOverlaps);
-	
+
 	//###################################################
 	//Probe Container
 	//##########################
@@ -947,29 +943,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											world_mat,           //its material
 											"FExtLiquidBack");            //its name
 	
-	//
-	//	new G4PVPlacement(rm,                     //no rotation
-	//										ProbeContainerPos,       //at (0,0,0)
-	//										logicProbeContainer,            //its logical volume
-	//										"ProbeContainer",               //its name
-	//										logicWorld,            //its mother  volume
-	//										false,                 //no boolean operation
-	//										0,                     //copy number
-	//										checkOverlaps);
-	
-	
-	
-	
 	//##################################################################
 	//################################################
 	//######################## PLACEMENTS
-	
-	
-	
-	
-	
-	
-	
+#pragma mark GaSet 1
+	G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+
 	if(fGaSet==1){
 		
 		if(fSourceSelect==8 || fSourceSelect==9 || fSourceSelect<0) { //If I requested the Cu67/F18/GenericIon source (or the flat electron one for efficiencies)
@@ -1068,216 +1047,136 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			sorgente->AddRootLogicalVolume(logicSourceSR);
 		}
 		
-#pragma mark GaSet 1
-		
-//		//###################################################
-//		//Ga Source Container
-//		//##########################
-//
-//		G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -DzContainer*0.5-DzDummyExitSorg);
-//		//		G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5-DzDummyExitSorg); //TODO: fix ExtGa z position to start from bottom ,
-//		G4ThreeVector posExtGa = G4ThreeVector(0, 0, -dzSourceExtGa*0.5-DzDummyExitSorg); //TODO: fix ExtGa z position to start from bottom , H_CylB3
-//
-//		G4VSolid* GaCylinder =
-//		new G4Tubs("GaCylinder",                       //its name
-//							 0.,
-//							 RContainer,
-//							 0.5*DzContainer,
-//							 Ang0,
-//							 Ang2Pi);     //its size
-//
-//		G4VSolid* SourceExtGa =
-//		new G4Tubs("Source",                       //its name
-//							 0.,
-//							 rSourceExtGa,
-//							 0.5*dzSourceExtGa,
-//							 Ang0,
-//							 Ang2Pi);     //its size
-//
-//		G4VSolid* GaContainer=
-//		new G4SubtractionSolid ("GaContainer",      //GaContainer=GaCylinder-SourceExtGa
-//														GaCylinder,
-//														SourceExtGa,
-//														0,
-//														G4ThreeVector(0.,0.,DzContainer*0.5-dzSourceExtGa/2.));
-//
-//		//Its the "outside" of the source (table with hole)
-//		G4LogicalVolume* logicGaContainer =
-//		new G4LogicalVolume(GaContainer,               //its solid
-//												GaContainer_mat,           //its material
-//												"GaContainer");            //its name
-//
-//		//is the active area itself
-//		G4LogicalVolume* logicSourceExtGa =
-//		new G4LogicalVolume(SourceExtGa,               //its solid
-//												SourceExtGa_mat,           //its material
-//												"Source");            //its name
-//
-//		if(fSourceSelect==4) { //If i requested the Ga source
-//			G4cout<<"GEOMETRY DEBUG - Gallium Source has been placed!!"<<G4endl;
-//
-//			new G4PVPlacement(0,                     //no rotation
-//												posContainerExtGa,       //at (0,0,0)
-//												logicGaContainer,            //its logical volume
-//												"GaContainer",               //its name
-//												logicWorld,            //its mother  volume
-//												false,                 //no boolean operation
-//												0,                     //copy number
-//												checkOverlaps);        //overlaps checking
-//
-//			new G4PVPlacement(0,                     //no rotation
-//												posExtGa,       //at (0,0,0)
-//												logicSourceExtGa,            //its logical volume
-//												"Source",               //its name
-//												logicWorld,            //its mother  volume
-//												false,                 //no boolean operation
-//												0,                     //copy number
-//												checkOverlaps);        //overlaps checking
-//
-//			logicSourceExtGa->SetRegion(sorgente);
-//			sorgente->AddRootLogicalVolume(logicSourceExtGa);
-//		}
-		//################################################### END Ga SOURCE
-		
-		
+	
 		//###################################################
 		//Absorber
 		//##########################
-#pragma mark Piazzamento ABS 1
+#pragma mark Posizione ABS 1
 		posAbs = G4ThreeVector(0, 0, fAbsorberThickness/2.);
-		if (fAbsHoleDiam>=0) {
-			G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
-			
-			physAbsorber=new G4PVPlacement(0,                     //no rotation
-																		 posAbs,       //at (0,0,0)
-																		 logicAbsorber,            //its logical volume
-																		 "Absorber",               //its name
-																		 logicWorld,            //its mother  volume
-																		 false,                 //no boolean operation
-																		 0,                     //copy number
-																		 checkOverlaps);        //overlaps checking
-			
-			logicAbsorber->SetRegion(sorgente);
-			sorgente->AddRootLogicalVolume(logicAbsorber);
-		}
-		//################################################### END OF ABSORBER
 		
-		
-		//###################################################
-		//Front shield
-		//##########################
-		
-		//		if (fAbsHoleDiam>=0){
-		//			Z_FrontShield = /*DzAbs + */Pter_ZScan + FrontShield_sizeZ*0.5;
-		//			Pter_Posz = /*DzAbs+ */Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5; //??
-		//		} else{
-		Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5+FrontShieldBis_sizeZ;
-		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5 +FrontShieldBis_sizeZ;
-		
-		//		if (secondShieldFlag) {
-		//			Z_FrontShield+=FrontShieldBis_sizeZ;
-		//			Pter_Posz+=FrontShieldBis_sizeZ;
-		//		}
-		
-		//		}
-		
-		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<posFrontShield.z()/mm<<G4endl;
-		
-		physFrontShield= new G4PVPlacement(0,                     //no rotation
-																			 posFrontShield,
-																			 logicFrontShield,            //its logical volume
-																			 "FrontShield",               //its name
-																			 logicWorld,            //its mother  volume
-																			 false,                 //no boolean operation
-																			 0,                     //copy number
-																			 checkOverlaps);        //overlaps checking
-		logicFrontShield->SetRegion(frontshieldreg);
-		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
-		
-		
-		//###################################################
-		//Front shield BIS
-		//##########################
-		
-		Z_FrontShieldBis = Pter_ZScan + FrontShieldBis_sizeZ*0.5;
-		
-		posFrontShieldBis = G4ThreeVector(fX0Scan, 0, Z_FrontShieldBis);
-		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShieldBis= "<<FrontShieldBis_sizeZ/mm<<", Z pos= "<<posFrontShieldBis.z()/mm<<G4endl;
-		
-		if (secondShieldFlag) physFrontShieldBis= new G4PVPlacement(0,                     //no rotation
-																																posFrontShieldBis,
-																																logicFrontShieldBis,            //its logical volume
-																																"FrontShieldBis",               //its name
-																																logicWorld,            //its mother  volume
-																																false,                 //no boolean operation
-																																0,                     //copy number
-																																checkOverlaps);        //overlaps checking
-		logicFrontShieldBis->SetRegion(frontshieldreg);
-		frontshieldreg->AddRootLogicalVolume(logicFrontShieldBis);
-		
-		//###################################################
-		// 	P-Terphenyl
-		//##########################
-		
-		// place detector-Pter in world
-#pragma mark Piazzamento PTER 1
-		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		G4cout<<"GEOMETRY DEBUG - Z thickness of Pterp= "<<Pter_sizeZ/mm<<", Z pos= "<<posPter.z()/mm<<G4endl;
-		
-		physPter=new G4PVPlacement(0,                     //no rotation
-															 posPter,
-															 logicPter,            //its logical volume
-															 "Pter",               //its name
-															 logicWorld,            //its mother  volume
-															 false,                 //no boolean operation
-															 0,                     //copy number
-															 checkOverlaps);        //overlaps checking
-		
-		logicPter->SetRegion(pterreg);
-		pterreg->AddRootLogicalVolume(logicPter);
-		
-		fScoringVolume = logicPter;
-		
-		//###################################################
-		// SiPm volume behind PTER
-		//##########################
-		
-		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.+FrontShieldBis_sizeZ);
-		
-		physSiPm = new G4PVPlacement(0,                     //no rotation
-																 posSiPm,       //at (0,0,0)
-																 logicSiPm,            //its logical volume
-																 "SiPm",               //its name
-																 logicWorld,            //its mother  volume
-																 false,                 //no boolean operation
-																 0,                     //copy number
-																 checkOverlaps);        //overlaps checking
-		
-		//###################################################
-		// PVC around P-Terphenyl
-		//##########################
-		physPVC= new G4PVPlacement(0,                     //no rotation
-															 posPter,
-															 logicPVC,            //its logical volume
-															 "PVC",               //its name
-															 logicWorld,            //its mother  volume
-															 false,                 //no boolean operation
-															 0,                     //copy number
-															 checkOverlaps);        //overlaps checking
-		
-		//###################################################
-		// Delrin around P-Terphenyl
-		//##########################
-		
-		physDelrin=new G4PVPlacement(0,                     //no rotation
-																 posPter,
-																 logicDelrin,            //its logical volume
-																 "Delrin",               //its name
-																 logicWorld,            //its mother  volume
-																 false,                 //no boolean operation
-																 0,                     //copy number
-																 checkOverlaps);        //overlaps checking
+//		if (fAbsHoleDiam>=0) {
+//			G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
+//
+//			physAbsorber=new G4PVPlacement(0,                     //no rotation
+//																		 posAbs,       //at (0,0,0)
+//																		 logicAbsorber,            //its logical volume
+//																		 "Absorber",               //its name
+//																		 logicWorld,            //its mother  volume
+//																		 false,                 //no boolean operation
+//																		 0,                     //copy number
+//																		 checkOverlaps);        //overlaps checking
+//
+//			logicAbsorber->SetRegion(sorgente);
+//			sorgente->AddRootLogicalVolume(logicAbsorber);
+//		}
+//		//################################################### END OF ABSORBER PLACEMENT
+//
+//
+//		//###################################################
+//		//Front shield
+//		//##########################
+//
+//		Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5+FrontShieldBis_sizeZ;
+//
+//		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+//		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<posFrontShield.z()/mm<<G4endl;
+//
+//		physFrontShield= new G4PVPlacement(0,                     //no rotation
+//																			 posFrontShield,
+//																			 logicFrontShield,            //its logical volume
+//																			 "FrontShield",               //its name
+//																			 logicWorld,            //its mother  volume
+//																			 false,                 //no boolean operation
+//																			 0,                     //copy number
+//																			 checkOverlaps);        //overlaps checking
+//		logicFrontShield->SetRegion(frontshieldreg);
+//		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
+//
+//
+//		//###################################################
+//		//Front shield BIS
+//		//##########################
+//
+//		Z_FrontShieldBis = Pter_ZScan + FrontShieldBis_sizeZ*0.5;
+//
+//		posFrontShieldBis = G4ThreeVector(fX0Scan, 0, Z_FrontShieldBis);
+//		G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShieldBis= "<<FrontShieldBis_sizeZ/mm<<", Z pos= "<<posFrontShieldBis.z()/mm<<G4endl;
+//
+//		if (secondShieldFlag) physFrontShieldBis= new G4PVPlacement(0,                     //no rotation
+//																																posFrontShieldBis,
+//																																logicFrontShieldBis,            //its logical volume
+//																																"FrontShieldBis",               //its name
+//																																logicWorld,            //its mother  volume
+//																																false,                 //no boolean operation
+//																																0,                     //copy number
+//																																checkOverlaps);        //overlaps checking
+//		logicFrontShieldBis->SetRegion(frontshieldreg);
+//		frontshieldreg->AddRootLogicalVolume(logicFrontShieldBis);
+//
+//		//###################################################
+//		// 	P-Terphenyl
+//		//##########################
+//
+//		// place detector-Pter in world
+//#pragma mark Piazzamento PTER 1
+//		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5 +FrontShieldBis_sizeZ;
+//
+//		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+//		G4cout<<"GEOMETRY DEBUG - Z thickness of Pterp= "<<Pter_sizeZ/mm<<", Z pos= "<<posPter.z()/mm<<G4endl;
+//
+//		physPter=new G4PVPlacement(0,                     //no rotation
+//															 posPter,
+//															 logicPter,            //its logical volume
+//															 "Pter",               //its name
+//															 logicWorld,            //its mother  volume
+//															 false,                 //no boolean operation
+//															 0,                     //copy number
+//															 checkOverlaps);        //overlaps checking
+//
+//		logicPter->SetRegion(pterreg);
+//		pterreg->AddRootLogicalVolume(logicPter);
+//
+//		fScoringVolume = logicPter;
+//
+//		//###################################################
+//		// SiPm volume behind PTER
+//		//##########################
+//
+//		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.+FrontShieldBis_sizeZ);
+//
+//		physSiPm = new G4PVPlacement(0,                     //no rotation
+//																 posSiPm,       //at (0,0,0)
+//																 logicSiPm,            //its logical volume
+//																 "SiPm",               //its name
+//																 logicWorld,            //its mother  volume
+//																 false,                 //no boolean operation
+//																 0,                     //copy number
+//																 checkOverlaps);        //overlaps checking
+//
+//		//###################################################
+//		// PVC around P-Terphenyl
+//		//##########################
+//		physPVC= new G4PVPlacement(0,                     //no rotation
+//															 posPter,
+//															 logicPVC,            //its logical volume
+//															 "PVC",               //its name
+//															 logicWorld,            //its mother  volume
+//															 false,                 //no boolean operation
+//															 0,                     //copy number
+//															 checkOverlaps);        //overlaps checking
+//
+//		//###################################################
+//		// Delrin around P-Terphenyl
+//		//##########################
+//
+//		physDelrin=new G4PVPlacement(0,                     //no rotation
+//																 posPter,
+//																 logicDelrin,            //its logical volume
+//																 "Delrin",               //its name
+//																 logicWorld,            //its mother  volume
+//																 false,                 //no boolean operation
+//																 0,                     //copy number
+//																 checkOverlaps);        //overlaps checking
 		
 		
 		//		//Prova parametri ottici superficie, funziona ma è da capire...
@@ -1299,7 +1198,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//################################################### END OF Frontal part of the Probe
 		
 		
-	}else if(fGaSet==3){ // end of GaSet 2
+	}else if(fGaSet==3){
 #pragma mark GaSet 3
 		
 		
@@ -1321,193 +1220,31 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											false,                 //no boolean operation
 											0,                     //copy number
 											checkOverlaps);
-		//
-		//		//########## New case (Ga Container made with PVC)
-		//
-		//		//###################################################
-		//		//Ga Source Container
-		//		//##########################
-		//
-		//		G4ThreeVector posContainerExtGa = G4ThreeVector(0, 0, -H_CylA3*0.5-DzDummyExitSorg);
-		//		//		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3*0.5-DzDummy3/2);
-		//		G4ThreeVector posExtGa3 = G4ThreeVector(0, 0, -H_CylB3+dzSourceExtGa*0.5-DzDummyExitSorg);
-		//
-		//		G4VSolid* CylinderA =
-		//		new G4Tubs("CylinderA",                       //its name
-		//							 0.,
-		//							 D_CylABCD3*0.5,
-		//							 H_CylA3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* CylinderB =
-		//		new G4Tubs("CylinderB",                       //its name
-		//							 0.,
-		//							 d_CylB3*0.5,
-		//							 H_CylB3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* SourceGa =
-		//		new G4Tubs("SourceGa",
-		//							 0.,
-		//							 d_CylB3*0.5,
-		//							 (fSourceThickness*mm)*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);
-		//
-		//		G4VSolid* BackGaContainer=
-		//		new G4SubtractionSolid ("BackGaContainer",      //GaContainer=GaCylinder-GaSource
-		//														CylinderA,
-		//														CylinderB,
-		//														0,
-		//														G4ThreeVector(0.,0.,H_CylA3*0.5-H_CylB3*0.5));
-		//
-		//		G4LogicalVolume* logicSourceExtGa2 =
-		//		new G4LogicalVolume(SourceGa,               //its solid
-		//												SourceExtGa_mat,           //its material
-		//												"Source");            //its name
-		//
-		//		if (fSourceSelect!=11) new G4PVPlacement(0,                     //no rotation
-		//											posExtGa3,             //at (0,0,0)
-		//											logicSourceExtGa2,            //its logical volume
-		//											"Source",               //its name
-		//											logicWorld,            //its mother  volume
-		//											false,                 //no boolean operation
-		//											0,                     //copy number
-		//											checkOverlaps);        //overlaps checking
-		//
-		//		G4VSolid* CylinderC =
-		//		new G4Tubs("CylinderC",                       //its name
-		//							 d_CylC3*0.5,
-		//							 D_CylABCD3*0.5,
-		//							 H_CylC3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* CylinderD =
-		//		new G4Tubs("CylinderD",                       //its name
-		//							 d_CylD3*0.5,
-		//							 D_CylABCD3*0.5,
-		//							 H_CylD3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* UnionCD
-		//		= new G4UnionSolid("UnionCD",
-		//											 CylinderC,
-		//											 CylinderD,
-		//											 0,
-		//											 G4ThreeVector(0.,0.,(H_CylC3+H_CylD3)*0.5));
-		//		//The G4ThreeVector(0.,0.,(MiddleCaseDepth+TopCaseDepth)*0.5) generates a translation of the second solid respect to the center of the first one. When I place the resulting solid I've to take in consideration as center of it the center of the first solid.
-		//
-		//		G4VSolid* GaContainer
-		//		= new G4UnionSolid("GaContainer",
-		//											 BackGaContainer,
-		//											 UnionCD,
-		//											 0,
-		//											 G4ThreeVector(0.,0.,(H_CylA3 + H_CylC3)*0.5));
-		//
-		//
-		//		G4LogicalVolume* logicGaContainer =
-		//		new G4LogicalVolume(GaContainer,               //its solid
-		//												GaContainer3_mat,           //its material
-		//												"GaContainer");            //its name
-		//
-		//		new G4PVPlacement(0,                     //no rotation
-		//											posContainerExtGa,       //at (0,0,0)
-		//											logicGaContainer,            //its logical volume
-		//											"GaContainer",               //its name
-		//											logicWorld,            //its mother  volume
-		//											false,                 //no boolean operation
-		//											0,                     //copy number
-		//											checkOverlaps);
-		//
-		//		//###################################################
-		//		//Probe Container
-		//		//##########################
-		//
-		//		G4VSolid* CylinderE =
-		//		new G4Tubs("CylinderE",                       //its name
-		//							 d_CylE3*0.5,
-		//							 D_CylEF3*0.5,
-		//							 H_CylE3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* CylinderF =
-		//		new G4Tubs("CylinderF",                       //its name
-		//							 d_CylF3*0.5,
-		//							 D_CylEF3*0.5,
-		//							 H_CylF3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* CylinderG =
-		//		new G4Tubs("CylinderG",                       //its name
-		//							 d_CylG3*0.5,
-		//							 D_CylG3*0.5,
-		//							 H_CylG3*0.5,
-		//							 Ang0,
-		//							 Ang2Pi);     //its size
-		//
-		//		G4VSolid* UnionEF
-		//		= new G4UnionSolid("UnionEF",
-		//											 CylinderF,
-		//											 CylinderE,
-		//											 0,
-		//											 G4ThreeVector(0.,0.,(H_CylE3+H_CylF3)*0.5));
-		//
-		//		G4RotationMatrix* rm = new G4RotationMatrix();
-		//		rm->rotateY(180.*deg);
-		//
-		//		G4VSolid* ProbeContainer
-		//		= new G4UnionSolid("ProbeContainer",
-		//											 CylinderG,
-		//											 UnionEF,
-		//											 0,
-		//											 G4ThreeVector(0.,0.,(H_CylG3+H_CylF3)*0.5));
-		//
-		//		G4LogicalVolume* logicProbeContainer =
-		//		new G4LogicalVolume(ProbeContainer,               //its solid
-		//												ProbeContainer_mat,           //its material
-		//												"ProbeContainer");            //its name
-		//
-		//		G4ThreeVector ProbeContainerPos= G4ThreeVector(0,0,3.31*cm);  //H_C+(H_G/2)+H_F+H_E
-		//
-		//		new G4PVPlacement(rm,                     //no rotation
-		//											ProbeContainerPos,       //at (0,0,0)
-		//											logicProbeContainer,            //its logical volume
-		//											"ProbeContainer",               //its name
-		//											logicWorld,            //its mother  volume
-		//											false,                 //no boolean operation
-		//											0,                     //copy number
-		//											checkOverlaps);
 		
 		//###################################################
 		//Absrober
 		//##########################
-		G4double ZAbs=fAbsorberThickness/2.;
-		if (fPosAbsorber==2) ZAbs+=H_CylC3;
-		posAbs = G4ThreeVector(0, 0, ZAbs*mm);
+//		G4double ZAbs=fAbsorberThickness/2.;
+//		if (fPosAbsorber==2) ZAbs+=H_CylC3;
+		posAbs = G4ThreeVector(0, 0, fAbsorberThickness/2. + H_CylC3);
 #pragma mark Piazzamento ABS 3
 		
-		if (fAbsHoleDiam>=0) {
-			G4cout<<"GEOMETRY DEBUG - Copper collimator has been placed!!"<<G4endl;
-			
-			physAbsorber= new G4PVPlacement(0,                     //no rotation
-																			posAbs,       //at (0,0,0)
-																			logicAbsorber,            //its logical volume
-																			"Absorber",               //its name
-																			logicWorld,            //its mother  volume
-																			false,                 //no boolean operation
-																			0,                     //copy number
-																			checkOverlaps);        //overlaps checking
-			
-			logicAbsorber->SetRegion(sorgente);
-			sorgente->AddRootLogicalVolume(logicAbsorber);
-		}
-		
+//		if (fAbsHoleDiam>=0) {
+//			G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
+//
+//			physAbsorber= new G4PVPlacement(0,                     //no rotation
+//																			posAbs,       //at (0,0,0)
+//																			logicAbsorber,            //its logical volume
+//																			"Absorber",               //its name
+//																			logicWorld,            //its mother  volume
+//																			false,                 //no boolean operation
+//																			0,                     //copy number
+//																			checkOverlaps);        //overlaps checking
+//
+//			logicAbsorber->SetRegion(sorgente);
+//			sorgente->AddRootLogicalVolume(logicAbsorber);
+//		}
+//
 		//################################################### END OF ABSORBER
 		
 		//###################################################
@@ -1515,56 +1252,56 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//##########################
 		
 		//		Z_FrontShield = DzDummy2 + Pter_ZScan + FrontShield_sizeZ*0.5;
-		Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
-		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
-		physFrontShield= new G4PVPlacement(0, posFrontShield,
-																			 logicFrontShield,            //its logical volume
-																			 "FrontShield",
-																			 logicWorld,
-																			 false,
-																			 0,
-																			 checkOverlaps);        //overlaps checking
-		
-		logicFrontShield->SetRegion(frontshieldreg);
-		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
-		
-		//###################################################
-		// 	P-Terphenyl
-		//##########################
-#pragma mark Piazzamento PTER 3
-		//		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
-		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
-		physPter=new G4PVPlacement(0,                     //no rotation
-															 posPter,
-															 logicPter,            //its logical volume
-															 "Pter",               //its name
-															 logicWorld,            //its mother  volume
-															 false,                 //no boolean operation
-															 0,                     //copy number
-															 checkOverlaps);        //overlaps checking
-		
-		logicPter->SetRegion(pterreg);
-		pterreg->AddRootLogicalVolume(logicPter);
-		
-		fScoringVolume = logicPter;
-		
-		//###################################################
-		// SiPm volume behind PTER
-		//##########################
-		
-		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
-		
-		physSiPm = new G4PVPlacement(0,                     //no rotation
-																 posSiPm,       //at (0,0,0)
-																 logicSiPm,            //its logical volume
-																 "SiPm",               //its name
-																 logicWorld,            //its mother  volume
-																 false,                 //no boolean operation
-																 0,                     //copy number
-																 checkOverlaps);        //overlaps checking
-		
-		
+//		Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5;
+//		posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+//		physFrontShield= new G4PVPlacement(0, posFrontShield,
+//																			 logicFrontShield,            //its logical volume
+//																			 "FrontShield",
+//																			 logicWorld,
+//																			 false,
+//																			 0,
+//																			 checkOverlaps);        //overlaps checking
+//
+//		logicFrontShield->SetRegion(frontshieldreg);
+//		frontshieldreg->AddRootLogicalVolume(logicFrontShield);
+//
+//		//###################################################
+//		// 	P-Terphenyl
+//		//##########################
+//#pragma mark Piazzamento PTER 3
+//		//		Pter_Posz = DzDummy2 + Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
+//		Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5;
+//		G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+//		physPter=new G4PVPlacement(0,                     //no rotation
+//															 posPter,
+//															 logicPter,            //its logical volume
+//															 "Pter",               //its name
+//															 logicWorld,            //its mother  volume
+//															 false,                 //no boolean operation
+//															 0,                     //copy number
+//															 checkOverlaps);        //overlaps checking
+//
+//		logicPter->SetRegion(pterreg);
+//		pterreg->AddRootLogicalVolume(logicPter);
+//
+//		fScoringVolume = logicPter;
+//
+//		//###################################################
+//		// SiPm volume behind PTER
+//		//##########################
+//
+//		G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.);
+//
+//		physSiPm = new G4PVPlacement(0,                     //no rotation
+//																 posSiPm,       //at (0,0,0)
+//																 logicSiPm,            //its logical volume
+//																 "SiPm",               //its name
+//																 logicWorld,            //its mother  volume
+//																 false,                 //no boolean operation
+//																 0,                     //copy number
+//																 checkOverlaps);        //overlaps checking
+//
+//
 		if (fSourceSelect==11) {
 			G4ThreeVector posFLiquidBack = posPter+G4ThreeVector(0, 0, -(H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5 -5*mm);
 
@@ -1633,6 +1370,131 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 																	 checkOverlaps);        //overlaps checking
 		
 	}// end of GaSet3
+	
+	
+	if (fAbsHoleDiam>=0) {
+		G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
+		
+		physAbsorber=new G4PVPlacement(0,                     //no rotation
+																	 posAbs,       //at (0,0,0)
+																	 logicAbsorber,            //its logical volume
+																	 "Absorber",               //its name
+																	 logicWorld,            //its mother  volume
+																	 false,                 //no boolean operation
+																	 0,                     //copy number
+																	 checkOverlaps);        //overlaps checking
+		
+		logicAbsorber->SetRegion(sorgente);
+		sorgente->AddRootLogicalVolume(logicAbsorber);
+	}
+	//################################################### END OF ABSORBER PLACEMENT
+	
+	
+	//###################################################
+	//Front shield
+	//##########################
+	
+	Z_FrontShield = Pter_ZScan + FrontShield_sizeZ*0.5+FrontShieldBis_sizeZ;
+	
+	posFrontShield = G4ThreeVector(fX0Scan, 0, Z_FrontShield);
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShield= "<<FrontShield_sizeZ/mm<<", Z pos= "<<posFrontShield.z()/mm<<G4endl;
+	
+	physFrontShield= new G4PVPlacement(0,                     //no rotation
+																		 posFrontShield,
+																		 logicFrontShield,            //its logical volume
+																		 "FrontShield",               //its name
+																		 logicWorld,            //its mother  volume
+																		 false,                 //no boolean operation
+																		 0,                     //copy number
+																		 checkOverlaps);        //overlaps checking
+	logicFrontShield->SetRegion(frontshieldreg);
+	frontshieldreg->AddRootLogicalVolume(logicFrontShield);
+	
+	
+	//###################################################
+	//Front shield BIS
+	//##########################
+	
+	Z_FrontShieldBis = Pter_ZScan + FrontShieldBis_sizeZ*0.5;
+	
+	posFrontShieldBis = G4ThreeVector(fX0Scan, 0, Z_FrontShieldBis);
+	G4cout<<"GEOMETRY DEBUG - Z thickness of solidFrontShieldBis= "<<FrontShieldBis_sizeZ/mm<<", Z pos= "<<posFrontShieldBis.z()/mm<<G4endl;
+	
+	if (secondShieldFlag) physFrontShieldBis= new G4PVPlacement(0,                     //no rotation
+																															posFrontShieldBis,
+																															logicFrontShieldBis,            //its logical volume
+																															"FrontShieldBis",               //its name
+																															logicWorld,            //its mother  volume
+																															false,                 //no boolean operation
+																															0,                     //copy number
+																															checkOverlaps);        //overlaps checking
+	logicFrontShieldBis->SetRegion(frontshieldreg);
+	frontshieldreg->AddRootLogicalVolume(logicFrontShieldBis);
+	
+	//###################################################
+	// 	P-Terphenyl
+	//##########################
+	
+	// place detector-Pter in world
+#pragma mark Piazzamento PTER 1
+	Pter_Posz = Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ*0.5 +FrontShieldBis_sizeZ;
+
+//	G4ThreeVector posPter = G4ThreeVector(fX0Scan, 0, Pter_Posz);
+	G4cout<<"GEOMETRY DEBUG - Z thickness of Pterp= "<<Pter_sizeZ/mm<<", Z pos= "<<posPter.z()/mm<<G4endl;
+	
+	physPter=new G4PVPlacement(0,                     //no rotation
+														 posPter,
+														 logicPter,            //its logical volume
+														 "Pter",               //its name
+														 logicWorld,            //its mother  volume
+														 false,                 //no boolean operation
+														 0,                     //copy number
+														 checkOverlaps);        //overlaps checking
+	
+	logicPter->SetRegion(pterreg);
+	pterreg->AddRootLogicalVolume(logicPter);
+	
+	fScoringVolume = logicPter;
+	
+	//###################################################
+	// SiPm volume behind PTER
+	//##########################
+	
+	G4ThreeVector posSiPm = G4ThreeVector(fX0Scan, 0, Pter_Posz + Pter_sizeZ/2. + DzSiPm/2.+FrontShieldBis_sizeZ);
+	
+	physSiPm = new G4PVPlacement(0,                     //no rotation
+															 posSiPm,       //at (0,0,0)
+															 logicSiPm,            //its logical volume
+															 "SiPm",               //its name
+															 logicWorld,            //its mother  volume
+															 false,                 //no boolean operation
+															 0,                     //copy number
+															 checkOverlaps);        //overlaps checking
+	
+	//###################################################
+	// PVC around P-Terphenyl
+	//##########################
+	physPVC= new G4PVPlacement(0,                     //no rotation
+														 posPter,
+														 logicPVC,            //its logical volume
+														 "PVC",               //its name
+														 logicWorld,            //its mother  volume
+														 false,                 //no boolean operation
+														 0,                     //copy number
+														 checkOverlaps);        //overlaps checking
+	
+	//###################################################
+	// Delrin around P-Terphenyl
+	//##########################
+	
+	physDelrin=new G4PVPlacement(0,                     //no rotation
+															 posPter,
+															 logicDelrin,            //its logical volume
+															 "Delrin",               //its name
+															 logicWorld,            //its mother  volume
+															 false,                 //no boolean operation
+															 0,                     //copy number
+															 checkOverlaps);
 	
 #pragma mark Probe  Case
 	if(CaseDepth>0){
