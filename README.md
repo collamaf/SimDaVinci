@@ -171,47 +171,47 @@ num->Draw("E")
 
 ## FLAGS
 
-# GaSet is used to choose the experimental setup; 
+### GaSet is used to choose the experimental setup; 
 - 1: "bare probe", no "catafalco" 
 - 2: "catafalco" in PVC for liquid source measurements 
 
-- -Z is used to choose the distance of the frontshield from the source.
+### Z is used to choose the distance of the frontshield from the source.
 
-- -AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way to give this value taking in consideration that the distance of the probe's head (the frontshield) from the source is given by Z + AbsT/2.
+### AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way to give this value taking in consideration that the distance of the probe's head (the frontshield) from the source is given by Z + AbsT/2.
 
-- -AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   
+### AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   
 
-- -ZAbs is used to choose the position of the center of the absorber with respect to the source.
+### ZAbs is used to choose the position of the center of the absorber with respect to the source.
 
-- -AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
+### AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
 
-- -PosAbs (PosAbsorber) is used to choose absorber width in -GaSet2; if -PosAbs == 1 it will have the same diameter of the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will have the same diameter of the hole that has 6mm depth, just after the first hole.
+### PosAbs (PosAbsorber) is used to choose absorber width in -GaSet2; if -PosAbs == 1 it will have the same diameter of the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will have the same diameter of the hole that has 6mm depth, just after the first hole.
 
-- -Source is used to choose the source type: if Source=1 or Source=2 we have respectively point-like or extended Sr source, else if Source=3 we have Y extended source and if Source=4 we have Ga-68 extended source.
+### Source is used to choose the source type: if Source=1 or Source=2 we have respectively point-like or extended Sr source, else if Source=3 we have Y extended source and if Source=4 we have Ga-68 extended source.
 
-- -X is used to change the position of the probe along the x asse. N.B. must be 0 in GaSet2.
+### X is used to change the position of the probe along the x asse. N.B. must be 0 in GaSet2.
 
-- -SourceD is used to choose the diameter of the source; this is preseted to 10mm, the diameter of the Ga container in GaSet2.
+### SourceD is used to choose the diameter of the source; this is preseted to 10mm, the diameter of the Ga container in GaSet2.
 
-- -SourceT is used to choose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
+### SourceT is used to choose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
 
-- -PterD is used to choose the diameter of the P-Terfenile; this is preseted to 6mm.
+### PterD is used to choose the diameter of the P-Terfenile; this is preseted to 6mm.
 
-- -PterT is used tochoose the thickness of the P-Terfenile; this is preseted to 5mm.
+### PterT is used tochoose the thickness of the P-Terfenile; this is preseted to 5mm.
 
-- -CaseLT is used to set the lateral thickness of the probe's case.
+### CaseLT is used to set the lateral thickness of the probe's case.
 
-- -CaseBT is used to set the back thickness of the probe's case ( the case is a sort of horseshoe and this flag set the thickness of the back part ).
+### CaseBT is used to set the back thickness of the probe's case ( the case is a sort of horseshoe and this flag set the thickness of the back part ).
 
-- -HSLT is used to set the lateral thickness of the structure inside the case (this structure looks like an horseshoe too).
+### HSLT is used to set the lateral thickness of the structure inside the case (this structure looks like an horseshoe too).
 
-- -HBLT is used to set the back thickness of the structure inside the case (this structure looks like an horseshoe too).
+### HBLT is used to set the back thickness of the structure inside the case (this structure looks like an horseshoe too).
 
-- -CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not. If 0 the "bare probe" is placed (just PTER+Delrin+PVC)
+### CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not. If 0 the "bare probe" is placed (just PTER+Delrin+PVC)
 
-- -HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
+### HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
 
-- -AppMat is used to choose the "catafalco's" materials.
+### AppMat is used to choose the "catafalco's" materials.
 
 
 
