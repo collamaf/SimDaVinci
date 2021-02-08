@@ -111,17 +111,16 @@ make
 ```
 
 - To obtain efficiency curve:
+ With Eabs
 ```
-- With Eabs
-
 B1->Draw("SourceEne>>num(100)","Eabs>68","")
 B1->Draw("SourceEne>>denom(100)","EnterPterFlag==1","")
 num->Sumw2()
 num->Divide(denom)
 num->Draw("E")
-
-- With NPMT
-
+```
+ With NPMT
+```
 B1->Draw("SourceEne>>num(200)","Npmt>55","")
 B1->Draw("SourceEne>>denom(200)","EnterPterFlag==1","")
 num->Sumw2()
@@ -143,21 +142,21 @@ num->Draw("E")
 
 ### GaSet 
 To choose the experimental setup; 
-- 1: "bare probe", no "catafalco" 
+- 1: "bare probe", no "catafalco" [default]
 - 2: "catafalco" in PVC for liquid source measurements 
 
 ### Z
-Distance from probe frontshield to source surface;
+Distance from probe frontshield to source surface [mm, def: 2]
 
 ### AbsT
 Absorber's thickness [mm, def: 1]
 
 ### AbsD
-Diameter of the absorber's hole in its center. If <0 no absorber is placed (default). [mm] 
+Diameter of the absorber's hole in its center. If <0 no absorber is placed. [mm, def: -1] 
 
 ### AbsMat
-Absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
-- 1: Cu 
+Absorber's material:
+- 1: Cu [def]
 - 2: Pb
 - 3: Alu
 - 4: PVC
@@ -166,7 +165,7 @@ Absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, 
 
 ### Source
 Source type: 
-- 1: Pointlike Sr
+- 1: Pointlike Sr [def]
 - 2: Extended Sr
 - 3: ExtY
 - 4: ExtGa
@@ -179,34 +178,34 @@ Source type:
 - 11: 18F container around GaSet3
 
 ### X 
-Horizontal offset of the probe [mm]
+Horizontal offset of the probe [mm, def: 0]
 
 ### SourceD
-Source Diameter
+Source Diameter for variable size souces [mm, def: 10]
 
 ### SourceT 
-Source Thickness
+Source Thickness for variable size souces [mm, def: 7]
 
 ### PterD
-PTER Diameter [mm, default 6]
+PTER Diameter [mm, def: 6]
 
 ### PterT 
-PTER Thickness [mm, default 5]
+PTER Thickness [mm, def: 4]
 
 ### CaseLT
-Lateral thickness of robotic probe case
+Lateral thickness of robotic probe case [mm, def: 1.25]
 
 ### CaseBT
-Bottom thickness of robotic probe case
+Bottom thickness of robotic probe case [mm, def: 20]
 
 ### HSLT
-Lateral thickness of horseshoe structure inside robotic probe case
+Lateral thickness of horseshoe structure inside robotic probe case [mm, def: 1]
 
 ### HBLT
-Bottom thickness of horseshoe structure inside robotic probe case
+Bottom thickness of horseshoe structure inside robotic probe case [mm, def: 2]
 
 ### CaseDepth 
-Length of the probe case:
+Length of the probe case [mm, def: -155]:
 - >0: robotic probe
 - ==0: "bare probe" (just PTER+Delrin+PVC)
 - <0: open surgery probe
@@ -221,7 +220,6 @@ Material of robotic probe case. From inside out
 Material of the "catafalco":
 - 1: AIR [default]
 - 2: Pb (to kill almost everything, maybe..)
-
 
 
 ## PHYSICS
@@ -604,14 +602,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fix missing water around GaContainer in 18F studies (source 11)
 
 2021.02.08 by collamaf
-- Massive cleaning of DetConst
+- Massive cleaning of DetConst and README
 
 
 ## TO DO's
 
-- F18/Cu67 su supporto GaSet per fare misure al gemelli
-- flag per non piazzare la struttura di supporto se uno dei valori passati da terminale a riguardo è negativo
-- Sistemare l'overlap fra il volume SiPm e il tappo presente dietro il PTER quando c'è il case
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)
-- Sostituire fCuDiam e CuDiam
-- Correggere sovrapposizione tra top case e SiPM in GaSet 2 quando DepthCase > 0
