@@ -5,9 +5,9 @@
 cd build
 cmake -DGeant4_DIR=$G4INSTALL ../
 make
-./exampleB1 {flags (see below)} ../run1.mac
+./exampleB1 {flags (see below)} 
 ```
-Some Use cases:
+### Some Use cases:
 - Gallium68 Campaign Gemelli measurements (late 2018) with PVC
 ```
 ./exampleb1 -GaSet 3 -CaseDepth -155 -Source 4 -AbsD 0 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 6.4  ../run1.mac 
@@ -69,13 +69,13 @@ Some Use cases:
 
 ```
 
-- Misure per capire sonda morelli in vista di sperabile in-vivo (GEN2021): sonda open con scotch davanti su sorgente Sr estesa
+### Misure per capire sonda morelli in vista di sperabile in-vivo (GEN2021): sonda open con scotch davanti su sorgente Sr estesa
 
-### Base
+- Base
 ```
 ./exampleb1  -Source 2  -PterD 6  -PterT 3 -SecondShield 1 -Z 0 -NPrim 1000000 
 ```
-### Spessori Alluminio
+- Spessori Alluminio
 ```
 ./exampleb1  -Source 2 -AbsT 0.1 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.101 -SecondShield 1  -NPrim 1000000
 ./exampleb1  -Source 2 -AbsT 0.2 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.201 -SecondShield 1  -NPrim 1000000
@@ -83,42 +83,27 @@ Some Use cases:
 ./exampleb1  -Source 2 -AbsT 0.4 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.401 -SecondShield 1  -NPrim 1000000
 ./exampleb1  -Source 2 -AbsT 0.5 -AbsMat 3 -AbsD 0 -PterD 6  -PterT 3 -Z 0.501 -SecondShield 1  -NPrim 1000000
 ```
-### Spessori Rame
+- Spessori Rame
 
 ```
 ./exampleb1  -Source 2 -AbsT 0.3 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.301 -SecondShield 1 -NPrim 1000000
 ./exampleb1  -Source 2 -AbsT 0.6 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.601 -SecondShield 1 -NPrim 1000000
 ./exampleb1  -Source 2 -AbsT 0.9 -AbsMat 1 -AbsD 0 -PterD 6  -PterT 3 -Z 0.901 -SecondShield 1 -NPrim 1000000
 ```
-### Spessori ABS
-```
-./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 1.60 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.61 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 2 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.01 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 2.25 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.26 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1 -Label HiDens
-
-
-```
-Dopo misura piu accurata
+- Spessori ABS
 ```
 ./exampleb1  -Source 2 -AbsT 1.46 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.47 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ./exampleb1  -Source 2 -AbsT 1.67 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.68 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ./exampleb1  -Source 2 -AbsT 1.85 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.86 -NPrim 1000000 -SecondShield 1 -Label HiDens
-./exampleb1  -Source 2 -AbsT 2.01 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.02 -NPrim 1000000 -SecondShield 1 -Label HiDens8
-./exampleb1  -Source 2 -AbsT 2.35 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 2.36 -NPrim 1000000 -SecondShield 1 -Label HiDens8
-./exampleb1  -Source 2 -AbsT 3.38 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.39 -NPrim 1000000 -SecondShield 1 -Label HiDens8
-
 ```
-Spessori aggiuntivi bianchi
+- Spessori aggiuntivi bianchi
 ```
 ./exampleb1  -Source 2 -AbsT 1.27 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 1.28 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ./exampleb1  -Source 2 -AbsT 3.13 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.14 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ./exampleb1  -Source 2 -AbsT 3.30 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 3.31 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ./exampleb1  -Source 2 -AbsT 4.97 -AbsMat 5 -AbsD 0 -PterD 6  -PterT 3 -Z 4.97 -NPrim 1000000 -SecondShield 1 -Label HiDens
 ```
-Spessori neri (scoperto che sono probabilmente PVC ma con densità 1.4)
+- Spessori neri (scoperto che sono probabilmente PVC ma con densità 1.4)
 ```
 ./exampleb1  -Source 2 -AbsT 2.01 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 2.02 -NPrim 1000000 -SecondShield 1
 ./exampleb1  -Source 2 -AbsT 2.35 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 2.36 -NPrim 1000000 -SecondShield 1
@@ -147,21 +132,6 @@ num->Draw("E")
 
 
 
-## SOURCES
-1 - Pointlike Sr
-2 - Extended Sr
-3 - ExtY
-4 - ExtGa
-5 - 511KeV gamma sphere
-6 - FlatEle
-7 - FlatGamma sphere
-8 - ExtCu67 (vol for MC studies, not exp. meas.)
-9 - ExtF18 (vol for MC studies, not exp. meas.)
-10 - ExternaFile (typically no lab source)
-11 - 18F container around GaSet3
-
-
-
 ## GEOMETRY
 - All sources ending at Z=0 (including dummy)
 - DummyExitSorg: after source (with possible air gap in GaSet 3)
@@ -171,47 +141,86 @@ num->Draw("E")
 
 ## FLAGS
 
-### GaSet is used to choose the experimental setup; 
+### GaSet 
+To choose the experimental setup; 
 - 1: "bare probe", no "catafalco" 
 - 2: "catafalco" in PVC for liquid source measurements 
 
-### Z is used to choose the distance of the frontshield from the source.
+### Z
+Distance from probe frontshield to source surface;
 
-### AbsT is used to choose the absorber's thickness. If the absorber is not placed in GaSet 2 you have by the way to give this value taking in consideration that the distance of the probe's head (the frontshield) from the source is given by Z + AbsT/2.
+### AbsT
+Absorber's thickness [mm, def: 1]
 
-### AbsD is used to choose the diameter of the absorber's hole in the center of the absorber itself; In -GaSet2 it must be = 0 (not >0 because in this setup the absorber isn't drilled in the midle) if you want to place the absorber and must be < 0 otherwise.                   
+### AbsD
+Diameter of the absorber's hole in its center. If <0 no absorber is placed (default). [mm] 
 
-### ZAbs is used to choose the position of the center of the absorber with respect to the source.
+### AbsMat
+Absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
+- 1: Cu 
+- 2: Pb
+- 3: Alu
+- 4: PVC
+- 5: ABS
+- 6: Strange black plastic with middle density (1.3 g/cm3)
 
-### AbsMat  is used to choose the absorber's material; if AbsMat1->Cu, else if AbsMat2->Pb, else if AbsMat3->Alu, else if AbsMat4->PVC.
+### Source
+Source type: 
+- 1: Pointlike Sr
+- 2: Extended Sr
+- 3: ExtY
+- 4: ExtGa
+- 5: 511KeV gamma sphere
+- 6: FlatEle
+- 7: FlatGamma sphere
+- 8: ExtCu67 (vol for MC studies, not exp. meas.)
+- 9: ExtF18 (vol for MC studies, not exp. meas.)
+- 10: ExternaFile (typically no lab source)
+- 11: 18F container around GaSet3
 
-### PosAbs (PosAbsorber) is used to choose absorber width in -GaSet2; if -PosAbs == 1 it will have the same diameter of the hole just near the source, that has 2mm depth, while if -PosAbs == 2 it will have the same diameter of the hole that has 6mm depth, just after the first hole.
+### X 
+Horizontal offset of the probe [mm]
 
-### Source is used to choose the source type: if Source=1 or Source=2 we have respectively point-like or extended Sr source, else if Source=3 we have Y extended source and if Source=4 we have Ga-68 extended source.
+### SourceD
+Source Diameter
 
-### X is used to change the position of the probe along the x asse. N.B. must be 0 in GaSet2.
+### SourceT 
+Source Thickness
 
-### SourceD is used to choose the diameter of the source; this is preseted to 10mm, the diameter of the Ga container in GaSet2.
+### PterD
+PTER Diameter [mm, default 6]
 
-### SourceT is used to choose the thickness of the source; this is preseted to 7mm, the thickness of the Ga container in GaSet2.
+### PterT 
+PTER Thickness [mm, default 5]
 
-### PterD is used to choose the diameter of the P-Terfenile; this is preseted to 6mm.
+### CaseLT
+Lateral thickness of robotic probe case
 
-### PterT is used tochoose the thickness of the P-Terfenile; this is preseted to 5mm.
+### CaseBT
+Bottom thickness of robotic probe case
 
-### CaseLT is used to set the lateral thickness of the probe's case.
+### HSLT
+Lateral thickness of horseshoe structure inside robotic probe case
 
-### CaseBT is used to set the back thickness of the probe's case ( the case is a sort of horseshoe and this flag set the thickness of the back part ).
+### HBLT
+Bottom thickness of horseshoe structure inside robotic probe case
 
-### HSLT is used to set the lateral thickness of the structure inside the case (this structure looks like an horseshoe too).
+### CaseDepth 
+Length of the probe case:
+- >0: robotic probe
+- ==0: "bare probe" (just PTER+Delrin+PVC)
+- <0: open surgery probe
 
-### HBLT is used to set the back thickness of the structure inside the case (this structure looks like an horseshoe too).
+### HSMat
+Material of robotic probe case. From inside out
+- 1: PVC+Pb+PVC [default]
+- 2: AIR+Pb+AIR
+- 3: AIR+AIR+AIR
 
-### CaseDepth is used to set the lenght of the probe's case. In GaSet2 if it's >0 the simulation will place inside the case the internal structure while if it's < 0 it'll not. If 0 the "bare probe" is placed (just PTER+Delrin+PVC)
-
-### HSMat is used to choose the material of the structure inside the case.                                                                                                    If HSMat1 (default) the inner material inside the inner horseshoe is made of PVC, the horseshoe itself is made of Pb and the externale case is made of PVC.                                                                                                                                                              Else if HSMat2 the inner material inside the inner horseshoe is made of air, the horseshoe itself is made of Pb and the externale case is made of air.                                                                                                                                                                                                              Else if HSMat3 all is made of air
-
-### AppMat is used to choose the "catafalco's" materials.
+### AppMat
+Material of the "catafalco":
+- 1: AIR [default]
+- 2: Pb (to kill almost everything, maybe..)
 
 
 
@@ -313,18 +322,6 @@ ELE
 POS
 FOT
 
-
-## TO MERGE IN CASE OF MT
-
-TString nomefile="PTERmc_PDiam6_PDz2_NoAbs_CaseDepth40_CaseLT1_CaseBT5_HSLT4_HSBT3_HSMat3_X0_Z2_Sphere511";
-TChain * chain = new TChain("B1")
-chain->Add(Form("%s_t*.root",nomefile.Data()))
-TChain * chain2 = new TChain("Source")
-chain2->Add(Form("%s_t*.root",nomefile.Data()))
-TFile *file = TFile::Open(Form("%s.root",nomefile.Data()),"RECREATE");
-chain->CloneTree(-1,"fast");
-chain2->CloneTree(-1,"fast");
-file->Write();
 
 
 ## TO ANALYZE HOUSING BACK MATERIAL
