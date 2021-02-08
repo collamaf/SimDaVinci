@@ -54,11 +54,10 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat,G4int PosAbsorber,G4double AbsCenter, G4bool SecondShieldFlag)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat, G4bool SecondShieldFlag)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fPosAbsorber (PosAbsorber), fAbsCenter (AbsCenter), fSecondShieldFlag(SecondShieldFlag)
+fScoringVolume(0), fX0Scan(x0*mm), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fSecondShieldFlag(SecondShieldFlag)
 {
-	G4cout<<"ZUCCHINE"<<G4endl;
 	
 }
 
@@ -220,12 +219,12 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	if (fSourceSelect==6 || fSourceSelect==7|| fSourceSelect==10) SourceSR_mat=world_mat;
 	
 	//To modify GaSet 2/3 materials according to flags
-	if (fGaSet==2 || fGaSet==3) {
-		if (fApparatusMat==2) {
+	if (fGaSet==3) {
+		if (fApparatusMat==1) {
 			ProbeContainer_mat = world_mat;
 			GaContainer2_mat = world_mat;
 			GaContainer3_mat = world_mat;
-		} else if (fApparatusMat==3) {
+		} else if (fApparatusMat==2) {
 			ProbeContainer_mat = HorsesShoe_mat;
 			GaContainer2_mat = HorsesShoe_mat;
 			GaContainer3_mat = HorsesShoe_mat;
@@ -378,15 +377,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminAbs = fabs(fAbsHoleDiam)/2.*mm;
 	G4double RmaxAbs = 30*mm;
 	G4double DzAbs= fAbsorberThickness*mm;
-	if(fPosAbsorber==1 && fGaSet==2){
-		RmaxAbs = 21/2.*mm;
-	}else if (fPosAbsorber==1 && fGaSet==3){
-		RmaxAbs = 22/2.*mm;
-	}else if (fPosAbsorber==2 && fGaSet==2){
-		RmaxAbs = 26/2.*mm;
-	}else if (fPosAbsorber==2 && fGaSet==3){
-		RmaxAbs = 26/2.*mm;
-	};
+
 	//###
 	
 	//### SiPm
@@ -441,7 +432,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy Exit Sorg
 	G4double RminDummyExitSorg = 0.*mm;
 	G4double RmaxDummyExitSorg = 18.*mm;
-	if (fGaSet==2) RmaxDummyExitSorg = fSourceDiameter/2.;
 	if (fGaSet==3) RmaxDummyExitSorg = fSourceDiameter/2.;
 	G4double DzDummyExitSorg= 1.e-5*mm;
 	G4ThreeVector posDummyExitSorg;
@@ -450,7 +440,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy Exit Abs
 	G4double RminDummyExitAbs = 0.*mm;
 	G4double RmaxDummyExitAbs = 18.*mm;
-	if (fGaSet==2) RmaxDummyExitAbs = RmaxAbs;
 	if (fGaSet==3) RmaxDummyExitAbs = RmaxAbs;
 	G4double DzDummyExitAbs= 1.e-5*mm;
 	G4ThreeVector posDummyExitAbs;
@@ -460,7 +449,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminDummyEnterProbe = 0.*mm;
 	G4double RmaxDummyEnterProbe = 18.*mm;
 	//	G4double RmaxDummyEnterProbe = PVC_outer_r;
-	if (fGaSet==2) RmaxDummyEnterProbe = d_CylG3/2.*mm;
 	if (fGaSet==3) RmaxDummyEnterProbe = d_CylG3/2.*mm;
 	G4double DzDummyEnterProbe= 1.e-5*mm;
 	G4ThreeVector posDummyEnterProbe;
@@ -1191,7 +1179,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4double PlasticCase_Posz =  Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		G4ThreeVector posPlasticCase = G4ThreeVector(fX0Scan, 0, PlasticCase_Posz);
 		
-		//		if (fGaSet==2 || fGaSet==3) PlasticCase_Posz+= DzDummy2;
 		
 		new G4PVPlacement(0,                     //no rotation
 											posPlasticCase,        //at (0,0,0)
@@ -1218,7 +1205,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//G4double HorsesShoe_Posz = DzAbs*0.5+ Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
 		G4double HorsesShoe_Posz =  Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth + MiddleCaseDepth*0.5;
 		
-		//		if (fGaSet==2 || fGaSet==3) HorsesShoe_Posz+= DzDummy2;
 		
 		G4ThreeVector posHorsesShoe = G4ThreeVector(fX0Scan, 0, HorsesShoe_Posz);
 		
@@ -1252,7 +1238,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		//G4double ProbeTopCase_Posz = DzAbs*0.5+ Pter_ZScan + DzDummy2 + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		G4double ProbeTopCase_Posz =  Pter_ZScan + FrontShield_sizeZ + Pter_sizeZ + TopCaseDepth*0.5;
 		
-		//		if (fGaSet==2 || fGaSet==3) ProbeTopCase_Posz+=DzDummy2;
 		
 		G4ThreeVector posTopCase = G4ThreeVector(fX0Scan, 0, ProbeTopCase_Posz);
 		

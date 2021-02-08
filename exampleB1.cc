@@ -70,8 +70,8 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	G4bool QuickFlag=false;
 	
-	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=5.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2., AbsCenter=2.75;
-	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1,ApparatusMat=1,PosAbsorber=1, nThreadIn=-1;
+	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=4.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2.;
+	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1, ApparatusMat=1, nThreadIn=-1;
 	G4bool ScintFlag=0;
 	G4bool SecondShieldFlag=false;
 	G4String ExtSourceFile="";
@@ -185,12 +185,6 @@ int main(int argc,char** argv)
 			}else if(option.compare("-AppMat")==0)
 			{
 				ApparatusMat= strtod (argv[++i], NULL);;
-			}else if(option.compare("-PosAbs")==0)
-			{
-				PosAbsorber= strtod (argv[++i], NULL);;
-			}else if(option.compare("-ZAbs")==0)
-			{
-				AbsCenter= strtod (argv[++i], NULL);;
 			}
 		}
 		else
@@ -226,7 +220,7 @@ int main(int argc,char** argv)
 	if (AbsorberHoleDiam<0) FileNameCommonPart.append("_NoAbs");
 	else {
 		if (GaSet==1)  FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
-		if (GaSet==2 || GaSet==3) FileNameCommonPart.append("_PosAbs"+std::to_string((G4int)(PosAbsorber))+"_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+		if (GaSet==2 || GaSet==3) FileNameCommonPart.append("_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 	}
 	
 	// ###### IF LAPAROSCOPIC CASE
@@ -289,7 +283,7 @@ int main(int argc,char** argv)
 	// Detector construction
 	
 	
-	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter, SecondShieldFlag);
+	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, SecondShieldFlag);
 	runManager->SetUserInitialization(detConst);
 	
 //	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
