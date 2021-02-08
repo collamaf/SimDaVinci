@@ -192,7 +192,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* ProbeContainer_mat=nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
 	G4Material* SourceExtGa_mat=nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* SourceSR_mat = nist->FindOrBuildMaterial("MyAlu");
-	G4Material* SourceCu_mat = nist->FindOrBuildMaterial("G4_WATER");
+	G4Material* SourceGenericIon_mat = nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* FrontShield_mat = nist->FindOrBuildMaterial("MyAlu");
 	G4Material* shapeDummy_mat = nist->FindOrBuildMaterial("G4_AIR");
 	G4Material* Pter_mat = PTerphenyl;
@@ -352,9 +352,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//###
 	
 	//### Cu Source
-	G4double RminSourceCu = 0.*mm;
-	G4double RmaxSourceCu = fSourceDiameter*0.5*mm;
-	G4double DzSourceCu= fSourceThickness*mm;
+	G4double RminSourceGenericIon = 0.*mm;
+	G4double RmaxSourceGenericIon = fSourceDiameter*0.5*mm;
+	G4double DzSourceGenericIon= fSourceThickness*mm;
 	//###
 	
 	//### Ga Source Container
@@ -416,27 +416,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//G4double Case_r = PVC_outer_r +0.1*mm;
 	G4double HorsesShoeLateralThickness = fHorsesShoeLateralThickness * mm;
 	G4double HorsesShoeBackThickness = fHorsesShoeBackThickness * mm;
-	
-//
-//	//### GaSet 2
-//	G4double D_CylABCD = 70*mm;
-//	G4double H_CylA = 19*mm;
-//	G4double d_CylB = 10*mm;
-//	G4double H_CylB = 7*mm;
-//	G4double d_CylC = 21*mm;
-//	G4double H_CylC = 2*mm;
-//	G4double d_CylD = 48*mm;
-//	G4double H_CylD = 14*mm;
-//
-//	G4double D_CylEF = 48*mm;
-//	G4double d_CylE = 26*mm;
-//	G4double H_CylE = 6*mm;
-//	G4double d_CylF = 13*mm;
-//	G4double H_CylF = 8*mm;
-//	G4double D_CylG = 51*mm;
-//	G4double d_CylG = 13*mm;
-//	G4double H_CylG = 32*mm;
-	
+
 	//### GaSet 3
 	G4double D_CylABCD3 = 50.8*mm;
 	G4double H_CylA3 = 34.7*mm;
@@ -564,23 +544,6 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceExtY_mat,           //its material
 											"Source");            //its name
 	
-	//	if(fGaSet==1 && fSourceSelect==3) {
-	//
-	//		G4cout<<"GEOMETRY DEBUG - Z thickness of solidSourceExtY= "<<DzSourceExtY/mm<<", Z pos= "<<posSourceExtY.z()/mm<<G4endl;
-	//		G4cout<<"GEOMETRY DEBUG - ExtY Source has been placed!!"<<G4endl;
-	//
-	//		new G4PVPlacement(0,                     //no rotation
-	//											posSourceExtY,
-	//											logicSourceExtY,            //its logical volume
-	//											"Source",               //its name
-	//											logicWorld,            //its mother  volume
-	//											false,                 //no boolean operation
-	//											0,                     //copy number
-	//											checkOverlaps);        //overlaps checking
-	//
-	//		logicSourceExtY->SetRegion(sorgente);
-	//		sorgente->AddRootLogicalVolume(logicSourceExtY);
-	//	}
 	//################################################### END ExtY SOURCE
 	
 	
@@ -601,23 +564,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4LogicalVolume(solidABSaround,          //its solid
 											ABSaround_mat,           //its material
 											"ABSaround");            //its name
-	
-	//	if(fGaSet==1 && fSourceSelect==3) {  //I place the ABS carrier of the ExtY source
-	//		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSaround= "<<DzABSaround/mm<<", Z pos= "<<posABSaround.z()/mm<<G4endl;
-	//		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
-	//
-	//		new G4PVPlacement(0,                     //no rotation
-	//											posABSaround,       //at (0,0,0)
-	//											logicABSaround,            //its logical volume
-	//											"ABSaround",               //its name
-	//											logicWorld,            //its mother  volume
-	//											false,                 //no boolean operation
-	//											0,                     //copy number
-	//											checkOverlaps);        //overlaps checking
-	//
-	//		logicABSaround->SetRegion(ABSRegion);
-	//		ABSRegion->AddRootLogicalVolume(logicABSaround);
-	//	}
+
 	//################################################### END ABS AROUND
 	
 	//###################################################
@@ -637,23 +584,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4LogicalVolume(solidABSbehind,          //its solid
 											ABSbehind_mat,           //its material
 											"ABSbehind");            //its name
-	//
-	//	if(fGaSet==1 && fSourceSelect==3) { //I place the ABS carrier of the ExtY source
-	//		G4cout<<"GEOMETRY DEBUG - Z thickness of solidABSbehind= "<<DzABSbehind/mm<<", Z pos= "<<posABSbehind.z()/mm<<G4endl;
-	//		G4cout<<"GEOMETRY DEBUG - ExtYTOC Source has been placed!!"<<G4endl;
-	//
-	//		new G4PVPlacement(0,                     //no rotation
-	//											posABSbehind,          //at (0,0,0)
-	//											logicABSbehind,        //its logical volume
-	//											"ABSbehind",           //its name
-	//											logicWorld,            //its mother  volume
-	//											false,                 //no boolean operation
-	//											0,                     //copy number
-	//											checkOverlaps);        //overlaps checking
-	//
-	//		logicABSbehind->SetRegion(ABSRegion);
-	//		ABSRegion->AddRootLogicalVolume(logicABSbehind);
-	//	}
+	
 	//################################################### END ABS BEHIND
 	
 	
@@ -677,57 +608,27 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											SourceSR_mat,           //its material
 											"Source");            //its name
 	
-	//	if(fGaSet==1 && (fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==6)) { //If I requested the Sr source (or the flat electron one for efficiencies)
-	//		G4cout<<"GEOMETRY DEBUG - Sr(-like) Source has been placed!!"<<G4endl;
-	//
-	//		new G4PVPlacement(0,                     //no rotation
-	//											posSourceSR,       //at (0,0,0)
-	//											logicSourceSR,            //its logical volume
-	//											"Source",               //its name
-	//											logicWorld,            //its mother  volume
-	//											false,                 //no boolean operation
-	//											0,                     //copy number
-	//											checkOverlaps);        //overlaps checking
-	//
-	//		logicSourceSR->SetRegion(sorgente);
-	//		sorgente->AddRootLogicalVolume(logicSourceSR);
-	//	}
 	//################################################### END SR SOURCE
 	
 	
 	//###################################################
 	// Cu67/64-F18 volume Sources for pure MC tests (not exp meas.)
 	//##########################
-	G4ThreeVector posSourceCu = G4ThreeVector(0, 0, -DzSourceCu*0.5-DzDummyExitSorg);
+	G4ThreeVector posSourceGenericIon = G4ThreeVector(0, 0, -DzSourceGenericIon*0.5-DzDummyExitSorg);
 	
-	G4Tubs* solidSourceCu =
+	G4Tubs* solidSourceGenericIon =
 	new G4Tubs("Source",                       //its name
-						 RminSourceCu,
-						 RmaxSourceCu,
-						 0.5*DzSourceCu,
+						 RminSourceGenericIon,
+						 RmaxSourceGenericIon,
+						 0.5*DzSourceGenericIon,
 						 Ang0,
 						 Ang2Pi);     //its size
 	
-	G4LogicalVolume* logicSourceCu =
-	new G4LogicalVolume(solidSourceCu,          //its solid
-											SourceCu_mat,           //its material
+	G4LogicalVolume* logicSourceGenericIon =
+	new G4LogicalVolume(solidSourceGenericIon,          //its solid
+											SourceGenericIon_mat,           //its material
 											"Source");            //its name
 	
-	//	if(fSourceSelect==8 || fSourceSelect==9 || fSourceSelect<0) { //If I requested the Cu67/F18/GenericIon source (or the flat electron one for efficiencies)
-	//		G4cout<<"GEOMETRY DEBUG - Cu/F Source has been placed!!"<<G4endl;
-	//
-	//		new G4PVPlacement(0,                     //no rotation
-	//											posSourceCu,       //at (0,0,0)
-	//											logicSourceCu,            //its logical volume
-	//											"Source",               //its name
-	//											logicWorld,            //its mother  volume
-	//											false,                 //no boolean operation
-	//											0,                     //copy number
-	//											checkOverlaps);        //overlaps checking
-	//
-	//		logicSourceCu->SetRegion(sorgente);
-	//		sorgente->AddRootLogicalVolume(logicSourceCu);
-	//	}
 	//################################################### END SR SOURCE
 	
 	
@@ -1075,16 +976,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			G4cout<<"GEOMETRY DEBUG - Cu/F Source has been placed!!"<<G4endl;
 			
 			new G4PVPlacement(0,                     //no rotation
-												posSourceCu,       //at (0,0,0)
-												logicSourceCu,            //its logical volume
+												posSourceGenericIon,       //at (0,0,0)
+												logicSourceGenericIon,            //its logical volume
 												"Source",               //its name
 												logicWorld,            //its mother  volume
 												false,                 //no boolean operation
 												0,                     //copy number
 												checkOverlaps);        //overlaps checking
 			
-			logicSourceCu->SetRegion(sorgente);
-			sorgente->AddRootLogicalVolume(logicSourceCu);
+			logicSourceGenericIon->SetRegion(sorgente);
+			sorgente->AddRootLogicalVolume(logicSourceGenericIon);
 		}
 		
 		if(fSourceSelect==3) { //Y extended source (AGAR AGAR)
