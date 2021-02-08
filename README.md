@@ -163,7 +163,7 @@ num->Draw("E")
 
 
 ## GEOMETRY
-- All sources ending at Z=0
+- All sources ending at Z=0 (including dummy)
 - DummyExitSorg: after source (with possible air gap in GaSet 3)
 - DummyExitAbs: after absorber (if any)
 - DummyEnterProbe: before FrontShield
@@ -171,7 +171,9 @@ num->Draw("E")
 
 ## FLAGS
 
-- -GaSet is used to choose the experimental setup; if -GaSet1 we are in the case in which we have the probe without the "Catafalco" while in the case -GaSet2 we have the "Catafalco's one". The case -GaSet3 is indeed the configuration in which the "catafalco"'s GaContainer is made by PVC and not by 3D printer such -GaSet2 case.
+# GaSet is used to choose the experimental setup; 
+- 1: "bare probe", no "catafalco" 
+- 2: "catafalco" in PVC for liquid source measurements 
 
 - -Z is used to choose the distance of the frontshield from the source.
 
@@ -603,6 +605,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2021.02.01 by collamaf
 - Add absorber material 6 for black plastic, maybe PVC but with slightly higher density (1.4 vs 1.3))
 - Fix missing water around GaContainer in 18F studies (source 11)
+
+2021.02.08 by collamaf
+- Massive cleaning of DetConst
+
 
 ## TO DO's
 
