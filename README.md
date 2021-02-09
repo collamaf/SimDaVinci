@@ -190,7 +190,7 @@ Source Thickness for variable size souces [mm, def: 7]
 PTER Diameter [mm, def: 6]
 
 ### PterT 
-PTER Thickness [mm, def: 4]
+PTER Thickness [mm, def: 3]
 
 ### CaseLT
 Lateral thickness of robotic probe case [mm, def: 1.25]
