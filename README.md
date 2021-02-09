@@ -604,6 +604,8 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2021.02.08 by collamaf
 - Massive cleaning of DetConst and README
 
+2021.02.09 by collamaf
+- Don't place dummyExitSorg with external file source
 
 ## TO DO's
 
