@@ -160,6 +160,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fPreProbeStoreTrackID=0;
 	fNPMT=0;
 	fEnterPterFlag=0;
+	fSourceReg="";
 
 //	fSourceX=0;
 //	fSourceY=0;
@@ -214,8 +215,9 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
 		analysisManager->FillNtupleDColumn(1,1, fSourceY/mm);
 		analysisManager->FillNtupleDColumn(1,2, fSourceZ/mm);
-		analysisManager->FillNtupleDColumn(1,22, fNSourceExit);
-		
+		analysisManager->FillNtupleSColumn(1,9, fSourceReg);
+		analysisManager->FillNtupleDColumn(1,23, fNSourceExit);
+
 		analysisManager->AddNtupleRow(1);
 	}
 	

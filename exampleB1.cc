@@ -70,14 +70,14 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	G4bool QuickFlag=false;
 	
-	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=3.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1.25, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2.;
+	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=3.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2.;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1, ApparatusMat=1, nThreadIn=-1;
 	G4bool ScintFlag=0;
 	G4bool SecondShieldFlag=false;
 	G4String ExtSourceFile="";
 	
 	G4String fileName ="";
-	G4String FileNameLabel="";
+	G4String FileNameLabel="NEW";
 	
 	G4bool NoOfPrimToGenChangeFlag=false;
 	G4int NoOfPrimToGen=99, Verbose=0;

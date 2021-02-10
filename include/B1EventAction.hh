@@ -67,7 +67,8 @@ public:
 	void SetSourceX(G4double sx) {fSourceX=sx;}
 	void SetSourceY(G4double sy) {fSourceY=sy;}
 	void SetSourceZ(G4double sz) {fSourceZ=sz;}
-	
+	void SetSourceReg(G4String sreg) {fSourceReg=sreg;}
+
 	void SetSourceCosX(G4double scx) {fSourceCosX=scx;}
 	void SetSourceCosY(G4double scy) {fSourceCosY=scy;}
 	void SetSourceCosZ(G4double scz) {fSourceCosZ=scz;}
@@ -150,6 +151,8 @@ private:
 	G4int fPostAbsStoreTrackID;
 	G4int fPreProbeStoreTrackID;
 	G4int fEnterPterFlag;
+	G4String fSourceReg;
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -268,7 +268,8 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(1,"AllEne", RunVSourceEn);                           //6
 	analysisManager->CreateNtupleDColumn(1,"AllPart", RunVSourcePart);                           //7
 	analysisManager->CreateNtupleDColumn(1,"AllIsotope", RunVSourceIsotope);                           //8
-	
+	analysisManager->CreateNtupleSColumn(1,"AllPartReg");                           //2
+
 	analysisManager->CreateNtupleDColumn(1,"ExitX", RunVExitX);                           //9
 	analysisManager->CreateNtupleDColumn(1,"ExitY", RunVExitY);                           //10
 	analysisManager->CreateNtupleDColumn(1,"ExitZ", RunVExitZ);                           //11
