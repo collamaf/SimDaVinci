@@ -53,8 +53,11 @@
 #/vis/modeling/trajectories/drawByCharge-0/default/setDrawLine false
 # (if too many tracks cause core dump => /tracking/storeTrajectory 0)
 #
+
+#
 /vis/filtering/trajectories/create/particleFilter primFilter
 /vis/filtering/trajectories/primFilter/add F18
+# /vis/filtering/trajectories/primFilter/add Ga68
 
 /vis/modeling/trajectories/create/generic showPts
 /vis/modeling/trajectories/showPts/default/setDrawStepPts  true
@@ -118,7 +121,9 @@
 /vis/scene/add/date    # Date stamp
 /vis/scene/add/logo2D  # Simple logo
 /vis/scene/add/logo    # 3D logo
-#/vis/scene/add/axes 0 0 0 10 cm
+/vis/scene/add/scale 7 cm z 1 0 0 manual 0 6 0 cm
+/vis/scene/add/scale 9 cm z 1 0 0 manual 0 7 0 cm
+/vis/scene/add/axes 0 0 0 10 cm
 #
 # Frame
 /vis/set/colour red

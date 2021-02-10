@@ -377,6 +377,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double RminAbs = fabs(fAbsHoleDiam)/2.*mm;
 	G4double RmaxAbs = 30*mm;
 	G4double DzAbs= fAbsorberThickness*mm;
+	if(fGaSet==3){
+			RmaxAbs = 22/2.*mm;
+		};
 
 	//###
 	
@@ -432,7 +435,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	//### Dummy Exit Sorg
 	G4double RminDummyExitSorg = 0.*mm;
 	G4double RmaxDummyExitSorg = 18.*mm;
-	if (fGaSet==3) RmaxDummyExitSorg = fSourceDiameter/2.;
+	if (fGaSet==3) RmaxDummyExitSorg = d_CylG3/2.*mm;
 	G4double DzDummyExitSorg= 1.e-5*mm;
 	G4ThreeVector posDummyExitSorg;
 	//###
@@ -456,6 +459,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4ThreeVector posAbs;
 	
+	G4double FExtLiquidLateralHeigth=fSourceThickness*mm;
+	G4double FExtLiquidBottomThickness=1*cm;
 	//##########################
 	//###################################################
 	
@@ -906,40 +911,48 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4Tubs("FExtLiquidSide",
 						 D_CylG3*0.5,
 						 D_CylG3*0.5+fSourceDiameter*0.5,
-						 (H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5,
+//						 (H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5,
+						 FExtLiquidLateralHeigth*0.5,
 						 Ang0,
 						 Ang2Pi);
 	
-	G4LogicalVolume* logicFExtLiquidSide =
-	new G4LogicalVolume(FExtLiquidSide,               //its solid
-											//												SourceExtGa_mat,           //its material
-											world_mat,           //its material
-											"FExtLiquidSide");            //its name
+//	G4LogicalVolume* logicFExtLiquidSide =
+//	new G4LogicalVolume(FExtLiquidSide,               //its solid
+//											SourceExtGa_mat,           //its material
+////											world_mat,           //its material
+//											"FExtLiquidSide");            //its name
 
 	
 	G4Tubs* FExtLiquidBack =
 	new G4Tubs("FExtLiquidBack",
 						 0,
 						 D_CylG3*0.5+fSourceDiameter*0.5,
-						 (1*cm)*0.5-0.1*mm,
+						 FExtLiquidBottomThickness*0.5,
 						 Ang0,
 						 Ang2Pi);
 	
-	G4LogicalVolume* logicFExtLiquidBack =
-	new G4LogicalVolume(FExtLiquidBack,               //its solid
-											//												SourceExtGa_mat,           //its material
-											world_mat,           //its material
-											"FExtLiquidBack");            //its name
+	G4VSolid* FExtLiquidTot
+	= new G4UnionSolid("FExtLiquidTot",
+										 FExtLiquidSide,
+										 FExtLiquidBack,
+										 0,
+										 G4ThreeVector(0.,0.,-FExtLiquidLateralHeigth*0.5-FExtLiquidBottomThickness*0.5));
+	
+	G4LogicalVolume* logicFExtLiquidTot =
+	new G4LogicalVolume(FExtLiquidTot,               //its solid
+											SourceExtGa_mat,           //its material
+											//											world_mat,           //its material
+											"FExtLiquidTot");            //its name
 	
 	if(fGaSet==1){
 		posAbs = G4ThreeVector(0, 0, fAbsorberThickness/2.);
 	} else if(fGaSet==3){
-		posAbs = G4ThreeVector(0, 0, fAbsorberThickness/2. + H_CylC3);
+		posAbs = G4ThreeVector(0, 0, fAbsorberThickness/2.);
 	}
 	
 	
 #pragma mark Placement of Volumes
-
+	
 	if (fAbsHoleDiam>=0) {
 		G4cout<<"GEOMETRY DEBUG - Absorber has been placed!!"<<G4endl;
 		
@@ -1444,43 +1457,36 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		if (fSourceSelect==11) { //liquid around "catafalco"
 			G4ThreeVector posFLiquidBack = posPter+G4ThreeVector(0, 0, -(H_CylA3+H_CylG3+H_CylC3+H_CylD3)*0.5 -5*mm);
 
+
+			
 			new G4PVPlacement(0,//no rotation
-												posPter,             //at (0,0,0)
-												logicFExtLiquidSide,            //its logical volume
-												"FExtLiquidSide",               //its name
+												G4ThreeVector(0,0,
+																			FExtLiquidLateralHeigth*0.5 -	H_CylA3-DzDummyExitSorg),
+												logicFExtLiquidTot,            //its logical volume
+												"FExtLiquidTot",               //its name
 												logicWorld,            //its mother  volume
 												false,                 //no boolean operation
 												0,                     //copy number
 												checkOverlaps);        //overlaps checking
 			
-		
-		
-
-			new G4PVPlacement(0,//no rotation
-												posFLiquidBack,             //at (0,0,0)
-												logicFExtLiquidBack,            //its logical volume
-												"FExtLiquidBack",               //its name
-												logicWorld,            //its mother  volume
-												false,                 //no boolean operation
-												0,                     //copy number
-												checkOverlaps);        //overlaps checking
 			
 		} else {
 			new G4PVPlacement(0,                     //no rotation
-																							 posExtGa3,             //at (0,0,0)
-																							 logicSourceExtGa2,            //its logical volume
-																							 "Source",               //its name
-																							 logicWorld,            //its mother  volume
-																							 false,                 //no boolean operation
-																							 0,                     //copy number
-																							 checkOverlaps);        //overlaps checking
+												posExtGa3,             //at (0,0,0)
+												logicSourceExtGa2,            //its logical volume
+												"Source",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
 		}
 		//###################################################
 		// Table
 		//##########################
 		
 		G4ThreeVector posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg);
-		if (fSourceSelect==11) posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg-10*mm); //per fare spazio allo strato di F18 sotto il contenitore
+//		if (fSourceSelect==11) posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg-FExtLiquidBottomThickness-1*um); //per fare spazio allo strato di F18 sotto il contenitore
+		if (fSourceSelect==11) posTable = G4ThreeVector(0, 0, -H_CylA3 - DzTable/2.-DzDummyExitSorg-FExtLiquidBottomThickness); //per fare spazio allo strato di F18 sotto il contenitore
 		new G4PVPlacement(0,                     //no rotation
 											posTable,       //at (0,0,0)
 											logicTable,            //its logical volume
@@ -1528,8 +1534,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	}
 	if(fGaSet==3) {
 		posDummyExitSorg = G4ThreeVector(0, 0, -DzDummyExitSorg/2.);
-		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+DzDummyExitAbs/2.);
-		G4cout<<"CIAONE debug: prima: "<< fAbsorberThickness+DzDummyExitAbs/2.<<" dopo "<< posAbs.z()+fAbsorberThickness/2.+DzDummyExitAbs/2.<<G4endl;
+//		posDummyExitAbs = G4ThreeVector(0, 0, posAbs.z() +fAbsorberThickness/2.+ DzDummyExitAbs/2.);
+		posDummyExitAbs = G4ThreeVector(0, 0, fAbsorberThickness+ DzDummyExitAbs/2.);
+		G4cout<<"CIAONE geodebug: PosAbsDummy prima: "<< posDummyExitAbs.z()<<G4endl;
 		posDummyEnterProbe=G4ThreeVector(0, 0,posFrontShield.z()-FrontShield_sizeZ/2.-DzDummyEnterProbe/2.);
 	}
 	

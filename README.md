@@ -10,63 +10,61 @@ make
 ### Some Use cases:
 - Gallium68 Campaign Gemelli measurements (late 2018) with PVC
 ```
-./exampleb1 -GaSet 3 -CaseDepth -155 -Source 4 -AbsD 0 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 6.4  ../run1.mac 
+./exampleb1 -GaSet 3 -Source 4 -AbsD 0 -AbsT 5.5 -AbsMat 4  -SourceT 6.4 -Z 5.501  -Vis 1
 
 ```
 - Gallium68 Campaign Gemelli measurements (late 2018) No PVC
 ```
-./exampleb1 -GaSet 3 -CaseDepth -155 -Source 4 -AbsD -10 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 6.4  ../run1.mac 
+./exampleb1 -GaSet 3 -Source 4 -AbsD -1 -AbsT 5.5 -AbsMat 4  -SourceT 6.4 -Z 0  -Vis 1
 
 ```
 
-- Electron Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+- Electron Efficiency of drop-in NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
-./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effEle.mac 
-
+./exampleb1  -Source 6   -Z 0 -CaseDepth 50 -NPrim 10000000
 ```
 
-- Gamma Efficiency of laparoscopic NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
+- Gamma Efficiency of drop-in NL-probe (Post Gallium68 Campaign Gemelli measurements (late 2018))
 ```
-./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2  ../effGamma.mac 
-
+./exampleb1  -Source 7   -Z 0 -CaseDepth 50 -NPrim 100000000
 ```
 
 - Electron Efficiency of "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
 ```
-./exampleb1  -Source 6   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
-
+./exampleb1  -Source 6  -Z 0 -NPrim 10000000
 ```
 
 - Gamma Efficiency of  "standard" (pen-like) probe (Post Gallium68 Campaign Gemelli measurements (april 2019))
 ```
-./exampleb1  -Source 7   -PterD 6 -PterT 3 -Z 0 ../effEle.mac
-
+./exampleb1  -Source 7  -Z 0 -NPrim 100000000
 ```
 - Monte Carlo tests with F18 with Robotic Probe (GEN 2020)
 ```
-./exampleb1  -Source 9   -PterD 6 -PterT 3 -Z 0 -SourceD 30 ../run1.mac
+./exampleb1  -Source 9   -Z 0 -CaseDepth 50 -SourceD 30 -Vis 1
 ```
 
 - Monte Carlo tests with variable isotope with Standard Probe (FEB 2020)
 ```
-./exampleb1  -Source -3990   -PterD 6 -PterT 3 -Z 0 -SourceD 20 -SourceT 10  ../run1.mac
+./exampleb1  -Source -3990    -Z 0 -SourceD 20 -SourceT 10  -Vis 1
 ```
 
-- Gamma Efficiency of laparoscopic NL-probe in F18 application via external generated file (from GAMOS) (OCT 2020)
+- Gamma Efficiency of drop-in NL-probe in F18 application via external generated file (from GAMOS) (OCT 2020)
 ```
-./exampleb1 -Source 10 -SourceExtFile "sourceFileMod.txt" -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
-```
-
-- Gamma Efficiency of laparoscopic NL-probe in F18 application on classical F18 signal sample (OCT 2020)
-```
-./exampleb1  -Source -0918 -SourceD 20 -SourceT 10  -PterD 6 -PterT 3 -Z 0 -CaseDepth 50 -CaseLT 1 -HSBT 2 ../run1.mac
-```
-
-- New Container for 18F measurments for gyneco applications (DEC 2020): Needs GaSet3, SourceT gives the height in mm of the fluorine column besides GaSet, SourceD is such that 4cm means a 2cm thickness ring around the container. The bottom thickness of the liquid is hard coded and fixed to 1cm for now
+./exampleb1 -Source 10 -SourceExtFile "sourceFileModP2_123MBq.txt" -Z -30 -CaseDepth 50 -CaseLT 1 -HSBT 2 -NPrim 4523120
+./exampleb1 -Source 10 -SourceExtFile "sourceFileModP2_123MBq.txt" -Z -30 -CaseDepth 50 -NPrim 4523120
 
 ```
-./exampleb1 -GaSet 3 -CaseDepth -155 -Source 11 -AbsD -10 -AbsT 5.5 -AbsMat 4 -AppMat 1 -ZAbs 2.75 -PosAbs 1 -PterD 6 -PterT 3 -Z 5.5 -SourceT 80 -SourceD 40 run1.mac
 
+- Gamma Efficiency of drop-in NL-probe in F18 application on classical F18 signal sample (OCT 2020)
+```
+./exampleb1  -Source -0918 -SourceD 20 -SourceT 10 -Z 0 -CaseDepth 50 -Vis 1
+```
+
+- New Container for 18F measurments for gyneco applications (DEC 2020): Needs GaSet3, SourceT gives the height in mm of the fluorine column besides GaSet, SourceD is such that 4cm means a 2cm thick ring around the container. The bottom thickness of the liquid is hard coded and fixed to 1cm for now
+
+```
+./exampleb1 -GaSet 3  -Source 11 -AbsD -10 -AbsT 5.5 -AbsMat 4  -Z 5.5 -SourceT 80 -SourceD 40 -Vis 1
+./exampleb1 -GaSet 3  -Source 11 -Z 0 -SourceT 80 -SourceD 40 -Vis 1
 ```
 
 ### Misure per capire sonda morelli in vista di sperabile in-vivo (GEN2021): sonda open con scotch davanti su sorgente Sr estesa
@@ -176,6 +174,7 @@ Source type:
 - 9: ExtF18 (vol for MC studies, not exp. meas.)
 - 10: ExternaFile (typically no lab source)
 - 11: 18F container around GaSet3
+- <0: Generic Ion, in forma ZZAA (eg 3990 is Y)
 
 ### X 
 Horizontal offset of the probe [mm, def: 0]
@@ -193,7 +192,7 @@ PTER Diameter [mm, def: 6]
 PTER Thickness [mm, def: 3]
 
 ### CaseLT
-Lateral thickness of robotic probe case [mm, def: 1.25]
+Lateral thickness of robotic probe case [mm, def: 1]
 
 ### CaseBT
 Bottom thickness of robotic probe case [mm, def: 20]
@@ -606,6 +605,11 @@ This because the configuration used at Gemelli's hospital in which the probe was
 
 2021.02.09 by collamaf
 - Don't place dummyExitSorg with external file source
+
+2021.02.09 by collamaf
+- General cleaning of REAMDE
+- Fix some wrong pos and sizes (dummy volumes..)
+- Move to boolean solid for external layer of 18F (source 11)
 
 ## TO DO's
 
