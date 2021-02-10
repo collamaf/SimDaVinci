@@ -202,6 +202,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4Material* Table_mat = nist->FindOrBuildMaterial("MyAlu");
 	
 	G4NistManager::Instance()->BuildMaterialWithNewDensity("BlackAbsMaterial","G4_POLYVINYL_CHLORIDE",1.4*g/cm3);
+	G4NistManager::Instance()->BuildMaterialWithNewDensity("NUCLEOMEDMaterial","G4_POLYVINYL_CHLORIDE",1.21*g/cm3);
+
 	
 	//Materials for NL probe case
 	G4Material* PlasticCase_mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
@@ -373,13 +375,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4ThreeVector posFrontShieldBis;
 	//###
 	
-	//### Absorber
-	G4double RminAbs = fabs(fAbsHoleDiam)/2.*mm;
-	G4double RmaxAbs = 30*mm;
-	G4double DzAbs= fAbsorberThickness*mm;
-	if(fGaSet==3){
-			RmaxAbs = 22/2.*mm;
-		};
+
 
 	//###
 	
@@ -400,6 +396,17 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double Pter_Posz=0.*mm;
 	G4double Pter_ZScan=fZValue*mm;
 	G4double PVC_inner_r= PVC_outer_r - 2*mm;
+	
+	//### Absorber
+	G4double RminAbs = fabs(fAbsHoleDiam)/2.*mm;
+	G4double RmaxAbs = 30*mm;
+	G4double DzAbs= fAbsorberThickness*mm;
+	if(fGaSet==3){
+			RmaxAbs = 22/2.*mm;
+		};
+	if(fCaseDepth>0){
+			RmaxAbs = PVC_outer_r;
+		};
 	
 	//### Probe Case
 	G4double CaseDepth = fCaseDepth*mm;
@@ -641,7 +648,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4LogicalVolume* logicFrontShield =
 	new G4LogicalVolume(solidFrontShield,          //its solid
-											FrontShield_mat,           //its material
+//											FrontShield_mat,           //its material
+											world_mat,           //its material
 											"FrontShield");            //its name
 	
 	G4VPhysicalVolume* physFrontShield;
@@ -746,6 +754,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		Absorber_mat = ABS;
 	}else if(fAbsorberMaterial==6){ //Assorbitori neri, probabilmente PVC ma densità 1.4
 		Absorber_mat = nist->FindOrBuildMaterial("BlackAbsMaterial");
+	}else if(fAbsorberMaterial==7){ //Material stampa 3d NUCLEOMED densità 1.4
+		Absorber_mat = nist->FindOrBuildMaterial("NUCLEOMEDMaterial");
 	}
 	
 	

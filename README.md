@@ -160,6 +160,7 @@ Absorber's material:
 - 4: PVC
 - 5: ABS
 - 6: Strange black plastic with middle density (1.3 g/cm3)
+- 7: Nucleomed 3d printed material (1.21 g/cm3)
 
 ### Source
 Source type: 
@@ -611,6 +612,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fix some wrong pos and sizes (dummy volumes..)
 - Move to boolean solid for external layer of 18F (source 11)
 - Add scoring of source particle region
+- Add NUCLEOMED plastic material for absorbers
 
 ## TO DO's
 
