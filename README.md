@@ -610,6 +610,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - General cleaning of REAMDE
 - Fix some wrong pos and sizes (dummy volumes..)
 - Move to boolean solid for external layer of 18F (source 11)
+- Add scoring of source particle region
 
 ## TO DO's
 
