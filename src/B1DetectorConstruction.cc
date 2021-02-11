@@ -648,8 +648,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4LogicalVolume* logicFrontShield =
 	new G4LogicalVolume(solidFrontShield,          //its solid
-//											FrontShield_mat,           //its material
-											world_mat,           //its material
+											FrontShield_mat,           //its material
+//											world_mat,           //its material
 											"FrontShield");            //its name
 	
 	G4VPhysicalVolume* physFrontShield;
