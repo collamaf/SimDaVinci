@@ -15,7 +15,7 @@ make
 ```
 - Gallium68 Campaign Gemelli measurements (late 2018) No PVC
 ```
-./exampleb1 -GaSet 3 -Source 4 -AbsD -1 -AbsT 5.5 -AbsMat 4  -SourceT 6.4 -Z 0  -Vis 1
+./exampleb1 -GaSet 3 -Source 4   -SourceT 6.4 -Z 0  -Vis 1
 
 ```
 
