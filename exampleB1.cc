@@ -245,8 +245,10 @@ int main(int argc,char** argv)
 	if (SourceSelect==10) FileNameCommonPart.append("_ExtSource");
 
 	if (SourceSelect==11) FileNameCommonPart.append("_ContF18_Thick" + std::to_string((G4int)(SourceDiameter/2.)) + "_Dz" + std::to_string((G4int)(SourceThickness)));
+	if (SourceSelect==-1) FileNameCommonPart.append("_FlatEleExt");
 
-	if (SourceSelect<0) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" + std::to_string(int(-SourceSelect%100)) + "_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+	if (SourceSelect<-1) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" );
+	if (SourceSelect<0) FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
 
 	
 	// ####### MISCELLANEUS

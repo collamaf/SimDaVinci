@@ -175,7 +175,8 @@ Source type:
 - 9: ExtF18 (vol for MC studies, not exp. meas.)
 - 10: ExternaFile (typically no lab source)
 - 11: 18F container around GaSet3
-- <0: Generic Ion, in forma ZZAA (eg 3990 is Y)
+- <0: Generic Ion, like ZZAA (eg 3990 is Y)
+- -1: flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
 
 ### X 
 Horizontal offset of the probe [mm, def: 0]
@@ -613,6 +614,9 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Move to boolean solid for external layer of 18F (source 11)
 - Add scoring of source particle region
 - Add NUCLEOMED plastic material for absorbers
+
+2021.02.16 by collamaf
+- Add source -1 for flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
 
 ## TO DO's
 

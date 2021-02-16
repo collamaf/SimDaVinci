@@ -157,11 +157,13 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
 	if (fSourceSelect==4 ) {
+//		Z=9;
+//		A=18;
 		Z=31;
 		A=68;
 //		Z=53;
 //		A=131;
-	} else if (fSourceSelect==6) { //Flat Ele
+	} else if (fSourceSelect==6 || fSourceSelect==-1) { //Flat Ele
 		FlatEle=true;
 	} else if (fSourceSelect==7) { //Flat Gamma
 		FlatGamma=true;
@@ -171,7 +173,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}	else if (fSourceSelect==9||fSourceSelect==11) { //F18 volume source
 		Z=9;
 		A=18;
-	}	else if (fSourceSelect<0) { //Variable Radioactive Isotope source: -Source -ZZAA
+	}	else if (fSourceSelect<-1) { //Variable Radioactive Isotope source: -Source -ZZAA
 		if (abs(fSourceSelect)>9999) {
 			Z=int(-fSourceSelect/1000);
 			A=int(-fSourceSelect%1000);
@@ -313,7 +315,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		zDirection=PhotDir_uz;
 	}
 	
-	if (FlatEle) {
+	if (FlatEle || fSourceSelect==-1) {
 		fParticleGun->SetParticleDefinition(	G4ParticleTable::GetParticleTable()->FindParticle("e-"));
 		G4double randomEne=G4UniformRand()*3;
 		fParticleGun->SetParticleEnergy(randomEne*MeV); //SetParticleEnergy uses kinetic energy
