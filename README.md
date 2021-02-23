@@ -618,6 +618,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2021.02.16 by collamaf
 - Add source -1 for flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
 
+2021.02.23 by collamaf
+- Fix output file name error
+- Restore scoring capabilites
+
 ## TO DO's
 
 - capire perche quando si accende la scintillazione poi guardando il verbose dell'evento al posto di RadioactiveDecay compare sempre "Scintillation" (ma lo scoring della sorgente lo risonosce uguale..)

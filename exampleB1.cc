@@ -288,6 +288,8 @@ int main(int argc,char** argv)
 	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, SecondShieldFlag);
 	runManager->SetUserInitialization(detConst);
 	
+	G4ScoringManager::GetScoringManager();
+	
 //	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
 	
 	// Physics list

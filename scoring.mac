@@ -6,7 +6,7 @@
 #/score/mesh/nBin 30 30 30
 #
 /score/create/boxMesh boxMesh_1
-/score/mesh/boxSize 1 2 2 cm
+/score/mesh/boxSize 3 3 3 cm
 /score/mesh/nBin 100 100 100
 #/score/quantity/energyDeposit eDep keV
 /score/quantity/cellFlux FluxGamma
@@ -26,8 +26,8 @@
 #/vis/viewer/flush
 /vis/enable
 #/score/drawProjection boxMesh_1 eDep logColorMap
-/score/drawProjection boxMesh_1 Gamma511 logColorMap
-#/score/drawProjection boxMesh_1 Flux
+# /score/drawProjection boxMesh_1 Gamma511 logColorMap
+/score/drawProjection boxMesh_1 FluxPos
 # drawing slices
 #
 # /vis/scene/create

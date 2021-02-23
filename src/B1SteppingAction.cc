@@ -108,7 +108,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### ENTERING Pter (from wherever)
 	if((NextVol && ThisVol->GetName()!="Pter" && NextVol->GetName()=="Pter")) { //what enters Pter (form every different volume)
 		
-		// Check te kind of entering particle to attribute the energy deposit correctly to electrons, gammas ecc
+		// Check the kind of entering particle to attribute the energy deposit correctly to electrons, gammas ecc
 		if (debug) G4cout<<"\nSTEPDEBUGPTER\n Particella entrata in PTER - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
 		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle()->GetPDGcode()); //TODO: sistemare per evitare errori dovuti al fatto che è l'ultima traccia creata la prima ad essere tracciata..
 		if (debug) G4cout<<" SETTO fEventAction->GetEnteringParticle()= "<<fEventAction->GetEnteringParticle()<<G4endl<<G4endl;
