@@ -207,9 +207,9 @@ Bottom thickness of horseshoe structure inside robotic probe case [mm, def: 2]
 
 ### CaseDepth 
 Length of the probe case [mm, def: -155]:
-- >0: robotic probe
-- ==0: "bare probe" (just PTER+Delrin+PVC)
-- <0: open surgery probe
+- ">0": robotic probe
+- "==0": "bare probe" (just PTER+Delrin+PVC)
+- "<0": open surgery probe
 
 ### HSMat
 Material of robotic probe case. From inside out
@@ -222,14 +222,16 @@ Material of the "catafalco":
 - 1: AIR [default]
 - 2: Pb (to kill almost everything, maybe..)
 
+## Light
+
+Flag to decide if store in output root file only events depositing energy in the detector [default false] 
+
 
 ## PHYSICS
 Process				Type		SubType
 RadioActiveDecay	6			210
 eIoni				2			2
 eBrem				2			3
-
-CPU TIMES NEEDED FOR 1e5 PRIMARIES:
 
 ## SCORING:
 - Primary paricles generated (PrimAction);
@@ -621,6 +623,7 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2021.02.23 by collamaf
 - Fix output file name error
 - Restore scoring capabilites
+- Add "Light" flag to store in outRootFiles only events depositing energy in detector
 
 ## TO DO's
 

@@ -43,7 +43,7 @@ class B1RunAction;
 class B1EventAction : public G4UserEventAction
 {
 public:
-	B1EventAction(B1RunAction* runAction);
+	B1EventAction(B1RunAction* runAction, G4bool LightOutFlag);
 	virtual ~B1EventAction();
 	
 	virtual void BeginOfEventAction(const G4Event* event);
@@ -152,6 +152,7 @@ private:
 	G4int fPreProbeStoreTrackID;
 	G4int fEnterPterFlag;
 	G4String fSourceReg;
+	G4bool fLightOutFlag;
 
 };
 

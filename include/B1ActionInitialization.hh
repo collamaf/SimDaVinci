@@ -40,7 +40,7 @@ class B1DetectorConstruction;
 class B1ActionInitialization : public G4VUserActionInitialization
 {
 public:
-	B1ActionInitialization(B1DetectorConstruction*, G4double, G4double, G4double, G4double, G4int, G4int, G4double, G4double, G4String,G4int, G4double, G4String);
+	B1ActionInitialization(B1DetectorConstruction*, G4double, G4double, G4double, G4double, G4int, G4int, G4double, G4double, G4String,G4int, G4double, G4String, G4bool);
 	virtual ~B1ActionInitialization();
 	
 	virtual void BuildForMaster() const;
@@ -60,6 +60,7 @@ protected:
 	G4int fGaSet;
 	G4double fCaseDepth;
 	G4String fExtSourceFile;
+	G4bool fLightOutFlag;
 
 };
 

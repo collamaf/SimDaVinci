@@ -73,6 +73,7 @@ int main(int argc,char** argv)
 	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=3.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2.;
 	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1, ApparatusMat=1, nThreadIn=-1;
 	G4bool ScintFlag=0;
+	G4bool LightOutFlag=false;
 	G4bool SecondShieldFlag=false;
 	G4String ExtSourceFile="";
 	
@@ -176,6 +177,9 @@ int main(int argc,char** argv)
 			}else if(option.compare("-Scint")==0)
 			{
 				ScintFlag= argv[++i];;
+			}else if(option.compare("-Light")==0)
+			{
+				LightOutFlag= argv[++i];;
 			}else if(option.compare("-Label")==0)
 			{
 				FileNameLabel= argv[++i];;
@@ -255,6 +259,7 @@ int main(int argc,char** argv)
 	if (ScintFlag) FileNameCommonPart.append("_Scint");
 	if (SecondShieldFlag) FileNameCommonPart.append("_Scotch");
 	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
+	if (LightOutFlag) FileNameCommonPart.append("_Light");
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 
 	if (NoOfPrimToGenChangeFlag) FileNameCommonPart.append("_N"+std::to_string((G4int)NoOfPrimToGen)); //if it was a TEST run under vis
@@ -308,7 +313,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(detConst,x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile));
+	runManager->SetUserInitialization(new B1ActionInitialization(detConst,x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile, LightOutFlag));
 	
 	// Initialize visualization
 	//
