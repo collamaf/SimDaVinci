@@ -1,4 +1,4 @@
-# Full simulation of Pter beta- probe in Geant4
+## Full simulation of Pter beta- probe in Geant4
 
 ## HOW TO RUN:
 ```
@@ -173,7 +173,7 @@ Source type:
 - 7: FlatGamma sphere
 - 8: ExtCu67 (vol for MC studies, not exp. meas.)
 - 9: ExtF18 (vol for MC studies, not exp. meas.)
-- 10: ExternaFile (typically no lab source)
+- 10: ExternalFile (typically no lab source)
 - 11: 18F container around GaSet3
 - <0: Generic Ion, like ZZAA (eg 3990 is Y)
 - -1: flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
@@ -601,17 +601,18 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Add possibility to add a "SecondShield", i.e. 10um of scotch in front. Command line argument to activate it
 
 2021.02.01 by collamaf
-- Add absorber material 6 for black plastic, maybe PVC but with slightly higher density (1.4 vs 1.3))
+- Add absorber material 6 for black plastic, maybe PVC but with slightly higher density (1.4 vs 1.3)
 - Fix missing water around GaContainer in 18F studies (source 11)
 
 2021.02.08 by collamaf
-- Massive cleaning of DetConst and README
+- **Massive cleaning** of DetConst and README
 
 2021.02.09 by collamaf
+
 - Don't place dummyExitSorg with external file source
 
 2021.02.09 by collamaf
-- General cleaning of REAMDE
+- General cleaning of README
 - Fix some wrong pos and sizes (dummy volumes..)
 - Move to boolean solid for external layer of 18F (source 11)
 - Add scoring of source particle region
