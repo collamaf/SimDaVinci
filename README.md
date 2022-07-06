@@ -65,6 +65,7 @@ make
 ```
 ./exampleb1 -GaSet 3  -Source 11 -AbsD -10 -AbsT 5.5 -AbsMat 4  -Z 5.5 -SourceT 80 -SourceD 40 -Vis 1
 ./exampleb1 -GaSet 3  -Source 11 -Z 0 -SourceT 80 -SourceD 40 -Vis 1
+./exampleb1 -PterD 5 -GaSet 3  -Source 11 -Z 0 -SourceT 65 -SourceD 18 -Light 1  -NPrim 100000000
 ```
 
 ### Misure per capire sonda morelli in vista di sperabile in-vivo (GEN2021): sonda open con scotch davanti su sorgente Sr estesa
@@ -108,6 +109,16 @@ make
 ./exampleb1  -Source 2 -AbsT 3.38 -AbsMat 6 -AbsD 0 -PterD 6  -PterT 3 -Z 3.39 -NPrim 1000000 -SecondShield 1
 ```
 
+### Grattugiamento drop-in in PEEK (Lug22)
+```
+/exampleb1  -Source -3168 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -SecondShield 1 -Z 1.01 -AbsT 1 -AbsD 0 -AbsMat 1 -Vis 1
+
+//Rimosso a mano frontshild
+./exampleb1  -Source -3168 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -Z 0.101 -AbsT 0.1 -AbsD 0 -AbsMat 8 -Label OnlyPEEK -NPrim 1000000 
+
+./exampleb1  -Source -3868 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -Z 0.101 -AbsT 0.1 -AbsD 0 -AbsMat 8 -Label OnlyPEEK -NPrim 1000000 
+```
+
 - To obtain efficiency curve:
  With Eabs
 ```
@@ -141,7 +152,7 @@ num->Draw("E")
 ### GaSet 
 To choose the experimental setup; 
 - 1: "bare probe", no "catafalco" [default]
-- 2: "catafalco" in PVC for liquid source measurements 
+- 3: "catafalco" in PVC for liquid source measurements 
 
 ### Z
 Distance from probe frontshield to source surface [mm, def: 2]
@@ -161,13 +172,14 @@ Absorber's material:
 - 5: ABS
 - 6: Strange black plastic with middle density (1.3 g/cm3)
 - 7: Nucleomed 3d printed material (1.21 g/cm3)
+- 8: PEEK (density 1.31 g/cm3)
 
 ### Source
 Source type: 
 - 1: Pointlike Sr [def]
 - 2: Extended Sr
 - 3: ExtY
-- 4: ExtGa
+- 4: ExtGa (can be used also for 18F but manual mod of ```B1PrimaryGeneratorAction::GeneratePrimaries``` is needed)
 - 5: 511KeV gamma sphere
 - 6: FlatEle
 - 7: FlatGamma sphere
@@ -177,6 +189,7 @@ Source type:
 - 11: 18F container around GaSet3
 - <0: Generic Ion, like ZZAA (eg 3990 is Y)
 - -1: flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
+- 511: 511keV photons sphere
 
 ### X 
 Horizontal offset of the probe [mm, def: 0]
@@ -625,6 +638,14 @@ This because the configuration used at Gemelli's hospital in which the probe was
 - Fix output file name error
 - Restore scoring capabilites
 - Add "Light" flag to store in outRootFiles only events depositing energy in detector
+
+2022.03.23 by collamaf
+- Add Source option "511", to generate a sphere around the probe of 511keV photons
+- Changed output file name now reporting PTER d and T in 10x mm
+
+2022.07.06 by collamaf
+- Add PEEK material for front absorber (useful for dropin probe) (AbsMat=8)
+- Add 511keV photon sphere source
 
 ## TO DO's
 

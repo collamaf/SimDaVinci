@@ -22,11 +22,15 @@ endif()
 # Setup include directory for this project
 #
 include(${Geant4_USE_FILE})
-include_directories(${PROJECT_SOURCE_DIR}/include ${HEPMC_INCLUDE_DIR})
 
 # Find HepMC (required package)
 #
 find_package(HepMC REQUIRED)
+
+
+include_directories(${PROJECT_SOURCE_DIR}/include ${HEPMC_INCLUDE_DIR})
+
+
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project

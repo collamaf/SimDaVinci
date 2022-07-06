@@ -172,6 +172,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	GaContainer2Mat->AddElement (elC, natoms=15);
 	GaContainer2Mat->AddElement (elN, natoms=1);
 	
+	
+	//###################################################
+	// PEEK Material
+	// C 114/150 = 76
+	// H 12/150  = 8
+	// O 24/150  = 16
+	//##########################
+	G4Material *Peek = new G4Material("Peek",  1.31*g/cm3, ncomponents=3);
+	Peek->AddMaterial(nist->FindOrBuildMaterial("G4_C"), 76*perCent);
+	Peek->AddMaterial(nist->FindOrBuildMaterial("G4_H"),  8*perCent);
+	Peek->AddMaterial(nist->FindOrBuildMaterial("G4_O"), 16*perCent);
+	
 	//##########################
 	//###################################################
 	//###################################################################
@@ -756,6 +768,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		Absorber_mat = nist->FindOrBuildMaterial("BlackAbsMaterial");
 	}else if(fAbsorberMaterial==7){ //Material stampa 3d NUCLEOMED densità 1.4
 		Absorber_mat = nist->FindOrBuildMaterial("NUCLEOMEDMaterial");
+	}else if(fAbsorberMaterial==8){ //PEEK
+		Absorber_mat = Peek;
 	}
 	
 	

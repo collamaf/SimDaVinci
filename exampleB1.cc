@@ -211,10 +211,10 @@ int main(int argc,char** argv)
 	G4String OutFileName="PTERmc";
 	G4String FileNameCommonPart;
 	
-	G4String MaterialiAssorbitore[7]= {"Cu","Pb","Al","PVC", "ABS", "PVCblack", "NCMD"};
+	G4String MaterialiAssorbitore[8]= {"Cu","Pb","Al","PVC", "ABS", "PVCblack", "NCMD", "PEEK"};
 	
 	// ###### PTER
-	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)PterDiameter)+"_PDz" + std::to_string((G4int)PterThickness));
+	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)(10*PterDiameter))+"_PDz" + std::to_string((G4int)(10*PterThickness)));
 	
 	// ###### X and Z
 	FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
@@ -253,6 +253,8 @@ int main(int argc,char** argv)
 
 	if (SourceSelect<-1) FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" +std::to_string(int(-SourceSelect%100)) );
 	if (SourceSelect<0) FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+
+	if (SourceSelect==511) FileNameCommonPart.append("_511keV");
 
 	
 	// ####### MISCELLANEUS

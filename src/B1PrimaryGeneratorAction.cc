@@ -126,7 +126,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 	}
 	
 	if (fSourceSelect==6) FlatEle = true;
-	if (fSourceSelect==7) FlatGamma=true;
+	if (fSourceSelect==7 || fSourceSelect==511) FlatGamma=true;
 	
 	
 	
@@ -157,15 +157,15 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
 	if (fSourceSelect==4 ) {
-//		Z=9;
-//		A=18;
-		Z=31;
-		A=68;
-//		Z=53;
+		Z=9;
+		A=18;
+//		Z=31;
+//		A=68;
+////		Z=53;
 //		A=131;
 	} else if (fSourceSelect==6 || fSourceSelect==-1) { //Flat Ele
 		FlatEle=true;
-	} else if (fSourceSelect==7) { //Flat Gamma
+	} else if (fSourceSelect==7 || fSourceSelect==511) { //Flat Gamma (or 511keV)
 		FlatGamma=true;
 	}	else if (fSourceSelect==8) { //Cu67 volume source
 		Z=29;
@@ -239,7 +239,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		G4Tubs* 	SorgVol=	(G4Tubs*) G4PhysicalVolumeStore::GetInstance()->GetVolume("Source")->GetLogicalVolume()->GetSolid();
 		fZ=SorgVol->GetZHalfLength ()*2*mm;
 		zSource = -G4UniformRand()*fZ-zSourceOffset;
-	}else if (fSourceSelect==4 && fGaSet==3) {
+	}else if ((fSourceSelect==4 && fGaSet==3) || (fSourceSelect==9 && fGaSet==3)) {
 		fRadiusMax=fRadiusInt;
 		fRadiusMin=0*mm;
 		fZ=fDZExt;
@@ -324,6 +324,7 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 		//		fParticleGun->SetParticleDefinition(	G4ParticleTable::GetParticleTable()->FindParticle("gamma"));
 		//		fParticleGun->SetParticleCharge(0);
 		G4double randomEne=G4UniformRand()*1;
+		if (fSourceSelect==511) randomEne=511*keV;
 		evtPrimAction->SetSourceEne(randomEne);
 		Source_X=Sphere_Radius*Sphere_X;
 		Source_Y=Sphere_Radius*Sphere_Y;
