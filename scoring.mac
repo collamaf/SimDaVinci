@@ -6,17 +6,33 @@
 #/score/mesh/nBin 30 30 30
 #
 /score/create/boxMesh boxMesh_1
-/score/mesh/boxSize 3 3 3 cm
-/score/mesh/nBin 100 100 100
+/score/mesh/boxSize 1.5 1.5 1.5 cm
+/score/mesh/nBin 150 150 150
 #/score/quantity/energyDeposit eDep keV
-/score/quantity/cellFlux FluxGamma
+/score/quantity/cellFlux cFluxGamma
 /score/filter/particle gammaFilter gamma
 
-/score/quantity/cellFlux FluxPos
-/score/filter/particle gammaFilter e+
+/score/quantity/cellFlux cFluxEle
+/score/filter/particle eleFilter e-
 
-/score/quantity/cellFlux Gamma511
+/score/quantity/cellFlux cFluxPos
+/score/filter/particle posFilter e+
+
+/score/quantity/cellFlux cFluxGamma511
 /score/filter/particleWithKineticEnergy G511 505 520 keV gamma
+
+/score/quantity/passageCellCurrent pCCurPos
+/score/filter/particle posFilter e+
+
+/score/quantity/passageCellFlux pCFluxPos
+/score/filter/particle posFilter e+
+
+/score/quantity/volumeFlux volFluxPos
+/score/filter/particle posFilter e+
+
+/score/quantity/nOfStep nOfStepEPlus
+/score/filter/particle posFilter e+
+
 
 /score/close
 /score/list
@@ -26,14 +42,18 @@
 #/vis/viewer/flush
 /vis/enable
 #/score/drawProjection boxMesh_1 eDep logColorMap
-# /score/drawProjection boxMesh_1 Gamma511 logColorMap
-/score/drawProjection boxMesh_1 FluxPos
+# /score/drawProjection boxMesh_1 cFluxGamma511 logColorMap
+# /score/drawProjection boxMesh_1 cFluxPos
+/score/drawProjection boxMesh_1 cFluxEle
+# /score/drawProjection boxMesh_1 nOfStepEPlus
 # drawing slices
 #
 # /vis/scene/create
 # /vis/sceneHandler/attach scene-0
 #/score/drawColumn boxMesh_1 Gamma511 1 50
+# /score/drawColumn boxMesh_1 cFluxEle 1 50
 # #/score/colorMap/setMinMax ! 0. 200.
 # #/control/alias iAxis 1
 # #/control/loop drawCylinderSlice.mac iColumn 0 29 7
+# /control/loop drawSlice.mac iColumn 0 29 7
 # #defaultLinearColorMap
