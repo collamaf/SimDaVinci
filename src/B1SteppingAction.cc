@@ -93,7 +93,21 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ################################################################################
 	
 	//TODO: test
-#pragma mark SiPm
+#pragma mark EnteringSiPm
+	// ################################################################################
+	// ###################### Entering SiPm
+	if (ThisVol && NextVol && ThisVol->GetName()!="SiPm" && NextVol->GetName()=="SiPm") {
+		(fRunningAction->GetSiPMPart()).push_back(step->GetTrack()->GetDynamicParticle()->GetPDGcode());
+		(fRunningAction->GetSiPMEne()).push_back(step->GetPostStepPoint()->GetKineticEnergy()/keV);
+		(fRunningAction->GetSiPMVX()).push_back(step->GetTrack()->GetVertexPosition().x()/mm);
+		(fRunningAction->GetSiPMVY()).push_back(step->GetTrack()->GetVertexPosition().y()/mm);
+		(fRunningAction->GetSiPMVZ()).push_back(step->GetTrack()->GetVertexPosition().z()/mm);
+		//		G4cout<<"INTERAZIONE NEL SIPM: DepEne= "<<step->GetTotalEnergyDeposit()/keV<<" Part= "<<step->GetTrack()->GetDynamicParticle() ->GetPDGcode()<<G4endl;
+	}
+	// ######################
+	// ################################################################################
+	
+#pragma mark InSiPm
 	// ################################################################################
 	// ###################### Interactions in SiPm
 	if (ThisVol->GetName()=="SiPm") {

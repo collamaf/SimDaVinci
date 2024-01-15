@@ -253,7 +253,11 @@ void B1RunAction::CreateHistogram()
 	//analysisManager->CreateNtupleDColumn(0,"EabsSiPMComp", RunVEAbsSiPMComp);
 	analysisManager->CreateNtupleDColumn(0,"AnnihilationTime", RunVAnnihT); //39
 	analysisManager->CreateNtupleIColumn(0,"Nev");							//40
-	
+	analysisManager->CreateNtupleDColumn(0,"SiPMPart", RunVSiPMPart);
+	analysisManager->CreateNtupleDColumn(0,"SiPMEne", RunVSiPMEne);
+	analysisManager->CreateNtupleDColumn(0,"SiPMVX", RunVSiPMVX);
+	analysisManager->CreateNtupleDColumn(0,"SiPMVY", RunVSiPMVY);
+	analysisManager->CreateNtupleDColumn(0,"SiPMVZ", RunVSiPMVZ);
 	// ######################
 	// ################################################################################
 	

@@ -138,6 +138,11 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	
 	(fRunAction->GetEAbsComp()).clear();
 	(fRunAction->GetEAbsSiPMComp()).clear();
+	(fRunAction->GetSiPMPart()).clear();
+	(fRunAction->GetSiPMEne()).clear();
+	(fRunAction->GetSiPMVX()).clear();
+	(fRunAction->GetSiPMVY()).clear();
+	(fRunAction->GetSiPMVZ()).clear();
 
 	fNumHitsDet=0;
 	fPrePterNo=0;

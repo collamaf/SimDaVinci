@@ -117,6 +117,12 @@ public:
 	std::vector<G4double>& GetPostAbsPart() {return RunVPostAbsPart; }
 
 	std::vector<G4double>& GetAnnihT() {return RunVAnnihT; }
+	
+	std::vector<G4double>& GetSiPMPart() {return RunVSiPMPart; }
+	std::vector<G4double>& GetSiPMEne() {return RunVSiPMEne; }
+	std::vector<G4double>& GetSiPMVX() {return RunVSiPMVX; }
+	std::vector<G4double>& GetSiPMVY() {return RunVSiPMVY; }
+	std::vector<G4double>& GetSiPMVZ() {return RunVSiPMVZ; }
 
 	
 	G4int GetEventNumber() {return nbEventInRun;}
@@ -217,6 +223,11 @@ private:
 	std::vector<G4double> RunVEAbsComp;
 	std::vector<G4double> RunVEAbsSiPMComp;
 
+	std::vector<G4double> RunVSiPMPart;
+	std::vector<G4double> RunVSiPMEne;
+	std::vector<G4double> RunVSiPMVX;
+	std::vector<G4double> RunVSiPMVY;
+	std::vector<G4double> RunVSiPMVZ;
 
 	G4String fOutFileName;
 	
