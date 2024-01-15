@@ -113,10 +113,12 @@ make
 ```
 /exampleb1  -Source -3168 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -SecondShield 1 -Z 1.01 -AbsT 1 -AbsD 0 -AbsMat 1 -Vis 1
 
-//Rimosso a mano frontshild
+//Rimosso a mano frontshield
 ./exampleb1  -Source -3168 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -Z 0.101 -AbsT 0.1 -AbsD 0 -AbsMat 8 -Label OnlyPEEK -NPrim 1000000 
 
 ./exampleb1  -Source -3868 -SourceD 6 -SourceT 3.5  -PterD 5  -PterT 3 -Z 0.101 -AbsT 0.1 -AbsD 0 -AbsMat 8 -Label OnlyPEEK -NPrim 1000000 
+
+./exampleb1  -Source -56133 -SourceD 30 -SourceT 40  -PterD 6  -PterT 3 -Z 0.301 -AbsT 0.3 -AbsD 0 -AbsMat 4 -Light 1  -NPrim 100000 //Bario IEO 
 ```
 
 - To obtain efficiency curve:
@@ -187,6 +189,7 @@ Source type:
 - 9: ExtF18 (vol for MC studies, not exp. meas.)
 - 10: ExternalFile (typically no lab source)
 - 11: 18F container around GaSet3
+- 12: "long-pointlike" Ga (IFO dummy source)
 - <0: Generic Ion, like ZZAA (eg 3990 is Y)
 - -1: flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
 - 511: 511keV photons sphere
@@ -646,6 +649,10 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2022.07.06 by collamaf
 - Add PEEK material for front absorber (useful for dropin probe) (AbsMat=8)
 - Add 511keV photon sphere source
+
+2022.07.21 by collamaf
+- Add scoring of what enters SiPM
+- Fix filename when using generic isotope source with more than 4 digits
 
 ## TO DO's
 

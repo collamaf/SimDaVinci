@@ -117,6 +117,13 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 			fRadiusExt=fSourceDiameter/2.*mm;
 			fDZExt=fSourceThickness*mm;
 			
+		case 12: //Ga lunga
+			fRadiusInt=0*mm;
+			fDZInt=0*mm;
+			fRadiusExt=0*mm;
+			fDZExt=10*mm;
+			break;
+			
 		default:
 			fRadiusInt=fSourceDiameter/2.*mm;
 			fDZInt=0*mm;
@@ -156,11 +163,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	//Stronzium
 	G4int Z = 38, A = 90;
 	if (fSourceSelect==3) Z=39; //If I need Y instead of Sr
-	if (fSourceSelect==4 ) {
-		Z=9;
-		A=18;
-//		Z=31;
-//		A=68;
+	if (fSourceSelect==4 || fSourceSelect==12) {
+//		Z=9;
+//		A=18;
+		Z=31;
+		A=68;
 ////		Z=53;
 //		A=131;
 	} else if (fSourceSelect==6 || fSourceSelect==-1) { //Flat Ele

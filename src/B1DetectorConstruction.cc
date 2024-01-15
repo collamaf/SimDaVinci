@@ -184,6 +184,15 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	Peek->AddMaterial(nist->FindOrBuildMaterial("G4_H"),  8*perCent);
 	Peek->AddMaterial(nist->FindOrBuildMaterial("G4_O"), 16*perCent);
 	
+	
+	//###################################################
+	// KAPTON Material
+	G4Material* Kapton = new G4Material(name="Kapton",1.42*g/cm3, ncomponents=4);
+	Kapton->AddElement(elH, 0.0273);
+	Kapton->AddElement(elC, 0.7213);
+	Kapton->AddElement(elN, 0.0765);
+	Kapton->AddElement(elO, 0.1749);
+	
 	//##########################
 	//###################################################
 	//###################################################################
@@ -624,6 +633,27 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	
 	//###################################################
+	// Ga68 puntforme
+	//##########################
+	G4double DzSourceGaPoint=3*cm;
+	G4ThreeVector posSourceGaPoint = G4ThreeVector(0, 0, -DzSourceGaPoint*0.5-DzDummyExitSorg);
+	G4Tubs* solidSourceGaPoint =
+	new G4Tubs("Source",                       //its name
+						 RminSourceSR,
+						 RmaxSourceSR,
+						 0.5*DzSourceGaPoint,
+						 Ang0,
+						 Ang2Pi);     //its size
+	
+	G4LogicalVolume* logicSourceGaPoint =
+	new G4LogicalVolume(solidSourceGaPoint,          //its solid
+											ABSbehind_mat,           //its material
+											"Source");            //its name
+	
+	//################################################### END SR SOURCE
+	
+	
+	//###################################################
 	// Cu67/64-F18 volume Sources for pure MC tests (not exp meas.)
 	//##########################
 	G4ThreeVector posSourceGenericIon = G4ThreeVector(0, 0, -DzSourceGenericIon*0.5-DzDummyExitSorg);
@@ -677,7 +707,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4LogicalVolume* logicFrontShieldBis =
 	new G4LogicalVolume(solidFrontShieldBis,          //its solid
-											PVC_mat,           //its material
+											Kapton,           //its material
 											"FrontShieldBis");            //its name
 	
 	G4VPhysicalVolume* physFrontShieldBis;
@@ -1454,6 +1484,23 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			logicSourceSR->SetRegion(sorgente);
 			sorgente->AddRootLogicalVolume(logicSourceSR);
 		}
+		
+		if(fSourceSelect==12 ) { //If I requested the GA point source
+			G4cout<<"GEOMETRY DEBUG - GA PointLike Source has been placed!!"<<G4endl;
+			
+			new G4PVPlacement(0,                     //no rotation
+												posSourceGaPoint,       //at (0,0,0)
+												logicSourceGaPoint,            //its logical volume
+												"Source",               //its name
+												logicWorld,            //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			logicSourceGaPoint->SetRegion(sorgente);
+			sorgente->AddRootLogicalVolume(logicSourceGaPoint);
+		}
+
 		
 		
 	}else if(fGaSet==3){ //with "catafalco"
