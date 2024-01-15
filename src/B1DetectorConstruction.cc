@@ -278,32 +278,32 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	assert(sizeof(scintilSlow) == sizeof(photonEnergy));
 	
 	G4MaterialPropertiesTable* materialTablePter = new G4MaterialPropertiesTable();
-	materialTablePter->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
-	->SetSpline(true);
-	materialTablePter->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
-	->SetSpline(true);
-	materialTablePter->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
-	->SetSpline(true);
-	materialTablePter->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
-	->SetSpline(true);
+//	materialTablePter->AddProperty("RINDEX",       photonEnergy, refractiveIndex1,nEntries)
+//	->SetSpline(true);
+//	materialTablePter->AddProperty("ABSLENGTH",    photonEnergy, absorption,     nEntries)
+//	->SetSpline(true);
+//	materialTablePter->AddProperty("FASTCOMPONENT",photonEnergy, scintilFast,     nEntries)
+//	->SetSpline(true);
+//	materialTablePter->AddProperty("SLOWCOMPONENT",photonEnergy, scintilSlow,     nEntries)
+//	->SetSpline(true);
 	
-	materialTablePter->AddConstProperty("SCINTILLATIONYIELD",0.1*28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
-	materialTablePter->AddConstProperty("RESOLUTIONSCALE",1.0);
-	materialTablePter->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
-	materialTablePter->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
-	materialTablePter->AddConstProperty("YIELDRATIO",1);
-	
-	
-	G4double refractiveIndexDelrin = 1.48;
-	G4MaterialPropertiesTable* materialTableDelrin = new G4MaterialPropertiesTable();
-	materialTableDelrin->AddConstProperty("RINDEX", refractiveIndexDelrin);
-	materialTableDelrin->AddConstProperty("REFLECTIVITY",1);
-	
-	
-	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
-	materialTablePter->DumpTable();
-	materialTableDelrin->DumpTable();
-	
+//	materialTablePter->AddConstProperty("SCINTILLATIONYIELD",0.1*28000./MeV); //33k da nostro papero, 28k da papero recente elsa CMT
+//	materialTablePter->AddConstProperty("RESOLUTIONSCALE",1.0);
+////	materialTablePter->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
+//	materialTablePter->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
+//	materialTablePter->AddConstProperty("YIELDRATIO",1);
+//	
+//	
+//	G4double refractiveIndexDelrin = 1.48;
+//	G4MaterialPropertiesTable* materialTableDelrin = new G4MaterialPropertiesTable();
+//	materialTableDelrin->AddConstProperty("RINDEX", refractiveIndexDelrin);
+//	materialTableDelrin->AddConstProperty("REFLECTIVITY",1);
+//	
+//	
+//	G4cout << "PTERP G4MaterialPropertiesTable" << G4endl;
+//	materialTablePter->DumpTable();
+//	materialTableDelrin->DumpTable();
+//	
 	
 	/*
 	 G4OpticalSurface* wrapper = new G4OpticalSurface("wrapper");
@@ -323,10 +323,10 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	 
 	 */
 	
-	if (fScintFlag) {
-		PTerphenyl->SetMaterialPropertiesTable(materialTablePter); //to toggle scintillation
-		Delrin->SetMaterialPropertiesTable(materialTableDelrin);
-	}
+//	if (fScintFlag) {
+//		PTerphenyl->SetMaterialPropertiesTable(materialTablePter); //to toggle scintillation
+//		Delrin->SetMaterialPropertiesTable(materialTableDelrin);
+//	}
 	//##########################
 	//###################################################
 	//###################################################################

@@ -77,7 +77,7 @@ fEdkin("Edkin", 0.)
 
 B1RunAction::~B1RunAction()
 {
-	delete G4AnalysisManager::Instance();
+	delete G4RootAnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -96,7 +96,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 
 	CreateHistogram();
 	
-	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4RootAnalysisManager* analysisManager = G4RootAnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
 //	analysisManager->FillNtupleIColumn(0,40, nbEventInRun);
@@ -184,8 +184,8 @@ void B1RunAction::CreateHistogram()
 {
 	// Book histograms, ntuple
 	//	G4cout << "##### Create analysis manager " << "  " << this << G4endl;
-	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-	
+    G4RootAnalysisManager* analysisManager = G4RootAnalysisManager::Instance();
+
 	G4cout << "Using " << analysisManager->GetType() << " analysis manager" << G4endl;
 	
 	// Create directories
@@ -302,7 +302,7 @@ void B1RunAction::CreateHistogram()
 void B1RunAction::WriteHistogram()
 {
 	
-	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4RootAnalysisManager* analysisManager = G4RootAnalysisManager::Instance();
 	
 	// save histograms
 	//

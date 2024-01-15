@@ -72,9 +72,9 @@ fscintFlag(scintFlag) {
 	
 	
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
-	opticalPhysics->Configure(kCerenkov, false);
-	opticalPhysics->SetCerenkovStackPhotons(false);
-	opticalPhysics->SetScintillationStackPhotons(true);
+//	opticalPhysics->Configure(kCerenkov, false);
+//	opticalPhysics->SetCerenkovStackPhotons(false);
+//	opticalPhysics->SetScintillationStackPhotons(true);
  if (fscintFlag)	RegisterPhysics(opticalPhysics);
 	
 }

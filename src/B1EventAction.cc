@@ -193,7 +193,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 		G4cout<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
 	}
 	// get analysis manager
-	auto analysisManager = G4AnalysisManager::Instance();
+	auto analysisManager = G4RootAnalysisManager::Instance();
 	
 	// fill ntuple
 	analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
