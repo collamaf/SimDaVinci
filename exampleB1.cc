@@ -55,6 +55,7 @@
 #include "G4OpticalPhysics.hh"
 
 #include "G4ScoringManager.hh"
+#include "G4HadronicParameters.hh"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>
@@ -321,6 +322,8 @@ int main(int argc,char** argv)
 	physicsList->RegisterPhysics(new G4StepLimiterPhysics());
 	
 	runManager->SetUserInitialization(physicsList);
+    
+    G4HadronicParameters::Instance()->SetTimeThresholdForRadioactiveDecay( 1.0e+60*CLHEP::year );
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
