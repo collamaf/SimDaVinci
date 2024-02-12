@@ -61,6 +61,12 @@ B1StackingAction::ClassifyNewTrack(const G4Track* track)
 	std::string CreatorProcname="undefined";
 	if(creator) CreatorProcname=creator->GetProcessName();
 	
+    //Per uccidere i fotoni da annih
+//    if (CreatorProcname == "annihil") {
+//        //            G4cout<<"UCCISO FOTONE DI ANNICHILAZIONE"<<G4endl;
+//        return fKill;
+//    }
+    
 	fEventAction->ResetSourceExitPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPterPassCounter(); //collamaf: at each new track we reset the pass counter
 	fEventAction->ResetPostAbsPassCounter();
