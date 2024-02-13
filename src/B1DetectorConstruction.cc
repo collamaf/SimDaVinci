@@ -54,9 +54,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat, G4bool SecondShieldFlag)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double AbsHoleDiam, G4int SourceSelect, G4int AbsorberMaterial,G4double PterDiameter, G4double PterThickness, G4double PVCDiameter, G4double PVCLateralThickness,G4double SourceDiameter,G4double SourceThickness, G4double AbsorberThickness, G4double ProbeCaseDepth, G4double ProbeCaseLateralThickness, G4double ProbeCaseBackThickness, G4double HSLateralThickness, G4double HSBackThickness, G4int HousingCase, G4bool ScintFlag, G4int GaSet, G4int ApparatusMat, G4bool SecondShieldFlag)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0*mm), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fSecondShieldFlag(SecondShieldFlag)
+fScoringVolume(0), fX0Scan(x0*mm), fZValue(ZValue), fAbsHoleDiam(AbsHoleDiam), fSourceSelect(SourceSelect), fAbsorberMaterial(AbsorberMaterial), fPterDiameter(PterDiameter), fPterThickness(PterThickness), fPVCDiameter(PVCDiameter), fPVCLateralThickness(PVCLateralThickness), fSourceDiameter(SourceDiameter), fSourceThickness(SourceThickness), fAbsorberThickness(AbsorberThickness),fCaseDepth(ProbeCaseDepth),fLateralCaseThickness(ProbeCaseLateralThickness), fBackCaseThickness(ProbeCaseBackThickness), fHorsesShoeLateralThickness(HSLateralThickness),fHorsesShoeBackThickness(HSBackThickness), fHousingCase(HousingCase), fScintFlag(ScintFlag), fGaSet(GaSet), fApparatusMat (ApparatusMat), fSecondShieldFlag(SecondShieldFlag)
 {
 	
 }
@@ -412,11 +412,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	//### Pter
 	G4double Pter_Diam=fPterDiameter*mm;
-	G4double PVC_outer_r=12.0*mm/2.;
+	G4double PVC_outer_r=fPVCDiameter*mm/2.;
 	G4double Pter_sizeZ=fPterThickness*mm;
 	G4double Pter_Posz=0.*mm;
 	G4double Pter_ZScan=fZValue*mm;
-	G4double PVC_inner_r= PVC_outer_r - 2*mm;
+	G4double PVC_inner_r= PVC_outer_r - fPVCLateralThickness*mm;
 	
 	//### Absorber
 	G4double RminAbs = fabs(fAbsHoleDiam)/2.*mm;
@@ -1469,7 +1469,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 			ABSRegion->AddRootLogicalVolume(logicABSbehind);
 			
 		}
-		if(fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==6) { //If I requested the Sr source (or the flat electron one for efficiencies)
+		if(fSourceSelect==1 || fSourceSelect==2 || fSourceSelect==6 || fSourceSelect==13) { //If I requested the Sr source (or the flat electron one for efficiencies)
 			G4cout<<"GEOMETRY DEBUG - Sr(-like) Source has been placed!!"<<G4endl;
 			
 			new G4PVPlacement(0,                     //no rotation

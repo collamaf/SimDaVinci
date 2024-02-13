@@ -81,6 +81,7 @@ evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect), fSourceDiame
 	// Define source dimensions according to the selected source
 	switch (fSourceSelect) {
 		case 1: //PSr
+		case 13: //PBa137
 			fRadiusInt=0*mm;
 			fDZInt=0*mm;
 			fRadiusExt=0*mm;
@@ -180,6 +181,9 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}	else if (fSourceSelect==9||fSourceSelect==11) { //F18 volume source
 		Z=9;
 		A=18;
+	}	else if (fSourceSelect==13) { //Pointlike Ba137
+		Z=56;
+		A=133;
 	}	else if (fSourceSelect<-1) { //Variable Radioactive Isotope source: -Source -ZZAA
 		if (abs(fSourceSelect)>9999) {
 			Z=int(-fSourceSelect/1000);

@@ -32,7 +32,7 @@
 #include "B1ActionInitialization.hh"
 #include "MyExceptionHandler.hh"
 
-//#undef G4MULTITHREADED
+// #undef G4MULTITHREADED
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
 #else
@@ -57,332 +57,421 @@
 #include "G4ScoringManager.hh"
 #include "G4HadronicParameters.hh"
 
-#include <stdio.h>      /* printf, NULL */
+#include <stdio.h> /* printf, NULL */
 #include <stdlib.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 using namespace std;
 
-int main(int argc,char** argv)
+int main(int argc, char **argv)
 {
-	G4bool VisFlag=false;
-	
+	G4bool VisFlag = false;
+
 	// Detect interactive mode (if no arguments) and define UI session
-	G4UIExecutive* ui = 0;
-	G4bool QuickFlag=false;
-	
-	G4double x0Scan=0., ZValue=2., AbsorberHoleDiam=-1., TBRvalue=1.,PterDiameter=6.,PterThickness=3.,SourceDiameter=10.,SourceThickness=7., AbsorberThickness=1.,ProbeCaseDepth=-155., ProbeCaseLateralThickness=1, ProbeCaseBackThickness=20. , HSLateralThickness=1., HSBackThickness=2.;
-	G4int SourceChoice=1, AbsorberMaterial=1, HousingCase=3, GaSetting=1, ApparatusMat=1, nThreadIn=-1;
-	G4bool ScintFlag=0;
-	G4bool LightOutFlag=false;
-	G4bool SecondShieldFlag=false;
-	G4String ExtSourceFile="";
-	
-	G4String fileName ="";
-	G4String FileNameLabel="NEW";
-	
-	G4bool NoOfPrimToGenChangeFlag=false;
-	G4int NoOfPrimToGen=99, Verbose=0;
-	
-	for(int i=1;i<argc;i++)
-		if(argv[i][0] =='-')
+	G4UIExecutive *ui = 0;
+	G4bool QuickFlag = false;
+
+	G4double x0Scan = 0., ZValue = 2., AbsorberHoleDiam = -1., TBRvalue = 1., PterDiameter = 6., PterThickness = 3., PVCDiameter = 12., PVCLateralThickness = 2., SourceDiameter = 10., SourceThickness = 7., AbsorberThickness = 1., ProbeCaseDepth = -155., ProbeCaseLateralThickness = 1, ProbeCaseBackThickness = 20., HSLateralThickness = 1., HSBackThickness = 2.;
+	G4int SourceChoice = 1, AbsorberMaterial = 1, HousingCase = 3, GaSetting = 1, ApparatusMat = 1, nThreadIn = -1;
+	G4bool ScintFlag = 0;
+	G4bool LightOutFlag = false;
+	G4bool SecondShieldFlag = false;
+	G4String ExtSourceFile = "";
+
+	G4String fileName = "";
+	G4String FileNameLabel = "NEW";
+
+	G4bool NoOfPrimToGenChangeFlag = false;
+	G4int NoOfPrimToGen = 99, Verbose = 0;
+
+	for (int i = 1; i < argc; i++)
+		if (argv[i][0] == '-')
 		{
 			G4String option(argv[i]);
-			G4cout<<"option: "<<i<<" "<<option<<G4endl;
-			if(option.compare("-AbsD")==0)
+			G4cout << "option: " << i << " " << option << G4endl;
+			if (option.compare("-AbsD") == 0)
 			{
-				AbsorberHoleDiam=strtod (argv[++i], NULL);;
+				AbsorberHoleDiam = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-AbsT")==0)
+			else if (option.compare("-AbsT") == 0)
 			{
-				AbsorberThickness=strtod (argv[++i], NULL);;
+				AbsorberThickness = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-AbsMat")==0)
+			else if (option.compare("-AbsMat") == 0)
 			{
-				AbsorberMaterial=strtod (argv[++i], NULL);;
+				AbsorberMaterial = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-Z")==0)
+			else if (option.compare("-Z") == 0)
 			{
-				ZValue=strtod (argv[++i], NULL);;
+				ZValue = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-TBR")==0)
+			else if (option.compare("-TBR") == 0)
 			{
-				TBRvalue=strtod (argv[++i], NULL);;
+				TBRvalue = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-Source")==0)
+			else if (option.compare("-Source") == 0)
 			{
-				SourceChoice=strtod (argv[++i], NULL);;
+				SourceChoice = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-SecondShield")==0)
+			else if (option.compare("-SecondShield") == 0)
 			{
-				SecondShieldFlag=stoi (argv[++i], NULL);;
+				SecondShieldFlag = stoi(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-X")==0)
+			else if (option.compare("-X") == 0)
 			{
-				x0Scan=strtod (argv[++i], NULL);;
+				x0Scan = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-PterD")==0)
+			else if (option.compare("-PterD") == 0)
 			{
-				PterDiameter=strtod (argv[++i], NULL);;
+				PterDiameter = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-PterT")==0)
+			else if (option.compare("-PterT") == 0)
 			{
-				PterThickness=strtod (argv[++i], NULL);;
+				PterThickness = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-SourceD")==0)
+			else if (option.compare("-PVCD") == 0)
 			{
-				SourceDiameter=strtod (argv[++i], NULL);;
+				PVCDiameter = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-SourceExtFile")==0)
+			else if (option.compare("-PVCLT") == 0)
 			{
-				ExtSourceFile=argv[++i];;
+				PVCLateralThickness = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-SourceT")==0)
+			else if (option.compare("-SourceD") == 0)
 			{
-				SourceThickness=strtod (argv[++i], NULL);;
+				SourceDiameter = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-Vis")==0)
+			else if (option.compare("-SourceExtFile") == 0)
 			{
-				VisFlag=stoi (argv[++i], NULL);;
+				ExtSourceFile = argv[++i];
+				;
 			}
-			else if(option.compare("-Verbose")==0)
+			else if (option.compare("-SourceT") == 0)
 			{
-				Verbose=stoi (argv[++i], NULL);;
+				SourceThickness = strtod(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-NPrim")==0)
+			else if (option.compare("-Vis") == 0)
 			{
-				NoOfPrimToGen=stoi (argv[++i], NULL);;
+				VisFlag = stoi(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-NThreads")==0)
+			else if (option.compare("-Verbose") == 0)
 			{
-				nThreadIn=strtod (argv[++i], NULL);;
+				Verbose = stoi(argv[++i], NULL);
+				;
 			}
-			else if(option.compare("-CaseDepth")==0)         //Probe Case Z_Lenght
+			else if (option.compare("-NPrim") == 0)
 			{
-				ProbeCaseDepth=strtod (argv[++i], NULL);;
-			}else if(option.compare("-CaseLT")==0)            //Lateral Probe Case Thickness
+				NoOfPrimToGen = stoi(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-NThreads") == 0)
 			{
-				ProbeCaseLateralThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-CaseBT")==0)            //Back Probe Case Thickness
+				nThreadIn = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-CaseDepth") == 0) // Probe Case Z_Lenght
 			{
-				ProbeCaseBackThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-HSLT")==0)            //Lateral Thickness Horseshoe
+				ProbeCaseDepth = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-CaseLT") == 0) // Lateral Probe Case Thickness
 			{
-				HSLateralThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-HSBT")==0)            //Back Thickness Horseshoe
+				ProbeCaseLateralThickness = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-CaseBT") == 0) // Back Probe Case Thickness
 			{
-				HSBackThickness=strtod (argv[++i], NULL);;
-			}else if(option.compare("-HSMat")==0)
+				ProbeCaseBackThickness = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-HSLT") == 0) // Lateral Thickness Horseshoe
 			{
-				HousingCase=strtod (argv[++i], NULL);;
-			}else if(option.compare("-Scint")==0)
+				HSLateralThickness = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-HSBT") == 0) // Back Thickness Horseshoe
 			{
-				ScintFlag= argv[++i];;
-			}else if(option.compare("-Light")==0)
+				HSBackThickness = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-HSMat") == 0)
 			{
-				LightOutFlag= argv[++i];;
-			}else if(option.compare("-Label")==0)
+				HousingCase = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-Scint") == 0)
 			{
-				FileNameLabel= argv[++i];;
-			}else if(option.compare("-GaSet")==0)
+				ScintFlag = argv[++i];
+				;
+			}
+			else if (option.compare("-Light") == 0)
 			{
-				GaSetting= strtod (argv[++i], NULL);;
-			}else if(option.compare("-AppMat")==0)
+				LightOutFlag = argv[++i];
+				;
+			}
+			else if (option.compare("-Label") == 0)
 			{
-				ApparatusMat= strtod (argv[++i], NULL);;
+				FileNameLabel = argv[++i];
+				;
+			}
+			else if (option.compare("-GaSet") == 0)
+			{
+				GaSetting = strtod(argv[++i], NULL);
+				;
+			}
+			else if (option.compare("-AppMat") == 0)
+			{
+				ApparatusMat = strtod(argv[++i], NULL);
+				;
 			}
 		}
 		else
 		{
-			fileName = argv[i]; //se ho trovato una macro (senza il "-" davanti) significa che NON voglio l'interattivo
-			VisFlag=false;
-			QuickFlag=false;
+			fileName = argv[i]; // se ho trovato una macro (senza il "-" davanti) significa che NON voglio l'interattivo
+			VisFlag = false;
+			QuickFlag = false;
 		}
-	
-	if (VisFlag) QuickFlag=true;
-	
-	if (NoOfPrimToGen!=99) NoOfPrimToGenChangeFlag=true;
-	
-	G4cout<<"\n############## \nI WILL GENERATE n= "<<NoOfPrimToGen<<" primaries \n##############"<<G4endl;
 
-	
-	G4int SourceSelect=SourceChoice;
-	G4int GaSet=GaSetting;
-	
-	G4String OutFileName="PTERmc";
+	if (VisFlag)
+		QuickFlag = true;
+
+	if (NoOfPrimToGen != 99)
+		NoOfPrimToGenChangeFlag = true;
+
+	G4cout << "\n############## \nI WILL GENERATE n= " << NoOfPrimToGen << " primaries \n##############" << G4endl;
+
+	G4int SourceSelect = SourceChoice;
+	G4int GaSet = GaSetting;
+
+	G4String OutFileName = "PTERmc";
 	G4String FileNameCommonPart;
-	
-	G4String MaterialiAssorbitore[8]= {"Cu","Pb","Al","PVC", "ABS", "PVCblack", "NCMD", "PEEK"};
-	
+
+	G4String MaterialiAssorbitore[8] = {"Cu", "Pb", "Al", "PVC", "ABS", "PVCblack", "NCMD", "PEEK"};
+
 	// ###### PTER
-	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)(10*PterDiameter))+"_PDz" + std::to_string((G4int)(10*PterThickness)));
-	
+	FileNameCommonPart.append("_PDiam" + std::to_string((G4int)(10 * PterDiameter)) + "_PDz" + std::to_string((G4int)(10 * PterThickness)) + "_PVCDiam" + std::to_string((G4int)(10 * PVCDiameter)) + "_PVCLT" + std::to_string((G4int)(10 * PVCLateralThickness))); // TODO: salvare dettagli PVC solo se diversi da standard
+
 	// ###### X and Z
-	FileNameCommonPart.append("_X"+ std::to_string((G4int)(10*x0Scan)));
-	FileNameCommonPart.append("_Z"+ std::to_string((G4int)(10*ZValue)));
-	
+	FileNameCommonPart.append("_X" + std::to_string((G4int)(10 * x0Scan)));
+	FileNameCommonPart.append("_Z" + std::to_string((G4int)(10 * ZValue)));
+
 	// ###### ABSORBER
-	if (AbsorberHoleDiam<0) FileNameCommonPart.append("_NoAbs");
-	else {
-		if (GaSet==1)  FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
-		if (GaSet==2 || GaSet==3) FileNameCommonPart.append("_AbsT" + std::to_string((G4int)(100*AbsorberThickness))+"_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+	if (AbsorberHoleDiam < 0)
+		FileNameCommonPart.append("_NoAbs");
+	else
+	{
+		if (GaSet == 1)
+			FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000 * AbsorberThickness)) + "_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) + "_AbsMat" + MaterialiAssorbitore[AbsorberMaterial - 1]);
+		if (GaSet == 2 || GaSet == 3)
+			FileNameCommonPart.append("_AbsT" + std::to_string((G4int)(100 * AbsorberThickness)) + "_AbsHoleD" + std::to_string((G4int)AbsorberHoleDiam) + "_AbsMat" + MaterialiAssorbitore[AbsorberMaterial - 1]);
 	}
-	
+
 	// ###### IF LAPAROSCOPIC CASE
-	if (ProbeCaseDepth>0) FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth))+"_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness))+"_HSLT" + std::to_string((G4int)HSLateralThickness)+"_HSBT" + std::to_string((G4int)HSBackThickness)+"_HSMat" + std::to_string(HousingCase) );
-	
+	if (ProbeCaseDepth > 0)
+		FileNameCommonPart.append("_CaseDepth" + std::to_string((G4int)(ProbeCaseDepth)) + "_CaseLT" + std::to_string((G4int)ProbeCaseLateralThickness) + "_CaseBT" + std::to_string((G4int)(ProbeCaseBackThickness)) + "_HSLT" + std::to_string((G4int)HSLateralThickness) + "_HSBT" + std::to_string((G4int)HSBackThickness) + "_HSMat" + std::to_string(HousingCase));
+
 	// ###### SOURCES
-	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
-	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
-	if (SourceSelect==3) FileNameCommonPart.append("_ExtY");
-	if (SourceSelect==4) {
+	if (SourceSelect == 1)
+		FileNameCommonPart.append("_PSr");
+	if (SourceSelect == 2)
+		FileNameCommonPart.append("_ExtSr");
+	if (SourceSelect == 3)
+		FileNameCommonPart.append("_ExtY");
+	if (SourceSelect == 4)
+	{
 		FileNameCommonPart.append("_ExtGa");
-		if (GaSet== 1) FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)) + "_Set1");
-		if (GaSet== 2 || GaSet==3) FileNameCommonPart.append("_GaSet"+std::to_string((G4int)(GaSet))+"_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)));
+		if (GaSet == 1)
+			FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10 * SourceDiameter)) + "_Dz" + std::to_string((G4int)(10 * SourceThickness)) + "_Set1");
+		if (GaSet == 2 || GaSet == 3)
+			FileNameCommonPart.append("_GaSet" + std::to_string((G4int)(GaSet)) + "_AluCaseT" + std::to_string((G4int)(fabs(ProbeCaseDepth))) + "_AppMat" + std::to_string((G4int)(ApparatusMat)));
 	}
-	if (SourceSelect==5) FileNameCommonPart.append("_Sphere511");
-	if (SourceSelect==6) FileNameCommonPart.append("_FlatEle");
-	if (SourceSelect==7) FileNameCommonPart.append("_FlatGamma");
-	if (SourceSelect==8) FileNameCommonPart.append("_VolCu67_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+	if (SourceSelect == 5)
+		FileNameCommonPart.append("_Sphere511");
+	if (SourceSelect == 6)
+		FileNameCommonPart.append("_FlatEle");
+	if (SourceSelect == 7)
+		FileNameCommonPart.append("_FlatGamma");
+	if (SourceSelect == 8)
+		FileNameCommonPart.append("_VolCu67_Diam" + std::to_string((G4int)(10 * SourceDiameter)) + "_Dz" + std::to_string((G4int)(10 * SourceThickness)));
 
-	if (SourceSelect==9) FileNameCommonPart.append("_VolF18_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
-	
-	if (SourceSelect==10) FileNameCommonPart.append("_ExtSource");
+	if (SourceSelect == 9)
+		FileNameCommonPart.append("_VolF18_Diam" + std::to_string((G4int)(10 * SourceDiameter)) + "_Dz" + std::to_string((G4int)(10 * SourceThickness)));
 
-	if (SourceSelect==11) FileNameCommonPart.append("_ContF18_Thick" + std::to_string((G4int)(SourceDiameter/2.)) + "_Dz" + std::to_string((G4int)(SourceThickness)));
-	
-	if (SourceSelect==12) FileNameCommonPart.append("_PGa");
+	if (SourceSelect == 10)
+		FileNameCommonPart.append("_ExtSource");
 
-	if (SourceSelect==-1) FileNameCommonPart.append("_FlatEleExt");
+	if (SourceSelect == 11)
+		FileNameCommonPart.append("_ContF18_Thick" + std::to_string((G4int)(SourceDiameter / 2.)) + "_Dz" + std::to_string((G4int)(SourceThickness)));
 
-	if (SourceSelect<-1) {
-		if (SourceSelect<-9999) {// if element has more than 4 digits (5) divide 2-3
-		FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/1000)) +"_A" +std::to_string(int(-SourceSelect%1000)) );
-		} else { // else divide 2-2
-			FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect/100)) +"_A" +std::to_string(int(-SourceSelect%100)) );
+	if (SourceSelect == 12)
+		FileNameCommonPart.append("_PGa");
+
+	if (SourceSelect == -1)
+		FileNameCommonPart.append("_FlatEleExt");
+
+	if (SourceSelect < -1)
+	{
+		if (SourceSelect < -9999)
+		{ // if element has more than 4 digits (5) divide 2-3
+			FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect / 1000)) + "_A" + std::to_string(int(-SourceSelect % 1000)));
+		}
+		else
+		{ // else divide 2-2
+			FileNameCommonPart.append("_Z" + std::to_string(int(-SourceSelect / 100)) + "_A" + std::to_string(int(-SourceSelect % 100)));
 		}
 	}
-	if (SourceSelect<0) FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10*SourceDiameter)) + "_Dz" + std::to_string((G4int)(10*SourceThickness)));
+	if (SourceSelect < 0)
+		FileNameCommonPart.append("_Diam" + std::to_string((G4int)(10 * SourceDiameter)) + "_Dz" + std::to_string((G4int)(10 * SourceThickness)));
 
-	if (SourceSelect==511) FileNameCommonPart.append("_511keV");
+	if (SourceSelect == 511)
+		FileNameCommonPart.append("_511keV");
+	if (SourceSelect == 13)
+		FileNameCommonPart.append("_PBa");
 
-	
 	// ####### MISCELLANEUS
-	if (ScintFlag) FileNameCommonPart.append("_Scint");
-	if (SecondShieldFlag) FileNameCommonPart.append("_Scotch");
-	if (FileNameLabel!="") FileNameCommonPart.append("_" + FileNameLabel);
-	if (LightOutFlag) FileNameCommonPart.append("_Light");
-	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
+	if (ScintFlag)
+		FileNameCommonPart.append("_Scint");
+	if (SecondShieldFlag)
+		FileNameCommonPart.append("_Scotch");
+	if (FileNameLabel != "")
+		FileNameCommonPart.append("_" + FileNameLabel);
+	if (LightOutFlag)
+		FileNameCommonPart.append("_Light");
+	if (VisFlag)
+		FileNameCommonPart.append("TEST"); // if it was a TEST run under vis
 
-	if (NoOfPrimToGenChangeFlag) FileNameCommonPart.append("_N"+std::to_string((G4int)NoOfPrimToGen)); //if it was a TEST run under vis
+	if (NoOfPrimToGenChangeFlag)
+		FileNameCommonPart.append("_N" + std::to_string((G4int)NoOfPrimToGen)); // if it was a TEST run under vis
 
 	OutFileName.append(FileNameCommonPart);
-	
+
 	// Choose the Random engine
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
 	G4long seed = time(NULL);
-	if (VisFlag) seed=12345; //If vis was requested same always the same seed to have reproducibility
+	if (VisFlag)
+		seed = 12345; // If vis was requested same always the same seed to have reproducibility
 	G4Random::setTheSeed(seed);
 	// Construct the default run manager
 	//
-	//#ifdef G4MULTITHREAD
+	// #ifdef G4MULTITHREAD
 	//  G4MTRunManager* runManager = new G4MTRunManager;
-	//#else
-	
+	// #else
+
 #ifdef G4MULTITHREADED
-	G4MTRunManager* runManager = new G4MTRunManager;
-	G4int numOfThreads=(Verbose>0||VisFlag)?1:nThreadIn!=-1? nThreadIn:G4Threading::G4GetNumberOfCores() -2;
-		runManager->SetNumberOfThreads( numOfThreads);
+	G4MTRunManager *runManager = new G4MTRunManager;
+	G4int numOfThreads = (Verbose > 0 || VisFlag) ? 1 : nThreadIn != -1 ? nThreadIn
+																		: G4Threading::G4GetNumberOfCores() - 2;
+	runManager->SetNumberOfThreads(numOfThreads);
 //	runManager->SetNumberOfThreads( 6 );
 #else
-	G4RunManager* runManager = new G4RunManager;
+	G4RunManager *runManager = new G4RunManager;
 #endif
 
 	// Set mandatory initialization classes
 	// Detector construction
-	
-	
-	B1DetectorConstruction* detConst= new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, SecondShieldFlag);
+
+	B1DetectorConstruction *detConst = new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial, PterDiameter, PterThickness, PVCDiameter, PVCLateralThickness, SourceDiameter, SourceThickness, AbsorberThickness, ProbeCaseDepth, ProbeCaseLateralThickness, ProbeCaseBackThickness, HSLateralThickness, HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, SecondShieldFlag);
 	runManager->SetUserInitialization(detConst);
-	
+
 	G4ScoringManager::GetScoringManager();
-	
-//	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
-	
+
+	//	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberHoleDiam, SourceSelect, AbsorberMaterial,PterDiameter,PterThickness,SourceDiameter,SourceThickness,AbsorberThickness,ProbeCaseDepth,ProbeCaseLateralThickness,ProbeCaseBackThickness,HSLateralThickness,HSBackThickness, HousingCase, ScintFlag, GaSet, ApparatusMat, PosAbsorber, AbsCenter));
+
 	// Physics list
-	//G4VModularPhysicsList* physicsList = new QBBC;
-	//physicsList->SetVerboseLevel(1);
-	
+	// G4VModularPhysicsList* physicsList = new QBBC;
+	// physicsList->SetVerboseLevel(1);
+
 	//  runManager->SetUserInitialization(new B1PhysicsList);
-	
+
 	//	G4VModularPhysicsList* physicsList = new QBBC;
 	//	physicsList->RegisterPhysics(new G4OpticalPhysics());
-	
-	B1PhysicsList* physicsList=new B1PhysicsList(ScintFlag);
+
+	B1PhysicsList *physicsList = new B1PhysicsList(ScintFlag);
 	physicsList->RegisterPhysics(new G4StepLimiterPhysics());
-	
+
 	runManager->SetUserInitialization(physicsList);
-    
-    G4HadronicParameters::Instance()->SetTimeThresholdForRadioactiveDecay( 1.0e+60*CLHEP::year );
-	
+
+	G4HadronicParameters::Instance()->SetTimeThresholdForRadioactiveDecay(1.0e+60 * CLHEP::year);
+
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(detConst,x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile, LightOutFlag));
-	
+	runManager->SetUserInitialization(new B1ActionInitialization(detConst, x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile, LightOutFlag));
+
 	// Initialize visualization
 	//
-	G4VisManager* visManager = new G4VisExecutive;
+	G4VisManager *visManager = new G4VisExecutive;
 	// G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
 	// G4VisManager* visManager = new G4VisExecutive("Quiet");
 	visManager->Initialize();
-	
+
 	// Get the pointer to the User Interface manager
-	G4UImanager* UImanager = G4UImanager::GetUIpointer();
-	
+	G4UImanager *UImanager = G4UImanager::GetUIpointer();
+
 	runManager->Initialize();
 
 	// Process macro or start UI session
 	//
-	
-	if ( VisFlag ) { //Prepare for vis
+
+	if (VisFlag)
+	{ // Prepare for vis
 		ui = new G4UIExecutive(argc, argv);
 	}
-	
-	if ( ! ui ) {
-		if (fileName!="") { //se c'è una macro
+
+	if (!ui)
+	{
+		if (fileName != "")
+		{ // se c'è una macro
 			// batch mode
 			G4String command = "/control/execute ";
 			//		G4String fileName = argv[13];
-			UImanager->ApplyCommand(command+fileName);
-		} else { //.. altrimenti genera tu i primari
+			UImanager->ApplyCommand(command + fileName);
+		}
+		else
+		{ //.. altrimenti genera tu i primari
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
 			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
 		}
 	}
-	else {
+	else
+	{
 		// interactive mode
 		UImanager->ApplyCommand("/control/execute init_vis.mac");
 		ui->SessionStart();
 		delete ui;
 	}
-	
+
 	//
 #ifdef G4MULTITHREADED
 	// Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
-	G4cout<<"hadd -f "<< OutFileName<<".root ";
-	G4String tempFileList="";
-	for (int iThread=0; iThread<numOfThreads; iThread++) {
-		tempFileList.append(OutFileName+ "_t"+to_string(iThread) + ".root ");
+	G4cout << "hadd -f " << OutFileName << ".root ";
+	G4String tempFileList = "";
+	for (int iThread = 0; iThread < numOfThreads; iThread++)
+	{
+		tempFileList.append(OutFileName + "_t" + to_string(iThread) + ".root ");
 	}
-	G4String comandoHadd="hadd -f  " + OutFileName + ".root " + tempFileList;
-	G4String comandoRm="rm " + tempFileList;
+	G4String comandoHadd = "hadd -f  " + OutFileName + ".root " + tempFileList;
+	G4String comandoRm = "rm " + tempFileList;
 
 	system(comandoHadd);
 	system(comandoRm);
 
 #endif
-	
-	
+
 	delete visManager;
 	delete runManager;
 }
