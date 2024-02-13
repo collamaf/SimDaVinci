@@ -121,6 +121,13 @@ make
 ./exampleb1  -Source -56133 -SourceD 30 -SourceT 40  -PterD 6  -PterT 3 -Z 0.301 -AbsT 0.3 -AbsD 0 -AbsMat 4 -Light 1  -NPrim 100000 //Bario IEO 
 ```
 
+
+### Grattugiamento PTER in lab (Feb2024)
+```
+./exampleb1  -Source 2  -PterD 12  -PterT 3 -Z 0.300 -PVCD 16 -PVCLT 1.99 -AbsT 0.3 -AbsMat 5 -AbsD 0  -Label RESTART -Vis 1
+
+```
+
 - To obtain efficiency curve:
  With Eabs
 ```
@@ -190,6 +197,7 @@ Source type:
 - 10: ExternalFile (typically no lab source)
 - 11: 18F container around GaSet3
 - 12: "long-pointlike" Ga (IFO dummy source)
+- 13: Pointlike 133Ba
 - <0: Generic Ion, like ZZAA (eg 3990 is Y)
 - -1: flat energy electron (0-3MeV) in variabile extended volume (like for <0 sources)
 - 511: 511keV photons sphere
@@ -653,6 +661,12 @@ This because the configuration used at Gemelli's hospital in which the probe was
 2022.07.21 by collamaf
 - Add scoring of what enters SiPM
 - Fix filename when using generic isotope source with more than 4 digits
+
+
+2022.02.12 by collamaf
+- Add new command to activate Sr decay in new G4 versions (`SetTimeThresholdForRadioactiveDecay`)
+- Add command line parameters to pass external PVC diameter and lateral thickness
+- Add 133Ba source (13)
 
 ## TO DO's
 
