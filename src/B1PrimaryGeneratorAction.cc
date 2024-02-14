@@ -111,12 +111,14 @@ B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1DetectorConstruction *det, 
 		fDZInt = 0 * mm;
 		fRadiusExt = fSourceDiameter / 2. * mm;
 		fDZExt = fSourceThickness * mm;
+		break;
 
 	case 11: // ExternalCatafalco for 18F - Dec2020
 		fRadiusInt = fSourceDiameter / 2. * mm;
 		fDZInt = 0 * mm;
 		fRadiusExt = fSourceDiameter / 2. * mm;
 		fDZExt = fSourceThickness * mm;
+		break;
 
 	case 12: // Ga lunga
 		fRadiusInt = 0 * mm;
@@ -166,10 +168,10 @@ void B1PrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 		Z = 39; // If I need Y instead of Sr
 	if (fSourceSelect == 4 || fSourceSelect == 12)
 	{
-		//		Z=9;
-		//		A=18;
-		Z = 31;
-		A = 68;
+		Z = 9;
+		A = 18;
+		// Z = 31;
+		// A = 68;
 		////		Z=53;
 		//		A=131;
 	}
