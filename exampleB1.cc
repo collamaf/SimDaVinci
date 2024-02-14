@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 	G4int SourceChoice = 1, AbsorberMaterial = 1, HousingCase = 3, GaSetting = 1, ApparatusMat = 1, nThreadIn = -1;
 	G4bool ScintFlag = 0;
 	G4bool LightOutFlag = false;
+	G4bool OnlyEnterSiPM = false;
 	G4bool SecondShieldFlag = false;
 	G4String ExtSourceFile = "";
 
@@ -224,6 +225,11 @@ int main(int argc, char **argv)
 				LightOutFlag = argv[++i];
 				;
 			}
+			else if (option.compare("-OnlyEnterSiPM") == 0)
+			{
+				OnlyEnterSiPM = argv[++i];
+				;
+			}
 			else if (option.compare("-Label") == 0)
 			{
 				FileNameLabel = argv[++i];
@@ -352,6 +358,8 @@ int main(int argc, char **argv)
 		FileNameCommonPart.append("_" + FileNameLabel);
 	if (LightOutFlag)
 		FileNameCommonPart.append("_Light");
+	if (OnlyEnterSiPM)
+		FileNameCommonPart.append("_OnlyEntSiPM");
 	if (VisFlag)
 		FileNameCommonPart.append("TEST"); // if it was a TEST run under vis
 
@@ -410,7 +418,7 @@ int main(int argc, char **argv)
 
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(detConst, x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile, LightOutFlag));
+	runManager->SetUserInitialization(new B1ActionInitialization(detConst, x0Scan, ZValue, AbsorberHoleDiam, TBRvalue, SourceSelect, AbsorberMaterial, SourceDiameter, SourceThickness, OutFileName, GaSetting, ProbeCaseDepth, ExtSourceFile, LightOutFlag, OnlyEnterSiPM));
 
 	// Initialize visualization
 	//
