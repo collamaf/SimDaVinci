@@ -11,16 +11,28 @@
 	const int eMaxBkg = 400;
 	const int nBin = 200;
 	const int eMaxZoom = 200;
+	double NSiPmBSign[NFiles];
+	double NSiPmGSign[NFiles];
+	double NSiPmBBkg[NFiles];
+	double NSiPmGBkg[NFiles];
 
 	TGraph *graphSign[NThr];
 	TGraph *graphBkg[NThr];
 	TGraph *graphRatio[NThr];
 
-	TGraph *graphSiPmBSign[NFiles];
-	TGraph *graphSiPmGSign[NFiles];
+	TGraph *graphSiPmBSign = new TGraph();
+	graphSiPmBSign->SetNameTitle("graphSiPmBSign", "Direct Betas to SiPM for Signal; Spessore Pter [mm]; ");
+	graphSiPmBSign->SetMarkerStyle(20);
+	TGraph *graphSiPmGSign = new TGraph();
+	graphSiPmGSign->SetNameTitle("graphSiPmGSign", "Direct Gammas to SiPM for Signal; Spessore Pter [mm]; ");
+	graphSiPmGSign->SetMarkerStyle(20);
 
-	TGraph *graphSiPmBBkg[NFiles];
-	TGraph *graphSiPmGBkg[NFiles];
+	TGraph *graphSiPmBBkg = new TGraph();
+	graphSiPmBBkg->SetNameTitle("graphSiPmBBkg", "Direct Betas to SiPM for Bkg; Spessore Pter [mm]; ");
+	graphSiPmBBkg->SetMarkerStyle(20);
+	TGraph *graphSiPmGBkg = new TGraph();
+	graphSiPmGBkg->SetNameTitle("graphSiPmGBkg", "Direct Gammas to SiPM for Bkg; Spessore Pter [mm]; ");
+	graphSiPmGBkg->SetMarkerStyle(20);
 
 	TFile *fFileSign[NFiles];
 	TFile *fFileBkg[NFiles];
@@ -162,8 +174,8 @@
 
 		B1->Draw("Eabs>>histoTempSign", "Eabs>0", "goff");
 		B1->Draw("Eabs>>histoTempSignZ", "Eabs>0&&Eabs<200", "goff");
-		cout << B1->Draw("SiPMEne>>histoTempSiPmBSign", "fabs(SiPMPart)==11", "goff") << endl;
-		B1->Draw("SiPMEne>>histoTempSiPmGSign", "SiPMPart==22", "goff");
+		NSiPmBSign[iFile] = B1->Draw("SiPMEne>>histoTempSiPmBSign", "fabs(SiPMPart)==11", "goff");
+		NSiPmGSign[iFile] = B1->Draw("SiPMEne>>histoTempSiPmGSign", "SiPMPart==22", "goff");
 		// histoTemp = (TH1F*)gPad->GetPrimitive("htemp");
 		fOut->cd();
 		histoTempSign->Write();
@@ -187,8 +199,8 @@
 
 		B1->Draw("Eabs>>histoTempBkg", "Eabs>0", "goff");
 		B1->Draw("Eabs>>histoTempBkgZ", "Eabs>0&&Eabs<200", "goff");
-		B1->Draw("SiPMEne>>histoTempSiPmBBkg", "fabs(SiPMPart)==11", "goff");
-		B1->Draw("SiPMEne>>histoTempSiPmGBkg", "SiPMPart==22", "goff");
+		NSiPmBBkg[iFile] = B1->Draw("SiPMEne>>histoTempSiPmBBkg", "fabs(SiPMPart)==11", "goff");
+		NSiPmGBkg[iFile] = B1->Draw("SiPMEne>>histoTempSiPmGBkg", "SiPMPart==22", "goff");
 		// histoTemp = (TH1F*)gPad->GetPrimitive("htemp");
 		fOut->cd();
 		histoTempBkg->Write();
@@ -199,6 +211,12 @@
 		hStackBkgZ->Add(histoTempBkgZ);
 		hStackSiPmBBkg->Add(histoTempSiPmBBkg);
 		hStackSiPmGBkg->Add(histoTempSiPmGBkg);
+
+		graphSiPmBSign->AddPoint(spessori[iFile], NSiPmBSign[iFile]);
+		graphSiPmGSign->AddPoint(spessori[iFile], NSiPmGSign[iFile]);
+
+		graphSiPmBBkg->AddPoint(spessori[iFile], NSiPmBBkg[iFile]);
+		graphSiPmGBkg->AddPoint(spessori[iFile], NSiPmGBkg[iFile]);
 
 		// fFileBkg[iFile]->cd();
 		// canvEneBkg->cd();
@@ -276,6 +294,10 @@
 	hStackSiPmGBkg->Write();
 	hStackSiPmBSign->Write();
 	hStackSiPmGSign->Write();
+	graphSiPmBSign->Write();
+	graphSiPmGSign->Write();
+	graphSiPmBBkg->Write();
+	graphSiPmGBkg->Write();
 
 	TCanvas *cStackSign = new TCanvas("cStackSign", "cStackSign");
 	hStackSign->Draw("nostackPLC");
@@ -326,4 +348,20 @@
 	canvSiPmGBkg->BuildLegend();
 	canvSiPmGBkg->SetLogy();
 	canvSiPmGBkg->SaveAs("Gratt_SiPmGBkg.pdf");
+
+	TCanvas *canvSiPmGrattBBkg = new TCanvas("canvSiPmGrattBBkg", "canvSiPmGrattBBkg");
+	graphSiPmBBkg->Draw("APL");
+	canvSiPmGrattBBkg->SaveAs("Gratt_SiPmGrattBBkg.pdf");
+
+	TCanvas *canvSiPmGrattGBkg = new TCanvas("canvSiPmGrattGBkg", "canvSiPmGrattGBkg");
+	graphSiPmGBkg->Draw("APL");
+	canvSiPmGrattGBkg->SaveAs("Gratt_SiPmGrattGBkg.pdf");
+
+	TCanvas *canvSiPmGrattBSign = new TCanvas("canvSiPmGrattBSign", "canvSiPmGrattBSign");
+	graphSiPmBSign->Draw("APL");
+	canvSiPmGrattBSign->SaveAs("Gratt_SiPmGrattBSign.pdf");
+
+	TCanvas *canvSiPmGrattGSign = new TCanvas("canvSiPmGrattGSign", "canvSiPmGrattGSign");
+	graphSiPmGSign->Draw("APL");
+	canvSiPmGrattGSign->SaveAs("Gratt_SiPmGrattGSign.pdf");
 }
