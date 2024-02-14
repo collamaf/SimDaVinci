@@ -34,6 +34,28 @@
 	graphSiPmGBkg->SetNameTitle("graphSiPmGBkg", "Direct Gammas to SiPM for Bkg; Spessore Pter [mm]; ");
 	graphSiPmGBkg->SetMarkerStyle(20);
 
+	TGraph *graphSiPmBSignNorm = new TGraph();
+	graphSiPmBSignNorm->SetNameTitle("graphSiPmBSigNormn", "Direct Betas to SiPM for Signal; Spessore Pter Norm [mm]; ");
+	graphSiPmBSignNorm->SetMarkerStyle(20);
+	graphSiPmBSignNorm->SetMarkerColor(1);
+	graphSiPmBSignNorm->SetLineColor(1);
+	TGraph *graphSiPmGSignNorm = new TGraph();
+	graphSiPmGSignNorm->SetNameTitle("graphSiPmGSignNorm", "Direct Gammas to SiPM for Signal; Spessore Pter Norm [mm]; ");
+	graphSiPmGSignNorm->SetMarkerStyle(21);
+	graphSiPmGSignNorm->SetMarkerColor(2);
+	graphSiPmGSignNorm->SetLineColor(2);
+
+	TGraph *graphSiPmBBkgNorm = new TGraph();
+	graphSiPmBBkgNorm->SetNameTitle("graphSiPmBBkgNorm", "Direct Betas to SiPM for Bkg; Spessore Pter Norm [mm]; ");
+	graphSiPmBBkgNorm->SetMarkerStyle(20);
+	graphSiPmBBkgNorm->SetMarkerColor(3);
+	graphSiPmBBkgNorm->SetLineColor(3);
+	TGraph *graphSiPmGBkgNorm = new TGraph();
+	graphSiPmGBkgNorm->SetNameTitle("graphSiPmGBkgNorm", "Direct Gammas to SiPM for Bkg; Spessore Pter Norm [mm]; ");
+	graphSiPmGBkgNorm->SetMarkerStyle(21);
+	graphSiPmGBkgNorm->SetMarkerColor(4);
+	graphSiPmGBkgNorm->SetLineColor(4);
+
 	TFile *fFileSign[NFiles];
 	TFile *fFileBkg[NFiles];
 
@@ -42,6 +64,7 @@
 	TMultiGraph *multiGraphAll = new TMultiGraph();
 	TMultiGraph *multiGraphRatio = new TMultiGraph();
 
+	TMultiGraph *multiGraphSiPM = new TMultiGraph();
 	TMultiGraph *multiGraphSiPMSign = new TMultiGraph();
 	TMultiGraph *multiGraphSiPMBkg = new TMultiGraph();
 
@@ -134,12 +157,25 @@
 	// fFileBkg[5] = TFile::Open("PTERmc_PDiam60_PDz6_PVCDiam120_PVCLT29_X0_Z3_AbsDz300_AbsHoleD0_AbsMatABS_RESTART_N1000000.root");
 	// fFileBkg[6] = TFile::Open("PTERmc_PDiam60_PDz2_PVCDiam120_PVCLT29_X0_Z3_AbsDz300_AbsHoleD0_AbsMatABS_RESTART_N1000000.root");
 
-	// FIles per previsione test F18
-	fFileSign[0] = TFile::Open("PTERmc_PDiam60_PDz30_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
-	fFileSign[1] = TFile::Open("PTERmc_PDiam60_PDz20_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
-	fFileSign[2] = TFile::Open("PTERmc_PDiam60_PDz10_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
-	fFileSign[3] = TFile::Open("PTERmc_PDiam60_PDz8_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
-	fFileSign[4] = TFile::Open("PTERmc_PDiam60_PDz5_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+	// FIles per previsione test F18 - Ma con CATAFALCO DI ARIA (ora in sottocartella)
+	// fFileSign[0] = TFile::Open("PTERmc_PDiam60_PDz30_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+	// fFileSign[1] = TFile::Open("PTERmc_PDiam60_PDz20_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+	// fFileSign[2] = TFile::Open("PTERmc_PDiam60_PDz10_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+	// fFileSign[3] = TFile::Open("PTERmc_PDiam60_PDz8_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+	// fFileSign[4] = TFile::Open("PTERmc_PDiam60_PDz5_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat1_NEW_N1000000.root");
+
+	// fFileBkg[0] = TFile::Open("PTERmc_PDiam60_PDz30_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
+	// fFileBkg[1] = TFile::Open("PTERmc_PDiam60_PDz20_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
+	// fFileBkg[2] = TFile::Open("PTERmc_PDiam60_PDz10_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
+	// fFileBkg[3] = TFile::Open("PTERmc_PDiam60_PDz8_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
+	// fFileBkg[4] = TFile::Open("PTERmc_PDiam60_PDz5_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
+
+	// FIles per previsione test F18 - Catafalco corretto
+	fFileSign[0] = TFile::Open("PTERmc_PDiam60_PDz30_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat-1_NEW_N1000000.root");
+	fFileSign[1] = TFile::Open("PTERmc_PDiam60_PDz20_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat-1_NEW_N1000000.root");
+	fFileSign[2] = TFile::Open("PTERmc_PDiam60_PDz10_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat-1_NEW_N1000000.root");
+	fFileSign[3] = TFile::Open("PTERmc_PDiam60_PDz8_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat-1_NEW_N1000000.root");
+	fFileSign[4] = TFile::Open("PTERmc_PDiam60_PDz5_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ExtGa_GaSet3_AluCaseT155_AppMat-1_NEW_N1000000.root");
 
 	fFileBkg[0] = TFile::Open("PTERmc_PDiam60_PDz30_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
 	fFileBkg[1] = TFile::Open("PTERmc_PDiam60_PDz20_PVCDiam120_PVCLT20_X0_Z0_NoAbs_ContF18_Thick9_Dz80_CATAFLUORO_Light_N100000000.root");
@@ -218,6 +254,12 @@
 		graphSiPmBBkg->AddPoint(spessori[iFile], NSiPmBBkg[iFile]);
 		graphSiPmGBkg->AddPoint(spessori[iFile], NSiPmGBkg[iFile]);
 
+		graphSiPmBSignNorm->AddPoint(spessori[iFile], NSiPmBSign[iFile] / NSiPmBSign[0]);
+		graphSiPmGSignNorm->AddPoint(spessori[iFile], NSiPmGSign[iFile] / NSiPmGSign[0]);
+
+		graphSiPmBBkgNorm->AddPoint(spessori[iFile], NSiPmBBkg[iFile] / NSiPmBBkg[0]);
+		graphSiPmGBkgNorm->AddPoint(spessori[iFile], NSiPmGBkg[iFile] / NSiPmGBkg[0]);
+
 		// fFileBkg[iFile]->cd();
 		// canvEneBkg->cd();
 		// iFile==0? B1->Draw("Eabs>>histo(180)","Eabs>0",""):B1->Draw("Eabs>>histo(180)","Eabs>0","samesPLC");
@@ -249,6 +291,10 @@
 	}
 
 	// cout<<"CIAO POST "<<hStack->GetNhists()<<endl;
+	multiGraphSiPM->Add(graphSiPmBBkgNorm);
+	multiGraphSiPM->Add(graphSiPmGBkgNorm);
+	multiGraphSiPM->Add(graphSiPmBSignNorm);
+	multiGraphSiPM->Add(graphSiPmGSignNorm);
 
 	for (int iThr = 0; iThr < NThr; iThr++)
 	{
@@ -294,10 +340,18 @@
 	hStackSiPmGBkg->Write();
 	hStackSiPmBSign->Write();
 	hStackSiPmGSign->Write();
+
 	graphSiPmBSign->Write();
 	graphSiPmGSign->Write();
 	graphSiPmBBkg->Write();
 	graphSiPmGBkg->Write();
+
+	graphSiPmBSignNorm->Write();
+	graphSiPmGSignNorm->Write();
+	graphSiPmBBkgNorm->Write();
+	graphSiPmGBkgNorm->Write();
+
+	multiGraphSiPM->Write();
 
 	TCanvas *cStackSign = new TCanvas("cStackSign", "cStackSign");
 	hStackSign->Draw("nostackPLC");
@@ -364,4 +418,11 @@
 	TCanvas *canvSiPmGrattGSign = new TCanvas("canvSiPmGrattGSign", "canvSiPmGrattGSign");
 	graphSiPmGSign->Draw("APL");
 	canvSiPmGrattGSign->SaveAs("Gratt_SiPmGrattGSign.pdf");
+
+	TCanvas *canvSiPmGrattNorm = new TCanvas("canvSiPmGrattNorm", "canvSiPmGrattNorm");
+	multiGraphSiPM->Draw("APL");
+	multiGraphSiPM->SetTitle("Flusso particelle al SiPM; Spessore [mm]; Andamento relativo [%]");
+	canvSiPmGrattNorm->BuildLegend();
+
+	canvSiPmGrattNorm->SaveAs("Gratt_SiPmGrattNorm.pdf");
 }
