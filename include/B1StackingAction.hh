@@ -37,25 +37,24 @@
 class B1EventAction;
 /// Stacking action class : manage the newly generated particles
 ///
-/// One wishes do not track secondary neutrino.Therefore one kills it 
+/// One wishes do not track secondary neutrino.Therefore one kills it
 /// immediately, before created particles will  put in a stack.
 class B1RunAction;
 
 class B1StackingAction : public G4UserStackingAction
 {
 public:
-    B1StackingAction(B1RunAction* runAction, B1EventAction* fEventAction, G4int fSourceSelect);
+    B1StackingAction(B1RunAction *runAction, B1EventAction *fEventAction, G4int fSourceSelect);
     virtual ~B1StackingAction();
-    
-    virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*);
-    
+
+    virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track *);
+
 private:
-    B1RunAction* fRunningAction;
-    B1EventAction*  fEventAction;
-	G4int fSourceSelect;
+    B1RunAction *fRunningAction;
+    B1EventAction *fEventAction;
+    G4int fSourceSelect;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-

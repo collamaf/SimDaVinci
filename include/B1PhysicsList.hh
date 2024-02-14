@@ -40,17 +40,16 @@
 /// - G4RadioactiveDecayPhysics
 /// - G4EmStandardPhysics
 
-class B1PhysicsList: public G4VModularPhysicsList
+class B1PhysicsList : public G4VModularPhysicsList
 {
 public:
-  B1PhysicsList(G4bool );
+  B1PhysicsList(G4bool);
   virtual ~B1PhysicsList();
 
   virtual void SetCuts();
-	G4bool fscintFlag;
+  G4bool fscintFlag;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-

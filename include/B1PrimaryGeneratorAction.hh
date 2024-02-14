@@ -44,61 +44,58 @@ class G4Event;
 class G4Tubs;
 class B1DetectorConstruction;
 
-
 /// The primary generator action class with particle gun.
 ///
 
-
 class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
-//    B1PrimaryGeneratorAction(B1EventAction* eventAction);
-	B1PrimaryGeneratorAction(B1DetectorConstruction*, B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1, G4double SourceDiameter=10, G4double SourceThickness=7, G4int GaSetting=1, G4double CaseDepth=-50, G4String ExtSourceFile="");
-    virtual ~B1PrimaryGeneratorAction();
+public:
+	//    B1PrimaryGeneratorAction(B1EventAction* eventAction);
+	B1PrimaryGeneratorAction(B1DetectorConstruction *, B1EventAction *eventAction, G4double TBR = 1, G4int SourceSelect = 1, G4double SourceDiameter = 10, G4double SourceThickness = 7, G4int GaSetting = 1, G4double CaseDepth = -50, G4String ExtSourceFile = "");
+	virtual ~B1PrimaryGeneratorAction();
 
-    // method from the base class
-    virtual void GeneratePrimaries(G4Event*);         
-  
-    // method to access particle gun
-    const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
-	
+	// method from the base class
+	virtual void GeneratePrimaries(G4Event *);
+
+	// method to access particle gun
+	const G4ParticleGun *GetParticleGun() const { return fParticleGun; }
+
 	G4double BetaDecaySpectrum(G4double Ek, G4double EndPoint);
-	
-	inline void SetRadius(const double Radius){fRadiusMax=Radius;};
-	inline void SetZ(const double Z){fZ=Z;};
-	
-  private:
-	B1DetectorConstruction*      fDetector;
 
-    G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
-	B1EventAction* evtPrimAction;
-//	G4Tubs * fSourceVol;
-	
+	inline void SetRadius(const double Radius) { fRadiusMax = Radius; };
+	inline void SetZ(const double Z) { fZ = Z; };
+
+private:
+	B1DetectorConstruction *fDetector;
+
+	G4ParticleGun *fParticleGun; // pointer a to G4 gun class
+	B1EventAction *evtPrimAction;
+	//	G4Tubs * fSourceVol;
+
 	G4double fZ;
 
 	G4double fRadiusExt;
 	G4double fRadiusInt;
 	G4double fDZExt;
 	G4double fDZInt;
-	
+
 	G4double fRadiusMax;
 	G4double fRadiusMin;
 	G4double fTBR;
-//	G4double fRatio;
+	//	G4double fRatio;
 	G4int fSourceSelect;
 	G4double fSourceDiameter;
 	G4double fSourceThickness;
 	G4int fGaSet;
-	G4bool FlatEle=false;
-	G4bool FlatGamma=false;
+	G4bool FlatEle = false;
+	G4bool FlatGamma = false;
 	G4double fCaseDepth;
 	//	G4LogicalVolume* sourceLV;
-//	G4VPhysicalVolume* sourcePV;
-	G4VPrimaryGenerator* hepmcAscii;
+	//	G4VPhysicalVolume* sourcePV;
+	G4VPrimaryGenerator *hepmcAscii;
 	G4String fExtSourceFile;
 
-	double spessoreFondoContenitoreFluoro=10*mm;
-
+	double spessoreFondoContenitoreFluoro = 10 * mm;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

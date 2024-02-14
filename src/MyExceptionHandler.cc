@@ -26,51 +26,51 @@
 ////
 //// $Id: G4ExceptionHandler.cc 66892 2013-01-17 10:57:59Z gunter $
 ////
-//// 
+////
 //// ------------------------------------------------------------
-////      GEANT 4 class implementation file 
+////      GEANT 4 class implementation file
 ////
 ////      ---------------- G4ExceptionHandler ----------------
 ////             by Makoto Asai (August 2002)
 //// ------------------------------------------------------------
 //
-//#include "G4ExceptionHandler.hh"
-//#include "G4StateManager.hh"
-//#include "G4RunManager.hh"
-//#include "G4ios.hh"
-//#include <stdlib.h>
-//#include "G4String.hh"
+// #include "G4ExceptionHandler.hh"
+// #include "G4StateManager.hh"
+// #include "G4RunManager.hh"
+// #include "G4ios.hh"
+// #include <stdlib.h>
+// #include "G4String.hh"
 //
-//G4ExceptionHandler::G4ExceptionHandler() 
+// G4ExceptionHandler::G4ExceptionHandler()
 //{
 //	G4cout<<"STRONZO! "<<G4endl;
 //}
 //
-//G4ExceptionHandler::~G4ExceptionHandler()
+// G4ExceptionHandler::~G4ExceptionHandler()
 //{
 //}
 //
-//G4ExceptionHandler::G4ExceptionHandler(const G4ExceptionHandler &)
-//:G4VExceptionHandler()
+// G4ExceptionHandler::G4ExceptionHandler(const G4ExceptionHandler &)
+//: G4VExceptionHandler()
 //{
 //}
 //
-//G4ExceptionHandler& G4ExceptionHandler::operator=(const G4ExceptionHandler &)
+// G4ExceptionHandler& G4ExceptionHandler::operator=(const G4ExceptionHandler &)
 //{
 //   return *this;
 //}
 //
-//G4bool G4ExceptionHandler::operator==(const G4ExceptionHandler &right) const
+// G4bool G4ExceptionHandler::operator==(const G4ExceptionHandler &right) const
 //{
 //   return (this == &right);
 //}
 //
-//G4bool G4ExceptionHandler::operator!=(const G4ExceptionHandler &right) const
+// G4bool G4ExceptionHandler::operator!=(const G4ExceptionHandler &right) const
 //{
 //   return (this != &right);
 //}
 //
-//G4bool G4ExceptionHandler::Notify(const char* originOfException,
+// G4bool G4ExceptionHandler::Notify(const char* originOfException,
 //                        const char* exceptionCode,
 //                        G4ExceptionSeverity severity,
 //                        const char* description)

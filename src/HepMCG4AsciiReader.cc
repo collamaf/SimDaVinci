@@ -30,18 +30,18 @@
 //
 
 #include "HepMCG4AsciiReader.hh"
-//#include "HepMCG4AsciiReaderMessenger.hh"
+// #include "HepMCG4AsciiReaderMessenger.hh"
 
 #include <iostream>
 #include <fstream>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 HepMCG4AsciiReader::HepMCG4AsciiReader(G4String nomefile)
-:  filename(nomefile), verbose(0)
+	: filename(nomefile), verbose(0)
 {
-	asciiInput= new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
+	asciiInput = new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
 	this->Initialize();
-	G4cout<<"DEBUG HEP: letto file "<<(this->GetFileName()).c_str()<<G4endl;
+	G4cout << "DEBUG HEP: letto file " << (this->GetFileName()).c_str() << G4endl;
 	//  messenger= new HepMCG4AsciiReaderMessenger(this);
 }
 
@@ -56,15 +56,17 @@ HepMCG4AsciiReader::~HepMCG4AsciiReader()
 void HepMCG4AsciiReader::Initialize()
 {
 	delete asciiInput;
-	
-	asciiInput= new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
+
+	asciiInput = new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-HepMC::GenEvent* HepMCG4AsciiReader::GenerateHepMCEvent()
+HepMC::GenEvent *HepMCG4AsciiReader::GenerateHepMCEvent()
 {
-	HepMC::GenEvent* evt= asciiInput-> read_next_event();
-	if(!evt) return 0; // no more event
-	if(verbose>0) evt-> print();
+	HepMC::GenEvent *evt = asciiInput->read_next_event();
+	if (!evt)
+		return 0; // no more event
+	if (verbose > 0)
+		evt->print();
 	return evt;
 }

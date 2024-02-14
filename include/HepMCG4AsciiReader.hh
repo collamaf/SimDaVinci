@@ -34,19 +34,20 @@
 
 #include "HepMCG4Interface.hh"
 #include "HepMC/IO_GenEvent.h"
-//#include "HepMC3/ReaderFactory.h"
+// #include "HepMC3/ReaderFactory.h"
 
-//class HepMCG4AsciiReaderMessenger;
+// class HepMCG4AsciiReaderMessenger;
 
-class HepMCG4AsciiReader : public HepMCG4Interface {
+class HepMCG4AsciiReader : public HepMCG4Interface
+{
 protected:
   G4String filename;
-  HepMC::IO_GenEvent* asciiInput;
+  HepMC::IO_GenEvent *asciiInput;
 
   G4int verbose;
-//  HepMCG4AsciiReaderMessenger* messenger;
+  //  HepMCG4AsciiReaderMessenger* messenger;
 
-  virtual HepMC::GenEvent* GenerateHepMCEvent();
+  virtual HepMC::GenEvent *GenerateHepMCEvent();
 
 public:
   HepMCG4AsciiReader(G4String);
@@ -57,7 +58,7 @@ public:
   G4String GetFileName() const;
 
   void SetVerboseLevel(G4int i);
-  G4int GetVerboseLevel() const; 
+  G4int GetVerboseLevel() const;
 
   // methods...
   void Initialize();
@@ -69,7 +70,7 @@ public:
 
 inline void HepMCG4AsciiReader::SetFileName(G4String name)
 {
-  filename= name;
+  filename = name;
 }
 
 inline G4String HepMCG4AsciiReader::GetFileName() const
@@ -79,7 +80,7 @@ inline G4String HepMCG4AsciiReader::GetFileName() const
 
 inline void HepMCG4AsciiReader::SetVerboseLevel(G4int i)
 {
-  verbose= i;
+  verbose = i;
 }
 
 inline G4int HepMCG4AsciiReader::GetVerboseLevel() const
