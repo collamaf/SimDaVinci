@@ -16,6 +16,12 @@
 	TGraph *graphBkg[NThr];
 	TGraph *graphRatio[NThr];
 
+	TGraph *graphSiPmBSign[NFiles];
+	TGraph *graphSiPmGSign[NFiles];
+
+	TGraph *graphSiPmBBkg[NFiles];
+	TGraph *graphSiPmGBkg[NFiles];
+
 	TFile *fFileSign[NFiles];
 	TFile *fFileBkg[NFiles];
 
@@ -23,6 +29,9 @@
 	TMultiGraph *multiGraphBkg = new TMultiGraph();
 	TMultiGraph *multiGraphAll = new TMultiGraph();
 	TMultiGraph *multiGraphRatio = new TMultiGraph();
+
+	TMultiGraph *multiGraphSiPMSign = new TMultiGraph();
+	TMultiGraph *multiGraphSiPMBkg = new TMultiGraph();
 
 	double dataSign[NFiles][NThr];
 	double dataBkg[NFiles][NThr];
@@ -153,11 +162,14 @@
 
 		B1->Draw("Eabs>>histoTempSign", "Eabs>0", "goff");
 		B1->Draw("Eabs>>histoTempSignZ", "Eabs>0&&Eabs<200", "goff");
-		B1->Draw("SiPMEne>>histoTempSiPmBSign", "fabs(SiPMPart)==11", "goff");
+		cout << B1->Draw("SiPMEne>>histoTempSiPmBSign", "fabs(SiPMPart)==11", "goff") << endl;
 		B1->Draw("SiPMEne>>histoTempSiPmGSign", "SiPMPart==22", "goff");
 		// histoTemp = (TH1F*)gPad->GetPrimitive("htemp");
 		fOut->cd();
 		histoTempSign->Write();
+		histoTempSignZ->Write();
+		histoTempSiPmBSign->Write();
+		histoTempSiPmGSign->Write();
 		hStackSign->Add(histoTempSign);
 		hStackSignZ->Add(histoTempSignZ);
 		hStackSiPmBSign->Add(histoTempSiPmBSign);
@@ -180,6 +192,9 @@
 		// histoTemp = (TH1F*)gPad->GetPrimitive("htemp");
 		fOut->cd();
 		histoTempBkg->Write();
+		histoTempBkgZ->Write();
+		histoTempSiPmBBkg->Write();
+		histoTempSiPmGBkg->Write();
 		hStackBkg->Add(histoTempBkg);
 		hStackBkgZ->Add(histoTempBkgZ);
 		hStackSiPmBBkg->Add(histoTempSiPmBBkg);
@@ -257,6 +272,10 @@
 	hStackBkg->Write();
 	hStackSignZ->Write();
 	hStackBkgZ->Write();
+	hStackSiPmBBkg->Write();
+	hStackSiPmGBkg->Write();
+	hStackSiPmBSign->Write();
+	hStackSiPmGSign->Write();
 
 	TCanvas *cStackSign = new TCanvas("cStackSign", "cStackSign");
 	hStackSign->Draw("nostackPLC");
