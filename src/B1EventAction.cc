@@ -39,47 +39,50 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1EventAction::B1EventAction(B1RunAction* runAction, G4bool LightOutFlag)
-: G4UserEventAction(),
-fRunAction(runAction),
-fEdep(0.),
-fEdepSiPM(0.),
-fEdkin(0.),
-fNumHitsDet(0),
-fPrePterNo(0),
-fPreProbeNo(0),
-fPostAbsNo(0),
-fEdepEle(0.),
-fEdepPos(0.),
-fEdepFot(0.),
-fEdepSiPMpos(0.),
-fEdepSiPMfot(0.),
-fEnteringParticle(0),
-fSourceExitPassCounter(0.),
-fPterPassCounter(0.),
-fPostAbsPassCounter(0.),
-fPreProbePassCounter(0.),
-fNSourceExit(0.),
-fSourceExitStoreTrackID(0),
-fPterStoreTrackID(0),
-fPostAbsStoreTrackID(0),
-fPreProbeStoreTrackID(0),
-fEnterPterFlag(0),
-fLightOutFlag(LightOutFlag)
-{}
-
+B1EventAction::B1EventAction(B1RunAction *runAction, G4bool LightOutFlag, G4bool OnlyEnterSiPM)
+	: G4UserEventAction(),
+	  fRunAction(runAction),
+	  fEdep(0.),
+	  fEdepSiPM(0.),
+	  fEdkin(0.),
+	  fNumHitsDet(0),
+	  fPrePterNo(0),
+	  fPreProbeNo(0),
+	  fPostAbsNo(0),
+	  fEdepEle(0.),
+	  fEdepPos(0.),
+	  fEdepFot(0.),
+	  fEdepSiPMpos(0.),
+	  fEdepSiPMfot(0.),
+	  fEnteringParticle(0),
+	  fSourceExitPassCounter(0.),
+	  fPterPassCounter(0.),
+	  fPostAbsPassCounter(0.),
+	  fPreProbePassCounter(0.),
+	  fNSourceExit(0.),
+	  fSourceExitStoreTrackID(0),
+	  fPterStoreTrackID(0),
+	  fPostAbsStoreTrackID(0),
+	  fPreProbeStoreTrackID(0),
+	  fEnterPterFlag(0),
+	  fLightOutFlag(LightOutFlag),
+	  fOnlyEnterSiPM(OnlyEnterSiPM)
+{
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B1EventAction::~B1EventAction()
-{}
+{
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void B1EventAction::BeginOfEventAction(const G4Event* )
+void B1EventAction::BeginOfEventAction(const G4Event *)
 {
+	// G4cout << "SANREMO " << fOnlyEnterSiPM << G4endl;
 	fEdep = 0.;
-	fEdepSiPM=0.;
+	fEdepSiPM = 0.;
 	fEdkin = 0.;
 	(fRunAction->GetPrePterEn()).clear();
 	(fRunAction->GetPrePterPart()).clear();
@@ -98,14 +101,13 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetPterY()).clear();
 	(fRunAction->GetPterZ()).clear();
 	(fRunAction->GetPterPart()).clear();
-	
-	
+
 	(fRunAction->GetAnnihX()).clear();
 	(fRunAction->GetAnnihY()).clear();
 	(fRunAction->GetAnnihZ()).clear();
-	
+
 	(fRunAction->GetAnnihT()).clear();
-	
+
 	(fRunAction->GetPostAbsPart()).clear();
 
 	(fRunAction->GetSourceCosX()).clear();
@@ -135,7 +137,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetExitOrigZ()).clear();
 
 	(fRunAction->GetExitProcess()).clear();
-	
+
 	(fRunAction->GetEAbsComp()).clear();
 	(fRunAction->GetEAbsSiPMComp()).clear();
 	(fRunAction->GetSiPMPart()).clear();
@@ -144,33 +146,33 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetSiPMVY()).clear();
 	(fRunAction->GetSiPMVZ()).clear();
 
-	fNumHitsDet=0;
-	fPrePterNo=0;
-	fPreProbeNo=0;
-	fPostAbsNo=0;
+	fNumHitsDet = 0;
+	fPrePterNo = 0;
+	fPreProbeNo = 0;
+	fPostAbsNo = 0;
 
-	fEdepEle=0.;
-	fEdepPos=0;
-	fEdepFot=0.;
-	fEdepSiPMpos=0.,
-	fEdepSiPMfot=0.,
-	fEnteringParticle=0;
-	fNSourceExit=0;
-	fSourceExitPassCounter=0;
-	fPterPassCounter=0;
-	fPostAbsPassCounter=0;
-	fPreProbePassCounter=0;
-	fSourceExitStoreTrackID=0;
-	fPterStoreTrackID=0;
-	fPostAbsStoreTrackID=0;
-	fPreProbeStoreTrackID=0;
-	fNPMT=0;
-	fEnterPterFlag=0;
-	fSourceReg="";
+	fEdepEle = 0.;
+	fEdepPos = 0;
+	fEdepFot = 0.;
+	fEdepSiPMpos = 0.,
+	fEdepSiPMfot = 0.,
+	fEnteringParticle = 0;
+	fNSourceExit = 0;
+	fSourceExitPassCounter = 0;
+	fPterPassCounter = 0;
+	fPostAbsPassCounter = 0;
+	fPreProbePassCounter = 0;
+	fSourceExitStoreTrackID = 0;
+	fPterStoreTrackID = 0;
+	fPostAbsStoreTrackID = 0;
+	fPreProbeStoreTrackID = 0;
+	fNPMT = 0;
+	fEnterPterFlag = 0;
+	fSourceReg = "";
 
-//	fSourceX=0;
-//	fSourceY=0;
-//	fSourceZ=0;
+	//	fSourceX=0;
+	//	fSourceY=0;
+	//	fSourceZ=0;
 	/*
 		 fSourceEne=0;
 	 */
@@ -178,67 +180,79 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
-void B1EventAction::EndOfEventAction(const G4Event* evento)
+void B1EventAction::EndOfEventAction(const G4Event *evento)
 {
 
 	fRunAction->AddEdep(fEdep);
-//	fRunAction->AddEdepSiPM(fEdepSiPM);
+	//	fRunAction->AddEdepSiPM(fEdepSiPM);
 	fRunAction->AddEdkin(fEdkin);
 
-	(fRunAction->GetEAbsComp()).push_back(fEdepEle/keV);
-	(fRunAction->GetEAbsComp()).push_back(fEdepPos/keV);
-	(fRunAction->GetEAbsComp()).push_back(fEdepFot/keV);
-//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMpos/keV);
-//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMfot/keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepEle / keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepPos / keV);
+	(fRunAction->GetEAbsComp()).push_back(fEdepFot / keV);
+	//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMpos/keV);
+	//	(fRunAction->GetEAbsSiPMComp()).push_back(fEdepSiPMfot/keV);
 
-	G4int NevTot=fRunAction->GetEventNumber();
-	
-	if ((10*evento->GetEventID())%NevTot==0) {
-		G4cout<<"Progress status: "<<(evento->GetEventID()/(G4double)NevTot)*100<<" %, Nev= "<<evento->GetEventID()<<", NTotEv= "<<NevTot<<G4endl;
+	G4int NevTot = fRunAction->GetEventNumber();
+
+	if ((10 * evento->GetEventID()) % NevTot == 0)
+	{
+		G4cout << "Progress status: " << (evento->GetEventID() / (G4double)NevTot) * 100 << " %, Nev= " << evento->GetEventID() << ", NTotEv= " << NevTot << G4endl;
 	}
 	// get analysis manager
 	auto analysisManager = G4RootAnalysisManager::Instance();
-	
+
 	// fill ntuple
-	analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
-	//analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
-	analysisManager->FillNtupleDColumn(0, 2, fNumHitsDet); //number of hits into the detector
+	analysisManager->FillNtupleDColumn(0, 0, fEdep / keV);
+	// analysisManager->FillNtupleDColumn(0, 34, fEdepSiPM/keV);
+	analysisManager->FillNtupleDColumn(0, 2, fNumHitsDet); // number of hits into the detector
 	analysisManager->FillNtupleDColumn(0, 11, fPrePterNo);
 	analysisManager->FillNtupleDColumn(0, 17, fPreProbeNo);
 	analysisManager->FillNtupleDColumn(0, 20, fPostAbsNo);
-	
-	analysisManager->FillNtupleDColumn(0,25, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,26, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,27, fSourceZ/mm);
 
-	analysisManager->FillNtupleIColumn(0,34, fNPMT);
-	analysisManager->FillNtupleIColumn(0,35, fEnterPterFlag);
-	
-	if(!fLightOutFlag||fEdep>0) analysisManager->AddNtupleRow(0);
-	
-	if(evento->GetEventID()<=1e5){ //to write to proper ntuple all the source particles info
-		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
-		analysisManager->FillNtupleDColumn(1,1, fSourceY/mm);
-		analysisManager->FillNtupleDColumn(1,2, fSourceZ/mm);
-		analysisManager->FillNtupleSColumn(1,9, fSourceReg);
-		analysisManager->FillNtupleDColumn(1,23, fNSourceExit);
+	analysisManager->FillNtupleDColumn(0, 25, fSourceX / mm);
+	analysisManager->FillNtupleDColumn(0, 26, fSourceY / mm);
+	analysisManager->FillNtupleDColumn(0, 27, fSourceZ / mm);
+
+	analysisManager->FillNtupleIColumn(0, 34, fNPMT);
+	analysisManager->FillNtupleIColumn(0, 35, fEnterPterFlag);
+
+	// if(!fLightOutFlag||fEdep>0) analysisManager->AddNtupleRow(0);
+	if (
+		(!fLightOutFlag && !fOnlyEnterSiPM) // NON ho richiesto la flag light
+		|| fEdep > 0						// L'energia depositata è >0
+											// || (!fLightOutFlag && !fOnlyEnterSiPM) // NON ho chiesto di salvare solo quello che entra nel SiPm
+	)
+	{
+		// G4cout << "SANREMO ENTRO" << G4endl;
+		analysisManager->AddNtupleRow(0);
+	}
+	else
+	{
+		// G4cout << "SANREMO NON ENTRO" << G4endl;
+	}
+
+	if (evento->GetEventID() <= 1e5)
+	{ // to write to proper ntuple all the source particles info
+		analysisManager->FillNtupleDColumn(1, 0, fSourceX / mm);
+		analysisManager->FillNtupleDColumn(1, 1, fSourceY / mm);
+		analysisManager->FillNtupleDColumn(1, 2, fSourceZ / mm);
+		analysisManager->FillNtupleSColumn(1, 9, fSourceReg);
+		analysisManager->FillNtupleDColumn(1, 23, fNSourceExit);
 
 		analysisManager->AddNtupleRow(1);
 	}
-	
-	//Keep interesting events for offline visualization
-////	if (fPterPassCounter==0 && fPreProbePassCounter>0) {
-//			if (fPrePterNo>0 && fPreProbeNo==0) {
-////		if (fPterPassCounter>fPreProbePassCounter) {
-//		G4cout<<"Evento con tracce in pter ma 0 in Probe: "<<evento->GetEventID()<<" "<<fPrePterNo<<" "<< fPreProbeNo  <<G4endl;
-//		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
-//		evt->KeepTheEvent();
-//		
-//	}
-//	
-	
-	
+
+	// Keep interesting events for offline visualization
+	////	if (fPterPassCounter==0 && fPreProbePassCounter>0) {
+	//			if (fPrePterNo>0 && fPreProbeNo==0) {
+	////		if (fPterPassCounter>fPreProbePassCounter) {
+	//		G4cout<<"Evento con tracce in pter ma 0 in Probe: "<<evento->GetEventID()<<" "<<fPrePterNo<<" "<< fPreProbeNo  <<G4endl;
+	//		G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+	//		evt->KeepTheEvent();
+	//
+	//	}
+	//
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
