@@ -41,10 +41,10 @@
 	THStack *hStackBkgCum = new THStack("hstackBkgCum", "hstackBkgCum;Eabs [keV];");
 
 	THStack *hStackSiPmBSign = new THStack("hStackSiPmBSign", "hStackSiPmBSign;E [keV];");
-	THStack *hStacSiPmBBkg = new THStack("hStacSiPmBBkg", "hStacSiPmBBkg;E [keV];");
+	THStack *hStackSiPmBBkg = new THStack("hStackSiPmBBkg", "hStackSiPmBBkg;E [keV];");
 
 	THStack *hStackSiPmGSign = new THStack("hStackSiPmGSign", "hStackSiPmGSign;E [keV];");
-	THStack *hStacSiPmGBkg = new THStack("hStacSiPmGBkg", "hStacSiPmGBkg;E [keV];");
+	THStack *hStackSiPmGBkg = new THStack("hStackSiPmGBkg", "hStackSiPmGBkg;E [keV];");
 
 	for (int iThr = 0; iThr < NThr; iThr++)
 	{
@@ -149,7 +149,6 @@
 		TH1F *histoTempSignZ = new TH1F("histoTempSignZ", Form("Sign_%:.1f;Eabs [keV];", spessori[iFile]), nBin, 0, eMaxZoom);
 
 		TH1F *histoTempSiPmBSign = new TH1F("histoTempSiPmBSign", Form("SignB_%:.1f;Eabs [keV];", spessori[iFile]), nBin / 4, 0, eMaxSign);
-
 		TH1F *histoTempSiPmGSign = new TH1F("histoTempSiPmGSign", Form("SignG_%:.1f;Eabs [keV];", spessori[iFile]), nBin / 4, 0, eMaxSign);
 
 		B1->Draw("Eabs>>histoTempSign", "Eabs>0", "goff");
@@ -170,13 +169,21 @@
 		// canvEneBkg->cd();
 		TH1F *histoTempBkg = new TH1F("histoTempBkg", Form("Bkg_%:.1f;Eabs [keV];", spessori[iFile]), nBin, 0, eMaxBkg);
 		TH1F *histoTempBkgZ = new TH1F("histoTempBkgZ", Form("Bkg_%:.1f;Eabs [keV];", spessori[iFile]), nBin, 0, eMaxZoom);
+
+		TH1F *histoTempSiPmBBkg = new TH1F("histoTempSiPmBBkg", Form("BkgB_%:.1f;Eabs [keV];", spessori[iFile]), nBin / 4, 0, eMaxSign);
+		TH1F *histoTempSiPmGBkg = new TH1F("histoTempSiPmGBkg", Form("BkgG_%:.1f;Eabs [keV];", spessori[iFile]), nBin / 4, 0, eMaxSign);
+
 		B1->Draw("Eabs>>histoTempBkg", "Eabs>0", "goff");
 		B1->Draw("Eabs>>histoTempBkgZ", "Eabs>0&&Eabs<200", "goff");
+		B1->Draw("SiPMEne>>histoTempSiPmBBkg", "fabs(SiPMPart)==11", "goff");
+		B1->Draw("SiPMEne>>histoTempSiPmGBkg", "SiPMPart==22", "goff");
 		// histoTemp = (TH1F*)gPad->GetPrimitive("htemp");
 		fOut->cd();
 		histoTempBkg->Write();
 		hStackBkg->Add(histoTempBkg);
 		hStackBkgZ->Add(histoTempBkgZ);
+		hStackSiPmBBkg->Add(histoTempSiPmBBkg);
+		hStackSiPmGBkg->Add(histoTempSiPmGBkg);
 
 		// fFileBkg[iFile]->cd();
 		// canvEneBkg->cd();
@@ -287,5 +294,17 @@
 	TCanvas *canvSiPmGSign = new TCanvas("canvSiPmGSign", "canvSiPmGSign");
 	hStackSiPmGSign->Draw("nostackPLC");
 	canvSiPmGSign->BuildLegend();
+	canvSiPmGSign->SetLogy();
 	canvSiPmGSign->SaveAs("Gratt_SiPmGSign.pdf");
+
+	TCanvas *canvSiPmBBkg = new TCanvas("canvSiPmBBkg", "canvSiPmBBkg");
+	hStackSiPmBBkg->Draw("nostackPLC");
+	canvSiPmBBkg->BuildLegend();
+	canvSiPmBBkg->SaveAs("Gratt_SiPmBBkg.pdf");
+
+	TCanvas *canvSiPmGBkg = new TCanvas("canvSiPmGBkg", "canvSiPmGBkg");
+	hStackSiPmGBkg->Draw("nostackPLC");
+	canvSiPmGBkg->BuildLegend();
+	canvSiPmGBkg->SetLogy();
+	canvSiPmGBkg->SaveAs("Gratt_SiPmGBkg.pdf");
 }
